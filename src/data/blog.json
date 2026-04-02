@@ -1,0 +1,32 @@
+[
+  {
+    "id": 1,
+    "title": "How to Secure Management Quota Admissions in 2026",
+    "excerpt": "A step-by-step guide to navigating the complex landscape of management and NRI quota admissions in top universities.",
+    "date": "Oct 12, 2025",
+    "author": "Dr. Suresh Kumar",
+    "slug": "secure-management-quota-2026",
+    "imageUrl": "https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&q=80&w=800",
+    "content": "Full content goes here."
+  },
+  {
+    "id": 2,
+    "title": "Top Engineering Colleges in Maharashtra for B.Tech",
+    "excerpt": "Looking for direct admissions? Here is a curated list of top-tier engineering institutes in Maharashtra.",
+    "date": "Sep 28, 2025",
+    "author": "Priya Sharma",
+    "slug": "top-engineering-maharashtra",
+    "imageUrl": "https://images.unsplash.com/photo-1562774053-701939374585?auto=format&fit=crop&q=80&w=800",
+    "content": "Full content goes here."
+  },
+  {
+    "id": 3,
+    "title": "MBBS vs BDS: Making the Right Call",
+    "excerpt": "Stuck between medicine and dentistry? Read our detailed ROI analysis to assist your decision-making.",
+    "date": "Sep 15, 2025",
+    "author": "Dr. Vikas Reddy",
+    "slug": "mbbs-vs-bds-analysis",
+    "imageUrl": "https://images.unsplash.com/photo-1576091160550-2173dba999ef?auto=format&fit=crop&q=80&w=800",
+    "content": "Full content goes here."
+  }
+]

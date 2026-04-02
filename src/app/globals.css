@@ -1,26 +1,55 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+@theme {
+  --font-sora: var(--font-sora);
+  --font-dm-sans: var(--font-dm-sans);
+  --font-jetbrains-mono: var(--font-jetbrains-mono);
+
+  --color-d2c-navy: #1B1F5E;
+  --color-d2c-navy-light: #2A3080;
+  --color-d2c-navy-dark: #0E1142;
+  --color-d2c-royal: #3B4CC0;
+  --color-d2c-sky: #5B9BD5;
+  --color-d2c-ice: #E8EEF8;
+  --color-d2c-white: #FAFBFE;
+  --color-d2c-gold: #D4A843;
+  --color-d2c-success: #22C55E;
+  --color-d2c-text: #1E293B;
+  --color-d2c-muted: #64748B;
+
+  --color-background: var(--color-d2c-white);
+  --color-foreground: var(--color-d2c-text);
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+/* Base styles are handled in layout.tsx via body classes */
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+/* ── Animated pattern background ─────────────────────────────────────────── */
+/* Ultra-slow drift: translates the 200% tile layer by 50% in each axis     */
+@keyframes pattern-drift {
+  0% {
+    transform: translate(0, 0) scale(1);
+  }
+
+  50% {
+    transform: translate(-25%, -25%) scale(1.02);
+  }
+
+  100% {
+    transform: translate(-50%, -50%) scale(1);
+  }
+}
+
+.animate-pattern-drift {
+  animation: pattern-drift linear infinite;
+}
+
+/* ── 3D admission card perspective helpers ── */
+.perspective-1200 {
+  perspective: 1200px;
 }

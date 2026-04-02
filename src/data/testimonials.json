@@ -1,0 +1,44 @@
+[
+    {
+        "id": 1,
+        "name": "Priya Sharma",
+        "role": "B.Tech Student, Manipal",
+        "message": "Akash Talks guided me perfectly through the counseling process. I got my dream branch at Manipal without any hassle!",
+        "avatarUrl": "/images/testimonials/girl1.webp"
+    },
+    {
+        "id": 2,
+        "name": "Rahul Verma",
+        "role": "CSE, VIT Vellore",
+        "message": "The college prediction was spot on. Their insights into the cutoff trends helped me make the right choice.",
+        "avatarUrl": "/images/testimonials/boy1.webp"
+    },
+    {
+        "id": 3,
+        "name": "Sneha Gupta",
+        "role": "MBA Aspirant",
+        "message": "I was confused about which management college to pick. The mentorship I received here was a game changer.",
+        "avatarUrl": "/images/testimonials/girl2.webp"
+    },
+    {
+        "id": 4,
+        "name": "Ankit Das",
+        "role": "B.Tech, KIIT",
+        "message": "Honest reviews and direct admission guidance. Highly recommended for anyone looking for clarity.",
+        "avatarUrl": "/images/testimonials/boy2.webp"
+    },
+    {
+        "id": 5,
+        "name": "Sunita Patel",
+        "role": "Parent",
+        "message": "As a parent, I was worried about my son's admission. The team at Akash Talks handled everything professionally.",
+        "avatarUrl": "/images/testimonials/parent.webp"
+    },
+    {
+        "id": 6,
+        "name": "Arjun Mehta",
+        "role": "ECE, IEM Kolkata",
+        "message": "From WBJEE counseling to final admission, Akash Talks was with me every step. Got ECE at IEM with their expert guidance!",
+        "avatarUrl": "/images/testimonials/boy3.webp"
+    }
+]
