@@ -4,6 +4,7 @@ import { useState } from "react"
 import Link from "next/link"
 import { Search, GraduationCap, ChevronRight, ArrowUpRight, BookOpen } from "lucide-react"
 import { motion, AnimatePresence } from "framer-motion"
+import { AutoSuggestSearch } from "@/components/ui/AutoSuggestSearch"
 
 type Exam = {
   id: number
@@ -31,15 +32,12 @@ export function ExamsList({ initialExams }: { initialExams: Exam[] }) {
 
   return (
     <div>
-      <div className="max-w-xl mx-auto mb-16 relative">
-        <input 
-          type="text"
+      <div className="max-w-xl mx-auto mb-16 relative z-40">
+        <AutoSuggestSearch 
+          mode="exams"
           placeholder="Search for an exam..."
-          className="w-full pl-12 pr-4 py-4 border border-gray-200 focus:border-d2c-royal focus:ring-2 focus:ring-d2c-royal/20 outline-none bg-white shadow-sm transition-all text-lg"
-          value={search}
-          onChange={e => setSearch(e.target.value)}
+          onSearchChange={setSearch}
         />
-        <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-d2c-muted w-6 h-6" />
       </div>
 
       {filteredExams.length === 0 ? (

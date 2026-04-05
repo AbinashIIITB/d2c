@@ -21,7 +21,7 @@ export default function AboutPage() {
           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full bg-[radial-gradient(circle_at_center,rgba(42,48,128,0.4)_0%,transparent_60%)]" />
         </div>
 
-        <div className="container mx-auto px-4 relative z-10 text-center">
+        <div className="content-boundary relative z-10 text-center">
           <div className="inline-flex items-center gap-2 px-4 py-2 bg-white/10 backdrop-blur-sm border border-white/20 mb-8">
             <Shield className="w-4 h-4 text-d2c-sky" />
             <span className="text-sm font-medium tracking-wide">India&apos;s Trusted Education Partner</span>
@@ -63,7 +63,7 @@ export default function AboutPage() {
         </div>
       </section>
 
-      <div className="container mx-auto px-4 max-w-4xl py-16">
+      <div className="content-boundary py-16">
         <div className="prose prose-lg max-w-none text-d2c-text">
           <img src="https://images.unsplash.com/photo-1541339907198-e08756dedf3f?auto=format&fit=crop&q=80&w=1200" alt="Campus Building" className="w-full h-[400px] object-cover mb-12 shadow-md" />
           

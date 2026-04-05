@@ -24,7 +24,7 @@ export default function CollegesPage() {
           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full bg-[radial-gradient(circle_at_center,rgba(42,48,128,0.4)_0%,transparent_60%)]" />
         </div>
 
-        <div className="container mx-auto px-4 relative z-10 text-center">
+        <div className="content-boundary relative z-10 text-center">
           <div className="inline-flex items-center gap-2 px-4 py-2 bg-white/10 backdrop-blur-sm border border-white/20 mb-8">
             <Building2 className="w-4 h-4 text-d2c-sky" />
             <span className="text-sm font-medium tracking-wide">50+ Partner Institutions</span>
@@ -64,7 +64,7 @@ export default function CollegesPage() {
                 <MapPin className="w-5 h-5 text-d2c-success" />
               </div>
               <div className="text-left">
-                <div className="text-xl font-bold font-sora">7</div>
+                <div className="text-xl font-bold font-sora">12</div>
                 <div className="text-xs text-white/50">States Covered</div>
               </div>
             </div>
@@ -72,7 +72,7 @@ export default function CollegesPage() {
         </div>
       </section>
 
-      <div className="container mx-auto px-4 py-12">
+      <div className="content-boundary py-12">
         <CollegesGrid initialColleges={collegesData} />
       </div>
     </div>

@@ -5,7 +5,7 @@ export const metadata: Metadata = { title: "Terms and Conditions | Direct2Campus
 export default function TermsPage() {
   return (
     <div className="pt-24 pb-20 bg-d2c-white min-h-screen">
-      <div className="container mx-auto px-4 max-w-3xl prose prose-lg">
+      <div className="content-boundary prose prose-lg">
         <h1 className="text-4xl font-sora font-bold text-d2c-navy mb-8">Terms of Service</h1>
         <p className="text-d2c-muted">Last updated: October 2025</p>
         <p>By accessing the website at http://direct2campus.com, you are agreeing to be bound by these terms of service, all applicable laws and regulations, and agree that you are responsible for compliance with any applicable local laws.</p>

@@ -5,7 +5,7 @@ import { AnimatedPatternBg } from "@/components/ui/AnimatedPatternBg"
 export function Footer() {
   return (
     <footer className="bg-d2c-navy text-white pt-24 pb-24 md:pb-12 border-t-4 border-d2c-royal relative overflow-hidden">
-      <div className="container mx-auto px-4 relative z-10">
+      <div className="content-boundary relative z-10">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-x-12 gap-y-16 mb-20">
           
           {/* Brand Info */}

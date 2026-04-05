@@ -4,23 +4,29 @@ import { useRef, useEffect, useState } from "react"
 import Link from "next/link"
 import { motion, useInView, useMotionValue, useSpring, useTransform } from "framer-motion"
 import { MapPin, ArrowRight, TrendingUp, GraduationCap, Building2, Users } from "lucide-react"
+import { CountUp } from "@/components/ui/CountUp"
 
 const STATES = [
   { name: "Karnataka", count: 45, ref: "karnataka", icon: Building2 },
-  { name: "Maharashtra", count: 32, ref: "maharashtra", icon: Building2 },
   { name: "West Bengal", count: 50, ref: "west-bengal", icon: Building2 },
+  { name: "Maharashtra", count: 32, ref: "maharashtra", icon: Building2 },
   { name: "Tamil Nadu", count: 28, ref: "tamil-nadu", icon: Building2 },
-  { name: "Odisha", count: 18, ref: "odisha", icon: Building2 },
   { name: "Uttar Pradesh", count: 24, ref: "uttar-pradesh", icon: Building2 },
+  { name: "Odisha", count: 18, ref: "odisha", icon: Building2 },
   { name: "Uttarakhand", count: 12, ref: "uttarakhand", icon: Building2 },
+  { name: "Punjab", count: 15, ref: "punjab", icon: Building2 },
+  { name: "Andhra Pradesh", count: 14, ref: "andhra-pradesh", icon: Building2 },
+  { name: "Telangana", count: 12, ref: "telangana", icon: Building2 },
+  { name: "Gujarat", count: 10, ref: "gujarat", icon: Building2 },
+  { name: "Madhya Pradesh", count: 8, ref: "madhya-pradesh", icon: Building2 },
 ]
 
 // Big aggregate stats for the hero row
 const HERO_STATS = [
-  { value: "500+", label: "Students Placed", icon: Users },
-  { value: "50+", label: "Partner Colleges", icon: GraduationCap },
-  { value: "7", label: "States Covered", icon: MapPin },
-  { value: "98%", label: "Success Rate", icon: TrendingUp },
+  { value: 500, suffix: "+", label: "Students Placed", icon: Users },
+  { value: 90, suffix: "+", label: "Partner Colleges", icon: GraduationCap },
+  { value: 12, suffix: "", label: "States Covered", icon: MapPin },
+  { value: 98, suffix: "%", label: "Success Rate", icon: TrendingUp },
 ]
 
 // Animated counter component
@@ -69,7 +75,7 @@ export function StatesCoverage() {
           />
         </div>
 
-        <div className="container mx-auto px-4 relative z-10 py-24 md:py-32">
+        <div className="content-boundary relative z-10 py-16 md:py-24">
           {/* Section label */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -114,7 +120,7 @@ export function StatesCoverage() {
                   <stat.icon className="w-6 h-6 text-d2c-sky" />
                 </div>
                 <div className="text-4xl md:text-5xl lg:text-6xl font-sora font-bold text-white mb-2 tabular-nums">
-                  {stat.value}
+                  <CountUp end={stat.value} suffix={stat.suffix} duration={2200} />
                 </div>
                 <div className="text-sm md:text-base text-white/50 font-medium">
                   {stat.label}

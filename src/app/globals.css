@@ -10,6 +10,7 @@
   --color-d2c-navy-dark: #0E1142;
   --color-d2c-royal: #3B4CC0;
   --color-d2c-sky: #5B9BD5;
+  --color-d2c-solid-blue: #4A90E2;
   --color-d2c-ice: #E8EEF8;
   --color-d2c-white: #FAFBFE;
   --color-d2c-gold: #D4A843;
@@ -52,4 +53,36 @@
 /* ── 3D admission card perspective helpers ── */
 .perspective-1200 {
   perspective: 1200px;
+}
+
+/* Content boundary with Stripe-style guide lines */
+.content-boundary {
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 24px;
+  padding-right: 24px;
+  position: relative;
+}
+
+/* Subtle vertical guide lines — visible on desktop */
+.guide-lines::before,
+.guide-lines::after {
+  content: '';
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background: rgba(27, 31, 94, 0.06); /* d2c-navy tone */
+  pointer-events: none;
+  z-index: 1;
+}
+.guide-lines::before { left: calc((100vw - 1200px) / 2); }
+.guide-lines::after  { right: calc((100vw - 1200px) / 2); }
+
+@media (max-width: 1248px) {
+  .guide-lines::before,
+  .guide-lines::after {
+    display: none;
+  }
 }

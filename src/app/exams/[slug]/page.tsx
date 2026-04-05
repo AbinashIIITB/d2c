@@ -30,10 +30,10 @@ export default async function ExamDetailPage({ params }: { params: Params }) {
   }
 
   return (
-    <div className="pt-24 pb-20 bg-d2c-white min-h-screen">
-      <div className="bg-d2c-navy pt-12 pb-32 px-4 shadow-xl border-b-4 border-d2c-royal relative overflow-hidden">
+    <div className="pb-20 bg-d2c-white min-h-screen">
+      <div className="bg-d2c-navy pt-32 pb-32 px-4 shadow-xl border-b-4 border-d2c-royal relative overflow-hidden">
         <AnimatedPatternBg opacity={0.1} speed={160} />
-        <div className="container mx-auto max-w-4xl relative z-10">
+        <div className="content-boundary relative z-10">
           <Link href="/exams" className="inline-flex items-center gap-2 text-d2c-sky hover:text-white transition-colors mb-8 text-sm font-semibold px-4 py-2 rounded-full bg-white/5 border border-white/10">
             <ArrowLeft className="w-4 h-4" /> Back to Exams
           </Link>
@@ -54,7 +54,7 @@ export default async function ExamDetailPage({ params }: { params: Params }) {
         </div>
       </div>
 
-      <div className="container mx-auto px-4 -mt-16 relative z-20">
+      <div className="content-boundary -mt-16 relative z-20">
         <div className="max-w-4xl mx-auto flex flex-col gap-8">
           
           {/* Main Info Blocks */}

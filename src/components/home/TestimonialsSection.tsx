@@ -22,14 +22,14 @@ export function TestimonialsSection() {
   const [expandedId, setExpandedId] = useState<number | null>(null)
 
   return (
-    <section className="py-28 bg-white relative overflow-hidden" ref={ref}>
+    <section className="py-16 md:py-24 bg-d2c-ice relative overflow-hidden" ref={ref}>
       {/* Subtle background decoration */}
       <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-gradient-to-bl from-d2c-ice/40 to-transparent rounded-full blur-3xl" />
+        <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-gradient-to-bl from-white/40 to-transparent rounded-full blur-3xl" />
         <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-gradient-to-tr from-d2c-sky/5 to-transparent rounded-full blur-3xl" />
       </div>
 
-      <div className="container mx-auto px-4 relative z-10">
+      <div className="content-boundary relative z-10">
         {/* ── SECTION HEADER ── */}
         <div className="max-w-3xl mb-16">
           <motion.div

@@ -36,14 +36,14 @@ export function WhyChooseUs() {
   const isInView = useInView(ref, { once: true, margin: "-100px" })
 
   return (
-    <section className="py-24 bg-d2c-ice/50 relative overflow-hidden" ref={ref}>
+    <section className="py-16 md:py-24 bg-d2c-white relative overflow-hidden" ref={ref}>
       {/* Background elements */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
-        <div className="absolute top-0 right-1/4 w-[500px] h-[500px] bg-d2c-white rounded-full blur-3xl opacity-60 mix-blend-overlay" />
-        <div className="absolute bottom-[-10%] left-[-10%] w-[300px] h-[300px] bg-d2c-sky/10 rounded-full blur-2xl" />
+        <div className="absolute top-0 right-1/4 w-[500px] h-[500px] bg-d2c-ice/50 rounded-full blur-3xl opacity-60 mix-blend-overlay" />
+        <div className="absolute bottom-[-10%] left-[-10%] w-[300px] h-[300px] bg-d2c-sky/5 rounded-full blur-2xl" />
       </div>
 
-      <div className="container mx-auto px-4 relative z-10">
+      <div className="content-boundary relative z-10">
         <div className="text-center max-w-3xl mx-auto mb-16">
 
           <motion.h2
@@ -72,24 +72,14 @@ export function WhyChooseUs() {
               initial={{ opacity: 0, y: 30 }}
               animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
               transition={{ duration: 0.5, delay: feature.delay }}
-              whileHover={{ y: -8, scale: 1.02, rotateY: 3, rotateX: 3 }}
-              style={{ perspective: 1000 }}
-              className="group relative bg-white h-full"
+              whileHover={{ y: -6, scale: 1.01 }}
+              className="group relative bg-white h-full rounded-2xl"
             >
-              <div className="p-8 border border-gray-100 shadow-xl shadow-d2c-navy/5 transition-all duration-500 h-full overflow-hidden relative" style={{ transformStyle: "preserve-3d" }}>
-                {/* Colorful Glowing Background Gradient on Hover */}
-                {idx === 0 && <div className="absolute -top-10 -right-10 w-40 h-40 bg-d2c-navy/10 rounded-full blur-3xl group-hover:bg-d2c-navy/20 transition-colors duration-500" />}
-                {idx === 1 && <div className="absolute -top-10 -right-10 w-40 h-40 bg-d2c-gold/20 rounded-full blur-3xl group-hover:bg-d2c-gold/40 transition-colors duration-500" />}
-                {idx === 2 && <div className="absolute -top-10 -right-10 w-40 h-40 bg-d2c-royal/20 rounded-full blur-3xl group-hover:bg-d2c-royal/40 transition-colors duration-500" />}
-                {idx === 3 && <div className="absolute -top-10 -right-10 w-40 h-40 bg-d2c-success/20 rounded-full blur-3xl group-hover:bg-d2c-success/40 transition-colors duration-500" />}
+              <div className="p-8 border border-gray-100 shadow-lg shadow-d2c-navy/5 transition-all duration-300 h-full overflow-hidden relative rounded-2xl">
+                {/* Left accent border on hover */}
+                <div className="absolute inset-y-0 left-0 w-1 bg-gradient-to-b from-d2c-navy to-d2c-royal transform scale-y-0 group-hover:scale-y-100 transition-transform duration-300 origin-top" />
 
-                {/* Bottom interactive accent line */}
-                <div className="absolute inset-x-0 bottom-0 h-1.5 bg-gradient-to-r from-d2c-navy to-d2c-royal transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left" />
-
-                <div
-                  className="w-16 h-16 rounded-xl bg-d2c-ice flex items-center justify-center mb-6 group-hover:scale-110 group-hover:shadow-[0_0_20px_rgba(0,0,0,0.1)] transition-all duration-300 relative z-10"
-                  style={{ transform: "translateZ(30px)" }}
-                >
+                <div className="w-16 h-16 rounded-xl bg-d2c-ice flex items-center justify-center mb-6 transition-all duration-300 group-hover:shadow-md relative z-10">
                   <motion.div
                     animate={{ rotate: [0, 5, -5, 0] }}
                     transition={{ repeat: Infinity, duration: 4, ease: "easeInOut", delay: feature.delay }}
@@ -98,8 +88,8 @@ export function WhyChooseUs() {
                   </motion.div>
                 </div>
 
-                <div style={{ transform: "translateZ(20px)" }} className="relative z-10">
-                  <h3 className="text-xl font-sora font-bold text-d2c-navy mb-4 pr-4 group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-d2c-navy group-hover:to-d2c-royal transition-all duration-300">
+                <div className="relative z-10">
+                  <h3 className="text-xl font-sora font-bold text-d2c-navy mb-4 pr-4 group-hover:text-d2c-royal transition-colors duration-300">
                     {feature.title}
                   </h3>
                   <p className="text-d2c-muted text-sm leading-relaxed">

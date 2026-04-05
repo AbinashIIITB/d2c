@@ -1,10 +1,10 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useRef } from "react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { motion, AnimatePresence } from "framer-motion"
-import { Menu, X, ChevronDown, PhoneCall, ArrowRight } from "lucide-react"
+import { Menu, X, ChevronDown, PhoneCall, Search } from "lucide-react"
 
 const NAV_LINKS = [
   { label: "Home", href: "/" },
@@ -18,59 +18,70 @@ const NAV_LINKS = [
     ],
   },
   { label: "Exams", href: "/exams" },
-  { label: "MBA Direct", href: "/mba" },
+  { label: "Contact Us", href: "/contact" },
   { label: "About", href: "/about" },
 ]
 
+import { AutoSuggestSearch } from "@/components/ui/AutoSuggestSearch"
+
 export function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false)
+  const [isHovered, setIsHovered] = useState(false)
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null)
-  const [isHovered, setIsHovered] = useState(false)
+  const [searchOpen, setSearchOpen] = useState(false)
   const pathname = usePathname()
-  const isHomePage = pathname === "/"
+  const searchContainerRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (searchContainerRef.current && !searchContainerRef.current.contains(event.target as Node)) {
+        setSearchOpen(false)
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside)
+    return () => document.removeEventListener("mousedown", handleClickOutside)
+  }, [])
 
   useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 20)
     window.addEventListener("scroll", handleScroll)
+    // trigger once to check initial state
+    handleScroll()
     return () => window.removeEventListener("scroll", handleScroll)
   }, [])
 
   useEffect(() => {
     setMobileMenuOpen(false)
     setActiveDropdown(null)
+    setSearchOpen(false)
   }, [pathname])
 
-  // Determine visual state: scrolled always wins, hover only applies on homepage when not scrolled
-  const showSolidBg = isScrolled || (isHovered && isHomePage)
+  const showSolidBg = isScrolled || isHovered || mobileMenuOpen || searchOpen
 
   return (
-    <header
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        showSolidBg
-          ? "bg-white/95 backdrop-blur-xl shadow-[0_2px_20px_rgba(0,0,0,0.06)] border-b border-gray-200/50"
-          : isHomePage
-            ? "bg-transparent"
-            : "bg-d2c-navy"
-      }`}
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
-    >
-      <div className="container mx-auto px-4 md:px-6">
-        <div className="flex items-center justify-between h-16 md:h-[72px]">
+    <header className="fixed top-2 md:top-3 left-0 right-0 z-50 transition-all duration-300">
+      <div className="content-boundary">
+        <div 
+          onMouseEnter={() => setIsHovered(true)}
+          onMouseLeave={() => setIsHovered(false)}
+          className={`rounded-2xl transition-all duration-300 flex items-center justify-between h-14 md:h-16 px-5 md:px-6 ${
+            showSolidBg 
+              ? "bg-white shadow-[0_8px_30px_rgba(0,0,0,0.12)] border border-gray-100" 
+              : "bg-transparent border border-transparent"
+          }`}
+        >
           {/* ── BRAND ── */}
-          <Link href="/" className="flex items-center gap-2 z-50 shrink-0">
-            <span
-              className={`font-sora font-bold text-2xl tracking-tight transition-colors duration-300 ${
-                showSolidBg ? "text-d2c-navy" : "text-white"
-              }`}
-            >
+          <Link href="/" className="flex items-center gap-2 z-50 shrink-0 pr-4">
+            <span className={`font-sora font-bold text-lg md:text-xl tracking-tight transition-colors duration-300 ${
+              showSolidBg ? "text-d2c-navy" : "text-white"
+            }`}>
               Direct<span className="text-d2c-royal">2</span>Campus
             </span>
           </Link>
 
           {/* ── DESKTOP NAV ── */}
-          <nav className="hidden md:flex items-center gap-1">
+          <nav className="hidden md:flex items-center gap-1 flex-1">
             {NAV_LINKS.map((link) => (
               <div
                 key={link.label}
@@ -85,7 +96,7 @@ export function Navbar() {
                     ${pathname === link.href
                       ? showSolidBg
                         ? "text-d2c-royal"
-                        : "text-d2c-gold"
+                        : "text-white"
                       : showSolidBg
                         ? "text-gray-600 hover:text-d2c-navy"
                         : "text-white/80 hover:text-white"
@@ -134,15 +145,41 @@ export function Navbar() {
 
           {/* ── DESKTOP CTA ── */}
           <div className="hidden md:flex items-center gap-3">
+            <div className="relative flex items-center" ref={searchContainerRef}>
+              <button 
+                onClick={() => setSearchOpen(!searchOpen)}
+                className={`p-2 rounded-full transition-colors flex items-center justify-center ${
+                  showSolidBg ? "text-d2c-navy hover:bg-gray-100" : "text-white hover:bg-white/10"
+                }`}
+                aria-label="Search"
+              >
+                <Search className="w-5 h-5" />
+              </button>
+              
+              <AnimatePresence>
+                {searchOpen && (
+                  <motion.div
+                    initial={{ opacity: 0, y: 6 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: 6 }}
+                    transition={{ duration: 0.18 }}
+                    className="absolute top-full right-0 pt-3 z-[60] w-[340px]"
+                  >
+                    <div className="bg-white rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.12)] border border-gray-100 p-2">
+                       <AutoSuggestSearch mode="all" placeholder="Search colleges, exams..." className="w-full" autoFocus={true} />
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
+            
             <Link
               href="/contact"
-              className={`
-                flex items-center gap-2 px-5 py-2.5 rounded-lg font-semibold text-sm transition-all duration-300
-                ${showSolidBg
-                  ? "bg-d2c-royal text-white hover:bg-d2c-navy"
-                  : "border border-white/40 text-white hover:bg-white/10"
-                }
-              `}
+              className={`flex items-center shrink-0 gap-2 px-5 py-2 rounded-xl font-semibold text-xs md:text-sm transition-all duration-300 border ${
+                showSolidBg
+                  ? "bg-d2c-royal border-d2c-royal text-white hover:bg-d2c-navy hover:border-d2c-navy shadow-md hover:shadow-lg"
+                  : "border-white/40 text-white hover:bg-white/10"
+              }`}
             >
               <PhoneCall className="w-4 h-4" />
               Apply Now
@@ -156,7 +193,7 @@ export function Navbar() {
             aria-label="Toggle menu"
           >
             {mobileMenuOpen ? (
-              <X className={`w-6 h-6 ${showSolidBg || mobileMenuOpen ? "text-d2c-navy" : "text-white"}`} />
+              <X className={`w-6 h-6 ${showSolidBg ? "text-d2c-navy" : "text-white"}`} />
             ) : (
               <Menu className={`w-6 h-6 ${showSolidBg ? "text-d2c-navy" : "text-white"}`} />
             )}
@@ -174,7 +211,7 @@ export function Navbar() {
             transition={{ duration: 0.25 }}
             className="md:hidden bg-white border-t border-gray-100 overflow-hidden"
           >
-            <div className="container mx-auto px-4 py-4 flex flex-col gap-1">
+            <div className="content-boundary py-4 flex flex-col gap-1">
               {NAV_LINKS.map((link) => (
                 <div key={link.label}>
                   <Link

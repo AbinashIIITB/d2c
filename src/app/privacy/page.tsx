@@ -5,7 +5,7 @@ export const metadata: Metadata = { title: "Privacy Policy | Direct2Campus" }
 export default function PrivacyPage() {
   return (
     <div className="pt-24 pb-20 bg-d2c-white min-h-screen">
-      <div className="container mx-auto px-4 max-w-3xl prose prose-lg">
+      <div className="content-boundary prose prose-lg">
         <h1 className="text-4xl font-sora font-bold text-d2c-navy mb-8">Privacy Policy</h1>
         <p className="text-d2c-muted">Last updated: October 2025</p>
         <p>Your privacy is important to us. It is Direct2Campus' policy to respect your privacy regarding any information we may collect from you across our website, http://direct2campus.com, and other sites we own and operate.</p>

@@ -11,7 +11,7 @@ export const metadata: Metadata = {
 export default function BlogListingPage() {
   return (
     <div className="pt-24 pb-20 bg-d2c-white min-h-screen">
-      <div className="container mx-auto px-4 max-w-6xl">
+      <div className="content-boundary">
         <div className="text-center mb-16">
           <h1 className="text-4xl md:text-5xl font-sora font-bold text-d2c-navy mb-6">Latest Updates & Guides</h1>
           <p className="text-lg text-d2c-muted max-w-2xl mx-auto">

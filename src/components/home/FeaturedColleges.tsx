@@ -14,8 +14,8 @@ export function FeaturedColleges() {
   const featuredColleges = collegesData.slice(0, 6)
 
   return (
-    <section className="py-24 bg-white" ref={ref}>
-      <div className="container mx-auto px-4">
+    <section className="py-16 md:py-24 bg-d2c-white" ref={ref}>
+      <div className="content-boundary">
         <div className="flex flex-col md:flex-row justify-between items-end mb-14 gap-6">
           <div className="max-w-2xl">
             <motion.h2

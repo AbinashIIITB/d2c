@@ -22,7 +22,7 @@ export default function MBAPage() {
           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full bg-[radial-gradient(circle_at_center,rgba(42,48,128,0.4)_0%,transparent_60%)]" />
         </div>
 
-        <div className="container mx-auto px-4 relative z-10">
+        <div className="content-boundary relative z-10">
           <div className="grid md:grid-cols-2 gap-12 items-center max-w-6xl mx-auto">
             <div className="text-center md:text-left">
               <div className="inline-flex items-center gap-2 px-4 py-2 bg-white/10 backdrop-blur-sm border border-white/20 mb-8">
@@ -81,7 +81,7 @@ export default function MBAPage() {
         </div>
       </section>
 
-      <div className="container mx-auto px-4 max-w-5xl py-16">
+      <div className="content-boundary py-16">
         <div className="text-center mb-16">
           <h2 className="text-3xl font-sora font-bold text-d2c-navy mb-4">Why choose Direct Admission for MBA?</h2>
           <p className="text-d2c-muted">Focus on your career progression rather than endless preparation cycles.</p>

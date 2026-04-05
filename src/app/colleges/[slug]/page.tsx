@@ -30,10 +30,14 @@ export default async function CollegeDetailPage({ params }: { params: Params }) 
   }
 
   return (
-    <div className="pt-24 pb-20 bg-d2c-white min-h-screen">
+    <div className="pb-20 bg-d2c-white min-h-screen">
       {/* College Hero Header */}
-      <div className="container mx-auto px-4 mb-8">
-        <Link href="/colleges" className="inline-flex items-center gap-2 text-d2c-muted hover:text-d2c-royal transition-colors mb-6 text-sm font-semibold">
+      <div className="bg-d2c-navy pt-28 pb-12 w-full relative -mb-20">
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-d2c-royal/40 via-d2c-navy to-d2c-navy" />
+      </div>
+
+      <div className="content-boundary mb-8 relative z-10">
+        <Link href="/colleges" className="inline-flex items-center gap-2 text-d2c-sky hover:text-white transition-colors mb-6 text-sm font-semibold">
           <ArrowLeft className="w-4 h-4" /> Back to Colleges
         </Link>
         
@@ -58,7 +62,7 @@ export default async function CollegeDetailPage({ params }: { params: Params }) 
         </div>
       </div>
 
-      <div className="container mx-auto px-4">
+      <div className="content-boundary">
         <div className="flex flex-col lg:flex-row gap-8">
           {/* Main Content Area */}
           <div className="flex-1 flex flex-col gap-8">

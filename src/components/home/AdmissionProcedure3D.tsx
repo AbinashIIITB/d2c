@@ -1,14 +1,16 @@
 "use client";
 
-import { useRef, useState } from "react";
-import { motion, useMotionTemplate, useMotionValue, useSpring } from "framer-motion";
+import { useRef, useEffect, useState } from "react";
+import Image from "next/image";
+import Link from "next/link";
+import { motion, useScroll, useTransform, useMotionValueEvent } from "framer-motion";
 import {
   MessageCircle,
   Search,
   FileText,
   GraduationCap,
-  CheckCircle2,
-  ArrowRight
+  ArrowRight,
+  Phone,
 } from "lucide-react";
 
 /* ─── step data ─── */
@@ -17,222 +19,348 @@ export const STEPS = [
     id: 1,
     title: "Free Consultation",
     subtitle: "Tell us your goals",
-    desc: "Start with a one-on-one session with our expert counsellors to build a personalised roadmap.",
-    bullets: [
-      "Profile & score assessment",
-      "Career-path mapping",
-    ],
+    desc: "Start with a one-on-one session with our expert counsellors to build a personalised admission roadmap based on your profile.",
+    image: "/images/steps/step-consultation.png",
     icon: MessageCircle,
     color: "#3B4CC0",
-    gradient: "from-[#3B4CC0] to-[#5B6FE0]",
+    bg: "bg-blue-50",
+    border: "border-blue-200",
+    badge: "bg-blue-100 text-blue-700",
   },
   {
     id: 2,
     title: "College Shortlisting",
-    subtitle: "We do the research",
-    desc: "We curate a shortlist with placement records, fee breakdowns, and campus insights.",
-    bullets: [
-      "Data-backed ranking analysis",
-      "Fee & scholarship mapping",
-    ],
+    subtitle: "Data-backed research",
+    desc: "We curate a personalised shortlist of colleges with detailed placement records, fee breakdowns, and campus insights.",
+    image: "/images/steps/step-shortlisting.png",
     icon: Search,
     color: "#5B9BD5",
-    gradient: "from-[#5B9BD5] to-[#7BB5E5]",
+    bg: "bg-sky-50",
+    border: "border-sky-200",
+    badge: "bg-sky-100 text-sky-700",
   },
   {
     id: 3,
     title: "Application & Docs",
-    subtitle: "We handle the paperwork",
-    desc: "No missed deadlines, no incorrect submissions — we ensure a flawless application process.",
-    bullets: [
-      "Error-free document submission",
-      "Deadline tracking & reminders",
-    ],
+    subtitle: "Paperwork handled",
+    desc: "No missed deadlines, no incorrect submissions — we ensure a flawless application process from start to finish.",
+    image: "/images/steps/step-application.png",
     icon: FileText,
     color: "#D4A843",
-    gradient: "from-[#D4A843] to-[#E4C067]",
+    bg: "bg-amber-50",
+    border: "border-amber-200",
+    badge: "bg-amber-100 text-amber-700",
   },
   {
     id: 4,
     title: "Confirmed Admission",
-    subtitle: "Seat secured. Dream achieved.",
-    desc: "Once accepted, we guide you through fee payment, hostel allotment, and orientation.",
-    bullets: [
-      "Seat confirmation & allotment text",
-      "Hostel & transport assistance",
-    ],
+    subtitle: "Seat secured!",
+    desc: "Once accepted, we guide you through fee payment, hostel allotment, orientation, and everything you need to start your journey.",
+    image: "/images/steps/step-confirmed.png",
     icon: GraduationCap,
     color: "#22C55E",
-    gradient: "from-[#22C55E] to-[#4ADE80]",
+    bg: "bg-green-50",
+    border: "border-green-200",
+    badge: "bg-green-100 text-green-700",
   },
 ];
 
-/* ─── 3D Hover Card Component ─── */
-function ProcedureCard({ step, index }: { step: typeof STEPS[0], index: number }) {
-  const ref = useRef<HTMLDivElement>(null);
+/* ─── Animated arrow path SVG ─── */
+function AnimatedArrowPath({ progress }: { progress: number }) {
+  return (
+    <div className="absolute left-1/2 top-0 bottom-0 w-0 -translate-x-1/2 hidden lg:block pointer-events-none z-0">
+      <svg
+        className="absolute top-0 left-1/2 -translate-x-1/2"
+        width="120"
+        height="100%"
+        viewBox="0 0 120 2000"
+        fill="none"
+        preserveAspectRatio="none"
+        style={{ height: "100%" }}
+      >
+        {/* Background dashed line */}
+        <path
+          d="M60 0 Q60 120 30 200 Q0 280 60 360 Q120 440 90 520 Q60 600 60 680 Q60 760 30 840 Q0 920 60 1000 Q120 1080 90 1160 Q60 1240 60 1320 Q60 1400 30 1480 Q0 1560 60 1640 Q120 1720 90 1800 Q60 1880 60 2000"
+          stroke="#cbd5e1"
+          strokeWidth="2"
+          strokeDasharray="8 8"
+          fill="none"
+        />
+        {/* Animated progress line */}
+        <path
+          d="M60 0 Q60 120 30 200 Q0 280 60 360 Q120 440 90 520 Q60 600 60 680 Q60 760 30 840 Q0 920 60 1000 Q120 1080 90 1160 Q60 1240 60 1320 Q60 1400 30 1480 Q0 1560 60 1640 Q120 1720 90 1800 Q60 1880 60 2000"
+          stroke="url(#arrowGradient)"
+          strokeWidth="3"
+          fill="none"
+          strokeLinecap="round"
+          style={{
+            strokeDasharray: 2600,
+            strokeDashoffset: 2600 - (2600 * progress),
+            transition: "stroke-dashoffset 0.1s ease-out",
+          }}
+        />
+        {/* Gradient definition */}
+        <defs>
+          <linearGradient id="arrowGradient" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stopColor="#3B4CC0" />
+            <stop offset="33%" stopColor="#5B9BD5" />
+            <stop offset="66%" stopColor="#D4A843" />
+            <stop offset="100%" stopColor="#22C55E" />
+          </linearGradient>
+        </defs>
+      </svg>
+    </div>
+  );
+}
+
+/* ─── Step Card component ─── */
+function StepCard({
+  step,
+  index,
+  isActive,
+}: {
+  step: (typeof STEPS)[0];
+  index: number;
+  isActive: boolean;
+}) {
   const Icon = step.icon;
-
-  const mouseX = useMotionValue(0.5);
-  const mouseY = useMotionValue(0.5);
-
-  const springX = useSpring(mouseX, { stiffness: 150, damping: 20 });
-  const springY = useSpring(mouseY, { stiffness: 150, damping: 20 });
-  const springOpacity = useSpring(0, { stiffness: 150, damping: 20 });
-
-  const rotateX = useMotionTemplate`calc(-10deg * (${springY} - 0.5) * 2)`;
-  const rotateY = useMotionTemplate`calc(10deg * (${springX} - 0.5) * 2)`;
-
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (!ref.current) return;
-    const rect = ref.current.getBoundingClientRect();
-    const xPct = (e.clientX - rect.left) / rect.width;
-    const yPct = (e.clientY - rect.top) / rect.height;
-    mouseX.set(xPct);
-    mouseY.set(yPct);
-  };
-
-  const handleMouseEnter = () => springOpacity.set(1);
-  const handleMouseLeave = () => {
-    springOpacity.set(0);
-    mouseX.set(0.5);
-    mouseY.set(0.5);
-  };
+  const isEven = index % 2 === 0;
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 50, scale: 0.9 }}
-      whileInView={{ opacity: 1, y: 0, scale: 1 }}
-      viewport={{ once: true, margin: "-100px" }}
-      transition={{ duration: 0.6, delay: index * 0.2, ease: [0.25, 0.46, 0.45, 0.94] }}
-      style={{ perspective: 1200 }}
-      className="h-full"
+      className={`relative flex flex-col lg:flex-row items-center gap-8 lg:gap-16 w-full ${
+        isEven ? "lg:flex-row" : "lg:flex-row-reverse"
+      }`}
+      initial={{ opacity: 0, y: 80 }}
+      animate={isActive ? { opacity: 1, y: 0 } : { opacity: 0.15, y: 40 }}
+      transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
     >
-      <motion.div
-        ref={ref}
-        onMouseMove={handleMouseMove}
-        onMouseEnter={handleMouseEnter}
-        onMouseLeave={handleMouseLeave}
-        style={{
-          rotateX,
-          rotateY,
-          transformStyle: "preserve-3d",
-        }}
-        className="relative h-full flex flex-col bg-white border border-gray-100 shadow-[0_15px_40px_-15px_rgba(27,31,94,0.1)] group transition-shadow duration-300 hover:shadow-[0_30px_60px_-15px_rgba(27,31,94,0.2)]"
-      >
-        {/* Dynamic Glare */}
+      {/* ── Image side ── */}
+      <div className="flex-1 flex justify-center w-full max-w-md lg:max-w-lg">
         <motion.div
-          className="absolute inset-0 pointer-events-none z-30"
-          style={{
-            opacity: springOpacity,
-            background: useMotionTemplate`radial-gradient(
-              400px circle at calc(${springX} * 100%) calc(${springY} * 100%), 
-              rgba(255,255,255,0.4), 
-              transparent 40%
-            )`,
-          }}
-        />
-
-        {/* ── Header Strip ── */}
-        <div
-          className={`bg-gradient-to-r ${step.gradient} p-6 text-white relative overflow-hidden shrink-0 transition-transform duration-300`}
-          style={{ transform: "translateZ(30px)", transformStyle: "preserve-3d" }}
+          className={`relative rounded-3xl ${step.bg} border ${step.border} p-6 md:p-8 shadow-lg overflow-hidden w-full`}
+          animate={isActive ? { scale: 1, opacity: 1 } : { scale: 0.92, opacity: 0.4 }}
+          transition={{ duration: 0.6, ease: "easeOut" }}
         >
-          {/* Decorative shapes */}
-          <div className="absolute -top-10 -right-10 w-32 h-32 bg-white/10 rounded-full group-hover:scale-125 transition-transform duration-700" />
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-40 h-40 bg-white/5 rounded-full" />
-
-          <div className="relative z-10 flex items-center justify-between mb-2">
-            <div className="flex items-center gap-3">
-              <div
-                className="w-12 h-12 bg-white/20 backdrop-blur-sm shadow-inner flex items-center justify-center transform group-hover:rotate-[360deg] transition-transform duration-700"
-                style={{ transformStyle: "preserve-3d" }}
-              >
-                <Icon className="w-6 h-6" />
-              </div>
-              <div>
-                <p className="text-white/80 text-[10px] font-bold tracking-widest uppercase">
-                  Step {step.id} of 4
-                </p>
-                <h3 className="text-lg font-sora font-bold leading-tight">
-                  {step.title}
-                </h3>
-              </div>
-            </div>
-            <div className="text-4xl font-black text-white/10 hidden sm:block">
-              0{step.id}
-            </div>
+          <div className="relative w-full aspect-[4/3]">
+            <Image
+              src={step.image}
+              alt={step.title}
+              fill
+              className="object-contain"
+              sizes="(max-width: 768px) 90vw, 400px"
+            />
           </div>
-        </div>
+        </motion.div>
+      </div>
 
-        {/* ── Body ── */}
-        <div className="p-6 flex-1 flex flex-col bg-white" style={{ transform: "translateZ(20px)" }}>
-          <p className="text-sm font-semibold text-d2c-royal mb-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 absolute right-6 top-4">
-            {step.subtitle}
-          </p>
-          <p className="text-d2c-muted text-sm leading-relaxed mb-6 flex-1">
+      {/* ── Step number circle (center on desktop) ── */}
+      <div className="hidden lg:flex absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-20">
+        <motion.div
+          className="w-16 h-16 rounded-full flex items-center justify-center text-white font-sora font-extrabold text-xl shadow-xl border-4 border-white"
+          style={{ backgroundColor: step.color }}
+          animate={isActive ? { scale: 1.15 } : { scale: 0.85 }}
+          transition={{ duration: 0.5, type: "spring" }}
+        >
+          {step.id}
+        </motion.div>
+      </div>
+
+      {/* ── Content side ── */}
+      <div className="flex-1 w-full max-w-md lg:max-w-lg">
+        <motion.div
+          animate={isActive ? { opacity: 1, x: 0 } : { opacity: 0.3, x: isEven ? 30 : -30 }}
+          transition={{ duration: 0.6, delay: 0.15 }}
+        >
+          {/* Mobile step badge */}
+          <div className="flex lg:hidden items-center gap-3 mb-4">
+            <div
+              className="w-10 h-10 rounded-full flex items-center justify-center text-white font-bold text-sm"
+              style={{ backgroundColor: step.color }}
+            >
+              {step.id}
+            </div>
+            <span className={`text-xs font-bold uppercase tracking-[0.15em] px-3 py-1 rounded-full ${step.badge}`}>
+              Step {step.id}
+            </span>
+          </div>
+
+          {/* Desktop step badge */}
+          <div className="hidden lg:block">
+            <span className={`inline-flex text-xs font-bold uppercase tracking-[0.15em] px-3 py-1.5 rounded-full mb-4 ${step.badge}`}>
+              Step {step.id} — {step.subtitle}
+            </span>
+          </div>
+
+          <h3 className="text-2xl md:text-3xl lg:text-4xl font-sora font-bold text-d2c-navy mb-3 leading-tight">
+            {step.title}
+          </h3>
+          <p className="text-base md:text-lg text-neutral-600 leading-relaxed mb-4">
             {step.desc}
           </p>
 
-          <ul className="space-y-3 relative z-10">
-            {step.bullets.map((bullet, bi) => (
-              <li key={bi} className="flex items-start gap-2.5">
-                <span
-                  className="mt-0.5 w-5 h-5 flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform duration-300 delay-100"
-                  style={{ backgroundColor: `${step.color}15` }}
-                >
-                  <CheckCircle2 className="w-3.5 h-3.5" style={{ color: step.color }} />
-                </span>
-                <span className="text-xs md:text-sm text-d2c-text leading-snug font-medium">
-                  {bullet}
-                </span>
-              </li>
-            ))}
-          </ul>
-        </div>
-
-        {/* Fancy Accent Line */}
-        <div className="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-d2c-royal to-d2c-sky scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left" />
-      </motion.div>
+          {/* Decorative icon row */}
+          <div className="flex items-center gap-3 mt-2">
+            <div
+              className="w-10 h-10 rounded-xl flex items-center justify-center"
+              style={{ backgroundColor: `${step.color}18` }}
+            >
+              <Icon className="w-5 h-5" style={{ color: step.color }} />
+            </div>
+            <div className="h-px flex-1 max-w-[80px]" style={{ backgroundColor: `${step.color}30` }} />
+            <span className="text-xs font-semibold tracking-wide" style={{ color: step.color }}>
+              {step.subtitle}
+            </span>
+          </div>
+        </motion.div>
+      </div>
     </motion.div>
   );
 }
 
 /* ─── Main Section ─── */
 export function AdmissionProcedure3D() {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [activeStep, setActiveStep] = useState(0);
+
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start start", "end end"],
+  });
+
+  const [progressVal, setProgressVal] = useState(0);
+
+  useMotionValueEvent(scrollYProgress, "change", (latest) => {
+    setProgressVal(latest);
+    // Map scroll progress to step index (0-3)
+    const step = Math.min(3, Math.floor(latest * 5));
+    setActiveStep(step);
+  });
+
   return (
-    <section className="py-24 bg-d2c-white relative overflow-hidden" id="admission-procedure">
+    <section
+      ref={containerRef}
+      className="relative bg-neutral-50"
+      id="admission-procedure"
+      style={{ minHeight: "350vh" }}
+    >
       {/* Background decoration */}
       <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute top-20 right-10 w-96 h-96 bg-d2c-royal/5 rounded-full blur-3xl" />
-        <div className="absolute bottom-10 left-10 w-[500px] h-[500px] bg-d2c-sky/5 rounded-full blur-3xl" />
+        <div className="absolute inset-0 opacity-[0.02]" style={{ backgroundImage: "radial-gradient(#0f172a 1px, transparent 1px)", backgroundSize: "40px 40px" }} />
+        <div className="absolute top-[20%] right-0 w-[600px] h-[600px] bg-blue-100/40 rounded-full blur-[120px]" />
+        <div className="absolute top-[50%] left-0 w-[500px] h-[500px] bg-amber-100/30 rounded-full blur-[120px]" />
+        <div className="absolute top-[80%] right-[10%] w-[400px] h-[400px] bg-green-100/30 rounded-full blur-[100px]" />
       </div>
 
-      <div className="container mx-auto px-4 relative z-10">
-        <div className="text-center max-w-3xl mx-auto mb-16">
-          <motion.h2
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="text-3xl md:text-5xl font-sora font-bold text-d2c-navy mb-4"
-          >
-            How Direct Admission Works
-          </motion.h2>
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.1 }}
-            className="text-lg text-d2c-muted leading-relaxed"
-          >
-            A powerful, streamlined 4-step process designed to eliminate stress and guarantee your seat at a premium institution.
-          </motion.p>
-        </div>
+      {/* Sticky inner viewport */}
+      <div className="sticky top-0 h-screen flex flex-col items-center justify-center overflow-hidden">
+        <div className="content-boundary relative z-10 w-full">
+          {/* Section header */}
+          <div className="text-center mb-10 md:mb-14">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="inline-flex px-4 py-1.5 bg-blue-100 text-blue-700 font-bold text-xs mb-4 rounded-full border border-blue-200 uppercase tracking-[0.2em]"
+            >
+              Your Journey
+            </motion.div>
+            <motion.h2
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="text-3xl md:text-5xl font-sora font-bold text-d2c-navy mb-3"
+            >
+              How Direct Admission Works
+            </motion.h2>
+            <motion.p
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.1 }}
+              className="text-base md:text-lg text-neutral-500 leading-relaxed max-w-2xl mx-auto"
+            >
+              A streamlined 4‑step journey from consultation to confirmed admission
+            </motion.p>
+          </div>
 
-        {/* 2x2 Grid of Interactive Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 xl:gap-8 max-w-7xl mx-auto">
-          {STEPS.map((step, i) => (
-            <ProcedureCard key={step.id} step={step} index={i} />
-          ))}
+          {/* Steps area */}
+          <div className="relative max-w-5xl mx-auto">
+            {/* Current active step */}
+            {STEPS.map((step, i) => (
+              <div
+                key={step.id}
+                className={`transition-all duration-500 ${
+                  activeStep === i
+                    ? "opacity-100 pointer-events-auto"
+                    : "opacity-0 pointer-events-none absolute inset-0"
+                }`}
+              >
+                <StepCard step={step} index={i} isActive={activeStep === i} />
+              </div>
+            ))}
+          </div>
+
+          {/* Progress indicator */}
+          <div className="flex items-center justify-center gap-3 mt-10 md:mt-14">
+            {STEPS.map((step, i) => (
+              <div key={step.id} className="flex items-center gap-3">
+                <button
+                  className={`relative flex items-center gap-2 px-3 py-2 rounded-full transition-all duration-500 ${
+                    activeStep === i
+                      ? "bg-white shadow-lg scale-105"
+                      : activeStep > i
+                      ? "bg-white/80 shadow-sm"
+                      : "bg-transparent"
+                  }`}
+                >
+                  <div
+                    className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold transition-all duration-500 ${
+                      activeStep >= i ? "text-white" : "text-neutral-400 bg-neutral-200"
+                    }`}
+                    style={activeStep >= i ? { backgroundColor: step.color } : {}}
+                  >
+                    {activeStep > i ? "✓" : step.id}
+                  </div>
+                  {activeStep === i && (
+                    <motion.span
+                      initial={{ width: 0, opacity: 0 }}
+                      animate={{ width: "auto", opacity: 1 }}
+                      className="text-xs font-semibold text-d2c-navy whitespace-nowrap overflow-hidden pr-1"
+                    >
+                      {step.title}
+                    </motion.span>
+                  )}
+                </button>
+                {i < STEPS.length - 1 && (
+                  <div className="w-8 md:w-12 h-0.5 rounded-full overflow-hidden bg-neutral-200">
+                    <motion.div
+                      className="h-full rounded-full"
+                      style={{ backgroundColor: STEPS[i].color }}
+                      animate={{ width: activeStep > i ? "100%" : "0%" }}
+                      transition={{ duration: 0.5 }}
+                    />
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+
+          {/* Scroll hint (only visible at start) */}
+          <motion.div
+            className="flex flex-col items-center mt-6 text-neutral-400"
+            animate={{ opacity: activeStep === 0 ? 1 : 0 }}
+            transition={{ duration: 0.3 }}
+          >
+            <span className="text-xs font-medium mb-1">Scroll to explore</span>
+            <motion.div
+              animate={{ y: [0, 6, 0] }}
+              transition={{ duration: 1.5, repeat: Infinity }}
+              className="w-5 h-8 border-2 border-neutral-300 rounded-full flex items-start justify-center p-1"
+            >
+              <div className="w-1.5 h-1.5 bg-neutral-400 rounded-full" />
+            </motion.div>
+          </motion.div>
         </div>
       </div>
     </section>

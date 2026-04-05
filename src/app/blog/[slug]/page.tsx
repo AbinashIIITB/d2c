@@ -30,7 +30,7 @@ export default async function BlogPostPage({ params }: { params: Params }) {
 
   return (
     <div className="pt-24 pb-20 bg-d2c-white min-h-screen">
-      <div className="container mx-auto px-4 max-w-4xl">
+      <div className="content-boundary">
         <Link 
           href="/blog" 
           className="inline-flex items-center gap-2 text-sm font-semibold text-d2c-muted hover:text-d2c-royal transition-colors mb-12"
