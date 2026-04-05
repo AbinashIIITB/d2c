@@ -1,85 +1,97 @@
-"use client"
+"use client";
 
-import { useRef } from "react"
-import Link from "next/link"
-import { motion, useInView } from "framer-motion"
-import { PhoneCall, MessageCircle } from "lucide-react"
-import { AnimatedPatternBg } from "@/components/ui/AnimatedPatternBg"
+import { useRef } from "react";
+import Link from "next/link";
+import { motion, useInView } from "framer-motion";
+import { PhoneCall, MessageCircle, Sparkles, ArrowUpRight } from "lucide-react";
 
 export function CTASection() {
-  const ref = useRef(null)
-  const isInView = useInView(ref, { once: true, margin: "-100px" })
+  const ref = useRef(null);
+  const isInView = useInView(ref, { once: true, margin: "-100px" });
 
   return (
-    <section className="py-16 md:py-24 relative overflow-hidden bg-neutral-50" ref={ref}>
-      {/* Light subtle patterned background */}
-      <div className="absolute inset-0 opacity-[0.03]" style={{ backgroundImage: 'radial-gradient(#0f172a 1px, transparent 1px)', backgroundSize: '32px 32px' }} />
-      
-      {/* Light colorful glow accents */}
-      <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-blue-100/60 rounded-full blur-[100px] -translate-y-1/2 translate-x-1/3" />
-      <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-amber-100/50 rounded-full blur-[100px] translate-y-1/2 -translate-x-1/3" />
+    <section className="py-24 md:py-32 relative overflow-hidden bg-white" ref={ref}>
+      {/* Background Decor */}
+      <div className="absolute top-0 right-0 w-[800px] h-[800px] bg-d2c-sky/5 rounded-full blur-[120px] -translate-y-1/2 translate-x-1/4" />
+      <div className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-d2c-gold/5 rounded-full blur-[100px] translate-y-1/2 -translate-x-1/4" />
 
-      <div className="content-boundary relative z-10">
-        <div className="relative bg-white border border-neutral-200 rounded-3xl p-8 md:p-16 w-full max-w-4xl mx-auto shadow-xl flex flex-col items-center text-center overflow-hidden">
+      <div className="mx-auto max-w-[80%] relative z-10">
+        <div className="relative group overflow-hidden rounded-[3rem] bg-d2c-navy p-10 md:p-20 shadow-[0_32px_64px_-16px_rgba(2,6,23,0.4)] border border-white/5">
+          
+          {/* ── 3D GRAPHIC BACKGROUND ── */}
+          <div className="absolute top-0 right-0 w-full h-full pointer-events-none overflow-hidden opacity-40 group-hover:opacity-60 transition-opacity duration-1000">
+            <img 
+              src="/images/cta-3d-graphic.png" 
+              alt="Background mesh" 
+              className="absolute -right-20 -top-20 w-[120%] md:w-[80%] h-auto object-contain transform rotate-12 group-hover:scale-110 group-hover:rotate-6 transition-transform duration-1000"
+            />
+          </div>
 
-          <div className="flex-1 text-center relative z-10 w-full flex flex-col items-center">
+          <div className="relative z-10 max-w-2xl">
+            {/* Tagline */}
             <motion.div
-              initial={{ opacity: 0, y: 30 }}
+              initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.6 }}
-              className="inline-flex px-4 py-1.5 bg-amber-100 text-amber-700 font-bold text-xs mb-6 rounded-full border border-amber-200 uppercase tracking-[0.2em]"
+              className="inline-flex items-center gap-2 px-4 py-2 bg-d2c-sky/10 border border-d2c-sky/20 rounded-full text-d2c-sky text-xs font-bold mb-8 backdrop-blur-sm uppercase tracking-widest"
             >
-              Slots filling fast
+              <Sparkles className="w-4 h-4" />
+              Your Premium Path
             </motion.div>
             
             <motion.h2
-              initial={{ opacity: 0, y: 30 }}
+              initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: 0.1 }}
-              className="text-4xl md:text-5xl lg:text-5xl font-sora font-extrabold text-d2c-navy mb-6 leading-tight"
+              transition={{ delay: 0.1 }}
+              className="text-4xl md:text-6xl font-sora font-extrabold text-white mb-8 leading-tight"
             >
-              Ready to Secure <br className="hidden md:block" />
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-d2c-royal to-blue-500">Your Future?</span>
+              Ready to Secure Your <br />
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-d2c-gold via-[#FBD46D] to-d2c-gold">Future?</span>
             </motion.h2>
             
             <motion.p
-              initial={{ opacity: 0, y: 30 }}
+              initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: 0.2 }}
-              className="text-lg md:text-xl text-neutral-600 leading-relaxed max-w-xl mx-auto mb-10"
+              transition={{ delay: 0.2 }}
+              className="text-lg md:text-xl text-slate-300 mb-12 leading-relaxed max-w-xl font-inter"
             >
               Connect with our veteran counsellors today. Get a free, data-backed profile evaluation and find out which premium colleges perfectly match your academic ambitions.
             </motion.p>
 
             <motion.div
-              initial={{ opacity: 0, y: 30 }}
+              initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: 0.3 }}
-              className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-6 w-full"
+              transition={{ delay: 0.3 }}
+              className="flex flex-col sm:flex-row items-center gap-6"
             >
               <Link
-                href="https://wa.me/919876543210" // Replace with real WhatsApp
+                href="https://wa.me/919876543210"
                 target="_blank"
-                className="w-full sm:w-auto px-8 py-4 bg-d2c-success text-white font-bold text-lg hover:bg-green-600 transition-all duration-300 flex items-center justify-center gap-3 shadow-lg hover:shadow-xl hover:-translate-y-1 rounded-sm"
+                className="w-full sm:w-auto flex items-center justify-center gap-3 px-10 py-5 bg-d2c-gold hover:bg-[#FBD46D] text-d2c-navy font-bold text-lg rounded-2xl transition-all duration-300 shadow-[0_20px_40px_-10px_rgba(212,175,55,0.3)] hover:shadow-[0_25px_50px_-12px_rgba(212,175,55,0.5)] transform hover:-translate-y-1"
               >
-                <MessageCircle className="w-6 h-6 fill-current" />
+                <MessageCircle className="w-6 h-6 fill-d2c-navy" />
                 WhatsApp Now
+                <ArrowUpRight className="w-5 h-5" />
               </Link>
+
               <Link
                 href="/contact"
-                className="w-full sm:w-auto px-8 py-4 bg-white text-d2c-navy border-2 border-neutral-200 font-bold text-lg hover:border-d2c-royal hover:text-d2c-royal hover:bg-blue-50 transition-all duration-300 flex items-center justify-center gap-3 group rounded-sm hover:-translate-y-1 shadow-sm"
+                className="w-full sm:w-auto flex items-center justify-center gap-3 px-10 py-5 bg-white/5 hover:bg-white/10 text-white font-semibold text-lg rounded-2xl border border-white/10 backdrop-blur-md transition-all duration-300 hover:-translate-y-1"
               >
-                <PhoneCall className="w-5 h-5 group-hover:text-d2c-royal transition-colors" />
+                <PhoneCall className="w-5 h-5" />
                 Request Callback
               </Link>
             </motion.div>
           </div>
+
+          {/* Additional Decorative Glows */}
+          <div className="absolute -bottom-24 -left-24 w-64 h-64 bg-d2c-sky/10 rounded-full blur-[100px]" />
+          <div className="absolute -top-24 -right-24 w-96 h-96 bg-d2c-gold/5 rounded-full blur-[120px]" />
         </div>
       </div>
     </section>
-  )
+  );
 }
