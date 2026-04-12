@@ -177,6 +177,7 @@ export interface MedicalCollege {
     scholarships?: { title: string; items: { label: string; value: string }[] }[];
     compare?: { parameter: string; thisCollege: string; competitor1: string; competitor2?: string }[];
     faqs: { question: string; answer: string }[];
+    galleryImages?: { url: string; alt: string }[];
     whyChooseAkashTalks: string[];
 }
 
