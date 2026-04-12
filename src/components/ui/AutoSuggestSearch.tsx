@@ -4,7 +4,7 @@ import { useState, useRef, useEffect } from "react"
 import { Search, Building2, BookOpen } from "lucide-react"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
-import collegesData from "@/data/colleges.json"
+import { colleges } from "@/lib/data"
 import examsData from "@/data/exams.json"
 
 type SearchMode = "all" | "colleges" | "exams"
@@ -61,11 +61,11 @@ export function AutoSuggestSearch({
   const allItems: SearchItem[] = []
   
   if (mode === "all" || mode === "colleges") {
-    collegesData.forEach(c => allItems.push({
+    colleges.forEach(c => allItems.push({
       id: `c_${c.id}`,
       title: c.name,
       subtitle: c.location,
-      url: `/colleges/${c.link.split("/").pop()}`, // Safe check since some links might be absolute/relative
+      url: `/colleges/${c.slug}`,
       icon: "college",
       imageUrl: c.imageUrl
     }))
@@ -83,12 +83,24 @@ export function AutoSuggestSearch({
   }
 
   // Filter items based on query
-  const filteredItems = query.trim() === "" 
-    ? allItems.slice(0, 6) 
+  const filteredColleges = query.trim() === "" 
+    ? allItems.filter(i => i.icon === "college").slice(0, 4) 
     : allItems.filter(item => 
-        item.title.toLowerCase().includes(query.toLowerCase()) || 
-        item.subtitle.toLowerCase().includes(query.toLowerCase())
-      ).slice(0, 6) // Limit to top 6 results
+        item.icon === "college" &&
+        (item.title.toLowerCase().includes(query.toLowerCase()) || 
+        item.subtitle.toLowerCase().includes(query.toLowerCase()))
+      ).slice(0, 4);
+
+  const filteredExams = query.trim() === "" 
+    ? allItems.filter(i => i.icon === "exam").slice(0, 4) 
+    : allItems.filter(item => 
+        item.icon === "exam" &&
+        (item.title.toLowerCase().includes(query.toLowerCase()) || 
+        item.subtitle.toLowerCase().includes(query.toLowerCase()))
+      ).slice(0, 4);
+
+  const filteredItems = [...filteredColleges, ...filteredExams];
+  const showDropdown = isOpen && filteredItems.length > 0;
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (!isOpen || filteredItems.length === 0) return
@@ -111,58 +123,118 @@ export function AutoSuggestSearch({
 
   return (
     <div className={`relative ${className}`} ref={containerRef}>
-      <input 
-        type="text"
-        placeholder={placeholder}
-        autoFocus={autoFocus}
-        className="w-full pl-12 pr-4 py-3 border border-gray-200 focus:border-d2c-royal focus:ring-2 focus:ring-d2c-royal/20 outline-none bg-white shadow-sm transition-all rounded-lg"
-        value={query}
-        onChange={(e) => {
-          setQuery(e.target.value)
-          setIsOpen(true)
-          setActiveIndex(-1)
-        }}
-        onFocus={() => setIsOpen(true)}
-        onKeyDown={handleKeyDown}
-      />
-      <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-d2c-muted w-5 h-5 pointer-events-none" />
+      <div 
+        className={`relative z-10 bg-white border border-gray-200 transition-all ${
+          showDropdown 
+            ? 'rounded-t-xl border-b-transparent shadow-[0_4px_20px_rgb(0,0,0,0.08)]' 
+            : 'rounded-xl focus-within:ring-2 focus-within:ring-d2c-royal/20 focus-within:border-d2c-royal shadow-sm'
+        }`}
+      >
+        <input 
+          type="text"
+          placeholder={placeholder}
+          autoFocus={autoFocus}
+          className="w-full pl-12 pr-4 py-3 bg-transparent outline-none rounded-xl"
+          value={query}
+          onChange={(e) => {
+            setQuery(e.target.value)
+            setIsOpen(true)
+            setActiveIndex(-1)
+          }}
+          onFocus={() => setIsOpen(true)}
+          onKeyDown={handleKeyDown}
+        />
+        <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-d2c-muted w-5 h-5 pointer-events-none" />
+      </div>
 
       {/* Dropdown */}
-      {isOpen && filteredItems.length > 0 && (
-        <div className="absolute top-full left-0 right-0 mt-2 bg-white rounded-xl shadow-xl border border-gray-100 overflow-hidden z-50">
-          <ul className="max-h-80 overflow-y-auto py-2">
-            {filteredItems.map((item, index) => (
-              <li key={item.id}>
-                <Link 
-                  href={item.url}
-                  onClick={() => setIsOpen(false)}
-                  className={`flex items-center gap-3 px-4 py-3 transition-colors ${
-                    index === activeIndex ? "bg-d2c-ice" : "hover:bg-gray-50"
-                  }`}
-                  onMouseEnter={() => setActiveIndex(index)}
-                >
-                  <div className="w-10 h-10 rounded-md bg-white border border-gray-100 flex items-center justify-center shrink-0 overflow-hidden shadow-sm p-1">
-                    {item.imageUrl ? (
-                      <img src={item.imageUrl} alt={item.title} className="max-w-full max-h-full object-contain" />
-                    ) : item.icon === "college" ? (
-                      <Building2 className="w-5 h-5 text-d2c-muted" />
-                    ) : (
-                      <BookOpen className="w-5 h-5 text-d2c-muted" />
-                    )}
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <div className="font-semibold text-d2c-navy truncate text-sm">
-                      {item.title}
-                    </div>
-                    <div className="text-xs text-d2c-muted truncate mt-0.5 flex items-center gap-1">
-                      {item.icon === "college" ? <Building2 className="w-3 h-3" /> : <BookOpen className="w-3 h-3" />}
-                      {item.subtitle}
-                    </div>
-                  </div>
-                </Link>
-              </li>
-            ))}
-          </ul>
+      {showDropdown && (
+        <div className="absolute top-full left-0 right-0 bg-white rounded-b-xl shadow-[0_12px_30px_rgb(0,0,0,0.12)] border border-t-0 border-gray-200 overflow-hidden z-50">
+          <div className="max-h-[28rem] overflow-y-auto">
+            {filteredColleges.length > 0 && (
+              <div className="py-2">
+                <div className="px-4 py-1 text-xs font-bold text-gray-400 uppercase tracking-wider">
+                  Colleges
+                </div>
+                <ul>
+                  {filteredColleges.map((item) => {
+                    const index = filteredItems.indexOf(item);
+                    return (
+                      <li key={item.id}>
+                        <Link 
+                          href={item.url}
+                          onClick={() => setIsOpen(false)}
+                          className={`flex items-center gap-3 px-4 py-2.5 transition-colors ${
+                            index === activeIndex ? "bg-d2c-ice" : "hover:bg-gray-50"
+                          }`}
+                          onMouseEnter={() => setActiveIndex(index)}
+                        >
+                          <div className="w-10 h-10 rounded-md bg-white border border-gray-100 flex items-center justify-center shrink-0 overflow-hidden shadow-sm p-1">
+                            {item.imageUrl ? (
+                              <img src={item.imageUrl} alt={item.title} className="max-w-full max-h-full object-contain" />
+                            ) : (
+                              <Building2 className="w-5 h-5 text-d2c-muted" />
+                            )}
+                          </div>
+                          <div className="flex-1 min-w-0">
+                            <div className="font-semibold text-d2c-navy truncate text-sm">
+                              {item.title}
+                            </div>
+                            <div className="text-xs text-d2c-muted truncate flex items-center gap-1">
+                              <Building2 className="w-3 h-3" />
+                              {item.subtitle}
+                            </div>
+                          </div>
+                        </Link>
+                      </li>
+                    );
+                  })}
+                </ul>
+              </div>
+            )}
+
+            {filteredExams.length > 0 && (
+              <div className={`py-2 ${filteredColleges.length > 0 ? "border-t border-gray-100 bg-gray-50/50" : ""}`}>
+                <div className="px-4 py-1 text-xs font-bold text-gray-400 uppercase tracking-wider">
+                  Exams
+                </div>
+                <ul>
+                  {filteredExams.map((item) => {
+                    const index = filteredItems.indexOf(item);
+                    return (
+                      <li key={item.id}>
+                        <Link 
+                          href={item.url}
+                          onClick={() => setIsOpen(false)}
+                          className={`flex items-center gap-3 px-4 py-2.5 transition-colors ${
+                            index === activeIndex ? "bg-d2c-ice" : "hover:bg-gray-50"
+                          }`}
+                          onMouseEnter={() => setActiveIndex(index)}
+                        >
+                          <div className="w-10 h-10 rounded-md bg-white border border-gray-100 flex items-center justify-center shrink-0 overflow-hidden shadow-sm p-1">
+                            {item.imageUrl ? (
+                              <img src={item.imageUrl} alt={item.title} className="max-w-full max-h-full object-contain" />
+                            ) : (
+                              <BookOpen className="w-5 h-5 text-d2c-muted" />
+                            )}
+                          </div>
+                          <div className="flex-1 min-w-0">
+                            <div className="font-semibold text-d2c-navy truncate text-sm">
+                              {item.title}
+                            </div>
+                            <div className="text-xs text-d2c-muted truncate flex items-center gap-1">
+                              <BookOpen className="w-3 h-3" />
+                              {item.subtitle}
+                            </div>
+                          </div>
+                        </Link>
+                      </li>
+                    );
+                  })}
+                </ul>
+              </div>
+            )}
+          </div>
         </div>
       )}
     </div>

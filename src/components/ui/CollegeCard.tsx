@@ -3,19 +3,12 @@
 import Link from "next/link";
 import { MapPin, ArrowUpRight, Star, ChevronRight } from "lucide-react";
 
-export interface College {
-  id: number;
-  name: string;
-  location: string;
-  description: string;
-  imageUrl: string;
-  link: string;
-}
+import { College } from "@/lib/data";
 
 export function CollegeCard({ college }: { college: College }) {
   return (
     <Link
-      href={college.link}
+      href={`/colleges/${college.slug}`}
       className="group relative flex flex-col bg-white border border-slate-100 overflow-hidden h-full shadow-sm hover:shadow-2xl transition-all duration-500 rounded-2xl transform hover:-translate-y-2"
     >
       {/* ── IMAGE SECTION (FIXED 16:9) ── */}

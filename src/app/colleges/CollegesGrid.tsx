@@ -6,15 +6,7 @@ import { MapPin, Search, Star, Building2, ArrowUpRight, ChevronRight, Filter } f
 import { motion, AnimatePresence } from "framer-motion"
 import { CollegeCard } from "@/components/ui/CollegeCard"
 import { AutoSuggestSearch } from "@/components/ui/AutoSuggestSearch"
-
-type College = {
-  id: number
-  name: string
-  location: string
-  description: string
-  imageUrl: string
-  link: string
-}
+import { College } from "@/lib/data"
 
 export function CollegesGrid({ initialColleges }: { initialColleges: College[] }) {
   const [search, setSearch] = useState("")
@@ -39,7 +31,7 @@ export function CollegesGrid({ initialColleges }: { initialColleges: College[] }
     // 2. Department filter
     let matchesDept = true
     if (selectedDept !== "All Colleges") {
-      const combinedText = (col.name + " " + col.description).toLowerCase()
+      const combinedText = (col.name + " " + (col.about || col.description || "")).toLowerCase()
       if (selectedDept === "Engineering") {
         matchesDept = combinedText.includes("engineering") || combinedText.includes("technology")
       } else if (selectedDept === "Medical") {

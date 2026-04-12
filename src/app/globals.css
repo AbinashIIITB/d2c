@@ -24,6 +24,13 @@
 
 /* Base styles are handled in layout.tsx via body classes */
 
+/* Prevent horizontal overflow on mobile from animated/absolute elements */
+@layer base {
+  html, body {
+    overflow-x: clip;
+  }
+}
+
 @layer utilities {
   .text-balance {
     text-wrap: balance;
@@ -60,9 +67,16 @@
   max-width: 1200px;
   margin-left: auto;
   margin-right: auto;
-  padding-left: 24px;
-  padding-right: 24px;
+  padding-left: 16px;
+  padding-right: 16px;
   position: relative;
+}
+
+@media (min-width: 640px) {
+  .content-boundary {
+    padding-left: 24px;
+    padding-right: 24px;
+  }
 }
 
 /* Subtle vertical guide lines — visible on desktop */

@@ -1,6 +1,7 @@
 "use client"
 
 import { useRef, useState } from "react"
+import Link from "next/link"
 import { motion, useInView, AnimatePresence } from "framer-motion"
 import { Quote, Star, ChevronDown, GraduationCap } from "lucide-react"
 import testimonialsData from "@/data/testimonials.json"
@@ -48,7 +49,7 @@ export function TestimonialsSection() {
             initial={{ opacity: 0, y: 20 }}
             animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
             transition={{ duration: 0.5, delay: 0.1 }}
-            className="text-4xl md:text-5xl lg:text-6xl font-sora font-bold text-d2c-navy leading-[1.1] mb-6"
+            className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-sora font-bold text-d2c-navy leading-[1.1] mb-6"
           >
             Students trust Direct2Campus for{" "}
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-d2c-royal to-d2c-sky">
@@ -91,10 +92,20 @@ export function TestimonialsSection() {
                   {FEATURED.name} secured admission through Direct2Campus.
                 </p>
               </div>
-              <span className="hidden md:inline-flex items-center gap-1 text-d2c-royal text-sm font-semibold hover:underline cursor-pointer shrink-0">
-                Read the story
-                <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M6 3l5 5-5 5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
-              </span>
+              {FEATURED.slug ? (
+                <Link
+                  href={`/stories/${FEATURED.slug}`}
+                  className="hidden md:inline-flex items-center gap-1 text-d2c-royal text-sm font-semibold hover:underline shrink-0"
+                >
+                  Read the story
+                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M6 3l5 5-5 5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                </Link>
+              ) : (
+                <span className="hidden md:inline-flex items-center gap-1 text-d2c-royal text-sm font-semibold shrink-0 opacity-50 cursor-default">
+                  Read the story
+                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M6 3l5 5-5 5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                </span>
+              )}
             </div>
 
             {/* Hero image area */}

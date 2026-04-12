@@ -4,17 +4,17 @@ import { useRef } from "react"
 import Link from "next/link"
 import { motion, useInView } from "framer-motion"
 import { MapPin, ChevronRight, Star, ArrowUpRight } from "lucide-react"
-import collegesData from "@/data/colleges.json"
+import { colleges } from "@/lib/data"
 import { CollegeCard } from "@/components/ui/CollegeCard"
 
 export function FeaturedColleges() {
   const ref = useRef(null)
   const isInView = useInView(ref, { once: true, margin: "-100px" })
 
-  const featuredColleges = collegesData.slice(0, 6)
+  const featuredColleges = colleges.slice(0, 6)
 
   return (
-    <section className="py-16 md:py-24 bg-d2c-white" ref={ref}>
+    <section className="py-16 lg:pb-24 lg:pt-0 bg-d2c-white" ref={ref}>
       <div className="content-boundary">
         <div className="flex flex-col md:flex-row justify-between items-end mb-14 gap-6">
           <div className="max-w-2xl">

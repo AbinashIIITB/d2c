@@ -1,12 +1,12 @@
 import Link from "next/link"
-import { ShieldCheck } from "lucide-react"
+
 import { AnimatedPatternBg } from "@/components/ui/AnimatedPatternBg"
 
 export function Footer() {
   return (
-    <footer className="bg-d2c-navy text-white pt-24 pb-24 md:pb-12 border-t-4 border-d2c-royal relative overflow-hidden">
+    <footer className="bg-d2c-navy text-white pt-16 md:pt-24 pb-28 md:pb-12 border-t-4 border-d2c-royal relative overflow-hidden">
       <div className="content-boundary relative z-10">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-x-12 gap-y-16 mb-20">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-x-8 lg:gap-x-12 gap-y-12 md:gap-y-16 mb-14 md:mb-20">
           
           {/* Brand Info */}
           <div className="flex flex-col gap-6 lg:col-span-1">
@@ -69,11 +69,11 @@ export function Footer() {
             <ul className="flex flex-col gap-5 text-d2c-ice/80 text-sm">
               <li className="flex flex-col gap-1">
                 <span className="font-bold text-white text-xs uppercase tracking-wider text-d2c-sky">Address</span>
-                <span className="leading-relaxed">Sector 5, Salt Lake City,<br />Kolkata, West Bengal 700091</span>
+                <span className="leading-relaxed">GN-34/1, Aurora Water Front, Unit 21,<br />11th Floor, Sector V, Salt Lake,<br />Kolkata - 700091</span>
               </li>
               <li className="flex flex-col gap-1">
                 <span className="font-bold text-white text-xs uppercase tracking-wider text-d2c-sky">Phone</span>
-                <a href="tel:+919876543210" className="hover:text-white font-medium transition-colors text-lg">+91 98765 43210</a>
+                <a href="tel:+916200325137" className="hover:text-white font-medium transition-colors text-lg">+91 62003 25137</a>
               </li>
               <li className="flex flex-col gap-1">
                 <span className="font-bold text-white text-xs uppercase tracking-wider text-d2c-sky">Email</span>
@@ -105,15 +105,6 @@ export function Footer() {
           <div className="flex flex-wrap items-center justify-center gap-6">
             <Link href="/privacy" className="hover:text-white transition-colors">Privacy Policy</Link>
             <Link href="/terms" className="hover:text-white transition-colors">Terms of Service</Link>
-            
-            {/* Admin Dashboard Entry Point */}
-            <Link 
-              href="/admin/login" 
-              className="flex items-center gap-2 text-white/50 hover:text-white transition-colors ml-2 bg-white/5 hover:bg-white/10 px-4 py-2 rounded-full border border-white/5"
-            >
-              <ShieldCheck className="w-4 h-4" />
-              <span className="font-medium text-xs tracking-wider uppercase">Admin Portal</span>
-            </Link>
           </div>
         </div>
       </div>

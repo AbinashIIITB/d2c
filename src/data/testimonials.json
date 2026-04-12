@@ -2,9 +2,30 @@
     {
         "id": 1,
         "name": "Priya Sharma",
+        "slug": "priya-sharma-manipal-btech",
         "role": "B.Tech Student, Manipal",
-        "message": "Akash Talks guided me perfectly through the counseling process. I got my dream branch at Manipal without any hassle!",
-        "avatarUrl": "/images/testimonials/girl1.webp"
+        "message": "Direct2Campus guided me perfectly through the counseling process. I got my dream branch at Manipal without any hassle!",
+        "avatarUrl": "/images/testimonials/girl1.webp",
+        "fullStory": {
+            "headline": "How I Finally Got Into Manipal After Almost Giving Up",
+            "college": "Manipal Institute of Technology",
+            "branch": "Computer Science & Engineering",
+            "year": "2025",
+            "examScore": "MET Rank 4,832",
+            "body": [
+                "Okay so I'm going to be really honest here. By March 2025, I was literally crying every other night because nothing was working out. My JEE score was... let's just say it wasn't great. Like really not great. I got 78 percentile which basically meant no NITs for me. My parents were disappointed, my relatives kept asking \"kitna aaya beta?\" at every family gathering, and I just wanted to disappear.",
+                "I had written MET also but I didn't really think much about Manipal initially because my dad kept saying \"private college mein itna paisa kaun deta hai\". But my MET rank came out decent — 4,832. I knew Manipal was good but I had no clue how the counselling actually works. Like which round to pick, what preference order to give, whether to go for MIT Manipal or the Jaipur/Bangalore campus... it was so confusing.",
+                "One of my school seniors who got into VIT told me about Direct2Campus. Honestly I was skeptical at first because there are so many of these \"admission consultants\" who just take money and don't do anything. But my mom said let's at least talk to them once.",
+                "So I called them and this counselor — I think his name was Akash bhaiya — actually spent like 40 minutes with me on the first call itself. He didn't just give generic advice. He actually asked me about my rank, what branches I'm interested in, what my budget is, and then he was like \"Priya, with 4832 rank, you have a very solid chance at CSE in MIT Manipal in Round 2 or 3. Don't panic.\" That was the first time someone actually told me clearly what my chances were instead of giving vague answers.",
+                "The biggest help was during preference filling. I was going to put ECE first because someone on Quora said CSE cutoff is too high for my rank. But Akash bhaiya showed me last 3 years data and said my rank is right at the boundary and there's a good chance in Round 2 sliding. He told me to keep CSE first, ECE second, and IT third. My dad was not convinced but we went with it anyway.",
+                "Round 1 results came and I got ECE. I was happy but also a little sad because I really wanted CSE. Akash bhaiya told me to hold the seat but don't pay the full fee yet — just the booking amount. He said \"chances of upgrading in Round 2 are there, just wait.\"",
+                "Round 2 results came at like 11pm and I refreshed the portal probably 200 times. And there it was — CSE, MIT Manipal. I literally screamed so loud my neighbors came to check if everything was okay lol. I called Akash bhaiya immediately and he was like \"I told you na!\" with the most chill voice ever.",
+                "The documentation part was also a headache honestly. So many documents, medical certificates, migration certificate etc. The team helped me make a checklist and even told me which documents need to be attested and from where. Small things but it saves so much running around last minute.",
+                "I've been at Manipal for about 6 months now and I still can't believe I almost didn't apply here. The campus is beautiful, the people are amazing, and CSE department is genuinely good. Sometimes I think about what would have happened if I had listened to that random Quora answer and put ECE first. Scary thought.",
+                "To anyone reading this who's in the same confused state I was in — just talk to someone who actually knows what they're doing. Not random people on the internet, not your neighbor uncle who's kid got into some college 5 years ago. Talk to people who deal with these admissions every year and know the actual data. That's what made the difference for me.",
+                "Thank you Direct2Campus for literally changing the direction of my life. Not even exaggerating."
+            ]
+        }
     },
     {
         "id": 2,
@@ -31,14 +52,14 @@
         "id": 5,
         "name": "Sunita Patel",
         "role": "Parent",
-        "message": "As a parent, I was worried about my son's admission. The team at Akash Talks handled everything professionally.",
+        "message": "As a parent, I was worried about my son's admission. The team at Direct2Campus handled everything professionally.",
         "avatarUrl": "/images/testimonials/parent.webp"
     },
     {
         "id": 6,
         "name": "Arjun Mehta",
         "role": "ECE, IEM Kolkata",
-        "message": "From WBJEE counseling to final admission, Akash Talks was with me every step. Got ECE at IEM with their expert guidance!",
+        "message": "From WBJEE counseling to final admission, Direct2Campus was with me every step. Got ECE at IEM with their expert guidance!",
         "avatarUrl": "/images/testimonials/boy3.webp"
     }
 ]

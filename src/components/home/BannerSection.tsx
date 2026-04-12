@@ -62,7 +62,7 @@ export function BannerSection() {
   };
 
   return (
-    <section className="bg-d2c-white w-full py-8">
+    <section className="bg-d2c-white w-full pt-28 lg:pt-32 pb-8">
       <div className="content-boundary">
         {/* Top bar: navigation arrows on the left */}
         <div className="flex items-center gap-3 mb-4">
@@ -87,11 +87,10 @@ export function BannerSection() {
               <button
                 key={idx}
                 onClick={() => goToSlide(idx)}
-                className={`h-1.5 rounded-full transition-all duration-300 ${
-                  idx === currentIndex
+                className={`h-1.5 rounded-full transition-all duration-300 ${idx === currentIndex
                     ? "w-8 bg-d2c-royal"
                     : "w-3 bg-gray-300 hover:bg-gray-400"
-                }`}
+                  }`}
                 aria-label={`Go to slide ${idx + 1}`}
               />
             ))}

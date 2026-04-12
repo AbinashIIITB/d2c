@@ -97,7 +97,7 @@ export function StatesCoverage() {
             initial={{ opacity: 0, y: 20 }}
             animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
             transition={{ duration: 0.6, delay: 0.1 }}
-            className="text-4xl md:text-6xl lg:text-7xl font-sora font-bold text-white text-center leading-[1.1] mb-16 md:mb-20"
+            className="text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-sora font-bold text-white text-center leading-[1.1] mb-12 md:mb-20"
           >
             The backbone of{" "}
             <br className="hidden md:block" />
@@ -107,7 +107,7 @@ export function StatesCoverage() {
           </motion.h2>
 
           {/* ── BIG STAT COUNTERS — 4 columns ── */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-12 max-w-5xl mx-auto">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-12 max-w-5xl mx-auto">
             {HERO_STATS.map((stat, idx) => (
               <motion.div
                 key={stat.label}

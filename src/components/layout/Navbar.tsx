@@ -81,7 +81,7 @@ export function Navbar() {
           </Link>
 
           {/* ── DESKTOP NAV ── */}
-          <nav className="hidden md:flex items-center gap-1 flex-1">
+          <nav className="hidden md:flex items-center justify-center gap-1 flex-1">
             {NAV_LINKS.map((link) => (
               <div
                 key={link.label}
@@ -145,7 +145,12 @@ export function Navbar() {
 
           {/* ── DESKTOP CTA ── */}
           <div className="hidden md:flex items-center gap-3">
-            <div className="relative flex items-center" ref={searchContainerRef}>
+            <div 
+              className="relative flex items-center" 
+              ref={searchContainerRef}
+              onMouseEnter={() => setSearchOpen(true)}
+              onMouseLeave={() => setSearchOpen(false)}
+            >
               <button 
                 onClick={() => setSearchOpen(!searchOpen)}
                 className={`p-2 rounded-full transition-colors flex items-center justify-center ${
@@ -165,9 +170,7 @@ export function Navbar() {
                     transition={{ duration: 0.18 }}
                     className="absolute top-full right-0 pt-3 z-[60] w-[340px]"
                   >
-                    <div className="bg-white rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.12)] border border-gray-100 p-2">
-                       <AutoSuggestSearch mode="all" placeholder="Search colleges, exams..." className="w-full" autoFocus={true} />
-                    </div>
+                    <AutoSuggestSearch mode="all" placeholder="Search colleges, exams..." className="w-full shadow-[0_8px_30px_rgb(0,0,0,0.12)] rounded-xl" autoFocus={true} />
                   </motion.div>
                 )}
               </AnimatePresence>

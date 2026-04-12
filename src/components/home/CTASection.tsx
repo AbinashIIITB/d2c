@@ -23,7 +23,7 @@ export function CTASection() {
             <img 
               src="/images/cta-3d-graphic.png" 
               alt="Background mesh" 
-              className="absolute -right-20 -top-20 w-[120%] md:w-[80%] h-auto object-contain transform rotate-12 group-hover:scale-110 group-hover:rotate-6 transition-transform duration-1000"
+              className="absolute inset-0 w-full h-full object-cover opacity-30 group-hover:scale-110 group-hover:rotate-3 transition-transform duration-1000"
             />
           </div>
 
@@ -68,11 +68,11 @@ export function CTASection() {
               className="flex flex-col sm:flex-row items-center gap-6"
             >
               <Link
-                href="https://wa.me/919876543210"
+                href="https://wa.me/916200325137"
                 target="_blank"
-                className="w-full sm:w-auto flex items-center justify-center gap-3 px-10 py-5 bg-d2c-gold hover:bg-[#FBD46D] text-d2c-navy font-bold text-lg rounded-2xl transition-all duration-300 shadow-[0_20px_40px_-10px_rgba(212,175,55,0.3)] hover:shadow-[0_25px_50px_-12px_rgba(212,175,55,0.5)] transform hover:-translate-y-1"
+                className="w-full sm:w-auto flex items-center justify-center gap-3 px-10 py-5 bg-[#25D366] hover:bg-[#20BD5A] text-white font-bold text-lg rounded-2xl transition-all duration-300 shadow-[0_20px_40px_-10px_rgba(37,211,102,0.3)] hover:shadow-[0_25px_50px_-12px_rgba(37,211,102,0.5)] transform hover:-translate-y-1"
               >
-                <MessageCircle className="w-6 h-6 fill-d2c-navy" />
+                <MessageCircle className="w-6 h-6 fill-white" />
                 WhatsApp Now
                 <ArrowUpRight className="w-5 h-5" />
               </Link>

@@ -3,7 +3,7 @@
 import { useRef, useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { motion, useScroll, useTransform, useMotionValueEvent } from "framer-motion";
+import { motion, AnimatePresence, useScroll, useMotionValueEvent } from "framer-motion";
 import {
   MessageCircle,
   Search,
@@ -65,82 +65,30 @@ export const STEPS = [
   },
 ];
 
-/* ─── Animated arrow path SVG ─── */
-function AnimatedArrowPath({ progress }: { progress: number }) {
-  return (
-    <div className="absolute left-1/2 top-0 bottom-0 w-0 -translate-x-1/2 hidden lg:block pointer-events-none z-0">
-      <svg
-        className="absolute top-0 left-1/2 -translate-x-1/2"
-        width="120"
-        height="100%"
-        viewBox="0 0 120 2000"
-        fill="none"
-        preserveAspectRatio="none"
-        style={{ height: "100%" }}
-      >
-        {/* Background dashed line */}
-        <path
-          d="M60 0 Q60 120 30 200 Q0 280 60 360 Q120 440 90 520 Q60 600 60 680 Q60 760 30 840 Q0 920 60 1000 Q120 1080 90 1160 Q60 1240 60 1320 Q60 1400 30 1480 Q0 1560 60 1640 Q120 1720 90 1800 Q60 1880 60 2000"
-          stroke="#cbd5e1"
-          strokeWidth="2"
-          strokeDasharray="8 8"
-          fill="none"
-        />
-        {/* Animated progress line */}
-        <path
-          d="M60 0 Q60 120 30 200 Q0 280 60 360 Q120 440 90 520 Q60 600 60 680 Q60 760 30 840 Q0 920 60 1000 Q120 1080 90 1160 Q60 1240 60 1320 Q60 1400 30 1480 Q0 1560 60 1640 Q120 1720 90 1800 Q60 1880 60 2000"
-          stroke="url(#arrowGradient)"
-          strokeWidth="3"
-          fill="none"
-          strokeLinecap="round"
-          style={{
-            strokeDasharray: 2600,
-            strokeDashoffset: 2600 - (2600 * progress),
-            transition: "stroke-dashoffset 0.1s ease-out",
-          }}
-        />
-        {/* Gradient definition */}
-        <defs>
-          <linearGradient id="arrowGradient" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stopColor="#3B4CC0" />
-            <stop offset="33%" stopColor="#5B9BD5" />
-            <stop offset="66%" stopColor="#D4A843" />
-            <stop offset="100%" stopColor="#22C55E" />
-          </linearGradient>
-        </defs>
-      </svg>
-    </div>
-  );
-}
-
-/* ─── Step Card component ─── */
-function StepCard({
+/* ─── Desktop Step Card ─── */
+function DesktopStepCard({
   step,
   index,
-  isActive,
 }: {
   step: (typeof STEPS)[0];
   index: number;
-  isActive: boolean;
 }) {
   const Icon = step.icon;
   const isEven = index % 2 === 0;
 
   return (
-    <motion.div
-      className={`relative flex flex-col lg:flex-row items-center gap-8 lg:gap-16 w-full ${
-        isEven ? "lg:flex-row" : "lg:flex-row-reverse"
-      }`}
-      initial={{ opacity: 0, y: 80 }}
-      animate={isActive ? { opacity: 1, y: 0 } : { opacity: 0.15, y: 40 }}
-      transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+    <div
+      className={`flex items-center gap-16 w-full ${isEven ? "flex-row" : "flex-row-reverse"
+        }`}
     >
       {/* ── Image side ── */}
-      <div className="flex-1 flex justify-center w-full max-w-md lg:max-w-lg">
+      <div className="flex-1 flex justify-center max-w-lg">
         <motion.div
-          className={`relative rounded-3xl ${step.bg} border ${step.border} p-6 md:p-8 shadow-lg overflow-hidden w-full`}
-          animate={isActive ? { scale: 1, opacity: 1 } : { scale: 0.92, opacity: 0.4 }}
-          transition={{ duration: 0.6, ease: "easeOut" }}
+          className={`relative rounded-3xl ${step.bg} border ${step.border} p-8 shadow-lg overflow-hidden w-full`}
+          initial={{ scale: 0.92, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          exit={{ scale: 0.92, opacity: 0 }}
+          transition={{ duration: 0.5, ease: "easeOut" }}
         >
           <div className="relative w-full aspect-[4/3]">
             <Image
@@ -148,54 +96,30 @@ function StepCard({
               alt={step.title}
               fill
               className="object-contain"
-              sizes="(max-width: 768px) 90vw, 400px"
+              sizes="400px"
             />
           </div>
         </motion.div>
       </div>
 
-      {/* ── Step number circle (center on desktop) ── */}
-      <div className="hidden lg:flex absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-20">
-        <motion.div
-          className="w-16 h-16 rounded-full flex items-center justify-center text-white font-sora font-extrabold text-xl shadow-xl border-4 border-white"
-          style={{ backgroundColor: step.color }}
-          animate={isActive ? { scale: 1.15 } : { scale: 0.85 }}
-          transition={{ duration: 0.5, type: "spring" }}
-        >
-          {step.id}
-        </motion.div>
-      </div>
-
       {/* ── Content side ── */}
-      <div className="flex-1 w-full max-w-md lg:max-w-lg">
+      <div className={`flex-1 max-w-lg ${isEven ? "pl-14" : "pr-14"}`}>
         <motion.div
-          animate={isActive ? { opacity: 1, x: 0 } : { opacity: 0.3, x: isEven ? 30 : -30 }}
-          transition={{ duration: 0.6, delay: 0.15 }}
+          initial={{ opacity: 0, x: isEven ? 30 : -30 }}
+          animate={{ opacity: 1, x: 0 }}
+          exit={{ opacity: 0, x: isEven ? -30 : 30 }}
+          transition={{ duration: 0.5, delay: 0.1 }}
         >
-          {/* Mobile step badge */}
-          <div className="flex lg:hidden items-center gap-3 mb-4">
-            <div
-              className="w-10 h-10 rounded-full flex items-center justify-center text-white font-bold text-sm"
-              style={{ backgroundColor: step.color }}
-            >
-              {step.id}
-            </div>
-            <span className={`text-xs font-bold uppercase tracking-[0.15em] px-3 py-1 rounded-full ${step.badge}`}>
-              Step {step.id}
-            </span>
-          </div>
+          <span
+            className={`inline-flex text-xs font-bold uppercase tracking-[0.15em] px-3 py-1.5 rounded-full mb-4 ${step.badge}`}
+          >
+            Step {step.id} — {step.subtitle}
+          </span>
 
-          {/* Desktop step badge */}
-          <div className="hidden lg:block">
-            <span className={`inline-flex text-xs font-bold uppercase tracking-[0.15em] px-3 py-1.5 rounded-full mb-4 ${step.badge}`}>
-              Step {step.id} — {step.subtitle}
-            </span>
-          </div>
-
-          <h3 className="text-2xl md:text-3xl lg:text-4xl font-sora font-bold text-d2c-navy mb-3 leading-tight">
+          <h3 className="text-4xl font-sora font-bold text-d2c-navy mb-3 leading-tight">
             {step.title}
           </h3>
-          <p className="text-base md:text-lg text-neutral-600 leading-relaxed mb-4">
+          <p className="text-lg text-neutral-600 leading-relaxed mb-4">
             {step.desc}
           </p>
 
@@ -207,56 +131,143 @@ function StepCard({
             >
               <Icon className="w-5 h-5" style={{ color: step.color }} />
             </div>
-            <div className="h-px flex-1 max-w-[80px]" style={{ backgroundColor: `${step.color}30` }} />
-            <span className="text-xs font-semibold tracking-wide" style={{ color: step.color }}>
+            <div
+              className="h-px flex-1 max-w-[80px]"
+              style={{ backgroundColor: `${step.color}30` }}
+            />
+            <span
+              className="text-xs font-semibold tracking-wide"
+              style={{ color: step.color }}
+            >
               {step.subtitle}
             </span>
           </div>
         </motion.div>
       </div>
-    </motion.div>
+    </div>
   );
 }
 
 /* ─── Main Section ─── */
 export function AdmissionProcedure3D() {
-  const containerRef = useRef<HTMLDivElement>(null);
   const [activeStep, setActiveStep] = useState(0);
+  const containerRef = useRef<HTMLDivElement>(null);
 
   const { scrollYProgress } = useScroll({
     target: containerRef,
     offset: ["start start", "end end"],
   });
 
-  const [progressVal, setProgressVal] = useState(0);
-
   useMotionValueEvent(scrollYProgress, "change", (latest) => {
-    setProgressVal(latest);
-    // Map scroll progress to step index (0-3)
-    const step = Math.min(3, Math.floor(latest * 5));
+    let step = Math.floor(latest * 4);
+    if (step >= 4) step = 3;
     setActiveStep(step);
   });
 
+  const activeStepData = STEPS[activeStep];
+
   return (
     <section
-      ref={containerRef}
       className="relative bg-neutral-50"
       id="admission-procedure"
-      style={{ minHeight: "350vh" }}
     >
       {/* Background decoration */}
       <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute inset-0 opacity-[0.02]" style={{ backgroundImage: "radial-gradient(#0f172a 1px, transparent 1px)", backgroundSize: "40px 40px" }} />
+        <div
+          className="absolute inset-0 opacity-[0.02]"
+          style={{
+            backgroundImage:
+              "radial-gradient(#0f172a 1px, transparent 1px)",
+            backgroundSize: "40px 40px",
+          }}
+        />
         <div className="absolute top-[20%] right-0 w-[600px] h-[600px] bg-blue-100/40 rounded-full blur-[120px]" />
         <div className="absolute top-[50%] left-0 w-[500px] h-[500px] bg-amber-100/30 rounded-full blur-[120px]" />
         <div className="absolute top-[80%] right-[10%] w-[400px] h-[400px] bg-green-100/30 rounded-full blur-[100px]" />
       </div>
 
-      {/* Sticky inner viewport */}
-      <div className="sticky top-0 h-screen flex flex-col items-center justify-center overflow-hidden">
-        <div className="content-boundary relative z-10 w-full">
+      {/* ── MOBILE: simple stacked layout ── */}
+      <div className="lg:hidden content-boundary py-16">
+        {/* Section header */}
+        <div className="text-center mb-10">
+          <div className="inline-flex px-4 py-1.5 bg-blue-100 text-blue-700 font-bold text-xs mb-4 rounded-full border border-blue-200 uppercase tracking-[0.2em]">
+            Your Journey
+          </div>
+          <h2 className="text-3xl font-sora font-bold text-d2c-navy mb-3">
+            How Direct Admission Works
+          </h2>
+          <p className="text-base text-neutral-500 leading-relaxed max-w-sm mx-auto">
+            A streamlined 4‑step journey from consultation to confirmed
+            admission
+          </p>
+        </div>
+
+        {/* Mobile steps: simple vertical stack */}
+        <div className="flex flex-col gap-8">
+          {STEPS.map((step, i) => {
+            const Icon = step.icon;
+            return (
+              <div key={step.id} className="relative">
+                {/* Connector line */}
+                {i < STEPS.length - 1 && (
+                  <div
+                    className="absolute left-5 top-full h-8 w-0.5"
+                    style={{ backgroundColor: `${step.color}30` }}
+                  />
+                )}
+                <div
+                  className={`rounded-2xl ${step.bg} border ${step.border} p-5`}
+                >
+                  <div className="flex items-center gap-3 mb-3">
+                    <div
+                      className="w-10 h-10 rounded-full flex items-center justify-center text-white font-bold text-sm shrink-0"
+                      style={{ backgroundColor: step.color }}
+                    >
+                      {step.id}
+                    </div>
+                    <div>
+                      <span
+                        className={`text-xs font-bold uppercase tracking-[0.12em] px-2 py-0.5 rounded-full ${step.badge}`}
+                      >
+                        Step {step.id}
+                      </span>
+                      <h3 className="text-xl font-sora font-bold text-d2c-navy mt-1">
+                        {step.title}
+                      </h3>
+                    </div>
+                  </div>
+                  <p className="text-base text-neutral-600 leading-relaxed mb-3">
+                    {step.desc}
+                  </p>
+                  <div className="flex items-center gap-2">
+                    <div
+                      className="w-8 h-8 rounded-lg flex items-center justify-center"
+                      style={{ backgroundColor: `${step.color}18` }}
+                    >
+                      <Icon
+                        className="w-4 h-4"
+                        style={{ color: step.color }}
+                      />
+                    </div>
+                    <span
+                      className="text-xs font-semibold"
+                      style={{ color: step.color }}
+                    >
+                      {step.subtitle}
+                    </span>
+                  </div>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+
+      {/* ── DESKTOP: scroll-driven animation ── */}
+      <div ref={containerRef} className="hidden lg:block relative h-[400vh] -mb-[30vh]">
+        <div className="sticky top-[10vh] w-full flex flex-col items-center pb-4 content-boundary">
           {/* Section header */}
-          <div className="text-center mb-10 md:mb-14">
+          <div className="text-center mb-14">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -269,7 +280,7 @@ export function AdmissionProcedure3D() {
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              className="text-3xl md:text-5xl font-sora font-bold text-d2c-navy mb-3"
+              className="text-5xl font-sora font-bold text-d2c-navy mb-3"
             >
               How Direct Admission Works
             </motion.h2>
@@ -278,47 +289,47 @@ export function AdmissionProcedure3D() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: 0.1 }}
-              className="text-base md:text-lg text-neutral-500 leading-relaxed max-w-2xl mx-auto"
+              className="text-lg text-neutral-500 leading-relaxed max-w-2xl mx-auto"
             >
-              A streamlined 4‑step journey from consultation to confirmed admission
+              A streamlined 4‑step journey from consultation to confirmed
+              admission
             </motion.p>
           </div>
 
-          {/* Steps area */}
-          <div className="relative max-w-5xl mx-auto">
-            {/* Current active step */}
-            {STEPS.map((step, i) => (
-              <div
-                key={step.id}
-                className={`transition-all duration-500 ${
-                  activeStep === i
-                    ? "opacity-100 pointer-events-auto"
-                    : "opacity-0 pointer-events-none absolute inset-0"
-                }`}
-              >
-                <StepCard step={step} index={i} isActive={activeStep === i} />
-              </div>
-            ))}
+          {/* Active step display */}
+          <div className="relative max-w-5xl mx-auto min-h-[380px]">
+            <AnimatePresence mode="wait">
+              <motion.div key={activeStep}>
+                <DesktopStepCard
+                  step={activeStepData}
+                  index={activeStep}
+                />
+              </motion.div>
+            </AnimatePresence>
           </div>
 
           {/* Progress indicator */}
-          <div className="flex items-center justify-center gap-3 mt-10 md:mt-14">
+          <div className="flex items-center justify-center gap-3 mt-14">
             {STEPS.map((step, i) => (
               <div key={step.id} className="flex items-center gap-3">
                 <button
-                  className={`relative flex items-center gap-2 px-3 py-2 rounded-full transition-all duration-500 ${
-                    activeStep === i
+                  className={`relative flex items-center gap-2 px-3 py-2 rounded-full transition-all duration-500 ${activeStep === i
                       ? "bg-white shadow-lg scale-105"
                       : activeStep > i
-                      ? "bg-white/80 shadow-sm"
-                      : "bg-transparent"
-                  }`}
+                        ? "bg-white/80 shadow-sm"
+                        : "bg-transparent"
+                    }`}
                 >
                   <div
-                    className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold transition-all duration-500 ${
-                      activeStep >= i ? "text-white" : "text-neutral-400 bg-neutral-200"
-                    }`}
-                    style={activeStep >= i ? { backgroundColor: step.color } : {}}
+                    className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold transition-all duration-500 ${activeStep >= i
+                        ? "text-white"
+                        : "text-neutral-400 bg-neutral-200"
+                      }`}
+                    style={
+                      activeStep >= i
+                        ? { backgroundColor: step.color }
+                        : {}
+                    }
                   >
                     {activeStep > i ? "✓" : step.id}
                   </div>
@@ -333,11 +344,13 @@ export function AdmissionProcedure3D() {
                   )}
                 </button>
                 {i < STEPS.length - 1 && (
-                  <div className="w-8 md:w-12 h-0.5 rounded-full overflow-hidden bg-neutral-200">
+                  <div className="w-12 h-0.5 rounded-full overflow-hidden bg-neutral-200">
                     <motion.div
                       className="h-full rounded-full"
                       style={{ backgroundColor: STEPS[i].color }}
-                      animate={{ width: activeStep > i ? "100%" : "0%" }}
+                      animate={{
+                        width: activeStep > i ? "100%" : "0%",
+                      }}
                       transition={{ duration: 0.5 }}
                     />
                   </div>
@@ -346,21 +359,20 @@ export function AdmissionProcedure3D() {
             ))}
           </div>
 
-          {/* Scroll hint (only visible at start) */}
-          <motion.div
-            className="flex flex-col items-center mt-6 text-neutral-400"
-            animate={{ opacity: activeStep === 0 ? 1 : 0 }}
-            transition={{ duration: 0.3 }}
-          >
-            <span className="text-xs font-medium mb-1">Scroll to explore</span>
-            <motion.div
-              animate={{ y: [0, 6, 0] }}
-              transition={{ duration: 1.5, repeat: Infinity }}
-              className="w-5 h-8 border-2 border-neutral-300 rounded-full flex items-start justify-center p-1"
-            >
-              <div className="w-1.5 h-1.5 bg-neutral-400 rounded-full" />
-            </motion.div>
-          </motion.div>
+          {/* Scroll progress bar */}
+          <div className="flex justify-center mt-6">
+            <div className="w-48 h-1.5 bg-neutral-200/60 rounded-full overflow-hidden relative">
+              <motion.div
+                className="h-full rounded-full"
+                style={{
+                  scaleX: scrollYProgress,
+                  transformOrigin: "left",
+                  backgroundImage:
+                    "linear-gradient(to right, #3B4CC0, #5B9BD5, #D4A843, #22C55E)",
+                }}
+              />
+            </div>
+          </div>
         </div>
       </div>
     </section>

@@ -2,14 +2,14 @@
 
 import Link from "next/link"
 import { usePathname } from "next/navigation"
-import { Home, PhoneCall, GraduationCap, Building2, User } from "lucide-react"
+import { Home, PhoneCall, GraduationCap, Building2, Info } from "lucide-react"
 
 const BOTTOM_LINKS = [
   { label: "Home", href: "/", icon: Home },
   { label: "Colleges", href: "/colleges", icon: Building2 },
-  { label: "Callback", href: "/contact", icon: PhoneCall, isCenter: true },
+  { label: "Consult Us", href: "/contact", icon: PhoneCall, isCenter: true },
   { label: "Exams", href: "/exams", icon: GraduationCap },
-  { label: "Admin", href: "/admin", icon: User },
+  { label: "About", href: "/about", icon: Info },
 ]
 
 export function MobileBottomNav() {

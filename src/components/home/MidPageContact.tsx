@@ -9,7 +9,7 @@ export function MidPageContact() {
   const ref = useRef(null)
   const isInView = useInView(ref, { once: true, margin: "-80px" })
 
-  const [formData, setFormData] = useState({ name: "", phone: "", course: "" })
+  const [formData, setFormData] = useState({ name: "", phone: "" })
   const [status, setStatus] = useState<"idle" | "submitting" | "success">("idle")
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -17,7 +17,7 @@ export function MidPageContact() {
     setStatus("submitting")
     setTimeout(() => {
       setStatus("success")
-      setFormData({ name: "", phone: "", course: "" })
+      setFormData({ name: "", phone: "" })
       setTimeout(() => setStatus("idle"), 5000)
     }, 1500)
   }
@@ -60,7 +60,7 @@ export function MidPageContact() {
             {/* Quick contact options */}
             <div className="flex flex-col sm:flex-row gap-4">
               <Link
-                href="https://wa.me/919876543210"
+                href="https://wa.me/916200325137"
                 target="_blank"
                 className="inline-flex items-center gap-2 px-5 py-3 bg-d2c-success text-white font-semibold text-sm rounded-xl hover:bg-d2c-success/90 transition-colors shadow-md"
               >
@@ -68,7 +68,7 @@ export function MidPageContact() {
                 WhatsApp Us
               </Link>
               <Link
-                href="tel:+919876543210"
+                href="tel:+916200325137"
                 className="inline-flex items-center gap-2 px-5 py-3 bg-white text-d2c-navy font-semibold text-sm rounded-xl border border-gray-200 hover:border-d2c-royal/30 hover:bg-d2c-ice transition-all shadow-sm"
               >
                 <Phone className="w-4 h-4" />
@@ -99,7 +99,7 @@ export function MidPageContact() {
                     className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-d2c-royal focus:ring-2 focus:ring-d2c-royal/20 outline-none transition-all text-d2c-text"
                     value={formData.name}
                     onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                    placeholder="John Doe"
+                    placeholder="Enter your full name"
                   />
                 </div>
 
@@ -113,27 +113,8 @@ export function MidPageContact() {
                     className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-d2c-royal focus:ring-2 focus:ring-d2c-royal/20 outline-none transition-all text-d2c-text"
                     value={formData.phone}
                     onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                    placeholder="+91 98765 43210"
+                    placeholder="+91"
                   />
-                </div>
-
-                <div>
-                  <label className="block text-sm font-semibold text-d2c-navy mb-2">
-                    Target Course
-                  </label>
-                  <select
-                    required
-                    className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-d2c-royal focus:ring-2 focus:ring-d2c-royal/20 outline-none transition-all bg-white text-d2c-text"
-                    value={formData.course}
-                    onChange={(e) => setFormData({ ...formData, course: e.target.value })}
-                  >
-                    <option value="">Select Course</option>
-                    <option value="BTech">B.Tech / B.E.</option>
-                    <option value="MBA">MBA / PGDM</option>
-                    <option value="Medical">MBBS / BDS</option>
-                    <option value="Law">Law (LLB / LLM)</option>
-                    <option value="Other">Other</option>
-                  </select>
                 </div>
 
                 <button

@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from "framer-motion"
 import { X, PhoneCall } from "lucide-react"
 
 export function CallbackModal({ isOpen, onClose }: { isOpen: boolean, onClose: () => void }) {
-  const [formData, setFormData] = useState({ name: "", phone: "", course: "Engineering" })
+  const [formData, setFormData] = useState({ name: "", phone: "" })
   const [status, setStatus] = useState<"IDLE" | "SUBMITTING" | "SUCCESS" | "ERROR">("IDLE")
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -90,21 +90,6 @@ export function CallbackModal({ isOpen, onClose }: { isOpen: boolean, onClose: (
                     placeholder="10-digit mobile number"
                   />
                 </div>
-                <div>
-                  <label className="block text-sm font-semibold text-d2c-navy mb-2">Interested Course</label>
-                  <select 
-                    value={formData.course}
-                    onChange={(e) => setFormData(prev => ({ ...prev, course: e.target.value }))}
-                    className="w-full px-4 py-3 border border-gray-200 focus:border-d2c-royal focus:ring-2 focus:ring-d2c-royal/20 outline-none transition-all bg-white"
-                  >
-                    <option value="Engineering">Engineering (B.Tech)</option>
-                    <option value="Medical">Medical (MBBS, BDS)</option>
-                    <option value="Management">Management (BBA, MBA)</option>
-                    <option value="Law">Law</option>
-                    <option value="Other">Other</option>
-                  </select>
-                </div>
-                
                 <button 
                   type="submit"
                   disabled={status === "SUBMITTING"}

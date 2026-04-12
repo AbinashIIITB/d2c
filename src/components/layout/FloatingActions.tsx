@@ -53,7 +53,7 @@ export function FloatingActions() {
         
         {/* WhatsApp Button */}
         <motion.a
-          href="https://wa.me/919876543210"
+          href="https://wa.me/916200325137"
           target="_blank"
           rel="noopener noreferrer"
           initial={{ x: 100 }}
@@ -94,7 +94,7 @@ export function FloatingActions() {
           <PhoneCall className="w-6 h-6 fill-current" />
         </button>
         <a
-          href="https://wa.me/919876543210"
+          href="https://wa.me/916200325137"
           target="_blank"
           rel="noopener noreferrer"
           className="w-14 h-14 bg-[#25D366] shadow-[0_4px_20px_rgba(37,211,102,0.4)] flex items-center justify-center text-white"
