@@ -272,12 +272,6 @@ export const colleges: College[] = [
             "Active alumni network spanning across global tech companies",
             "Industry partnerships for internships and live projects"
         ],
-        alumni: {
-            description: "A strong alumni network spanning across various industries globally.",
-            companies: ["Google", "Amazon", "Microsoft", "TCS", "Infosys", "Wipro", "Cognizant", "Accenture"],
-            achievements: ["Leading tech startups", "Senior engineers at MAANG", "Leaders in research"]
-        },
-        
         scholarships: [
             { title: "Merit Scholarships", items: [{ label: "WBJEE Rank < 1000", value: "50% Tuition Fee Waiver" }, { label: "WBJEE Rank < 3000", value: "25% Tuition Fee Waiver" }] },
             { title: "TFW Scheme", items: [{ label: "Tuition Fee Waiver", value: "Full Tuition Fee Waived" }] }
@@ -293,18 +287,6 @@ export const colleges: College[] = [
             { parameter: "Average Package", thisCollege: "₹6.5 LPA", competitor1: "₹5.8 LPA", competitor2: "₹5.0 LPA" },
             { parameter: "Total Fees (4 Years)", thisCollege: "₹8.5 Lakhs", competitor1: "₹9 Lakhs", competitor2: "₹7 Lakhs" }
         ],
-        alumni: {
-            description: "A strong alumni network spanning across various industries globally.",
-            companies: ["Google", "Amazon", "Microsoft", "TCS", "Infosys", "Wipro", "Cognizant", "Accenture"],
-            achievements: ["Leading tech startups", "Senior engineers at MAANG", "Leaders in research"]
-        },
-        
-        compare: [
-            { parameter: "NIRF Rank Band", thisCollege: "101-150", competitor1: "151-200", competitor2: "Not Ranked" },
-            { parameter: "Highest Package", thisCollege: "₹25 LPA", competitor1: "₹20 LPA", competitor2: "₹18 LPA" },
-            { parameter: "Average Package", thisCollege: "₹5.5 LPA", competitor1: "₹5.0 LPA", competitor2: "₹4.5 LPA" }
-        ],
-
         faqs: [
             { question: "Is IEM Kolkata a good college?", answer: "Yes, IEM is one of the top private engineering colleges in West Bengal with NAAC 'A' grade accreditation, strong placements (95%+), and a legacy of 35+ years." },
             { question: "What is the fee structure of IEM?", answer: "The total B.Tech fee at IEM is approximately ₹8.4 - 8.65 Lakhs for 4 years, excluding hostel and mess charges." },
@@ -368,27 +350,9 @@ export const colleges: College[] = [
         },
         keyDates: [{ event: "WBJEE Counseling", date: "July 2026" }, { event: "Classes Begin", date: "August 2026" }],
         whyChoose: ["Affordable fee structure", "Salt Lake location with IT hub proximity", "Part of established Techno India Group", "Good placement support"],
-        alumni: {
-            description: "A strong alumni network spanning across various industries globally.",
-            companies: ["Google", "Amazon", "Microsoft", "TCS", "Infosys", "Wipro", "Cognizant", "Accenture"],
-            achievements: ["Leading tech startups", "Senior engineers at MAANG", "Leaders in research"]
-        },
-        
         scholarships: [{ title: "Merit Scholarship", items: [{ label: "Top WBJEE Rankers", value: "Up to 30% fee waiver" }] }],
         alumni: { description: "Strong network of Techno India alumni working in IT companies across India.", companies: ["TCS", "Wipro", "Infosys", "Cognizant", "Capgemini"] },
         compare: [{ parameter: "Average Package", thisCollege: "₹4.5 LPA", competitor1: "₹6.5 LPA (IEM)", competitor2: "₹5.8 LPA (Heritage)" }, { parameter: "Total Fees (4 Years)", thisCollege: "₹4-5.2 Lakhs", competitor1: "₹8.5 Lakhs (IEM)", competitor2: "₹8-9 Lakhs (Heritage)" }],
-        alumni: {
-            description: "A strong alumni network spanning across various industries globally.",
-            companies: ["Google", "Amazon", "Microsoft", "TCS", "Infosys", "Wipro", "Cognizant", "Accenture"],
-            achievements: ["Leading tech startups", "Senior engineers at MAANG", "Leaders in research"]
-        },
-        
-        compare: [
-            { parameter: "NIRF Rank Band", thisCollege: "101-150", competitor1: "151-200", competitor2: "Not Ranked" },
-            { parameter: "Highest Package", thisCollege: "₹25 LPA", competitor1: "₹20 LPA", competitor2: "₹18 LPA" },
-            { parameter: "Average Package", thisCollege: "₹5.5 LPA", competitor1: "₹5.0 LPA", competitor2: "₹4.5 LPA" }
-        ],
-
         faqs: [
             { question: "Is Techno India Salt Lake good for CSE?", answer: "Yes, it offers quality CSE education at an affordable price with decent placements in IT companies." },
             { question: "What is the fee at Techno India?", answer: "The annual fee is around ₹1-1.3 Lakhs, making it one of the most affordable options." }, { question: "Does the college provide internship support?", answer: "Yes, the college has a dedicated placement cell that assists students in securing summer internships and industrial training." }, { question: "Is there a dedicated placement cell?", answer: "Yes, the Training and Placement Cell works year-round to bring top companies for recruitment and trains students in soft skills." }, { question: "Are there hostel facilities available?", answer: "Yes, separate hostel facilities are available for boys and girls with all necessary amenities and security." }
@@ -436,27 +400,9 @@ export const colleges: College[] = [
         admissions: { process: ["WBJEE counseling", "Document verification", "Fee payment"], eligibility: ["10+2 with PCM", "Valid WBJEE score"], documents: ["Marksheets", "WBJEE Rank Card"] },
         keyDates: [{ event: "WBJEE Counseling", date: "July 2026" }, { event: "Classes Begin", date: "August 2026" }],
         whyChoose: ["Affordable fees", "Industrial location", "Strong core placements", "Large campus"],
-        alumni: {
-            description: "A strong alumni network spanning across various industries globally.",
-            companies: ["Google", "Amazon", "Microsoft", "TCS", "Infosys", "Wipro", "Cognizant", "Accenture"],
-            achievements: ["Leading tech startups", "Senior engineers at MAANG", "Leaders in research"]
-        },
-        
         scholarships: [{ title: "Merit Scholarship", items: [{ label: "Merit Students", value: "Up to 25% fee waiver" }] }, { title: "TFW Scheme", items: [{ label: "Tuition Fee Waiver", value: "Full Tuition Fee Waived" }] }],
         alumni: { description: "HIT alumni work in major core sector companies across India.", companies: ["IOCL", "HPCL", "L&T", "Tata Steel", "ONGC", "NTPC"] },
         compare: [{ parameter: "Strength", thisCollege: "Core Engineering Focus", competitor1: "IT Focus (IEM)", competitor2: "IT Focus (Techno India)" }, { parameter: "Total Fees (4 Years)", thisCollege: "₹4-5 Lakhs", competitor1: "₹8.5 Lakhs (IEM)", competitor2: "₹4-5.2 Lakhs (Techno India)" }],
-        alumni: {
-            description: "A strong alumni network spanning across various industries globally.",
-            companies: ["Google", "Amazon", "Microsoft", "TCS", "Infosys", "Wipro", "Cognizant", "Accenture"],
-            achievements: ["Leading tech startups", "Senior engineers at MAANG", "Leaders in research"]
-        },
-        
-        compare: [
-            { parameter: "NIRF Rank Band", thisCollege: "101-150", competitor1: "151-200", competitor2: "Not Ranked" },
-            { parameter: "Highest Package", thisCollege: "₹25 LPA", competitor1: "₹20 LPA", competitor2: "₹18 LPA" },
-            { parameter: "Average Package", thisCollege: "₹5.5 LPA", competitor1: "₹5.0 LPA", competitor2: "₹4.5 LPA" }
-        ],
-
         faqs: [{ question: "Is HIT good for core branches?", answer: "Yes, HIT is excellent for Mechanical, Chemical, and Civil Engineering with good industrial exposure." }, { question: "Does the college provide internship support?", answer: "Yes, the college has a dedicated placement cell that assists students in securing summer internships and industrial training." }, { question: "Is there a dedicated placement cell?", answer: "Yes, the Training and Placement Cell works year-round to bring top companies for recruitment and trains students in soft skills." }, { question: "Are there hostel facilities available?", answer: "Yes, separate hostel facilities are available for boys and girls with all necessary amenities and security." }],
         galleryImages: [
             { url: "https://placehold.co/800x600/1e293b/fff?text=Campus+View", alt: "Campus View" },
@@ -490,27 +436,9 @@ export const colleges: College[] = [
         admissions: { process: ["WBJEE counseling"], eligibility: ["10+2 with PCM"], documents: ["Marksheets", "WBJEE Rank Card"] },
         keyDates: [{ event: "WBJEE Counseling", date: "July 2026" }],
         whyChoose: ["Semi-government status", "Affordable fees", "IT focused curriculum", "Central Kolkata location"],
-        alumni: {
-            description: "A strong alumni network spanning across various industries globally.",
-            companies: ["Google", "Amazon", "Microsoft", "TCS", "Infosys", "Wipro", "Cognizant", "Accenture"],
-            achievements: ["Leading tech startups", "Senior engineers at MAANG", "Leaders in research"]
-        },
-        
         scholarships: [{ title: "TFW Scheme", items: [{ label: "Tuition Fee Waiver", value: "Full Tuition Fee Waived for eligible students" }] }],
         alumni: { description: "RCCIIT alumni work in IT companies across India.", companies: ["TCS", "Wipro", "Infosys", "Cognizant", "Tech Mahindra"] },
         compare: [{ parameter: "Type", thisCollege: "Semi-Government", competitor1: "Private (IEM)", competitor2: "Private (Heritage)" }, { parameter: "Total Fees", thisCollege: "₹3.5-4.5 Lakhs", competitor1: "₹8.5 Lakhs", competitor2: "₹8-9 Lakhs" }],
-        alumni: {
-            description: "A strong alumni network spanning across various industries globally.",
-            companies: ["Google", "Amazon", "Microsoft", "TCS", "Infosys", "Wipro", "Cognizant", "Accenture"],
-            achievements: ["Leading tech startups", "Senior engineers at MAANG", "Leaders in research"]
-        },
-        
-        compare: [
-            { parameter: "NIRF Rank Band", thisCollege: "101-150", competitor1: "151-200", competitor2: "Not Ranked" },
-            { parameter: "Highest Package", thisCollege: "₹25 LPA", competitor1: "₹20 LPA", competitor2: "₹18 LPA" },
-            { parameter: "Average Package", thisCollege: "₹5.5 LPA", competitor1: "₹5.0 LPA", competitor2: "₹4.5 LPA" }
-        ],
-
         faqs: [{ question: "Is RCCIIT a government college?", answer: "It's a semi-government college with government-aided status, making it affordable." }, { question: "Does the college provide internship support?", answer: "Yes, the college has a dedicated placement cell that assists students in securing summer internships and industrial training." }, { question: "Is there a dedicated placement cell?", answer: "Yes, the Training and Placement Cell works year-round to bring top companies for recruitment and trains students in soft skills." }, { question: "Are there hostel facilities available?", answer: "Yes, separate hostel facilities are available for boys and girls with all necessary amenities and security." }],
         galleryImages: [
             { url: "https://placehold.co/800x600/1e293b/fff?text=Campus+View", alt: "Campus View" },
@@ -545,27 +473,9 @@ export const colleges: College[] = [
         admissions: { process: ["WBJEE counseling", "Document verification"], eligibility: ["10+2 with PCM"], documents: ["Marksheets", "WBJEE Rank Card"] },
         keyDates: [{ event: "WBJEE Counseling", date: "July 2026" }, { event: "Classes Begin", date: "August 2026" }],
         whyChoose: ["Autonomous curriculum", "Research opportunities", "Good placements", "Modern campus"],
-        alumni: {
-            description: "A strong alumni network spanning across various industries globally.",
-            companies: ["Google", "Amazon", "Microsoft", "TCS", "Infosys", "Wipro", "Cognizant", "Accenture"],
-            achievements: ["Leading tech startups", "Senior engineers at MAANG", "Leaders in research"]
-        },
-        
         scholarships: [{ title: "Merit Scholarship", items: [{ label: "Top WBJEE Rankers", value: "Up to 40% fee waiver" }] }, { title: "JIS Group Scholarship", items: [{ label: "Economically Weaker Sections", value: "Special fee concession" }] }],
         alumni: { description: "Strong alumni network across IT industry.", companies: ["TCS", "Wipro", "Cognizant", "Capgemini", "Infosys"] },
         compare: [{ parameter: "Status", thisCollege: "Autonomous", competitor1: "Non-Autonomous (RCCIIT)", competitor2: "Autonomous (Heritage)" }, { parameter: "Average Package", thisCollege: "₹5 LPA", competitor1: "₹4 LPA", competitor2: "₹5.8 LPA" }],
-        alumni: {
-            description: "A strong alumni network spanning across various industries globally.",
-            companies: ["Google", "Amazon", "Microsoft", "TCS", "Infosys", "Wipro", "Cognizant", "Accenture"],
-            achievements: ["Leading tech startups", "Senior engineers at MAANG", "Leaders in research"]
-        },
-        
-        compare: [
-            { parameter: "NIRF Rank Band", thisCollege: "101-150", competitor1: "151-200", competitor2: "Not Ranked" },
-            { parameter: "Highest Package", thisCollege: "₹25 LPA", competitor1: "₹20 LPA", competitor2: "₹18 LPA" },
-            { parameter: "Average Package", thisCollege: "₹5.5 LPA", competitor1: "₹5.0 LPA", competitor2: "₹4.5 LPA" }
-        ],
-
         faqs: [{ question: "Is JISCE autonomous?", answer: "Yes, JISCE has autonomous status which allows it to design industry-relevant curriculum." }, { question: "Does the college provide internship support?", answer: "Yes, the college has a dedicated placement cell that assists students in securing summer internships and industrial training." }, { question: "Is there a dedicated placement cell?", answer: "Yes, the Training and Placement Cell works year-round to bring top companies for recruitment and trains students in soft skills." }, { question: "Are there hostel facilities available?", answer: "Yes, separate hostel facilities are available for boys and girls with all necessary amenities and security." }],
         galleryImages: [
             { url: "https://placehold.co/800x600/1e293b/fff?text=Campus+View", alt: "Campus View" },
@@ -600,27 +510,9 @@ export const colleges: College[] = [
         admissions: { process: ["WBJEE counseling", "JEE Main quota available", "Document verification"], eligibility: ["10+2 with PCM", "Valid WBJEE/JEE Main score"], documents: ["Marksheets", "Rank Card", "Certificates"] },
         keyDates: [{ event: "WBJEE Counseling", date: "July 2026" }],
         whyChoose: ["Top ranked in West Bengal", "Autonomous curriculum", "Excellent placements", "Modern infrastructure", "Strong alumni network"],
-        alumni: {
-            description: "A strong alumni network spanning across various industries globally.",
-            companies: ["Google", "Amazon", "Microsoft", "TCS", "Infosys", "Wipro", "Cognizant", "Accenture"],
-            achievements: ["Leading tech startups", "Senior engineers at MAANG", "Leaders in research"]
-        },
-        
         scholarships: [{ title: "Merit Scholarship", items: [{ label: "Top WBJEE Rankers", value: "Up to 50% fee waiver" }] }],
         alumni: { description: "Strong alumni network with graduates in top companies.", companies: ["Google", "Amazon", "Microsoft", "Goldman Sachs"] },
         compare: [{ parameter: "Average Package", thisCollege: "₹5.8 LPA", competitor1: "₹6.5 LPA (IEM)" }],
-        alumni: {
-            description: "A strong alumni network spanning across various industries globally.",
-            companies: ["Google", "Amazon", "Microsoft", "TCS", "Infosys", "Wipro", "Cognizant", "Accenture"],
-            achievements: ["Leading tech startups", "Senior engineers at MAANG", "Leaders in research"]
-        },
-        
-        compare: [
-            { parameter: "NIRF Rank Band", thisCollege: "101-150", competitor1: "151-200", competitor2: "Not Ranked" },
-            { parameter: "Highest Package", thisCollege: "₹25 LPA", competitor1: "₹20 LPA", competitor2: "₹18 LPA" },
-            { parameter: "Average Package", thisCollege: "₹5.5 LPA", competitor1: "₹5.0 LPA", competitor2: "₹4.5 LPA" }
-        ],
-
         faqs: [{ question: "Is Heritage better than IEM?", answer: "Both are top colleges. Heritage has slightly better NIRF rank, while IEM has older legacy and higher packages in some years." }, { question: "Does the college provide internship support?", answer: "Yes, the college has a dedicated placement cell that assists students in securing summer internships and industrial training." }, { question: "Is there a dedicated placement cell?", answer: "Yes, the Training and Placement Cell works year-round to bring top companies for recruitment and trains students in soft skills." }, { question: "Are there hostel facilities available?", answer: "Yes, separate hostel facilities are available for boys and girls with all necessary amenities and security." }],
         galleryImages: [
             { url: "https://placehold.co/800x600/1e293b/fff?text=Campus+View", alt: "Campus View" },
@@ -654,27 +546,9 @@ export const colleges: College[] = [
         admissions: { process: ["WBJEE counseling"], eligibility: ["10+2 with PCM"], documents: ["Marksheets", "WBJEE Rank Card"] },
         keyDates: [{ event: "WBJEE Counseling", date: "July 2026" }],
         whyChoose: ["Modern New Town location", "Innovation focus", "Good infrastructure", "Growing reputation"],
-        alumni: {
-            description: "A strong alumni network spanning across various industries globally.",
-            companies: ["Google", "Amazon", "Microsoft", "TCS", "Infosys", "Wipro", "Cognizant", "Accenture"],
-            achievements: ["Leading tech startups", "Senior engineers at MAANG", "Leaders in research"]
-        },
-        
         scholarships: [{ title: "Techno India Scholarship", items: [{ label: "Top Performers", value: "Up to 30% fee waiver" }] }],
         alumni: { description: "Growing alumni network in IT companies.", companies: ["TCS", "Wipro", "Cognizant", "Capgemini"] },
         compare: [{ parameter: "Location", thisCollege: "New Town", competitor1: "Salt Lake (Techno India)", competitor2: "Central Kolkata (IEM)" }, { parameter: "Focus", thisCollege: "Innovation & Startups", competitor1: "Traditional", competitor2: "Placements" }],
-        alumni: {
-            description: "A strong alumni network spanning across various industries globally.",
-            companies: ["Google", "Amazon", "Microsoft", "TCS", "Infosys", "Wipro", "Cognizant", "Accenture"],
-            achievements: ["Leading tech startups", "Senior engineers at MAANG", "Leaders in research"]
-        },
-        
-        compare: [
-            { parameter: "NIRF Rank Band", thisCollege: "101-150", competitor1: "151-200", competitor2: "Not Ranked" },
-            { parameter: "Highest Package", thisCollege: "₹25 LPA", competitor1: "₹20 LPA", competitor2: "₹18 LPA" },
-            { parameter: "Average Package", thisCollege: "₹5.5 LPA", competitor1: "₹5.0 LPA", competitor2: "₹4.5 LPA" }
-        ],
-
         faqs: [{ question: "Is TINT a good college?", answer: "TINT is a good option for students looking for modern infrastructure and innovation-focused education in New Town area." }, { question: "Does the college provide internship support?", answer: "Yes, the college has a dedicated placement cell that assists students in securing summer internships and industrial training." }, { question: "Is there a dedicated placement cell?", answer: "Yes, the Training and Placement Cell works year-round to bring top companies for recruitment and trains students in soft skills." }, { question: "Are there hostel facilities available?", answer: "Yes, separate hostel facilities are available for boys and girls with all necessary amenities and security." }],
         galleryImages: [
             { url: "https://placehold.co/800x600/1e293b/fff?text=Campus+View", alt: "Campus View" },
@@ -708,27 +582,9 @@ export const colleges: College[] = [
         admissions: { process: ["WBJEE counseling"], eligibility: ["10+2 with PCM"], documents: ["Marksheets", "WBJEE Rank Card"] },
         keyDates: [{ event: "WBJEE Counseling", date: "July 2026" }],
         whyChoose: ["South Kolkata location", "Metro connectivity", "Affordable fees", "Established since 1998"],
-        alumni: {
-            description: "A strong alumni network spanning across various industries globally.",
-            companies: ["Google", "Amazon", "Microsoft", "TCS", "Infosys", "Wipro", "Cognizant", "Accenture"],
-            achievements: ["Leading tech startups", "Senior engineers at MAANG", "Leaders in research"]
-        },
-        
         scholarships: [{ title: "Merit Scholarship", items: [{ label: "Merit Students", value: "Fee concession available" }] }],
         alumni: { description: "NSEC alumni network in IT sector.", companies: ["TCS", "Wipro", "Infosys", "HCL"] },
         compare: [{ parameter: "Location", thisCollege: "South Kolkata", competitor1: "Salt Lake (Techno India)", competitor2: "Central Kolkata (IEM)" }, { parameter: "Fees", thisCollege: "₹4-5 Lakhs", competitor1: "₹4-5.2 Lakhs", competitor2: "₹8.5 Lakhs" }],
-        alumni: {
-            description: "A strong alumni network spanning across various industries globally.",
-            companies: ["Google", "Amazon", "Microsoft", "TCS", "Infosys", "Wipro", "Cognizant", "Accenture"],
-            achievements: ["Leading tech startups", "Senior engineers at MAANG", "Leaders in research"]
-        },
-        
-        compare: [
-            { parameter: "NIRF Rank Band", thisCollege: "101-150", competitor1: "151-200", competitor2: "Not Ranked" },
-            { parameter: "Highest Package", thisCollege: "₹25 LPA", competitor1: "₹20 LPA", competitor2: "₹18 LPA" },
-            { parameter: "Average Package", thisCollege: "₹5.5 LPA", competitor1: "₹5.0 LPA", competitor2: "₹4.5 LPA" }
-        ],
-
         faqs: [{ question: "Where is NSEC located?", answer: "NSEC is located in Garia, South Kolkata, with easy metro connectivity." }, { question: "Does the college provide internship support?", answer: "Yes, the college has a dedicated placement cell that assists students in securing summer internships and industrial training." }, { question: "Is there a dedicated placement cell?", answer: "Yes, the Training and Placement Cell works year-round to bring top companies for recruitment and trains students in soft skills." }, { question: "Are there hostel facilities available?", answer: "Yes, separate hostel facilities are available for boys and girls with all necessary amenities and security." }],
         galleryImages: [
             { url: "https://placehold.co/800x600/1e293b/fff?text=Campus+View", alt: "Campus View" },
@@ -762,27 +618,9 @@ export const colleges: College[] = [
         admissions: { process: ["WBJEE counseling"], eligibility: ["10+2 with PCM"], documents: ["Marksheets", "WBJEE Rank Card"] },
         keyDates: [{ event: "WBJEE Counseling", date: "July 2026" }],
         whyChoose: ["Part of Techno India Group", "Good faculty", "Affordable fees", "Decent placements"],
-        alumni: {
-            description: "A strong alumni network spanning across various industries globally.",
-            companies: ["Google", "Amazon", "Microsoft", "TCS", "Infosys", "Wipro", "Cognizant", "Accenture"],
-            achievements: ["Leading tech startups", "Senior engineers at MAANG", "Leaders in research"]
-        },
-        
         scholarships: [{ title: "Techno India Scholarship", items: [{ label: "Merit Students", value: "Fee concession available" }] }],
         alumni: { description: "MSIT alumni work in IT companies.", companies: ["TCS", "Wipro", "Cognizant", "Infosys"] },
         compare: [{ parameter: "Group", thisCollege: "Techno India Group", competitor1: "Same Group (TISL)", competitor2: "JIS Group (JISCE)" }],
-        alumni: {
-            description: "A strong alumni network spanning across various industries globally.",
-            companies: ["Google", "Amazon", "Microsoft", "TCS", "Infosys", "Wipro", "Cognizant", "Accenture"],
-            achievements: ["Leading tech startups", "Senior engineers at MAANG", "Leaders in research"]
-        },
-        
-        compare: [
-            { parameter: "NIRF Rank Band", thisCollege: "101-150", competitor1: "151-200", competitor2: "Not Ranked" },
-            { parameter: "Highest Package", thisCollege: "₹25 LPA", competitor1: "₹20 LPA", competitor2: "₹18 LPA" },
-            { parameter: "Average Package", thisCollege: "₹5.5 LPA", competitor1: "₹5.0 LPA", competitor2: "₹4.5 LPA" }
-        ],
-
         faqs: [{ question: "Is MSIT part of Techno India Group?", answer: "Yes, MSIT is one of the colleges under the Techno India Group." }, { question: "Does the college provide internship support?", answer: "Yes, the college has a dedicated placement cell that assists students in securing summer internships and industrial training." }, { question: "Is there a dedicated placement cell?", answer: "Yes, the Training and Placement Cell works year-round to bring top companies for recruitment and trains students in soft skills." }, { question: "Are there hostel facilities available?", answer: "Yes, separate hostel facilities are available for boys and girls with all necessary amenities and security." }],
         galleryImages: [
             { url: "https://placehold.co/800x600/1e293b/fff?text=Campus+View", alt: "Campus View" },
@@ -817,25 +655,7 @@ export const colleges: College[] = [
         admissions: { process: ["WBJEE counseling", "Document verification"], eligibility: ["10+2 with PCM", "Valid WBJEE score"], documents: ["Marksheets", "WBJEE Rank Card", "Certificates"] },
         keyDates: [{ event: "WBJEE Counseling", date: "July 2026" }],
         whyChoose: ["High placement rate (90%+)", "Strict discipline ensures focus", "Affordable fees", "Good for IT service placements", "Residential campus"],
-        alumni: {
-            description: "A strong alumni network spanning across various industries globally.",
-            companies: ["Google", "Amazon", "Microsoft", "TCS", "Infosys", "Wipro", "Cognizant", "Accenture"],
-            achievements: ["Leading tech startups", "Senior engineers at MAANG", "Leaders in research"]
-        },
-        
         scholarships: [{ title: "Merit Scholarship", items: [{ label: "Top Performers", value: "Fee concession available" }] }],
-        alumni: {
-            description: "A strong alumni network spanning across various industries globally.",
-            companies: ["Google", "Amazon", "Microsoft", "TCS", "Infosys", "Wipro", "Cognizant", "Accenture"],
-            achievements: ["Leading tech startups", "Senior engineers at MAANG", "Leaders in research"]
-        },
-        
-        compare: [
-            { parameter: "NIRF Rank Band", thisCollege: "101-150", competitor1: "151-200", competitor2: "Not Ranked" },
-            { parameter: "Highest Package", thisCollege: "₹25 LPA", competitor1: "₹20 LPA", competitor2: "₹18 LPA" },
-            { parameter: "Average Package", thisCollege: "₹5.5 LPA", competitor1: "₹5.0 LPA", competitor2: "₹4.5 LPA" }
-        ],
-
         faqs: [
             { question: "Is AOT good for placements?", answer: "Yes, AOT has a 90%+ placement rate with strong recruitments from TCS, Wipro, Cognizant, and other IT service companies." },
             { question: "Is AOT strict?", answer: "Yes, AOT is known for strict academic discipline which helps students focus on studies and placements." }, { question: "Does the college provide internship support?", answer: "Yes, the college has a dedicated placement cell that assists students in securing summer internships and industrial training." }, { question: "Is there a dedicated placement cell?", answer: "Yes, the Training and Placement Cell works year-round to bring top companies for recruitment and trains students in soft skills." }, { question: "Are there hostel facilities available?", answer: "Yes, separate hostel facilities are available for boys and girls with all necessary amenities and security." }
@@ -875,12 +695,6 @@ export const colleges: College[] = [
         admissions: { process: ["Appear for COMEDK/KCET", "Participate in counseling", "Document verification"], eligibility: ["10+2 with PCM", "COMEDK/KCET score"], documents: ["Marksheets", "Rank Card", "Domicile"] },
         keyDates: [{ event: "COMEDK Exam", date: "May 2026" }, { event: "Counseling", date: "June-July 2026" }],
         whyChoose: ["Top 50 in India", "Exceptional placements", "Legacy of 60+ years", "Strong industry connections", "Bangalore IT hub location"],
-        alumni: {
-            description: "A strong alumni network spanning across various industries globally.",
-            companies: ["Google", "Amazon", "Microsoft", "TCS", "Infosys", "Wipro", "Cognizant", "Accenture"],
-            achievements: ["Leading tech startups", "Senior engineers at MAANG", "Leaders in research"]
-        },
-        
         scholarships: [{ title: "Merit Scholarship", items: [{ label: "Top COMEDK Rankers", value: "Up to 100% fee waiver" }] }],
         alumni: { description: "Strong global alumni network.", companies: ["Google", "Microsoft", "Amazon", "Facebook", "Apple"] },
         faqs: [{ question: "Is RVCE the best college in Karnataka?", answer: "RVCE is among the top 3 private engineering colleges in Karnataka with excellent placements." }, { question: "Does the college provide internship support?", answer: "Yes, the college has a dedicated placement cell that assists students in securing summer internships and industrial training." }, { question: "Is there a dedicated placement cell?", answer: "Yes, the Training and Placement Cell works year-round to bring top companies for recruitment and trains students in soft skills." }, { question: "Are there hostel facilities available?", answer: "Yes, separate hostel facilities are available for boys and girls with all necessary amenities and security." }],
@@ -915,18 +729,6 @@ export const colleges: College[] = [
         placements: { stats: [{ label: "Highest Package", value: "₹25 LPA" }, { label: "Average Package", value: "₹6 LPA" }], topRecruiters: [{ category: "IT", companies: ["TCS", "Infosys", "Wipro", "Cognizant"] }] },
         admissions: { process: ["Apply online", "Merit-based selection", "Counseling"], eligibility: ["10+2 with PCM"], documents: ["Marksheets", "ID Proof"] },
         whyChoose: ["University status", "Modern campus", "Innovation focus", "Bangalore location"],
-        alumni: {
-            description: "A strong alumni network spanning across various industries globally.",
-            companies: ["Google", "Amazon", "Microsoft", "TCS", "Infosys", "Wipro", "Cognizant", "Accenture"],
-            achievements: ["Leading tech startups", "Senior engineers at MAANG", "Leaders in research"]
-        },
-        
-        compare: [
-            { parameter: "NIRF Rank Band", thisCollege: "101-150", competitor1: "151-200", competitor2: "Not Ranked" },
-            { parameter: "Highest Package", thisCollege: "₹25 LPA", competitor1: "₹20 LPA", competitor2: "₹18 LPA" },
-            { parameter: "Average Package", thisCollege: "₹5.5 LPA", competitor1: "₹5.0 LPA", competitor2: "₹4.5 LPA" }
-        ],
-
         faqs: [{ question: "Is DSU a good university?", answer: "Yes, DSU is a reputed private university with modern facilities and decent placements." }, { question: "Does the college provide internship support?", answer: "Yes, the college has a dedicated placement cell that assists students in securing summer internships and industrial training." }, { question: "Is there a dedicated placement cell?", answer: "Yes, the Training and Placement Cell works year-round to bring top companies for recruitment and trains students in soft skills." }, { question: "Are there hostel facilities available?", answer: "Yes, separate hostel facilities are available for boys and girls with all necessary amenities and security." }],
         galleryImages: [
             { url: "https://placehold.co/800x600/1e293b/fff?text=Campus+View", alt: "Campus View" },
@@ -1027,12 +829,6 @@ export const colleges: College[] = [
         admissions: { process: ["Register for PESSAT", "Take PESSAT exam", "Counseling based on rank"], eligibility: ["10+2 with PCM", "PESSAT score"], documents: ["Marksheets", "PESSAT Rank Card"] },
         keyDates: [{ event: "PESSAT Exam", date: "April-May 2026" }, { event: "Counseling", date: "June 2026" }],
         whyChoose: ["Top placements in South India", "PESSAT ensures quality intake", "Modern infrastructure", "Strong alumni network", "Bangalore tech hub location"],
-        alumni: {
-            description: "A strong alumni network spanning across various industries globally.",
-            companies: ["Google", "Amazon", "Microsoft", "TCS", "Infosys", "Wipro", "Cognizant", "Accenture"],
-            achievements: ["Leading tech startups", "Senior engineers at MAANG", "Leaders in research"]
-        },
-        
         scholarships: [{ title: "Merit Scholarship", items: [{ label: "Top PESSAT Rankers", value: "Up to 100% fee waiver" }] }],
         alumni: { companies: ["Google", "Microsoft", "Amazon", "Facebook", "Uber"] },
         faqs: [
@@ -1071,18 +867,6 @@ export const colleges: College[] = [
         placements: { stats: [{ label: "Highest Package", value: "₹20 LPA" }, { label: "Average Package", value: "₹5.5 LPA" }, { label: "Placement Rate", value: "85%+" }], topRecruiters: [{ category: "IT", companies: ["TCS", "Infosys", "Wipro", "Cognizant", "Capgemini"] }] },
         admissions: { process: ["COMEDK/KCET", "Direct admission", "Counseling"], eligibility: ["10+2 with PCM"], documents: ["Marksheets", "Rank Card"] },
         whyChoose: ["Affordable fees", "Massive green campus", "Good infrastructure", "International exposure"],
-        alumni: {
-            description: "A strong alumni network spanning across various industries globally.",
-            companies: ["Google", "Amazon", "Microsoft", "TCS", "Infosys", "Wipro", "Cognizant", "Accenture"],
-            achievements: ["Leading tech startups", "Senior engineers at MAANG", "Leaders in research"]
-        },
-        
-        compare: [
-            { parameter: "NIRF Rank Band", thisCollege: "101-150", competitor1: "151-200", competitor2: "Not Ranked" },
-            { parameter: "Highest Package", thisCollege: "₹25 LPA", competitor1: "₹20 LPA", competitor2: "₹18 LPA" },
-            { parameter: "Average Package", thisCollege: "₹5.5 LPA", competitor1: "₹5.0 LPA", competitor2: "₹4.5 LPA" }
-        ],
-
         faqs: [{ question: "Is Acharya Institute good?", answer: "Yes, AIT is a good option with affordable fees, large campus, and decent placements." }, { question: "Does the college provide internship support?", answer: "Yes, the college has a dedicated placement cell that assists students in securing summer internships and industrial training." }, { question: "Is there a dedicated placement cell?", answer: "Yes, the Training and Placement Cell works year-round to bring top companies for recruitment and trains students in soft skills." }, { question: "Are there hostel facilities available?", answer: "Yes, separate hostel facilities are available for boys and girls with all necessary amenities and security." }],
         galleryImages: [
             { url: "https://placehold.co/800x600/1e293b/fff?text=Campus+View", alt: "Campus View" },
@@ -1151,25 +935,7 @@ export const colleges: College[] = [
         admissions: { process: ["MHT-CET/JEE Main", "CAP Counseling", "Document verification"], eligibility: ["10+2 with PCM", "Valid MHT-CET/JEE score"], documents: ["Marksheets", "Rank Card", "Domicile"] },
         keyDates: [{ event: "MHT-CET Exam", date: "May 2026" }, { event: "Counseling", date: "July 2026" }],
         whyChoose: ["Legacy of 40+ years", "Top ranked in Maharashtra", "Strong placements", "Pune IT hub location"],
-        alumni: {
-            description: "A strong alumni network spanning across various industries globally.",
-            companies: ["Google", "Amazon", "Microsoft", "TCS", "Infosys", "Wipro", "Cognizant", "Accenture"],
-            achievements: ["Leading tech startups", "Senior engineers at MAANG", "Leaders in research"]
-        },
-        
         scholarships: [{ title: "Merit Scholarship", items: [{ label: "Top Rankers", value: "Up to 50% fee waiver" }] }],
-        alumni: {
-            description: "A strong alumni network spanning across various industries globally.",
-            companies: ["Google", "Amazon", "Microsoft", "TCS", "Infosys", "Wipro", "Cognizant", "Accenture"],
-            achievements: ["Leading tech startups", "Senior engineers at MAANG", "Leaders in research"]
-        },
-        
-        compare: [
-            { parameter: "NIRF Rank Band", thisCollege: "101-150", competitor1: "151-200", competitor2: "Not Ranked" },
-            { parameter: "Highest Package", thisCollege: "₹25 LPA", competitor1: "₹20 LPA", competitor2: "₹18 LPA" },
-            { parameter: "Average Package", thisCollege: "₹5.5 LPA", competitor1: "₹5.0 LPA", competitor2: "₹4.5 LPA" }
-        ],
-
         faqs: [{ question: "Is MIT Pune good?", answer: "Yes, MIT Pune is one of the top private engineering colleges in Maharashtra with excellent legacy and placements." }, { question: "Does the college provide internship support?", answer: "Yes, the college has a dedicated placement cell that assists students in securing summer internships and industrial training." }, { question: "Is there a dedicated placement cell?", answer: "Yes, the Training and Placement Cell works year-round to bring top companies for recruitment and trains students in soft skills." }, { question: "Are there hostel facilities available?", answer: "Yes, separate hostel facilities are available for boys and girls with all necessary amenities and security." }],
         galleryImages: [
             { url: "https://placehold.co/800x600/1e293b/fff?text=Campus+View", alt: "Campus View" },
@@ -1204,25 +970,7 @@ export const colleges: College[] = [
         admissions: { process: ["Register for SET", "Take SET exam", "PI (Personal Interview)", "Counseling"], eligibility: ["10+2 with PCM", "SET score"], documents: ["Marksheets", "SET Score Card"] },
         keyDates: [{ event: "SET Exam", date: "May 2026" }, { event: "PI & Counseling", date: "June 2026" }],
         whyChoose: ["Symbiosis brand value", "International exposure", "Excellent placements", "Modern campus", "Strong alumni"],
-        alumni: {
-            description: "A strong alumni network spanning across various industries globally.",
-            companies: ["Google", "Amazon", "Microsoft", "TCS", "Infosys", "Wipro", "Cognizant", "Accenture"],
-            achievements: ["Leading tech startups", "Senior engineers at MAANG", "Leaders in research"]
-        },
-        
         scholarships: [{ title: "Merit Scholarship", items: [{ label: "Top SET Rankers", value: "Up to 100% scholarship" }] }],
-        alumni: {
-            description: "A strong alumni network spanning across various industries globally.",
-            companies: ["Google", "Amazon", "Microsoft", "TCS", "Infosys", "Wipro", "Cognizant", "Accenture"],
-            achievements: ["Leading tech startups", "Senior engineers at MAANG", "Leaders in research"]
-        },
-        
-        compare: [
-            { parameter: "NIRF Rank Band", thisCollege: "101-150", competitor1: "151-200", competitor2: "Not Ranked" },
-            { parameter: "Highest Package", thisCollege: "₹25 LPA", competitor1: "₹20 LPA", competitor2: "₹18 LPA" },
-            { parameter: "Average Package", thisCollege: "₹5.5 LPA", competitor1: "₹5.0 LPA", competitor2: "₹4.5 LPA" }
-        ],
-
         faqs: [{ question: "Is Symbiosis good for engineering?", answer: "Yes, SIT Pune offers quality engineering education with strong placements and international exposure." }, { question: "Does the college provide internship support?", answer: "Yes, the college has a dedicated placement cell that assists students in securing summer internships and industrial training." }, { question: "Is there a dedicated placement cell?", answer: "Yes, the Training and Placement Cell works year-round to bring top companies for recruitment and trains students in soft skills." }, { question: "Are there hostel facilities available?", answer: "Yes, separate hostel facilities are available for boys and girls with all necessary amenities and security." }],
         galleryImages: [
             { url: "https://placehold.co/800x600/1e293b/fff?text=Campus+View", alt: "Campus View" },
@@ -1300,12 +1048,6 @@ export const colleges: College[] = [
         admissions: { process: ["Register for VITEEE", "Take VITEEE exam", "Counseling based on rank", "Choose campus and program"], eligibility: ["10+2 with PCM", "VITEEE score"], documents: ["Marksheets", "VITEEE Rank Card", "ID Proof"] },
         keyDates: [{ event: "VITEEE Registration", date: "November 2025" }, { event: "VITEEE Exam", date: "April 2026" }, { event: "Counseling", date: "May-June 2026" }],
         whyChoose: ["No. 1 Private University in India", "Exceptional placements (₹85 LPA highest)", "Global recognition", "Diverse student community", "Multiple campus options", "Strong alumni network"],
-        alumni: {
-            description: "A strong alumni network spanning across various industries globally.",
-            companies: ["Google", "Amazon", "Microsoft", "TCS", "Infosys", "Wipro", "Cognizant", "Accenture"],
-            achievements: ["Leading tech startups", "Senior engineers at MAANG", "Leaders in research"]
-        },
-        
         scholarships: [{ title: "Merit Scholarship", items: [{ label: "VITEEE Top 50", value: "100% Tuition Fee Waiver" }, { label: "VITEEE Top 500", value: "75% Tuition Fee Waiver" }, { label: "VITEEE Top 1000", value: "50% Tuition Fee Waiver" }] }],
         alumni: { description: "Largest private university alumni network in India.", companies: ["Google", "Microsoft", "Amazon", "Facebook", "Apple", "Goldman Sachs", "McKinsey"] },
         faqs: [
@@ -1353,25 +1095,7 @@ export const colleges: College[] = [
         admissions: { process: ["Register for SRMJEEE", "Take SRMJEEE exam", "Counseling"], eligibility: ["10+2 with PCM", "SRMJEEE score"], documents: ["Marksheets", "SRMJEEE Rank Card"] },
         keyDates: [{ event: "SRMJEEE Exam", date: "April-June 2026" }, { event: "Counseling", date: "June-July 2026" }],
         whyChoose: ["Top 15 in India", "Multiple campus options", "Strong placements", "Global exposure", "Massive campus"],
-        alumni: {
-            description: "A strong alumni network spanning across various industries globally.",
-            companies: ["Google", "Amazon", "Microsoft", "TCS", "Infosys", "Wipro", "Cognizant", "Accenture"],
-            achievements: ["Leading tech startups", "Senior engineers at MAANG", "Leaders in research"]
-        },
-        
         scholarships: [{ title: "Merit Scholarship", items: [{ label: "Top Rankers", value: "Up to 100% fee waiver" }] }],
-        alumni: {
-            description: "A strong alumni network spanning across various industries globally.",
-            companies: ["Google", "Amazon", "Microsoft", "TCS", "Infosys", "Wipro", "Cognizant", "Accenture"],
-            achievements: ["Leading tech startups", "Senior engineers at MAANG", "Leaders in research"]
-        },
-        
-        compare: [
-            { parameter: "NIRF Rank Band", thisCollege: "101-150", competitor1: "151-200", competitor2: "Not Ranked" },
-            { parameter: "Highest Package", thisCollege: "₹25 LPA", competitor1: "₹20 LPA", competitor2: "₹18 LPA" },
-            { parameter: "Average Package", thisCollege: "₹5.5 LPA", competitor1: "₹5.0 LPA", competitor2: "₹4.5 LPA" }
-        ],
-
         faqs: [{ question: "Is SRM good for engineering?", answer: "Yes, SRM is among the top 15 engineering institutions in India with excellent infrastructure and placements." }, { question: "Does the college provide internship support?", answer: "Yes, the college has a dedicated placement cell that assists students in securing summer internships and industrial training." }, { question: "Is there a dedicated placement cell?", answer: "Yes, the Training and Placement Cell works year-round to bring top companies for recruitment and trains students in soft skills." }, { question: "Are there hostel facilities available?", answer: "Yes, separate hostel facilities are available for boys and girls with all necessary amenities and security." }],
         galleryImages: [
             { url: "https://placehold.co/800x600/1e293b/fff?text=Campus+View", alt: "Campus View" },
@@ -1416,25 +1140,7 @@ export const colleges: College[] = [
         admissions: { process: ["Apply through UPESEAT/JEE/Board Merit", "Counseling", "Program selection"], eligibility: ["10+2 with PCM"], documents: ["Marksheets", "ID Proof"] },
         keyDates: [{ event: "UPESEAT Exam", date: "Multiple dates (2026)" }],
         whyChoose: ["Unique specializations", "Industry-focused curriculum", "High placements", "Scenic location", "Strong alumni"],
-        alumni: {
-            description: "A strong alumni network spanning across various industries globally.",
-            companies: ["Google", "Amazon", "Microsoft", "TCS", "Infosys", "Wipro", "Cognizant", "Accenture"],
-            achievements: ["Leading tech startups", "Senior engineers at MAANG", "Leaders in research"]
-        },
-        
         scholarships: [{ title: "Merit Scholarship", items: [{ label: "Top Board Scores", value: "Up to 100% tuition waiver" }] }],
-        alumni: {
-            description: "A strong alumni network spanning across various industries globally.",
-            companies: ["Google", "Amazon", "Microsoft", "TCS", "Infosys", "Wipro", "Cognizant", "Accenture"],
-            achievements: ["Leading tech startups", "Senior engineers at MAANG", "Leaders in research"]
-        },
-        
-        compare: [
-            { parameter: "NIRF Rank Band", thisCollege: "101-150", competitor1: "151-200", competitor2: "Not Ranked" },
-            { parameter: "Highest Package", thisCollege: "₹25 LPA", competitor1: "₹20 LPA", competitor2: "₹18 LPA" },
-            { parameter: "Average Package", thisCollege: "₹5.5 LPA", competitor1: "₹5.0 LPA", competitor2: "₹4.5 LPA" }
-        ],
-
         faqs: [
             { question: "Is UPES good for engineering?", answer: "Yes, UPES is excellent for domain-specific programs like Energy, Aerospace, Cloud, and AI." },
             { question: "What makes UPES different?", answer: "UPES offers highly specialized programs focused on specific industry domains, unlike general engineering." }, { question: "Does the college provide internship support?", answer: "Yes, the college has a dedicated placement cell that assists students in securing summer internships and industrial training." }, { question: "Is there a dedicated placement cell?", answer: "Yes, the Training and Placement Cell works year-round to bring top companies for recruitment and trains students in soft skills." }, { question: "Are there hostel facilities available?", answer: "Yes, separate hostel facilities are available for boys and girls with all necessary amenities and security." }
@@ -1509,25 +1215,7 @@ export const colleges: College[] = [
         admissions: { process: ["Register for KIITEE", "Take KIITEE exam", "Counseling based on rank"], eligibility: ["10+2 with PCM", "KIITEE score"], documents: ["Marksheets", "KIITEE Rank Card"] },
         keyDates: [{ event: "KIITEE Exam", date: "April-May 2026" }],
         whyChoose: ["Top 20 in India", "Massive world-class campus", "100% placement assistance", "Strong social initiative (KISS)", "Affordable compared to peers"],
-        alumni: {
-            description: "A strong alumni network spanning across various industries globally.",
-            companies: ["Google", "Amazon", "Microsoft", "TCS", "Infosys", "Wipro", "Cognizant", "Accenture"],
-            achievements: ["Leading tech startups", "Senior engineers at MAANG", "Leaders in research"]
-        },
-        
         scholarships: [{ title: "Merit Scholarship", items: [{ label: "Top KIITEE Rankers", value: "Up to 100% fee waiver" }] }],
-        alumni: {
-            description: "A strong alumni network spanning across various industries globally.",
-            companies: ["Google", "Amazon", "Microsoft", "TCS", "Infosys", "Wipro", "Cognizant", "Accenture"],
-            achievements: ["Leading tech startups", "Senior engineers at MAANG", "Leaders in research"]
-        },
-        
-        compare: [
-            { parameter: "NIRF Rank Band", thisCollege: "101-150", competitor1: "151-200", competitor2: "Not Ranked" },
-            { parameter: "Highest Package", thisCollege: "₹25 LPA", competitor1: "₹20 LPA", competitor2: "₹18 LPA" },
-            { parameter: "Average Package", thisCollege: "₹5.5 LPA", competitor1: "₹5.0 LPA", competitor2: "₹4.5 LPA" }
-        ],
-
         faqs: [{ question: "Is KIIT good for engineering?", answer: "Yes, KIIT is among the top 20 engineering institutions in India with excellent infrastructure and placements." }, { question: "Does the college provide internship support?", answer: "Yes, the college has a dedicated placement cell that assists students in securing summer internships and industrial training." }, { question: "Is there a dedicated placement cell?", answer: "Yes, the Training and Placement Cell works year-round to bring top companies for recruitment and trains students in soft skills." }, { question: "Are there hostel facilities available?", answer: "Yes, separate hostel facilities are available for boys and girls with all necessary amenities and security." }],
         galleryImages: [
             { url: "https://placehold.co/800x600/1e293b/fff?text=Campus+View", alt: "Campus View" },
@@ -1978,25 +1666,7 @@ export const medicalColleges: MedicalCollege[] = [
         internship: { duration: "12 months", stipend: "₹20,000/month" },
         admissionProcess: ["Apply through NEET counseling", "Document verification", "Fee payment via DD/NEFT"],
         facultyDepartments: ["Anatomy", "Physiology", "Biochemistry", "Pharmacology", "Pathology", "Microbiology", "Medicine", "Surgery", "Pediatrics", "Obstetrics & Gynecology"],
-        alumni: {
-            description: "A strong alumni network spanning across various industries globally.",
-            companies: ["Google", "Amazon", "Microsoft", "TCS", "Infosys", "Wipro", "Cognizant", "Accenture"],
-            achievements: ["Leading tech startups", "Senior engineers at MAANG", "Leaders in research"]
-        },
-        
         scholarships: [{ title: "Merit Scholarship", items: [{ label: "Top NEET Rankers", value: "Fee concession available" }] }],
-        alumni: {
-            description: "A strong alumni network spanning across various industries globally.",
-            companies: ["Google", "Amazon", "Microsoft", "TCS", "Infosys", "Wipro", "Cognizant", "Accenture"],
-            achievements: ["Leading tech startups", "Senior engineers at MAANG", "Leaders in research"]
-        },
-        
-        compare: [
-            { parameter: "NIRF Rank Band", thisCollege: "101-150", competitor1: "151-200", competitor2: "Not Ranked" },
-            { parameter: "Highest Package", thisCollege: "₹25 LPA", competitor1: "₹20 LPA", competitor2: "₹18 LPA" },
-            { parameter: "Average Package", thisCollege: "₹5.5 LPA", competitor1: "₹5.0 LPA", competitor2: "₹4.5 LPA" }
-        ],
-
         faqs: [{ question: "What is the total MBBS fee at Jagannath Gupta?", answer: "The total MQ fee is approximately ₹99.36 Lakhs for the entire course." }, { question: "Is the medical degree recognized?", answer: "Yes, the MBBS degree is recognized by the NMC (National Medical Commission) and is valid for practice across India and abroad after clearing licensing exams." }, { question: "What is the patient flow in the hospital?", answer: "The attached teaching hospital has a good patient flow, ensuring excellent clinical exposure and hands-on training for students." }, { question: "Are residential facilities available?", answer: "Yes, the campus provides comfortable hostel accommodation for students, creating a conducive environment for study and rest." }],
         galleryImages: [
             { url: "https://placehold.co/800x600/1e293b/fff?text=Campus+View", alt: "Campus View" },
