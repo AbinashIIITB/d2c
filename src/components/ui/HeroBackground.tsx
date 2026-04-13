@@ -11,7 +11,7 @@ export function HeroBackground({
     <div className={`absolute top-0 left-0 right-0 ${bottomOffsetClass} overflow-hidden pointer-events-none z-0`}>
       {/* Bottom Left Large Circle */}
       <motion.div 
-        className="absolute w-[600px] lg:w-[800px] h-[600px] lg:h-[800px] rounded-full bg-white/10 -bottom-[200px] lg:-bottom-[400px] -left-[200px] lg:-left-[200px]"
+        className="absolute w-[600px] lg:w-[800px] h-[600px] lg:h-[800px] rounded-full bg-white/5 lg:bg-white/10 -bottom-[200px] lg:-bottom-[400px] -left-[200px] lg:-left-[200px]"
         animate={{ x: [0, 20, -10, 0], y: [0, -20, 15, 0] }}
         transition={{ duration: 25, repeat: Infinity, ease: "easeInOut" }}
       />
@@ -35,7 +35,7 @@ export function HeroBackground({
       
       {/* Dashed Arc Top Right */}
       <motion.div
-          className="absolute rounded-full border-[3px] border-dashed border-white/30"
+          className="absolute rounded-full border-[3px] border-dashed border-white/5 lg:border-white/30"
           style={{
             width: 600,
             height: 600,

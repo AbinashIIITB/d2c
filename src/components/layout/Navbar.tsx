@@ -60,7 +60,7 @@ export function Navbar() {
   const showSolidBg = isScrolled || isHovered || mobileMenuOpen || searchOpen
 
   return (
-    <header className="fixed top-2 md:top-3 left-0 right-0 z-50 transition-all duration-300">
+    <header className="fixed top-4 md:top-5 left-0 right-0 z-50 transition-all duration-300">
       <div className="content-boundary">
         <div 
           onMouseEnter={() => setIsHovered(true)}
@@ -191,30 +191,51 @@ export function Navbar() {
 
           {/* ── MOBILE TOGGLE ── */}
           <button
-            className="md:hidden p-2 z-50 rounded-lg"
+            className="md:hidden p-2 z-50 rounded-lg relative w-10 h-10 flex items-center justify-center overflow-hidden"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             aria-label="Toggle menu"
           >
-            {mobileMenuOpen ? (
-              <X className={`w-6 h-6 ${showSolidBg ? "text-d2c-navy" : "text-white"}`} />
-            ) : (
-              <Menu className={`w-6 h-6 ${showSolidBg ? "text-d2c-navy" : "text-white"}`} />
-            )}
+            <AnimatePresence mode="wait">
+              {mobileMenuOpen ? (
+                <motion.div
+                  key="close"
+                  initial={{ opacity: 0, rotate: -90, scale: 0.5 }}
+                  animate={{ opacity: 1, rotate: 0, scale: 1 }}
+                  exit={{ opacity: 0, rotate: 90, scale: 0.5 }}
+                  transition={{ duration: 0.2 }}
+                  className="absolute"
+                >
+                  <X className={`w-6 h-6 ${showSolidBg ? "text-d2c-navy" : "text-white"}`} />
+                </motion.div>
+              ) : (
+                <motion.div
+                  key="menu"
+                  initial={{ opacity: 0, rotate: 90, scale: 0.5 }}
+                  animate={{ opacity: 1, rotate: 0, scale: 1 }}
+                  exit={{ opacity: 0, rotate: -90, scale: 0.5 }}
+                  transition={{ duration: 0.2 }}
+                  className="absolute"
+                >
+                  <Menu className={`w-6 h-6 ${showSolidBg ? "text-d2c-navy" : "text-white"}`} />
+                </motion.div>
+              )}
+            </AnimatePresence>
           </button>
         </div>
       </div>
 
       {/* ── MOBILE MENU ── */}
-      <AnimatePresence>
-        {mobileMenuOpen && (
-          <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: "auto" }}
-            exit={{ opacity: 0, height: 0 }}
-            transition={{ duration: 0.25 }}
-            className="md:hidden bg-white border-t border-gray-100 overflow-hidden"
-          >
-            <div className="content-boundary py-4 flex flex-col gap-1">
+      <div className="content-boundary mt-2 w-full md:hidden">
+        <AnimatePresence>
+          {mobileMenuOpen && (
+            <motion.div
+              initial={{ opacity: 0, height: 0, y: -10 }}
+              animate={{ opacity: 1, height: "auto", y: 0 }}
+              exit={{ opacity: 0, height: 0, y: -10 }}
+              transition={{ duration: 0.25 }}
+              className="bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden origin-top"
+            >
+              <div className="py-4 px-2 flex flex-col gap-1">
               {NAV_LINKS.map((link) => (
                 <div key={link.label}>
                   <Link
@@ -253,6 +274,7 @@ export function Navbar() {
           </motion.div>
         )}
       </AnimatePresence>
+      </div>
     </header>
   )
 }

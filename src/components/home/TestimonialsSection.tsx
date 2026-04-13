@@ -110,11 +110,15 @@ export function TestimonialsSection() {
 
             {/* Hero image area */}
             <div className="relative h-64 md:h-80 lg:h-96 w-full overflow-hidden bg-gradient-to-br from-d2c-navy via-d2c-royal to-d2c-sky">
+              {/* Decorative floating elements */}
+              <div className="absolute top-8 right-8 w-20 h-20 bg-white/5 rounded-2xl rotate-12 backdrop-blur-sm" />
+              <div className="absolute bottom-12 left-12 w-16 h-16 bg-white/5 rounded-full backdrop-blur-sm" />
+
               {/* Overlay content */}
-              <div className="absolute inset-0 flex items-center justify-center">
-                <div className="text-center px-8">
+              <div className="absolute inset-0 flex items-center justify-center z-10">
+                <div className="text-center px-8 relative z-10">
                   <Quote className="w-12 h-12 text-white/30 mx-auto mb-4" />
-                  <p className="text-white text-xl md:text-2xl lg:text-3xl font-sora font-bold max-w-3xl leading-snug">
+                  <p className="text-white text-xl md:text-2xl lg:text-3xl font-sora font-bold max-w-3xl leading-snug relative z-10">
                     &ldquo;{FEATURED.message.replace("Akash Talks", "Direct2Campus")}&rdquo;
                   </p>
                   <div className="flex gap-1 justify-center mt-4">
@@ -124,10 +128,6 @@ export function TestimonialsSection() {
                   </div>
                 </div>
               </div>
-
-              {/* Decorative floating elements */}
-              <div className="absolute top-8 right-8 w-20 h-20 bg-white/5 rounded-2xl rotate-12 backdrop-blur-sm" />
-              <div className="absolute bottom-12 left-12 w-16 h-16 bg-white/5 rounded-full backdrop-blur-sm" />
             </div>
 
             {/* Stats row — Stripe-style key metrics */}

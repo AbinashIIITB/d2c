@@ -141,7 +141,7 @@ export function HeroSection() {
         initial={{ opacity: 0, y: 40 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8, delay: 0.6 }}
-        className="absolute -bottom-4 sm:bottom-16 lg:bottom-20 left-0 right-0 mx-auto translate-y-1/2 z-30 w-full content-boundary pointer-events-auto flex justify-center"
+        className="absolute bottom-0 sm:bottom-16 lg:bottom-20 left-0 right-0 mx-auto translate-y-1/2 z-30 w-full content-boundary pointer-events-auto flex justify-center"
       >
         <div className="bg-white rounded-2xl shadow-[0_8px_40px_rgba(0,0,0,0.12)] w-full px-4 sm:px-6 md:px-10 py-3 md:py-5 flex items-center justify-around sm:justify-center sm:gap-8 md:gap-16 lg:gap-24">
           {/* Stat 1 */}
