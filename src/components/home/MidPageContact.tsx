@@ -12,14 +12,30 @@ export function MidPageContact() {
   const [formData, setFormData] = useState({ name: "", phone: "" })
   const [status, setStatus] = useState<"idle" | "submitting" | "success">("idle")
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setStatus("submitting")
-    setTimeout(() => {
+    
+    try {
+      const response = await fetch("/api/leads", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          leadType: "Free Counselling",
+          name: formData.name,
+          phone: formData.phone,
+        }),
+      });
+      
+      if (!response.ok) throw new Error("Submission failed");
+      
       setStatus("success")
       setFormData({ name: "", phone: "" })
       setTimeout(() => setStatus("idle"), 5000)
-    }, 1500)
+    } catch (error) {
+      console.error(error);
+      setStatus("idle");
+    }
   }
 
   return (

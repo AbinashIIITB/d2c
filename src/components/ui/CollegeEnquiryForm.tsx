@@ -30,7 +30,7 @@ export function CollegeEnquiryForm({ collegeName }: CollegeEnquiryFormProps) {
             const firstName = nameParts[0] || '';
             const lastName = nameParts.slice(1).join(' ') || '';
 
-            const response = await fetch('/api/contact', {
+            const response = await fetch('/api/leads', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({

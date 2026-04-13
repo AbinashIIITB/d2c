@@ -8,10 +8,19 @@ import { motion, AnimatePresence } from "framer-motion";
 
 import { CountUp } from "@/components/ui/CountUp";
 import { HeroBackground } from "@/components/ui/HeroBackground";
+import { CallbackModal } from "@/components/layout/CallbackModal";
 const TEXTS = ["B.Tech", "MBA", "Medical", "Abroad"];
 
 export function HeroSection() {
   const [textIndex, setTextIndex] = useState(0);
+  const [phone, setPhone] = useState("");
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const handleHeroSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!phone || phone.length < 10) return;
+    setIsModalOpen(true);
+  };
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -57,7 +66,7 @@ export function HeroSection() {
             >
               <form
                 className="relative flex items-center w-full bg-white rounded-full p-1.5 shadow-[0_4px_30px_rgba(255,255,255,0.15)] ring-4 ring-white/10"
-                onSubmit={(e) => e.preventDefault()}
+                onSubmit={handleHeroSubmit}
               >
                 <div className="flex items-center pl-4 pr-3 text-neutral-500 font-semibold text-[13px] md:text-sm">
                   +91
@@ -68,9 +77,12 @@ export function HeroSection() {
                   placeholder="Enter mobile number"
                   className="flex-1 bg-transparent px-3 py-2 text-d2c-navy font-semibold placeholder:text-neutral-400 placeholder:font-medium focus:outline-none text-[13px] md:text-sm w-full"
                   maxLength={10}
+                  value={phone}
+                  onChange={(e) => setPhone(e.target.value)}
+                  required
                 />
                 <button
-                  type="button"
+                  type="submit"
                   className="px-6 sm:px-8 py-2.5 bg-d2c-solid-blue hover:bg-blue-700 text-white font-bold text-[13px] md:text-sm transition-colors flex items-center justify-center rounded-full shadow-[0_4px_14px_rgba(74,144,226,0.3)] shrink-0 gap-2"
                 >
                   <span className="hidden sm:inline">Get Free</span> Counselling
@@ -190,6 +202,12 @@ export function HeroSection() {
           </div>
         </div>
       </motion.div>
+
+      <CallbackModal 
+        isOpen={isModalOpen} 
+        onClose={() => setIsModalOpen(false)} 
+        initialPhone={phone} 
+      />
     </section>
   );
 }

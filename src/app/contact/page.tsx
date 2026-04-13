@@ -9,15 +9,32 @@ export default function ContactPage() {
   const [formData, setFormData] = useState({ name: "", email: "", phone: "", message: "" })
   const [status, setStatus] = useState<"idle" | "submitting" | "success">("idle")
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setStatus("submitting")
-    // Simulate API form submission via server actions handling later in Phase 7
-    setTimeout(() => {
+    
+    try {
+      const response = await fetch("/api/leads", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          leadType: "Contact Us",
+          name: formData.name,
+          email: formData.email,
+          phone: formData.phone,
+          message: formData.message,
+        }),
+      });
+      
+      if (!response.ok) throw new Error("Submission failed");
+      
       setStatus("success")
       setFormData({ name: "", email: "", phone: "", message: "" })
       setTimeout(() => setStatus("idle"), 5000)
-    }, 1500)
+    } catch (error) {
+      console.error(error);
+      setStatus("idle");
+    }
   }
 
   return (

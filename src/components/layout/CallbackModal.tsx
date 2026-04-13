@@ -1,31 +1,55 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import { X, PhoneCall } from "lucide-react"
 
-export function CallbackModal({ isOpen, onClose }: { isOpen: boolean, onClose: () => void }) {
-  const [formData, setFormData] = useState({ name: "", phone: "" })
+export function CallbackModal({ isOpen, onClose, initialPhone = "" }: { isOpen: boolean, onClose: () => void, initialPhone?: string }) {
+  const [formData, setFormData] = useState({ name: "", phone: initialPhone })
   const [status, setStatus] = useState<"IDLE" | "SUBMITTING" | "SUCCESS" | "ERROR">("IDLE")
+
+  useEffect(() => {
+    if (isOpen) {
+      setFormData(prev => ({ ...prev, phone: initialPhone }));
+      setStatus("IDLE");
+    }
+  }, [isOpen, initialPhone]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setStatus("SUBMITTING")
-    // Simulation of API request to backend which will be built in Phase 7
-    setTimeout(() => {
+    
+    try {
+      const response = await fetch("/api/leads", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          leadType: "Free Counselling",
+          name: formData.name,
+          phone: formData.phone,
+        }),
+      });
+      
+      if (!response.ok) throw new Error("Submission failed");
+      
       setStatus("SUCCESS")
       setTimeout(() => {
         setStatus("IDLE")
+        setFormData({ name: "", phone: "" })
         onClose()
       }, 3000)
-    }, 1500)
+    } catch (error) {
+      console.error(error);
+      setStatus("ERROR");
+      setTimeout(() => setStatus("IDLE"), 3000);
+    }
   }
 
   if (!isOpen) return null
 
   return (
     <AnimatePresence>
-      <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
+      <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 pointer-events-auto">
         {/* Backdrop */}
         <motion.div 
           initial={{ opacity: 0 }}
@@ -74,7 +98,7 @@ export function CallbackModal({ isOpen, onClose }: { isOpen: boolean, onClose: (
                     type="text" 
                     value={formData.name}
                     onChange={(e) => setFormData(prev => ({ ...prev, name: e.target.value }))}
-                    className="w-full px-4 py-3 border border-gray-200 focus:border-d2c-royal focus:ring-2 focus:ring-d2c-royal/20 outline-none transition-all"
+                    className="w-full px-4 py-3 border border-gray-200 text-d2c-navy focus:border-d2c-royal focus:ring-2 focus:ring-d2c-royal/20 outline-none transition-all"
                     placeholder="Enter your name"
                   />
                 </div>
@@ -86,7 +110,7 @@ export function CallbackModal({ isOpen, onClose }: { isOpen: boolean, onClose: (
                     pattern="[0-9]{10}"
                     value={formData.phone}
                     onChange={(e) => setFormData(prev => ({ ...prev, phone: e.target.value }))}
-                    className="w-full px-4 py-3 border border-gray-200 focus:border-d2c-royal focus:ring-2 focus:ring-d2c-royal/20 outline-none transition-all"
+                    className="w-full px-4 py-3 border border-gray-200 text-d2c-navy focus:border-d2c-royal focus:ring-2 focus:ring-d2c-royal/20 outline-none transition-all"
                     placeholder="10-digit mobile number"
                   />
                 </div>
