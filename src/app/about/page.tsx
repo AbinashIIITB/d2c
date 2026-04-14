@@ -12,48 +12,48 @@ export default function AboutPage() {
   return (
     <div className="pb-20 bg-d2c-white min-h-screen">
       {/* Hero-style header matching homepage */}
-      <section className="relative isolate flex flex-col items-center justify-center min-[903px]:justify-start min-h-[65vh] lg:min-h-[85vh] text-d2c-white pt-12 pb-12 sm:pt-6 min-[903px]:pt-56 min-[1025px]:pt-48 lg:pt-36 overflow-hidden -mb-24 sm:-mb-36 lg:-mb-40">
+      <section className="relative isolate flex flex-col items-center justify-center min-[1025px]:justify-start min-h-[65vh] min-[1025px]:min-h-[85vh] text-d2c-white pt-12 pb-12 sm:pt-6 min-[1025px]:pt-48 lg:pt-36 overflow-hidden -mb-24 sm:-mb-36 lg:-mb-40">
         {/* ── Split Background Engine ── */}
         <div className="absolute inset-0 bottom-24 sm:bottom-36 lg:bottom-40 bg-d2c-navy z-0 border-b-4 border-d2c-royal" />
 
         <HeroBackground bottomOffsetClass="bottom-24 sm:bottom-36 lg:bottom-40" />
 
         <div className="content-boundary relative z-10 text-center">
-          <div className="inline-flex items-center gap-2 px-3 py-1.5 min-[903px]:px-4 min-[903px]:py-2 bg-white/10 backdrop-blur-sm border border-white/20 mb-8 sm:mb-4 min-[903px]:mb-12 lg:mb-10 rounded-lg">
+          <div className="inline-flex items-center gap-2 px-3 py-1.5 min-[1025px]:px-4 min-[1025px]:py-2 bg-white/10 backdrop-blur-sm border border-white/20 mb-8 sm:mb-4 min-[1025px]:mb-12 lg:mb-10 rounded-lg">
             <Shield className="w-4 h-4 text-d2c-sky" />
             <span className="text-sm font-medium tracking-wide text-white">India&apos;s Trusted Education Partner</span>
           </div>
-          <h1 className="text-2xl sm:text-4xl min-[903px]:text-6xl lg:text-7xl font-sora font-bold tracking-tight mb-6 sm:mb-4 min-[903px]:mb-10 lg:mb-8 text-balance leading-[1.1] text-white">
+          <h1 className="text-2xl sm:text-4xl min-[1025px]:text-6xl lg:text-7xl font-sora font-bold tracking-tight mb-6 sm:mb-4 min-[1025px]:mb-10 lg:mb-8 text-balance leading-[1.1] text-white">
             About{" "}
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-d2c-sky to-d2c-ice">
               Direct2Campus
             </span>
           </h1>
-          <p className="text-base min-[903px]:text-xl text-d2c-ice/80 max-w-2xl mx-auto mb-6 min-[903px]:mb-12 lg:mb-12 leading-relaxed font-medium">
+          <p className="text-base min-[1025px]:text-xl text-d2c-ice/80 max-w-2xl mx-auto mb-6 min-[1025px]:block lg:mb-12 leading-relaxed font-medium">
             Bridging the gap between aspiring students and premium educational institutions across India since 2012.
           </p>
 
           {/* Stats bar */}
-          <div className="flex flex-wrap justify-center gap-5 min-[903px]:gap-10 pt-5 min-[903px]:pt-12 lg:gap-14 lg:pt-10 border-t border-white/10 max-w-4xl mx-auto">
+          <div className="flex flex-wrap justify-center gap-5 min-[1025px]:gap-10 pt-5 min-[1025px]:pt-12 lg:gap-14 lg:pt-10 border-t border-white/10 max-w-4xl mx-auto">
             <div className="flex items-center gap-3 text-d2c-ice">
               <div className="p-2 bg-white/5 rounded-lg border border-white/10"><Users className="w-5 h-5 text-d2c-sky" /></div>
               <div className="text-left">
-                <div className="text-base min-[903px]:text-xl font-bold font-sora text-white">12,000+</div>
-                <div className="text-[10px] min-[903px]:text-xs text-white/50 font-medium uppercase tracking-wider">Students Placed</div>
+                <div className="text-base min-[1025px]:text-xl font-bold font-sora text-white">12,000+</div>
+                <div className="text-[10px] min-[1025px]:text-xs text-white/50 font-medium uppercase tracking-wider">Students Placed</div>
               </div>
             </div>
             <div className="flex items-center gap-3 text-d2c-ice">
               <div className="p-2 bg-white/5 rounded-lg border border-white/10"><Award className="w-5 h-5 text-d2c-gold" /></div>
               <div className="text-left">
-                <div className="text-base min-[903px]:text-xl font-bold font-sora text-white">150+</div>
-                <div className="text-[10px] min-[903px]:text-xs text-white/50 font-medium uppercase tracking-wider">Partner Institutions</div>
+                <div className="text-base min-[1025px]:text-xl font-bold font-sora text-white">150+</div>
+                <div className="text-[10px] min-[1025px]:text-xs text-white/50 font-medium uppercase tracking-wider">Partner Institutions</div>
               </div>
             </div>
             <div className="flex items-center gap-3 text-d2c-ice">
               <div className="p-2 bg-white/5 rounded-lg border border-white/10"><Clock className="w-5 h-5 text-d2c-success" /></div>
               <div className="text-left">
-                <div className="text-base min-[903px]:text-xl font-bold font-sora text-white">10+ Years</div>
-                <div className="text-[10px] min-[903px]:text-xs text-white/50 font-medium uppercase tracking-wider">Of Excellence</div>
+                <div className="text-base min-[1025px]:text-xl font-bold font-sora text-white">10+ Years</div>
+                <div className="text-[10px] min-[1025px]:text-xs text-white/50 font-medium uppercase tracking-wider">Of Excellence</div>
               </div>
             </div>
           </div>
@@ -63,14 +63,15 @@ export default function AboutPage() {
       <div className="content-boundary py-16 relative z-20">
         
         {/* Logo Placement in contents */}
-        <div className="flex justify-center mb-12">
-          <div className="relative w-full max-w-lg h-28 sm:h-32 flex items-center justify-center p-4 sm:p-6 shadow-sm border border-gray-100 rounded-3xl bg-white">
-            <div className="relative w-full h-full">
+        <div className="mb-16">
+          <div className="bg-d2c-navy rounded-2xl p-8 sm:p-12 flex items-center justify-center border border-white/10 shadow-xl relative overflow-hidden group">
+            <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent pointer-events-none" />
+            <div className="relative w-full max-w-lg h-20 sm:h-28 transition-transform duration-500 group-hover:scale-105">
               <Image
                 src="/logo-footer.png"
                 alt="Direct2Campus"
                 fill
-                className="object-contain object-center [filter:invert(36%)_sepia(85%)_saturate(3062%)_hue-rotate(211deg)_brightness(98%)_contrast(92%)]"
+                className="object-contain object-center"
               />
             </div>
           </div>
