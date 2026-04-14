@@ -24,13 +24,13 @@ export function MobileBottomNav() {
 
           if (link.isCenter) {
             return (
-              <Link 
+              <button 
                 key={link.label} 
-                href={link.href}
+                onClick={() => window.dispatchEvent(new CustomEvent("open-callback-modal"))}
                 className="relative -top-6 flex flex-col items-center justify-center w-14 h-14 bg-d2c-royal rounded-full text-white shadow-xl shadow-d2c-royal/30 active:scale-95 transition-transform"
               >
                 <Icon className="w-6 h-6 animate-pulse" />
-              </Link>
+              </button>
             )
           }
 

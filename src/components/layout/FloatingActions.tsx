@@ -13,8 +13,17 @@ export function FloatingActions() {
     const handleScroll = () => {
       setShowScrollTop(window.scrollY > 400)
     }
+    
+    // Listen for custom event to open callback modal
+    const handleOpenModal = () => setIsModalOpen(true)
+    
     window.addEventListener("scroll", handleScroll)
-    return () => window.removeEventListener("scroll", handleScroll)
+    window.addEventListener("open-callback-modal", handleOpenModal)
+    
+    return () => {
+      window.removeEventListener("scroll", handleScroll)
+      window.removeEventListener("open-callback-modal", handleOpenModal)
+    }
   }, [])
 
   const scrollToTop = () => {
@@ -87,12 +96,21 @@ export function FloatingActions() {
 
       {/* Mobile Floating Actions */}
       <div className="fixed bottom-24 right-4 z-40 flex flex-col gap-3 md:hidden">
-        <button
-          onClick={() => setIsModalOpen(true)}
-          className="w-14 h-14 bg-d2c-royal shadow-[0_4px_20px_rgba(30,58,138,0.4)] flex items-center justify-center text-white"
-        >
-          <PhoneCall className="w-6 h-6 fill-current" />
-        </button>
+        <AnimatePresence>
+          {showScrollTop && (
+            <motion.button
+              initial={{ opacity: 0, scale: 0.5, y: 10 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.5, y: 10 }}
+              onClick={scrollToTop}
+              className="w-14 h-14 bg-white shadow-[0_4px_20px_rgba(30,58,138,0.2)] flex items-center justify-center text-d2c-navy border border-gray-100"
+              aria-label="Scroll to top"
+            >
+              <ArrowUp className="w-6 h-6" />
+            </motion.button>
+          )}
+        </AnimatePresence>
+        
         <a
           href="https://wa.me/916200325137"
           target="_blank"
@@ -103,7 +121,7 @@ export function FloatingActions() {
         </a>
       </div>
 
-      {/* Scroll to Top */}
+      {/* Scroll to Top (Desktop Only - Kept for consistency if hidden manually elsewhere) */}
       <div className="fixed bottom-8 right-8 z-40 hidden md:flex">
         <AnimatePresence>
           {showScrollTop && (
