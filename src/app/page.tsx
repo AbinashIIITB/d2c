@@ -4,7 +4,6 @@ import { AdmissionProcedure3D } from "@/components/home/AdmissionProcedure3D"
 import { FeaturedColleges } from "@/components/home/FeaturedColleges"
 import { MidPageContact } from "@/components/home/MidPageContact"
 import { TestimonialsSection } from "@/components/home/TestimonialsSection"
-import { StatesCoverage } from "@/components/home/StatesCoverage"
 import { CTASection } from "@/components/home/CTASection"
 
 
@@ -18,7 +17,6 @@ export default function Home() {
       <FeaturedColleges />
       <MidPageContact />
       <TestimonialsSection />
-      <StatesCoverage />
       <CTASection />
     </main>
   )

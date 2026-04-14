@@ -24,7 +24,7 @@ export default function CollegesPage() {
         <div className="content-boundary relative z-10 text-center">
           <div className="inline-flex items-center gap-2 px-3 py-1.5 md:px-4 md:py-2 bg-white/10 backdrop-blur-sm border border-white/20 mb-6 md:mb-10 rounded-lg">
             <Building2 className="w-4 h-4 text-d2c-sky" />
-            <span className="text-sm font-medium tracking-wide text-white">50+ Partner Institutions</span>
+            <span className="text-sm font-medium tracking-wide text-white">{colleges.length}+ Partner Institutions</span>
           </div>
           <h1 className="text-2xl sm:text-4xl md:text-6xl lg:text-7xl font-sora font-bold tracking-tight mb-5 md:mb-8 text-balance leading-[1.1] text-white">
             Find Your{" "}
@@ -33,7 +33,7 @@ export default function CollegesPage() {
             </span>
           </h1>
           <p className="text-base md:text-xl text-d2c-ice/80 max-w-2xl mx-auto mb-8 md:mb-12 leading-relaxed font-medium">
-            Filter through India&apos;s premier engineering, medical, and management colleges and secure your seat with expert guidance.
+            Filter through India&apos;s premier engineering and medical colleges and secure your seat with expert guidance.
           </p>
 
           {/* Stats bar */}
