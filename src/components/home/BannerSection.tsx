@@ -5,9 +5,9 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 import Image from "next/image";
 
 const slides = [
-  { id: 1, image: "https://placehold.co/1200x400/1e293b/a5b4fc/png?text=Engineering+Admissions", alt: "Engineering Admissions Direct2Campus" },
-  { id: 2, image: "https://placehold.co/1200x400/0f172a/93c5fd/png?text=Medical+Admissions", alt: "Medical Admissions Direct2Campus" },
-  { id: 3, image: "https://placehold.co/1200x400/172554/93c5fd/png?text=MBA+Admissions", alt: "MBA Admissions Direct2Campus" },
+  { id: 1, image: "/banners/campus_1_new.jpg", alt: "Scenic University Campus Entrance — Direct2Campus Partner Institution" },
+  { id: 2, image: "/banners/campus_2_new.jpg", alt: "Annual Convocation Ceremony at a Partner Institution — Direct2Campus" },
+  { id: 3, image: "/banners/campus_3_new.jpg", alt: "Students at a Partner Campus — Direct2Campus" },
 ];
 
 const AUTO_INTERVAL = 5000;
@@ -98,7 +98,7 @@ export function BannerSection() {
         </div>
 
         {/* Banner — full content-boundary width */}
-        <div className="relative w-full aspect-[2.5] overflow-hidden rounded-2xl shadow-lg border border-d2c-ice">
+        <div className="relative w-full aspect-[2.17] overflow-hidden rounded-2xl shadow-lg border border-d2c-ice">
           {slides.map((slide, index) => (
             <div
               key={slide.id}

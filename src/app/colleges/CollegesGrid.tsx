@@ -1,6 +1,7 @@
 "use client"
 
-import { useState, useMemo } from "react"
+import { useState, useMemo, useEffect } from "react"
+import { useSearchParams } from "next/navigation"
 import Link from "next/link"
 import { MapPin, Search, Star, Building2, ArrowUpRight, ChevronRight, Filter } from "lucide-react"
 import { motion, AnimatePresence } from "framer-motion"
@@ -8,7 +9,16 @@ import { CollegeCard } from "@/components/ui/CollegeCard"
 import { AutoSuggestSearch } from "@/components/ui/AutoSuggestSearch"
 import { College } from "@/lib/data"
 
+// Map URL param values to filter values
+const TYPE_TO_DEPT: Record<string, string> = {
+  engineering: "Engineering",
+  medical: "Medical",
+  management: "Management",
+}
+
 export function CollegesGrid({ initialColleges }: { initialColleges: College[] }) {
+  const searchParams = useSearchParams()
+
   const [search, setSearch] = useState("")
   const [selectedDept, setSelectedDept] = useState("All Colleges")
   const [selectedState, setSelectedState] = useState("All States")
@@ -20,6 +30,24 @@ export function CollegesGrid({ initialColleges }: { initialColleges: College[] }
     })
     return Array.from(new Set(states)).sort()
   }, [initialColleges])
+
+  // Read URL query params and set filters
+  useEffect(() => {
+    const typeParam = searchParams.get("type")
+    if (typeParam && TYPE_TO_DEPT[typeParam.toLowerCase()]) {
+      setSelectedDept(TYPE_TO_DEPT[typeParam.toLowerCase()])
+    }
+
+    const stateParam = searchParams.get("state")
+    if (stateParam) {
+      // Match slug (e.g. "west-bengal") or plain name against available states
+      const normalized = stateParam.toLowerCase().replace(/-/g, " ")
+      const match = uniqueStates.find((s) => s.toLowerCase() === normalized)
+      if (match) {
+        setSelectedState(match)
+      }
+    }
+  }, [searchParams, uniqueStates])
 
   const filteredColleges = initialColleges.filter((col) => {
     // 1. Search Query

@@ -46,13 +46,9 @@ export function CollegeCard({ college }: { college: College }) {
         <h3 className="text-xl font-sora font-bold text-d2c-navy mb-3 line-clamp-2 leading-tight group-hover:text-d2c-royal transition-colors duration-300">
           {college.name}
         </h3>
-        
-        <p className="text-sm text-slate-500 line-clamp-2 mb-6 font-inter leading-relaxed opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-          {college.description}
-        </p>
 
         {/* Action Button Area */}
-        <div className="mt-auto pt-5 border-t border-slate-50 flex items-center justify-between">
+        <div className="mt-auto pt-4 border-t border-slate-50 flex items-center justify-between">
           <span className="text-sm font-bold text-d2c-royal font-inter">
             Explore Admission
           </span>

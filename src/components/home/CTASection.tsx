@@ -15,8 +15,8 @@ export function CTASection() {
       <div className="absolute top-0 right-0 w-[800px] h-[800px] bg-d2c-sky/5 rounded-full blur-[120px] -translate-y-1/2 translate-x-1/4" />
       <div className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-d2c-gold/5 rounded-full blur-[100px] translate-y-1/2 -translate-x-1/4" />
 
-      <div className="mx-auto max-w-[80%] relative z-10">
-        <div className="relative group overflow-hidden rounded-[3rem] bg-d2c-navy p-10 md:p-20 shadow-[0_32px_64px_-16px_rgba(2,6,23,0.4)] border border-white/5">
+      <div className="mx-auto max-w-[95%] sm:max-w-[90%] md:max-w-[80%] relative z-10">
+        <div className="relative group overflow-hidden rounded-[2rem] sm:rounded-[3rem] bg-d2c-navy p-6 sm:p-10 md:p-20 shadow-[0_32px_64px_-16px_rgba(2,6,23,0.4)] border border-white/5">
           
           {/* ── 3D GRAPHIC BACKGROUND ── */}
           <div className="absolute top-0 right-0 w-full h-full pointer-events-none overflow-hidden opacity-40 group-hover:opacity-60 transition-opacity duration-1000">
@@ -70,7 +70,7 @@ export function CTASection() {
               <Link
                 href="https://wa.me/916200325137"
                 target="_blank"
-                className="w-full sm:w-auto flex items-center justify-center gap-3 px-10 py-5 bg-[#25D366] hover:bg-[#20BD5A] text-white font-bold text-lg rounded-2xl transition-all duration-300 shadow-[0_20px_40px_-10px_rgba(37,211,102,0.3)] hover:shadow-[0_25px_50px_-12px_rgba(37,211,102,0.5)] transform hover:-translate-y-1"
+                className="w-full sm:w-auto flex items-center justify-center gap-2 sm:gap-3 px-6 sm:px-10 py-3.5 sm:py-5 bg-[#25D366] hover:bg-[#20BD5A] text-white font-bold text-sm sm:text-lg rounded-xl sm:rounded-2xl transition-all duration-300 shadow-[0_20px_40px_-10px_rgba(37,211,102,0.3)] hover:shadow-[0_25px_50px_-12px_rgba(37,211,102,0.5)] transform hover:-translate-y-1"
               >
                 <MessageCircle className="w-6 h-6 fill-white" />
                 WhatsApp Now
@@ -79,7 +79,7 @@ export function CTASection() {
 
               <Link
                 href="/contact"
-                className="w-full sm:w-auto flex items-center justify-center gap-3 px-10 py-5 bg-white/5 hover:bg-white/10 text-white font-semibold text-lg rounded-2xl border border-white/10 backdrop-blur-md transition-all duration-300 hover:-translate-y-1"
+                className="w-full sm:w-auto flex items-center justify-center gap-2 sm:gap-3 px-6 sm:px-10 py-3.5 sm:py-5 bg-white/5 hover:bg-white/10 text-white font-semibold text-sm sm:text-lg rounded-xl sm:rounded-2xl border border-white/10 backdrop-blur-md transition-all duration-300 hover:-translate-y-1"
               >
                 <PhoneCall className="w-5 h-5" />
                 Request Callback
