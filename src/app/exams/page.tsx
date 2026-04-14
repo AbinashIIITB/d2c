@@ -2,7 +2,7 @@ import { Metadata } from "next"
 import { ExamsList } from "./ExamsList"
 import { exams } from "@/lib/data"
 import { HeroBackground } from "@/components/ui/HeroBackground"
-import { BookOpen, GraduationCap, FileText } from "lucide-react"
+import { BookOpen, GraduationCap, FileText, Clock } from "lucide-react"
 
 export const metadata: Metadata = {
   title: "Engineering & Medical Entrance Exams | Direct2Campus",
