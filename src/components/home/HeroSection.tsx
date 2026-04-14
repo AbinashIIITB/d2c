@@ -37,13 +37,13 @@ export function HeroSection() {
       {/* ── Geometric Background ── */}
       <HeroBackground bottomOffsetClass="bottom-24 sm:bottom-36 lg:bottom-40" />
 
-      {/* ── Mobile-only Background Image ── */}
-      <div className="lg:hidden absolute inset-0 -z-10">
+      {/* ── Background Image (Mobile & Desktop) ── */}
+      <div className="absolute inset-0 -z-10">
         <Image
           src="/images/hero-graduation-bg.png"
           alt="Graduating students celebrating"
           fill
-          className="object-cover object-center opacity-[0.12]"
+          className="object-cover object-center opacity-[0.12] lg:opacity-[0.08]"
           priority
         />
         {/* Gradient overlay for text readability */}
@@ -184,7 +184,7 @@ export function HeroSection() {
                 <span className="text-d2c-solid-blue">Verified Experts</span>
               </h1>
 
-              <p className="text-[17px] text-d2c-ice/80 mb-8 font-medium max-w-lg leading-snug">
+              <p className="text-[17px] text-d2c-ice/80 mb-8 font-medium max-w-lg leading-snug lg:max-[1046px]:hidden">
                 Compare colleges, check eligibility, and secure your seat with expert counselling. Your path to a premium education simplified.
               </p>
             </div>
@@ -269,7 +269,7 @@ export function HeroSection() {
       </div>
 
       {/* ── Trust Badges Floating Card — desktop only (mobile is inline above) ── */}
-      <div className="hidden sm:flex absolute bottom-16 lg:bottom-20 left-0 right-0 mx-auto translate-y-1/2 z-30 w-full content-boundary pointer-events-auto justify-center">
+      <div className="hidden lg:flex absolute bottom-16 lg:bottom-20 left-0 right-0 mx-auto translate-y-1/2 z-30 w-full content-boundary pointer-events-auto justify-center">
         <div className="bg-white rounded-2xl shadow-[0_8px_40px_rgba(0,0,0,0.12)] w-full px-6 md:px-10 py-3 md:py-5 flex items-center justify-center gap-8 md:gap-16 lg:gap-24">
           {/* Stat 1 */}
           <div className="flex items-center gap-3">

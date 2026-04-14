@@ -12,7 +12,6 @@ import {
   ClipboardList, 
   Award, 
   Users, 
-  Images, 
   HelpCircle,
   GraduationCap,
   Star,
@@ -30,7 +29,6 @@ import {
 import { colleges } from "@/lib/data"
 import { AnimatedPatternBg } from "@/components/ui/AnimatedPatternBg"
 import { ScrollSpyTOC, FloatingMobileTOC } from "@/components/ui/ScrollSpyTOC"
-import { ImageGallery } from "@/components/ui/image-gallery"
 import { CollegeEnquiryForm } from "@/components/ui/CollegeEnquiryForm"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
@@ -65,7 +63,6 @@ const sections = [
   { id: "infrastructure", label: "Infrastructure", iconName: "Building2" },
   { id: "scholarships", label: "Scholarships", iconName: "Award" },
   { id: "alumni", label: "Alumni", iconName: "Users" },
-  { id: "gallery", label: "Gallery", iconName: "Images" },
   { id: "faqs", label: "FAQs", iconName: "HelpCircle" },
 ]
 
@@ -187,7 +184,7 @@ export default async function CollegeDetailPage({ params }: { params: Params }) 
                     <p className="text-[11px] font-bold uppercase tracking-[0.1em] text-white/40">Programs</p>
                   </div>
                   <div className="flex flex-col items-center justify-center py-6 px-4 bg-[#0B1120]/60 backdrop-blur-sm text-center">
-                    <p className="text-2xl md:text-3xl font-bold font-sora text-[#60A5FA] mb-1">{college.fees}</p>
+                    <p className="text-2xl md:text-3xl font-bold font-sora text-[#60A5FA] mb-1">{college.fees || "N/A"}</p>
                     <p className="text-[11px] font-bold uppercase tracking-[0.1em] text-white/40">Starting Fee</p>
                   </div>
                 </>
@@ -526,24 +523,6 @@ export default async function CollegeDetailPage({ params }: { params: Params }) 
                 )}
               </div>
             </section>
-
-            {/* ────────────── GALLERY ────────────── */}
-            {college.galleryImages && college.galleryImages.length > 0 && (
-              <section id="gallery" className="scroll-mt-28">
-                <div className="bg-white rounded-[1.25rem] p-8 md:p-10 shadow-[0_1px_3px_rgba(0,0,0,0.04)]">
-                  <div className="flex items-center gap-3.5 mb-8">
-                    <div className="p-3 rounded-xl bg-rose-500/[0.08]">
-                      <Images className="w-6 h-6 text-rose-600" />
-                    </div>
-                    <div>
-                      <h2 className="text-2xl font-sora font-bold text-[#131b2e] tracking-[-0.01em]">Campus Gallery</h2>
-                      <p className="text-sm text-[#76777d] mt-0.5">Take a virtual tour of the campus</p>
-                    </div>
-                  </div>
-                  <ImageGallery images={college.galleryImages} collegeName={college.name} />
-                </div>
-              </section>
-            )}
 
             {/* ────────────── FAQs ────────────── */}
             <section id="faqs" className="scroll-mt-28">

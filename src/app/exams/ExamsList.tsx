@@ -5,14 +5,7 @@ import Link from "next/link"
 import { Search, GraduationCap, ChevronRight, ArrowUpRight, BookOpen } from "lucide-react"
 import { motion, AnimatePresence } from "framer-motion"
 import { AutoSuggestSearch } from "@/components/ui/AutoSuggestSearch"
-
-type Exam = {
-  id: number
-  title: string
-  description: string
-  logoUrl: string
-  link: string
-}
+import { Exam } from "@/lib/data"
 
 const ACCENT_COLORS = [
   { from: "from-blue-600", to: "to-indigo-700", bg: "bg-blue-50", text: "text-blue-700", border: "border-blue-100" },
@@ -27,7 +20,7 @@ export function ExamsList({ initialExams }: { initialExams: Exam[] }) {
   const [search, setSearch] = useState("")
 
   const filteredExams = initialExams.filter(exam => 
-    exam.title.toLowerCase().includes(search.toLowerCase())
+    exam.name.toLowerCase().includes(search.toLowerCase())
   )
 
   return (
@@ -61,7 +54,7 @@ export function ExamsList({ initialExams }: { initialExams: Exam[] }) {
                   transition={{ duration: 0.3 }}
                 >
                   <Link 
-                    href={exam.link}
+                    href={`/exams/${exam.slug}`}
                     className="group relative block bg-white border border-gray-100 overflow-hidden transition-all duration-500 hover:shadow-[0_20px_60px_-15px_rgba(27,31,94,0.12)] hover:-translate-y-1 h-full"
                   >
                     {/* Top accent gradient bar */}
@@ -73,13 +66,13 @@ export function ExamsList({ initialExams }: { initialExams: Exam[] }) {
                         <div className={`w-16 h-16 ${accent.bg} ${accent.border} border p-2.5 flex items-center justify-center shrink-0 group-hover:shadow-md transition-shadow duration-300`}>
                           <img 
                             src={exam.logoUrl} 
-                            alt={`${exam.title} Logo`}
+                            alt={`${exam.name} Logo`}
                             className="max-w-full max-h-full object-contain"
                           />
                         </div>
                         <div className="flex-1 min-w-0">
                           <h3 className={`text-xl font-sora font-bold text-d2c-navy group-hover:${accent.text} transition-colors duration-300 mb-1`}>
-                            {exam.title}
+                            {exam.name}
                           </h3>
                           <div className={`inline-flex items-center gap-1 text-xs font-semibold ${accent.text} ${accent.bg} px-2 py-0.5`}>
                             <BookOpen className="w-3 h-3" />

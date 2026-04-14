@@ -1,4 +1,5 @@
 import { HeroSection } from "@/components/home/HeroSection"
+import { TrustFeatures } from "@/components/home/TrustFeatures"
 import { BannerSection } from "@/components/home/BannerSection"
 import { AdmissionProcedure3D } from "@/components/home/AdmissionProcedure3D"
 import { FeaturedColleges } from "@/components/home/FeaturedColleges"
@@ -11,6 +12,7 @@ export default function Home() {
   return (
     <main className="flex min-h-screen flex-col">
       <HeroSection />
+      <TrustFeatures />
       <BannerSection />
       <AdmissionProcedure3D />
 

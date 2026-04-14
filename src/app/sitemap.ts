@@ -1,8 +1,7 @@
 import { MetadataRoute } from "next"
 
 // Data imports for dynamic routing
-import { colleges } from "@/lib/data"
-import examsData from "@/data/exams.json"
+import { colleges, exams } from "@/lib/data"
 import blogPosts from "@/data/blog.json"
 
 export default function sitemap(): MetadataRoute.Sitemap {
@@ -35,8 +34,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
   }))
 
   // Dynamic Exam Routes
-  const examRoutes = examsData.map((exam) => ({
-    url: `${baseUrl}${exam.link}`,
+  const examRoutes = exams.map((exam) => ({
+    url: `${baseUrl}/exams/${exam.slug}`,
     lastModified: new Date(),
     changeFrequency: "weekly" as const,
     priority: 0.9,

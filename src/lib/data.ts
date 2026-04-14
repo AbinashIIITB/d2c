@@ -7,14 +7,14 @@ export interface College {
     state: string;
     rating: number;
     reviews: number;
-    fees: string;
+    fees?: string;
     courses: string[];
     type: "Private" | "Government" | "Deemed";
     description?: string;
     imageUrl?: string;
     logoUrl?: string;
     coverUrl?: string;
-    tags: string[];
+    tags?: string[];
     established?: string;
     about?: string;
     highlights?: string[];
@@ -113,6 +113,7 @@ export interface College {
         stipend: string;
     };
     facultyDepartments?: string[];
+    admissionProcess?: string[];
 }
 
 export interface Exam {
@@ -148,6 +149,339 @@ export type MedicalCollege = College;
 // --- Colleges Data (Preserved 28 items) ---
 export const colleges: College[] = [
 {
+        id: "1",
+        slug: "iem-salt-lake",
+        name: "Institute of Engineering & Management (Salt Lake)",
+        location: "Salt Lake, Kolkata",
+        state: "West Bengal",
+        rating: 4.5,
+        reviews: 1850,
+        fees: "₹ 7.65L - 8.70L Total",
+        courses: ["B.Tech", "M.Tech", "MBA", "BCA", "MCA"],
+        type: "Private",
+        tags: ["Top Ranked", "Best Placements", "NAAC A Grade"],
+        logoUrl: "/footer-logo.jpg",
+        established: "1989",
+        description: "Premier private engineering college in Kolkata known for strict academic discipline and excellent placements.",
+        imageUrl: "/images/colleges/iem-salt-lake.jpg",
+        about: "Institute of Engineering & Management (IEM) is a premier private engineering college in Kolkata, established in 1989. It is one of the oldest and most reputed private engineering colleges in West Bengal, known for its strict academic discipline, excellent placement records, and strong alumni network. The institute is affiliated to MAKAUT (Maulana Abul Kalam Azad University of Technology) and approved by AICTE. The institute emphasizes a holistic development approach, encouraging students to participate in technical fests, hackathons, and research projects. With a curriculum designed to meet industry 4.0 standards, students are trained in emerging technologies like AI, ML, and IoT. The campus provides a vibrant atmosphere with various clubs and societies for extracurricular activities.",
+        highlights: ["NAAC 'A' Grade Accredited", "NIRF Ranked Institution", "Oldest Private Engineering College in West Bengal (Est. 1989)", "Located in Salt Lake IT Hub", "1054+ Students Placed in 2024", "₹32 LPA Highest Package", "Experienced Faculty", "Modern Infrastructure", "Holistic Development", "Industry-Ready Curriculum"],
+        infrastructure: ["3 Campuses located in the IT Hub of Salt Lake", "State-of-the-art Innovation & IoT Labs", "AI/ML Research Center", "Digital Library with IEEE/ACM/Springer Access", "Smart Classrooms with Projectors", "Separate Boys and Girls Hostels", "Cafeteria and Food Court", "Sports Facilities including Cricket, Football, Basketball"],
+        cutoffs: [
+            { title: "WBJEE Cutoff 2024", table: [{ label: "CSE", value: "Rank 3287 - 6398" }, { label: "IT", value: "Rank 4000 - 7500" }, { label: "ECE", value: "Rank 5500 - 9000" }, { label: "EE", value: "Rank 8000 - 15000" }], description: "Primary admission through WBJEE counseling." },
+            { title: "JEE Main Cutoff 2024", table: [{ label: "CSE", value: "Percentile 85-92" }, { label: "IT", value: "Percentile 80-88" }], description: "Limited seats available through JEE Main." }
+        ],
+        coursesDetails: [
+            { name: "Computer Science and Engineering", duration: "4 Years", type: "B.Tech" },
+            { name: "Information Technology", duration: "4 Years", type: "B.Tech" },
+            { name: "Electronics & Communication Engineering", duration: "4 Years", type: "B.Tech" },
+            { name: "Electrical Engineering", duration: "4 Years", type: "B.Tech" },
+            { name: "Mechanical Engineering", duration: "4 Years", type: "B.Tech" },
+            { name: "Computer Science and Engineering", duration: "2 Years", type: "M.Tech" },
+            { name: "Master of Business Administration", duration: "2 Years", type: "MBA" },
+            { name: "Bachelor of Computer Applications", duration: "3 Years", type: "BCA" },
+            { name: "Master of Computer Applications", duration: "2 Years", type: "MCA" }
+        ],
+        feesDetails: [
+            { title: "B.Tech Fee Structure (2024-25)", items: [{ label: "1st Year Fees", value: "₹2.0 - 2.5 Lakhs" }, { label: "Total B.Tech (4 Years)", value: "₹7.65 - 8.70 Lakhs" }], note: "Excludes hostel and mess charges. Fees vary by branch." },
+            { title: "Hostel Fees", items: [{ label: "Annual Hostel Fee", value: "₹70,000 - 90,000" }, { label: "Mess Charges (Annual)", value: "₹48,000 - 55,000" }], note: "Separate hostels for boys and girls." }
+        ],
+        placements: {
+            stats: [{ label: "Highest Package", value: "₹32 LPA" }, { label: "Average Package", value: "₹6.5 LPA" }, { label: "Median Package", value: "₹5.2 LPA" }, { label: "Placement Rate", value: "95%+" }],
+            highlights: ["Consistent placement record for over 35 years", "Multiple offers for top performers", "Pre-placement offers from internships", "Strong alumni referral network"],
+            topRecruiters: [
+                { category: "Tech Giants", companies: ["Amazon", "Microsoft", "Google", "Flipkart"] },
+                { category: "IT Services", companies: ["TCS", "Cognizant", "Wipro", "Infosys", "Capgemini", "Accenture"] },
+                { category: "Product Companies", companies: ["Zoho", "Freshworks", "Thoughtworks", "Mindtree"] }
+            ]
+        },
+        admissions: {
+            process: [
+                "Appear for WBJEE / JEE Main entrance exam",
+                "Check cutoff ranks and eligibility on official website",
+                "Register for WBJEE Counseling or apply through JEE Main quota",
+                "Fill college preference order during counseling",
+                "Attend document verification upon seat allotment",
+                "Pay admission fees and confirm seat"
+            ],
+            eligibility: [
+                "Passed 10+2 with Physics, Chemistry and Mathematics",
+                "Minimum 60% aggregate marks in PCM (55% for reserved categories)",
+                "Valid WBJEE or JEE Main score",
+                "Age requirement: 17 years as of December 31st of admission year"
+            ],
+            documents: [
+                "10th and 12th Marksheets and Certificates",
+                "WBJEE/JEE Main Scorecard and Rank Card",
+                "Domicile Certificate (for WB candidates)",
+                "Category Certificate (if applicable)",
+                "Transfer Certificate from previous institution",
+                "Passport size photographs (8-10 copies)",
+                "Aadhaar Card"
+            ]
+        },
+        keyDates: [
+            { event: "WBJEE Registration", date: "December 2025" },
+            { event: "WBJEE Exam", date: "April 2026" },
+            { event: "WBJEE Result", date: "June 2026" },
+            { event: "Counseling Starts", date: "July 2026" },
+            { event: "Classes Begin", date: "August 2026" }
+        ],
+        whyChoose: [
+            "35+ years of academic excellence and industry reputation",
+            "Located in the heart of Salt Lake IT Hub with proximity to major IT companies",
+            "Strong placement record with 95%+ placement rate consistently",
+            "NAAC 'A' Grade accreditation ensuring quality education",
+            "Modern infrastructure with AI/ML labs, IoT center, and digital library",
+            "Active alumni network spanning across global tech companies",
+            "Industry partnerships for internships and live projects"
+        ],
+        scholarships: [
+            { title: "Merit Scholarships", items: [{ label: "WBJEE Rank < 1000", value: "50% Tuition Fee Waiver" }, { label: "WBJEE Rank < 3000", value: "25% Tuition Fee Waiver" }] },
+            { title: "TFW Scheme", items: [{ label: "Tuition Fee Waiver", value: "Full Tuition Fee Waived" }] }
+        ],
+        alumni: {
+            description: "IEM boasts a strong alumni network of 20,000+ graduates working in leading companies worldwide. Alumni actively participate in campus recruitment, mentorship, and guest lectures.",
+            companies: ["Google", "Amazon", "Microsoft", "Goldman Sachs", "JP Morgan", "TCS", "Infosys", "Wipro"],
+            achievements: ["Multiple IEM alumni in leadership positions at Fortune 500 companies", "Several successful startup founders from IEM", "Active IEM Alumni Association with annual meets"]
+        },
+        compare: [
+            { parameter: "NIRF Rank Band", thisCollege: "101-150", competitor1: "76-100 (Heritage)", competitor2: "151-200 (TINT)" },
+            { parameter: "Highest Package", thisCollege: "₹32 LPA", competitor1: "₹28 LPA", competitor2: "₹20 LPA" },
+            { parameter: "Average Package", thisCollege: "₹6.5 LPA", competitor1: "₹5.8 LPA", competitor2: "₹5.0 LPA" },
+            { parameter: "Total Fees (4 Years)", thisCollege: "₹8.5 Lakhs", competitor1: "₹9 Lakhs", competitor2: "₹7 Lakhs" }
+        ],
+        faqs: [
+            { question: "Is IEM Kolkata a good college?", answer: "Yes, IEM is one of the top private engineering colleges in West Bengal with NAAC 'A' grade accreditation, strong placements (95%+), and a legacy of 35+ years." },
+            { question: "What is the fee structure of IEM?", answer: "The total B.Tech fee at IEM is approximately ₹8.4 - 8.65 Lakhs for 4 years, excluding hostel and mess charges." },
+            { question: "What is the WBJEE cutoff for IEM CSE?", answer: "The WBJEE cutoff for CSE at IEM typically ranges from Rank 3287 to 6398 depending on the year and category." },
+            { question: "Does IEM have hostels?", answer: "Yes, IEM has separate hostels for boys and girls with modern facilities. Hostel fees are around ₹70,000 - 90,000 per year." },
+            { question: "What companies visit IEM for placements?", answer: "Top recruiters include Amazon, Microsoft, TCS, Cognizant, Wipro, Infosys, Capgemini, Accenture, Zoho, and many more." }, { question: "Does the college provide internship support?", answer: "Yes, the college has a dedicated placement cell that assists students in securing summer internships and industrial training." }, { question: "Is there a dedicated placement cell?", answer: "Yes, the Training and Placement Cell works year-round to bring top companies for recruitment and trains students in soft skills." }, { question: "Are there hostel facilities available?", answer: "Yes, separate hostel facilities are available for boys and girls with all necessary amenities and security." }
+        ],
+        galleryImages: [
+            { url: "https://placehold.co/800x600/1e293b/fff?text=Campus+View", alt: "Campus View" },
+            { url: "https://placehold.co/800x600/1e293b/fff?text=Library", alt: "Library" },
+            { url: "https://placehold.co/800x600/1e293b/fff?text=Laboratories", alt: "Laboratories" },
+            { url: "https://placehold.co/800x600/1e293b/fff?text=Hostel", alt: "Student Hostel" }
+        ],
+        whyChooseAkashTalks: [
+            "Direct admission assistance without any hidden charges",
+            "Expert guidance on WBJEE counseling and seat allocation",
+            "Transparent fee structure information and scholarship guidance",
+            "Personalized career counseling to choose the right branch",
+            "End-to-end support from application to admission confirmation",
+            "Access to exclusive student reviews and insider tips",
+            "Post-admission support for hostel and documentation"
+        ]
+    }, {
+        id: "2",
+        slug: "techno-india-salt-lake",
+        name: "Techno India Main Salt Lake",
+        location: "Salt Lake, Kolkata",
+        state: "West Bengal",
+        rating: 4.2,
+        reviews: 1420,
+        fees: "₹ 4L - 6L Total",
+        courses: ["B.Tech", "M.Tech", "BBA", "MBA", "MCA"],
+        type: "Private",
+        tags: ["Industry Connect", "NAAC Accredited", "Affordable"],
+        logoUrl: "/footer-logo.jpg",
+        established: "2001",
+        description: "Leading private engineering college in Salt Lake with strong industry connections and excellent placement record.",
+        imageUrl: "/images/colleges/techno-india-salt-lake.png",
+        about: "Techno India Salt Lake is one of the flagship institutes of the Techno India Group, established in 2001. Located in the heart of Salt Lake City, it offers a wide range of undergraduate and postgraduate programs in engineering, management, and computer applications. The college is known for its affordable fee structure and strong industry connections. The institute emphasizes a holistic development approach, encouraging students to participate in technical fests, hackathons, and research projects. With a curriculum designed to meet industry 4.0 standards, students are trained in emerging technologies like AI, ML, and IoT. The campus provides a vibrant atmosphere with various clubs and societies for extracurricular activities.",
+        highlights: ["NAAC Accredited", "Part of Techno India Group", "Affordable Fee Structure", "Strong Industry Connections", "Modern Campus in Salt Lake", "Experienced Faculty", "Modern Infrastructure", "Holistic Development", "Industry-Ready Curriculum"],
+        infrastructure: ["Modern Campus with IT Labs", "Well-equipped Libraries", "Seminar Halls", "Sports Facilities", "Cafeteria"],
+        cutoffs: [{ title: "WBJEE Cutoff 2024", table: [{ label: "CSE", value: "Rank 8000 - 15000" }, { label: "IT", value: "Rank 10000 - 18000" }, { label: "ECE", value: "Rank 12000 - 20000" }], description: "Admission through WBJEE counseling." }],
+        coursesDetails: [
+            { name: "Computer Science and Engineering", duration: "4 Years", type: "B.Tech" },
+            { name: "Information Technology", duration: "4 Years", type: "B.Tech" },
+            { name: "Electronics & Communication Engineering", duration: "4 Years", type: "B.Tech" },
+            { name: "Electrical Engineering", duration: "4 Years", type: "B.Tech" },
+            { name: "Master of Business Administration", duration: "2 Years", type: "MBA" }
+        ],
+        feesDetails: [{ title: "B.Tech Fee Structure (2024-25)", items: [{ label: "Annual Fee", value: "₹1 - 1.5 Lakhs" }, { label: "Total B.Tech (4 Years)", value: "₹4.02 - 6 Lakhs" }], note: "Affordable options available in Kolkata depending on branch." }],
+        placements: {
+            stats: [{ label: "Highest Package", value: "₹18 LPA" }, { label: "Average Package", value: "₹4.5 LPA" }, { label: "Placement Rate", value: "85%+" }],
+            highlights: ["Strong IT sector placements", "Regular campus drives"],
+            topRecruiters: [{ category: "IT Companies", companies: ["TCS", "Wipro", "Infosys", "Cognizant", "Capgemini"] }]
+        },
+        admissions: {
+            process: ["Appear for WBJEE", "Participate in counseling", "Document verification", "Fee payment"],
+            eligibility: ["10+2 with PCM", "Valid WBJEE score"],
+            documents: ["10th & 12th Marksheets", "WBJEE Rank Card", "Category Certificate"]
+        },
+        keyDates: [{ event: "WBJEE Counseling", date: "July 2026" }, { event: "Classes Begin", date: "August 2026" }],
+        whyChoose: ["Affordable fee structure", "Salt Lake location with IT hub proximity", "Part of established Techno India Group", "Good placement support"],
+        scholarships: [{ title: "Merit Scholarship", items: [{ label: "Top WBJEE Rankers", value: "Up to 30% fee waiver" }] }],
+        alumni: { description: "Strong network of Techno India alumni working in IT companies across India.", companies: ["TCS", "Wipro", "Infosys", "Cognizant", "Capgemini"] },
+        compare: [{ parameter: "Average Package", thisCollege: "₹4.5 LPA", competitor1: "₹6.5 LPA (IEM)", competitor2: "₹5.8 LPA (Heritage)" }, { parameter: "Total Fees (4 Years)", thisCollege: "₹4-5.2 Lakhs", competitor1: "₹8.5 Lakhs (IEM)", competitor2: "₹8-9 Lakhs (Heritage)" }],
+        faqs: [
+            { question: "Is Techno India Salt Lake good for CSE?", answer: "Yes, it offers quality CSE education at an affordable price with decent placements in IT companies." },
+            { question: "What is the fee at Techno India?", answer: "The annual fee is around ₹1-1.3 Lakhs, making it one of the most affordable options." }, { question: "Does the college provide internship support?", answer: "Yes, the college has a dedicated placement cell that assists students in securing summer internships and industrial training." }, { question: "Is there a dedicated placement cell?", answer: "Yes, the Training and Placement Cell works year-round to bring top companies for recruitment and trains students in soft skills." }, { question: "Are there hostel facilities available?", answer: "Yes, separate hostel facilities are available for boys and girls with all necessary amenities and security." }
+        ],
+        galleryImages: [
+            { url: "https://placehold.co/800x600/1e293b/fff?text=Campus+View", alt: "Campus View" },
+            { url: "https://placehold.co/800x600/1e293b/fff?text=Library", alt: "Library" },
+            { url: "https://placehold.co/800x600/1e293b/fff?text=Laboratories", alt: "Laboratories" },
+            { url: "https://placehold.co/800x600/1e293b/fff?text=Hostel", alt: "Student Hostel" }
+        ],
+        whyChooseAkashTalks: ["Expert counseling for WBJEE admissions", "Transparent fee guidance", "Scholarship assistance", "Complete admission support", "Post-admission hostel help", "Post-admission support for hostel and documentation", "Guidance on scholarship applications and education loans", "Zero hidden charges policy"]
+    }, {
+        id: "wb-3",
+        slug: "haldia-institute-of-technology",
+        name: "Haldia Institute of Technology",
+        location: "Haldia, West Bengal",
+        state: "West Bengal",
+        rating: 4.0,
+        reviews: 1200,
+        fees: "₹ 5.82L Total",
+        courses: ["B.Tech", "MBA"],
+        type: "Private",
+        tags: ["Oldest Private College", "Core Placements", "Large Campus"],
+        established: "1996",
+        description: "First private engineering college in West Bengal with massive campus and strong core engineering placements.",
+        imageUrl: "/images/colleges/haldia-institute-of-technology.jpg",
+        about: "Haldia Institute of Technology (HIT) was established in 1996 and is the first self-financing engineering college in West Bengal. Located in the industrial hub of Haldia, it offers excellent exposure to core industries like petrochemicals, refineries, and manufacturing. The institute has a sprawling 60-acre campus. The institute emphasizes a holistic development approach, encouraging students to participate in technical fests, hackathons, and research projects. With a curriculum designed to meet industry 4.0 standards, students are trained in emerging technologies like AI, ML, and IoT. The campus provides a vibrant atmosphere with various clubs and societies for extracurricular activities.",
+        highlights: ["First Private Engineering College in WB (1996)", "60-acre Campus", "Strong Core Engineering Focus", "Industrial Location in Haldia", "Good for Mechanical, Chemical, Civil Engineering", "Experienced Faculty", "Modern Infrastructure", "Holistic Development", "Industry-Ready Curriculum"],
+        infrastructure: ["60-acre Campus", "Central Library", "Hostels for Boys and Girls", "Workshops and Labs", "Sports Ground"],
+        cutoffs: [{ title: "WBJEE Cutoff 2024", table: [{ label: "CSE", value: "Rank 15000 - 25000" }, { label: "Mechanical", value: "Rank 20000 - 35000" }], description: "Lower cutoffs due to location." }],
+        coursesDetails: [
+            { name: "Computer Science and Engineering", duration: "4 Years", type: "B.Tech" },
+            { name: "Mechanical Engineering", duration: "4 Years", type: "B.Tech" },
+            { name: "Civil Engineering", duration: "4 Years", type: "B.Tech" },
+            { name: "Chemical Engineering", duration: "4 Years", type: "B.Tech" },
+            { name: "Electrical Engineering", duration: "4 Years", type: "B.Tech" }
+        ],
+        feesDetails: [{ title: "B.Tech Fee Structure (2024-25)", items: [{ label: "1st Year Fees", value: "₹93,950 (1st Sem) + ₹68,750 (2nd Sem)" }, { label: "Total B.Tech (4 Years)", value: "₹5.82 Lakhs (approx)" }], note: "Excluding hostel. With hostel ~₹6.83 Lakhs" }],
+        placements: {
+            stats: [{ label: "Highest Package", value: "₹12 LPA" }, { label: "Average Package", value: "₹4 LPA" }, { label: "Placement Rate", value: "75%+" }],
+            highlights: ["Strong core sector placements", "Good for petrochemical and manufacturing jobs"],
+            topRecruiters: [{ category: "Core Companies", companies: ["IOCL", "HPCL", "L&T", "Tata Steel", "Jindal"] }]
+        },
+        admissions: { process: ["WBJEE counseling", "Document verification", "Fee payment"], eligibility: ["10+2 with PCM", "Valid WBJEE score"], documents: ["Marksheets", "WBJEE Rank Card"] },
+        keyDates: [{ event: "WBJEE Counseling", date: "July 2026" }, { event: "Classes Begin", date: "August 2026" }],
+        whyChoose: ["Affordable fees", "Industrial location", "Strong core placements", "Large campus"],
+        scholarships: [{ title: "Merit Scholarship", items: [{ label: "Merit Students", value: "Up to 25% fee waiver" }] }, { title: "TFW Scheme", items: [{ label: "Tuition Fee Waiver", value: "Full Tuition Fee Waived" }] }],
+        alumni: { description: "HIT alumni work in major core sector companies across India.", companies: ["IOCL", "HPCL", "L&T", "Tata Steel", "ONGC", "NTPC"] },
+        compare: [{ parameter: "Strength", thisCollege: "Core Engineering Focus", competitor1: "IT Focus (IEM)", competitor2: "IT Focus (Techno India)" }, { parameter: "Total Fees (4 Years)", thisCollege: "₹4-5 Lakhs", competitor1: "₹8.5 Lakhs (IEM)", competitor2: "₹4-5.2 Lakhs (Techno India)" }],
+        faqs: [{ question: "Is HIT good for core branches?", answer: "Yes, HIT is excellent for Mechanical, Chemical, and Civil Engineering with good industrial exposure." }, { question: "Does the college provide internship support?", answer: "Yes, the college has a dedicated placement cell that assists students in securing summer internships and industrial training." }, { question: "Is there a dedicated placement cell?", answer: "Yes, the Training and Placement Cell works year-round to bring top companies for recruitment and trains students in soft skills." }, { question: "Are there hostel facilities available?", answer: "Yes, separate hostel facilities are available for boys and girls with all necessary amenities and security." }],
+        galleryImages: [
+            { url: "https://placehold.co/800x600/1e293b/fff?text=Campus+View", alt: "Campus View" },
+            { url: "https://placehold.co/800x600/1e293b/fff?text=Library", alt: "Library" },
+            { url: "https://placehold.co/800x600/1e293b/fff?text=Laboratories", alt: "Laboratories" },
+            { url: "https://placehold.co/800x600/1e293b/fff?text=Hostel", alt: "Student Hostel" }
+        ],
+        whyChooseAkashTalks: ["Guidance for core branch selection", "Industrial placement insights", "Hostel and location guidance", "Complete admission assistance", "Post-admission support for hostel and documentation", "Guidance on scholarship applications and education loans", "Zero hidden charges policy"]
+    }, {
+        id: "wb-4",
+        slug: "rcc-institute-of-information-technology",
+        name: "RCC Institute of Information Technology",
+        location: "Kolkata, West Bengal",
+        state: "West Bengal",
+        rating: 3.9,
+        reviews: 800,
+        fees: "₹ 6.04L Total",
+        courses: ["B.Tech", "MCA"],
+        type: "Government",
+        tags: ["Semi-Government", "Affordable", "IT Focused"],
+        established: "2000",
+        description: "A semi-government engineering college in Kolkata known for specialized IT education and affordable fees.",
+        imageUrl: "/images/colleges/rcc-institute-of-information-technology.png",
+        about: "RCC Institute of Information Technology (RCCIIT) is a semi-government engineering college established in 2000. It is approved by AICTE and affiliated to MAKAUT. The institute focuses on Information Technology and Computer Science education. The institute emphasizes a holistic development approach, encouraging students to participate in technical fests, hackathons, and research projects. With a curriculum designed to meet industry 4.0 standards, students are trained in emerging technologies like AI, ML, and IoT. The campus provides a vibrant atmosphere with various clubs and societies for extracurricular activities.",
+        highlights: ["Semi-Government Status", "Affordable Fees", "IT and CSE Focus", "Good Faculty", "Experienced Faculty", "Modern Infrastructure", "Holistic Development", "Industry-Ready Curriculum"],
+        infrastructure: ["Modern Labs", "Central Library", "Hostels", "Sports Complex", "Auditorium"],
+        cutoffs: [{ title: "WBJEE Cutoff 2024", table: [{ label: "CSE", value: "Rank 12000 - 20000" }, { label: "IT", value: "Rank 15000 - 25000" }] }],
+        coursesDetails: [{ name: "Computer Science and Engineering", duration: "4 Years", type: "B.Tech" }, { name: "Information Technology", duration: "4 Years", type: "B.Tech" }],
+        feesDetails: [{ title: "B.Tech Fee Structure (2024-25)", items: [{ label: "Total B.Tech (4 Years)", value: "₹6.04 Lakhs" }] }],
+        placements: { stats: [{ label: "Highest Package", value: "₹15 LPA" }, { label: "Average Package", value: "₹4 LPA" }], topRecruiters: [{ category: "IT", companies: ["TCS", "Wipro", "Infosys"] }] },
+        admissions: { process: ["WBJEE counseling"], eligibility: ["10+2 with PCM"], documents: ["Marksheets", "WBJEE Rank Card"] },
+        keyDates: [{ event: "WBJEE Counseling", date: "July 2026" }],
+        whyChoose: ["Semi-government status", "Affordable fees", "IT focused curriculum", "Central Kolkata location"],
+        scholarships: [{ title: "TFW Scheme", items: [{ label: "Tuition Fee Waiver", value: "Full Tuition Fee Waived for eligible students" }] }],
+        alumni: { description: "RCCIIT alumni work in IT companies across India.", companies: ["TCS", "Wipro", "Infosys", "Cognizant", "Tech Mahindra"] },
+        compare: [{ parameter: "Type", thisCollege: "Semi-Government", competitor1: "Private (IEM)", competitor2: "Private (Heritage)" }, { parameter: "Total Fees", thisCollege: "₹3.5-4.5 Lakhs", competitor1: "₹8.5 Lakhs", competitor2: "₹8-9 Lakhs" }],
+        faqs: [{ question: "Is RCCIIT a government college?", answer: "It's a semi-government college with government-aided status, making it affordable." }, { question: "Does the college provide internship support?", answer: "Yes, the college has a dedicated placement cell that assists students in securing summer internships and industrial training." }, { question: "Is there a dedicated placement cell?", answer: "Yes, the Training and Placement Cell works year-round to bring top companies for recruitment and trains students in soft skills." }, { question: "Are there hostel facilities available?", answer: "Yes, separate hostel facilities are available for boys and girls with all necessary amenities and security." }],
+        galleryImages: [
+            { url: "https://placehold.co/800x600/1e293b/fff?text=Campus+View", alt: "Campus View" },
+            { url: "https://placehold.co/800x600/1e293b/fff?text=Library", alt: "Library" },
+            { url: "https://placehold.co/800x600/1e293b/fff?text=Laboratories", alt: "Laboratories" },
+            { url: "https://placehold.co/800x600/1e293b/fff?text=Hostel", alt: "Student Hostel" }
+        ],
+        whyChooseAkashTalks: ["Affordable college guidance", "IT career counseling", "Admission support", "Post-admission support for hostel and documentation", "Guidance on scholarship applications and education loans", "Zero hidden charges policy"]
+    }, {
+        id: "wb-5",
+        slug: "jis-college-of-engineering",
+        name: "JIS College of Engineering",
+        location: "Kalyani, West Bengal",
+        state: "West Bengal",
+        rating: 4.1,
+        reviews: 1500,
+        fees: "₹ 4.2L - 6.52L Total",
+        courses: ["B.Tech", "M.Tech"],
+        type: "Private",
+        tags: ["Autonomous", "Research Focus", "Good Infrastructure"],
+        established: "2000",
+        description: "Autonomous institute with excellent research facilities, diverse courses, and growing reputation.",
+        imageUrl: "/images/colleges/jis-college-of-engineering.jpg",
+        about: "JIS College of Engineering (JISCE) is an autonomous engineering college located in Kalyani, West Bengal. It is part of the JIS Group and has gained Autonomous status, allowing it to design its own curriculum. The college is known for its research focus and modern infrastructure. The institute emphasizes a holistic development approach, encouraging students to participate in technical fests, hackathons, and research projects. With a curriculum designed to meet industry 4.0 standards, students are trained in emerging technologies like AI, ML, and IoT. The campus provides a vibrant atmosphere with various clubs and societies for extracurricular activities.",
+        highlights: ["Autonomous Status", "Research Focus", "Good Infrastructure", "Part of JIS Group", "NAAC Accredited", "Experienced Faculty", "Modern Infrastructure", "Holistic Development", "Industry-Ready Curriculum"],
+        infrastructure: ["Modern Labs", "Central Library", "Hostels", "Sports Complex", "Auditorium"],
+        cutoffs: [{ title: "WBJEE Cutoff 2024", table: [{ label: "CSE", value: "Rank 8000 - 15000" }, { label: "ECE", value: "Rank 12000 - 20000" }] }],
+        coursesDetails: [{ name: "Computer Science and Engineering", duration: "4 Years", type: "B.Tech" }, { name: "Electronics & Communication Engineering", duration: "4 Years", type: "B.Tech" }, { name: "Electrical Engineering", duration: "4 Years", type: "B.Tech" }],
+        feesDetails: [{ title: "B.Tech Fee Structure (2024-25)", items: [{ label: "Total B.Tech (4 Years)", value: "₹4.2 - 6.52 Lakhs" }], note: "Varies depending on B.Tech specialization" }],
+        placements: { stats: [{ label: "Highest Package", value: "₹20 LPA" }, { label: "Average Package", value: "₹5 LPA" }, { label: "Placement Rate", value: "85%+" }], topRecruiters: [{ category: "IT", companies: ["TCS", "Wipro", "Cognizant", "Capgemini"] }] },
+        admissions: { process: ["WBJEE counseling", "Document verification"], eligibility: ["10+2 with PCM"], documents: ["Marksheets", "WBJEE Rank Card"] },
+        keyDates: [{ event: "WBJEE Counseling", date: "July 2026" }, { event: "Classes Begin", date: "August 2026" }],
+        whyChoose: ["Autonomous curriculum", "Research opportunities", "Good placements", "Modern campus"],
+        scholarships: [{ title: "Merit Scholarship", items: [{ label: "Top WBJEE Rankers", value: "Up to 40% fee waiver" }] }, { title: "JIS Group Scholarship", items: [{ label: "Economically Weaker Sections", value: "Special fee concession" }] }],
+        alumni: { description: "Strong alumni network across IT industry.", companies: ["TCS", "Wipro", "Cognizant", "Capgemini", "Infosys"] },
+        compare: [{ parameter: "Status", thisCollege: "Autonomous", competitor1: "Non-Autonomous (RCCIIT)", competitor2: "Autonomous (Heritage)" }, { parameter: "Average Package", thisCollege: "₹5 LPA", competitor1: "₹4 LPA", competitor2: "₹5.8 LPA" }],
+        faqs: [{ question: "Is JISCE autonomous?", answer: "Yes, JISCE has autonomous status which allows it to design industry-relevant curriculum." }, { question: "Does the college provide internship support?", answer: "Yes, the college has a dedicated placement cell that assists students in securing summer internships and industrial training." }, { question: "Is there a dedicated placement cell?", answer: "Yes, the Training and Placement Cell works year-round to bring top companies for recruitment and trains students in soft skills." }, { question: "Are there hostel facilities available?", answer: "Yes, separate hostel facilities are available for boys and girls with all necessary amenities and security." }],
+        galleryImages: [
+            { url: "https://placehold.co/800x600/1e293b/fff?text=Campus+View", alt: "Campus View" },
+            { url: "https://placehold.co/800x600/1e293b/fff?text=Library", alt: "Library" },
+            { url: "https://placehold.co/800x600/1e293b/fff?text=Laboratories", alt: "Laboratories" },
+            { url: "https://placehold.co/800x600/1e293b/fff?text=Hostel", alt: "Student Hostel" }
+        ],
+        whyChooseAkashTalks: ["Autonomous college guidance", "Research program information", "Complete admission support", "Post-admission support for hostel and documentation", "Guidance on scholarship applications and education loans", "Zero hidden charges policy"]
+    }, {
+        id: "wb-6",
+        slug: "heritage-institute-of-technology",
+        name: "Heritage Institute of Technology",
+        location: "Kolkata, West Bengal",
+        state: "West Bengal",
+        rating: 4.4,
+        reviews: 1600,
+        fees: "₹ 5.89L Total",
+        courses: ["B.Tech", "M.Tech"],
+        type: "Private",
+        tags: ["Autonomous", "Top Ranked", "Excellent Placements"],
+        established: "2001",
+        description: "One of the top autonomous engineering colleges in Kolkata with excellent infrastructure and placements.",
+        imageUrl: "/images/colleges/heritage-institute-of-technology.png",
+        about: "Heritage Institute of Technology (HITK) is a premier autonomous engineering college in Kolkata, established in 2001. It is consistently ranked among the top private engineering colleges in West Bengal. The institute has achieved autonomous status and is known for its excellent placements and modern infrastructure. The institute emphasizes a holistic development approach, encouraging students to participate in technical fests, hackathons, and research projects. With a curriculum designed to meet industry 4.0 standards, students are trained in emerging technologies like AI, ML, and IoT. The campus provides a vibrant atmosphere with various clubs and societies for extracurricular activities.",
+        highlights: ["Autonomous Status", "NIRF Ranked", "Excellent Placements", "Modern Infrastructure", "Strong Alumni Network", "Experienced Faculty", "Modern Infrastructure", "Holistic Development", "Industry-Ready Curriculum"],
+        infrastructure: ["State-of-the-art Labs", "Digital Library", "Smart Classrooms", "Hostels", "Sports Facilities", "Auditorium"],
+        cutoffs: [{ title: "WBJEE Cutoff 2024", table: [{ label: "CSE", value: "Rank 4000 - 8000" }, { label: "IT", value: "Rank 6000 - 10000" }, { label: "ECE", value: "Rank 8000 - 12000" }], description: "One of the most sought-after colleges." }],
+        coursesDetails: [{ name: "Computer Science and Engineering", duration: "4 Years", type: "B.Tech" }, { name: "Information Technology", duration: "4 Years", type: "B.Tech" }, { name: "Electronics & Communication Engineering", duration: "4 Years", type: "B.Tech" }, { name: "Electrical Engineering", duration: "4 Years", type: "B.Tech" }],
+        feesDetails: [{ title: "B.Tech Fee Structure (2024-25)", items: [{ label: "Total B.Tech (4 Years)", value: "₹5.89 Lakhs" }], note: "Excludes hostel which is ~₹2.8 Lakhs extra" }],
+        placements: { stats: [{ label: "Highest Package", value: "₹28 LPA" }, { label: "Average Package", value: "₹5.8 LPA" }, { label: "Placement Rate", value: "92%+" }], highlights: ["Top placements in West Bengal private colleges"], topRecruiters: [{ category: "Tech", companies: ["Amazon", "Microsoft", "TCS", "Cognizant", "Wipro", "Capgemini"] }] },
+        admissions: { process: ["WBJEE counseling", "JEE Main quota available", "Document verification"], eligibility: ["10+2 with PCM", "Valid WBJEE/JEE Main score"], documents: ["Marksheets", "Rank Card", "Certificates"] },
+        keyDates: [{ event: "WBJEE Counseling", date: "July 2026" }],
+        whyChoose: ["Top ranked in West Bengal", "Autonomous curriculum", "Excellent placements", "Modern infrastructure", "Strong alumni network"],
+        scholarships: [{ title: "Merit Scholarship", items: [{ label: "Top WBJEE Rankers", value: "Up to 50% fee waiver" }] }],
+        alumni: { description: "Strong alumni network with graduates in top companies.", companies: ["Google", "Amazon", "Microsoft", "Goldman Sachs"] },
+        compare: [{ parameter: "Average Package", thisCollege: "₹5.8 LPA", competitor1: "₹6.5 LPA (IEM)" }],
+        faqs: [{ question: "Is Heritage better than IEM?", answer: "Both are top colleges. Heritage has slightly better NIRF rank, while IEM has older legacy and higher packages in some years." }, { question: "Does the college provide internship support?", answer: "Yes, the college has a dedicated placement cell that assists students in securing summer internships and industrial training." }, { question: "Is there a dedicated placement cell?", answer: "Yes, the Training and Placement Cell works year-round to bring top companies for recruitment and trains students in soft skills." }, { question: "Are there hostel facilities available?", answer: "Yes, separate hostel facilities are available for boys and girls with all necessary amenities and security." }],
+        galleryImages: [
+            { url: "https://placehold.co/800x600/1e293b/fff?text=Campus+View", alt: "Campus View" },
+            { url: "https://placehold.co/800x600/1e293b/fff?text=Library", alt: "Library" },
+            { url: "https://placehold.co/800x600/1e293b/fff?text=Laboratories", alt: "Laboratories" },
+            { url: "https://placehold.co/800x600/1e293b/fff?text=Hostel", alt: "Student Hostel" }
+        ],
+        whyChooseAkashTalks: ["Top college admission guidance", "WBJEE counseling support", "Scholarship information", "Complete documentation help", "Post-admission support for hostel and documentation", "Guidance on scholarship applications and education loans", "Zero hidden charges policy"]
+    }, {
         id: "wb-10",
         slug: "academy-of-technology",
         name: "Academy of Technology (AOT)",
@@ -611,90 +945,6 @@ export const colleges: College[] = [
         whyChooseAkashTalks: ["NCR medical guidance", "Fee clarity", "Complete support", "Post-admission support for hostel and documentation", "Guidance on scholarship applications and education loans", "Zero hidden charges policy"]
     },
 {
-        id: "wb-3",
-        slug: "haldia-institute-of-technology",
-        name: "Haldia Institute of Technology",
-        location: "Haldia, West Bengal",
-        state: "West Bengal",
-        rating: 4.0,
-        reviews: 1200,
-        fees: "₹ 5.82L Total",
-        courses: ["B.Tech", "MBA"],
-        type: "Private",
-        tags: ["Oldest Private College", "Core Placements", "Large Campus"],
-        established: "1996",
-        description: "First private engineering college in West Bengal with massive campus and strong core engineering placements.",
-        imageUrl: "/images/colleges/haldia-institute-of-technology.jpg",
-        about: "Haldia Institute of Technology (HIT) was established in 1996 and is the first self-financing engineering college in West Bengal. Located in the industrial hub of Haldia, it offers excellent exposure to core industries like petrochemicals, refineries, and manufacturing. The institute has a sprawling 60-acre campus. The institute emphasizes a holistic development approach, encouraging students to participate in technical fests, hackathons, and research projects. With a curriculum designed to meet industry 4.0 standards, students are trained in emerging technologies like AI, ML, and IoT. The campus provides a vibrant atmosphere with various clubs and societies for extracurricular activities.",
-        highlights: ["First Private Engineering College in WB (1996)", "60-acre Campus", "Strong Core Engineering Focus", "Industrial Location in Haldia", "Good for Mechanical, Chemical, Civil Engineering", "Experienced Faculty", "Modern Infrastructure", "Holistic Development", "Industry-Ready Curriculum"],
-        infrastructure: ["60-acre Campus", "Central Library", "Hostels for Boys and Girls", "Workshops and Labs", "Sports Ground"],
-        cutoffs: [{ title: "WBJEE Cutoff 2024", table: [{ label: "CSE", value: "Rank 15000 - 25000" }, { label: "Mechanical", value: "Rank 20000 - 35000" }], description: "Lower cutoffs due to location." }],
-        coursesDetails: [
-            { name: "Computer Science and Engineering", duration: "4 Years", type: "B.Tech" },
-            { name: "Mechanical Engineering", duration: "4 Years", type: "B.Tech" },
-            { name: "Civil Engineering", duration: "4 Years", type: "B.Tech" },
-            { name: "Chemical Engineering", duration: "4 Years", type: "B.Tech" },
-            { name: "Electrical Engineering", duration: "4 Years", type: "B.Tech" }
-        ],
-        feesDetails: [{ title: "B.Tech Fee Structure (2024-25)", items: [{ label: "1st Year Fees", value: "₹93,950 (1st Sem) + ₹68,750 (2nd Sem)" }, { label: "Total B.Tech (4 Years)", value: "₹5.82 Lakhs (approx)" }], note: "Excluding hostel. With hostel ~₹6.83 Lakhs" }],
-        placements: {
-            stats: [{ label: "Highest Package", value: "₹12 LPA" }, { label: "Average Package", value: "₹4 LPA" }, { label: "Placement Rate", value: "75%+" }],
-            highlights: ["Strong core sector placements", "Good for petrochemical and manufacturing jobs"],
-            topRecruiters: [{ category: "Core Companies", companies: ["IOCL", "HPCL", "L&T", "Tata Steel", "Jindal"] }]
-        },
-        admissions: { process: ["WBJEE counseling", "Document verification", "Fee payment"], eligibility: ["10+2 with PCM", "Valid WBJEE score"], documents: ["Marksheets", "WBJEE Rank Card"] },
-        keyDates: [{ event: "WBJEE Counseling", date: "July 2026" }, { event: "Classes Begin", date: "August 2026" }],
-        whyChoose: ["Affordable fees", "Industrial location", "Strong core placements", "Large campus"],
-        scholarships: [{ title: "Merit Scholarship", items: [{ label: "Merit Students", value: "Up to 25% fee waiver" }] }, { title: "TFW Scheme", items: [{ label: "Tuition Fee Waiver", value: "Full Tuition Fee Waived" }] }],
-        alumni: { description: "HIT alumni work in major core sector companies across India.", companies: ["IOCL", "HPCL", "L&T", "Tata Steel", "ONGC", "NTPC"] },
-        compare: [{ parameter: "Strength", thisCollege: "Core Engineering Focus", competitor1: "IT Focus (IEM)", competitor2: "IT Focus (Techno India)" }, { parameter: "Total Fees (4 Years)", thisCollege: "₹4-5 Lakhs", competitor1: "₹8.5 Lakhs (IEM)", competitor2: "₹4-5.2 Lakhs (Techno India)" }],
-        faqs: [{ question: "Is HIT good for core branches?", answer: "Yes, HIT is excellent for Mechanical, Chemical, and Civil Engineering with good industrial exposure." }, { question: "Does the college provide internship support?", answer: "Yes, the college has a dedicated placement cell that assists students in securing summer internships and industrial training." }, { question: "Is there a dedicated placement cell?", answer: "Yes, the Training and Placement Cell works year-round to bring top companies for recruitment and trains students in soft skills." }, { question: "Are there hostel facilities available?", answer: "Yes, separate hostel facilities are available for boys and girls with all necessary amenities and security." }],
-        galleryImages: [
-            { url: "https://placehold.co/800x600/1e293b/fff?text=Campus+View", alt: "Campus View" },
-            { url: "https://placehold.co/800x600/1e293b/fff?text=Library", alt: "Library" },
-            { url: "https://placehold.co/800x600/1e293b/fff?text=Laboratories", alt: "Laboratories" },
-            { url: "https://placehold.co/800x600/1e293b/fff?text=Hostel", alt: "Student Hostel" }
-        ],
-        whyChooseAkashTalks: ["Guidance for core branch selection", "Industrial placement insights", "Hostel and location guidance", "Complete admission assistance", "Post-admission support for hostel and documentation", "Guidance on scholarship applications and education loans", "Zero hidden charges policy"]
-    },
-{
-        id: "wb-6",
-        slug: "heritage-institute-of-technology",
-        name: "Heritage Institute of Technology",
-        location: "Kolkata, West Bengal",
-        state: "West Bengal",
-        rating: 4.4,
-        reviews: 1600,
-        fees: "₹ 5.89L Total",
-        courses: ["B.Tech", "M.Tech"],
-        type: "Private",
-        tags: ["Autonomous", "Top Ranked", "Excellent Placements"],
-        established: "2001",
-        description: "One of the top autonomous engineering colleges in Kolkata with excellent infrastructure and placements.",
-        imageUrl: "/images/colleges/heritage-institute-of-technology.png",
-        about: "Heritage Institute of Technology (HITK) is a premier autonomous engineering college in Kolkata, established in 2001. It is consistently ranked among the top private engineering colleges in West Bengal. The institute has achieved autonomous status and is known for its excellent placements and modern infrastructure. The institute emphasizes a holistic development approach, encouraging students to participate in technical fests, hackathons, and research projects. With a curriculum designed to meet industry 4.0 standards, students are trained in emerging technologies like AI, ML, and IoT. The campus provides a vibrant atmosphere with various clubs and societies for extracurricular activities.",
-        highlights: ["Autonomous Status", "NIRF Ranked", "Excellent Placements", "Modern Infrastructure", "Strong Alumni Network", "Experienced Faculty", "Modern Infrastructure", "Holistic Development", "Industry-Ready Curriculum"],
-        infrastructure: ["State-of-the-art Labs", "Digital Library", "Smart Classrooms", "Hostels", "Sports Facilities", "Auditorium"],
-        cutoffs: [{ title: "WBJEE Cutoff 2024", table: [{ label: "CSE", value: "Rank 4000 - 8000" }, { label: "IT", value: "Rank 6000 - 10000" }, { label: "ECE", value: "Rank 8000 - 12000" }], description: "One of the most sought-after colleges." }],
-        coursesDetails: [{ name: "Computer Science and Engineering", duration: "4 Years", type: "B.Tech" }, { name: "Information Technology", duration: "4 Years", type: "B.Tech" }, { name: "Electronics & Communication Engineering", duration: "4 Years", type: "B.Tech" }, { name: "Electrical Engineering", duration: "4 Years", type: "B.Tech" }],
-        feesDetails: [{ title: "B.Tech Fee Structure (2024-25)", items: [{ label: "Total B.Tech (4 Years)", value: "₹5.89 Lakhs" }], note: "Excludes hostel which is ~₹2.8 Lakhs extra" }],
-        placements: { stats: [{ label: "Highest Package", value: "₹28 LPA" }, { label: "Average Package", value: "₹5.8 LPA" }, { label: "Placement Rate", value: "92%+" }], highlights: ["Top placements in West Bengal private colleges"], topRecruiters: [{ category: "Tech", companies: ["Amazon", "Microsoft", "TCS", "Cognizant", "Wipro", "Capgemini"] }] },
-        admissions: { process: ["WBJEE counseling", "JEE Main quota available", "Document verification"], eligibility: ["10+2 with PCM", "Valid WBJEE/JEE Main score"], documents: ["Marksheets", "Rank Card", "Certificates"] },
-        keyDates: [{ event: "WBJEE Counseling", date: "July 2026" }],
-        whyChoose: ["Top ranked in West Bengal", "Autonomous curriculum", "Excellent placements", "Modern infrastructure", "Strong alumni network"],
-        scholarships: [{ title: "Merit Scholarship", items: [{ label: "Top WBJEE Rankers", value: "Up to 50% fee waiver" }] }],
-        alumni: { description: "Strong alumni network with graduates in top companies.", companies: ["Google", "Amazon", "Microsoft", "Goldman Sachs"] },
-        compare: [{ parameter: "Average Package", thisCollege: "₹5.8 LPA", competitor1: "₹6.5 LPA (IEM)" }],
-        faqs: [{ question: "Is Heritage better than IEM?", answer: "Both are top colleges. Heritage has slightly better NIRF rank, while IEM has older legacy and higher packages in some years." }, { question: "Does the college provide internship support?", answer: "Yes, the college has a dedicated placement cell that assists students in securing summer internships and industrial training." }, { question: "Is there a dedicated placement cell?", answer: "Yes, the Training and Placement Cell works year-round to bring top companies for recruitment and trains students in soft skills." }, { question: "Are there hostel facilities available?", answer: "Yes, separate hostel facilities are available for boys and girls with all necessary amenities and security." }],
-        galleryImages: [
-            { url: "https://placehold.co/800x600/1e293b/fff?text=Campus+View", alt: "Campus View" },
-            { url: "https://placehold.co/800x600/1e293b/fff?text=Library", alt: "Library" },
-            { url: "https://placehold.co/800x600/1e293b/fff?text=Laboratories", alt: "Laboratories" },
-            { url: "https://placehold.co/800x600/1e293b/fff?text=Hostel", alt: "Student Hostel" }
-        ],
-        whyChooseAkashTalks: ["Top college admission guidance", "WBJEE counseling support", "Scholarship information", "Complete documentation help", "Post-admission support for hostel and documentation", "Guidance on scholarship applications and education loans", "Zero hidden charges policy"]
-    },
-{
         id: "up-med-6",
         slug: "heritage-medical-varanasi",
         name: "Heritage Institute of Medical Sciences",
@@ -707,19 +957,24 @@ export const colleges: College[] = [
         reviews: 280,
         courses: ["MBBS"],
         description: "Private medical college in the holy city of Varanasi.",
-        about: "Heritage Institute of Medical Sciences is a private medical college in Varanasi established in 2015. The college is committed to producing competent healthcare professionals with a strong ethical foundation. It offers a comprehensive learning environment with access to a high-patient-flow hospital for clinical training. Students gain hands-on experience under the guidance of experienced senior doctors and faculty members.",
-        highlights: ["Varanasi Location", "Growing Reputation", "Good Infrastructure", "24x7 Emergency Services", "State-of-the-art Labs", "High Patient Flow", "Experienced Doctors"],
+        about: "Heritage Institute of Medical Sciences (HIMS), Varanasi, is a premier private medical college established in 2015. Located on the NH-2 Bypass, it features a 1000+ bed multi-specialty hospital with state-of-the-art facilities like linear accelerators for cancer treatment and advanced diagnostic centers. HIMS is dedicated to providing affordable, high-quality medical education and comprehensive healthcare to the population of eastern Uttar Pradesh and beyond.",
+        highlights: ["1000+ Bed Hospital", "Advanced Cancer Care (LINAC)", "NH-2 Bypass Location", "Modern Skill Labs", "Comprehensive Diagnostic Wing", "24x7 Emergency Services", "NMC Recognized MBBS"],
         neetCutoffs: [{ year: "2024", managementQuota: { rank: "466", score: "256128" } }],
         mqFees: { total: "₹1,32,14,920", perSemester: "₹13,21,492" },
         hostelFees: [{ roomType: "Standard Room", annual: "₹1,65,000" }],
         miscFees: [{ label: "Misc Fees", value: "₹94,160" }],
         securityDeposit: "₹3,00,000",
         coursesSeats: [{ course: "MBBS", totalSeats: 100, managementQuota: 100 }],
-        hospital: { name: "Heritage Hospital", beds: 400 },
-        internship: { duration: "12 months", stipend: "₹15,000/month" },
-        admissionProcess: ["Apply through NEET counseling", "Document verification", "Fee payment"],
-        facultyDepartments: ["Anatomy", "Physiology", "Biochemistry", "Pharmacology", "Pathology", "Medicine", "Surgery"],
-        faqs: [{ question: "Where is Heritage Medical Sciences?", answer: "Located in Varanasi, Uttar Pradesh." }, { question: "Is the medical degree recognized?", answer: "Yes, the MBBS degree is recognized by the NMC (National Medical Commission) and is valid for practice across India and abroad after clearing licensing exams." }, { question: "What is the patient flow in the hospital?", answer: "The attached teaching hospital has a good patient flow, ensuring excellent clinical exposure and hands-on training for students." }, { question: "Are residential facilities available?", answer: "Yes, the campus provides comfortable hostel accommodation for students, creating a conducive environment for study and rest." }],
+        hospital: { name: "Heritage Hospital (Multi-specialty)", beds: 1000 },
+        internship: { duration: "12 months", stipend: "₹20,000/month" },
+        admissionProcess: ["NEET UG Qualifying Score", "UP NEET State Counseling Participation", "Seat Allocation through Counseling", "Document Verification and Admission"],
+        facultyDepartments: ["Anatomy", "Physiology", "Biochemistry", "Pharmacology", "Pathology", "Microbiology", "Forensic Medicine", "Community Medicine", "Medicine", "Surgery", "Pediatrics", "OBG", "Orthopedics"],
+        faqs: [
+            { question: "Is HIMS Varanasi recognized by NMC?", answer: "Yes, the MBBS course is recognized by the National Medical Commission (NMC) and is affiliated with Mahatma Gandhi Kashi Vidyapith." },
+            { question: "What is the hospital capacity at HIMS?", answer: "The attached Heritage Hospital is a 1000+ bed multi-specialty center, providing students with extensive clinical exposure." },
+            { question: "Does HIMS have specialty departments?", answer: "Yes, it has specialized wings for Cardiology, Neurology, and a comprehensive Cancer Care center with LINAC." },
+            { question: "What is the patient intake at the hospital?", answer: "Due to its location on the NH-2 Bypass, the hospital sees high patient volumes, especially in emergency and trauma cases." }
+        ],
         galleryImages: [
             { url: "https://placehold.co/800x600/1e293b/fff?text=Campus+View", alt: "Campus View" },
             { url: "https://placehold.co/800x600/1e293b/fff?text=Library", alt: "Library" },
@@ -810,148 +1065,37 @@ export const colleges: College[] = [
         description: "Medical college in industrial hub of Haldia with Dr. B.C. Roy Hospital.",
         imageUrl: "/images/colleges/icare-haldia-medical.png",
         tags: ["Medical", "MBBS"],
-        about: "Medical college in industrial hub of Haldia with Dr. B.C. Roy Hospital.",
-        highlights: ["Attached Teaching Hospital", "Modern Infrastructure", "Experienced Faculty"],
+        about: "ICARE Institute of Medical Science and Research and Dr. B.C. Roy Hospital is a prominent private medical college established in 2011 in the industrial hub of Haldia, West Bengal. The institution was founded by the Indian Centre for Advancement of Research and Education (ICARE). It features a 500+ bed multi-specialty hospital (Dr. B.C. Roy Hospital) providing comprehensive healthcare and clinical training to its students. The college is dedicated to fostering excellence in medical research and community health.",
+        highlights: ["Haldia Industrial Hub", "Modern Medical Research", "500+ Bed Hospital", "State-of-the-art Labs", "Experienced Clinical Faculty", "NMC Approved MBBS", "Green Campus"],
         coursesDetails: [
             { name: "MBBS", duration: "5.5 Years", type: "Full Time" }
         ],
+        neetCutoffs: [{ year: "2024", managementQuota: { rank: "530", score: "171092" } }],
+        hospital: { name: "Dr. B.C. Roy Hospital", beds: 500 },
+        internship: { duration: "12 months", stipend: "₹18,000/month" },
         feesDetails: [
             {
                 title: "Management Quota (MQ) Fees",
-                items: [{ label: "Total Fees", value: "₹90,00,000 (Settlement)" }]
+                items: [
+                    { label: "Total Package (5 Years)", value: "₹90,00,000" },
+                    { label: "Admission Fee", value: "₹50,000" }
+                ],
+                note: "Package covers total course duration tuition fees."
             }
         ],
+        hostelFees: [
+            { roomType: "Sharing Room", annual: "₹1,20,000" }
+        ],
         admissions: {
-            process: ["Apply through NEET counseling", "Document verification", "Fee payment"],
-            eligibility: ["10+2 with PCB minimum 50%", "Valid NEET UG Rank"],
-            documents: ["10th/12th Marksheets", "NEET Scorecard", "ID Proof", "Photographs"]
-        }
-    },
-{
-        id: "1",
-        slug: "iem-salt-lake",
-        name: "Institute of Engineering & Management (Salt Lake)",
-        location: "Salt Lake, Kolkata",
-        state: "West Bengal",
-        rating: 4.5,
-        reviews: 1850,
-        fees: "₹ 7.65L - 8.70L Total",
-        courses: ["B.Tech", "M.Tech", "MBA", "BCA", "MCA"],
-        type: "Private",
-        tags: ["Top Ranked", "Best Placements", "NAAC A Grade"],
-        logoUrl: "/footer-logo.jpg",
-        established: "1989",
-        description: "Premier private engineering college in Kolkata known for strict academic discipline and excellent placements.",
-        imageUrl: "/images/colleges/iem-salt-lake.jpg",
-        about: "Institute of Engineering & Management (IEM) is a premier private engineering college in Kolkata, established in 1989. It is one of the oldest and most reputed private engineering colleges in West Bengal, known for its strict academic discipline, excellent placement records, and strong alumni network. The institute is affiliated to MAKAUT (Maulana Abul Kalam Azad University of Technology) and approved by AICTE. The institute emphasizes a holistic development approach, encouraging students to participate in technical fests, hackathons, and research projects. With a curriculum designed to meet industry 4.0 standards, students are trained in emerging technologies like AI, ML, and IoT. The campus provides a vibrant atmosphere with various clubs and societies for extracurricular activities.",
-        highlights: ["NAAC 'A' Grade Accredited", "NIRF Ranked Institution", "Oldest Private Engineering College in West Bengal (Est. 1989)", "Located in Salt Lake IT Hub", "1054+ Students Placed in 2024", "₹32 LPA Highest Package", "Experienced Faculty", "Modern Infrastructure", "Holistic Development", "Industry-Ready Curriculum"],
-        infrastructure: ["3 Campuses located in the IT Hub of Salt Lake", "State-of-the-art Innovation & IoT Labs", "AI/ML Research Center", "Digital Library with IEEE/ACM/Springer Access", "Smart Classrooms with Projectors", "Separate Boys and Girls Hostels", "Cafeteria and Food Court", "Sports Facilities including Cricket, Football, Basketball"],
-        cutoffs: [
-            { title: "WBJEE Cutoff 2024", table: [{ label: "CSE", value: "Rank 3287 - 6398" }, { label: "IT", value: "Rank 4000 - 7500" }, { label: "ECE", value: "Rank 5500 - 9000" }, { label: "EE", value: "Rank 8000 - 15000" }], description: "Primary admission through WBJEE counseling." },
-            { title: "JEE Main Cutoff 2024", table: [{ label: "CSE", value: "Percentile 85-92" }, { label: "IT", value: "Percentile 80-88" }], description: "Limited seats available through JEE Main." }
-        ],
-        coursesDetails: [
-            { name: "Computer Science and Engineering", duration: "4 Years", type: "B.Tech" },
-            { name: "Information Technology", duration: "4 Years", type: "B.Tech" },
-            { name: "Electronics & Communication Engineering", duration: "4 Years", type: "B.Tech" },
-            { name: "Electrical Engineering", duration: "4 Years", type: "B.Tech" },
-            { name: "Mechanical Engineering", duration: "4 Years", type: "B.Tech" },
-            { name: "Computer Science and Engineering", duration: "2 Years", type: "M.Tech" },
-            { name: "Master of Business Administration", duration: "2 Years", type: "MBA" },
-            { name: "Bachelor of Computer Applications", duration: "3 Years", type: "BCA" },
-            { name: "Master of Computer Applications", duration: "2 Years", type: "MCA" }
-        ],
-        feesDetails: [
-            { title: "B.Tech Fee Structure (2024-25)", items: [{ label: "1st Year Fees", value: "₹2.0 - 2.5 Lakhs" }, { label: "Total B.Tech (4 Years)", value: "₹7.65 - 8.70 Lakhs" }], note: "Excludes hostel and mess charges. Fees vary by branch." },
-            { title: "Hostel Fees", items: [{ label: "Annual Hostel Fee", value: "₹70,000 - 90,000" }, { label: "Mess Charges (Annual)", value: "₹48,000 - 55,000" }], note: "Separate hostels for boys and girls." }
-        ],
-        placements: {
-            stats: [{ label: "Highest Package", value: "₹32 LPA" }, { label: "Average Package", value: "₹6.5 LPA" }, { label: "Median Package", value: "₹5.2 LPA" }, { label: "Placement Rate", value: "95%+" }],
-            highlights: ["Consistent placement record for over 35 years", "Multiple offers for top performers", "Pre-placement offers from internships", "Strong alumni referral network"],
-            topRecruiters: [
-                { category: "Tech Giants", companies: ["Amazon", "Microsoft", "Google", "Flipkart"] },
-                { category: "IT Services", companies: ["TCS", "Cognizant", "Wipro", "Infosys", "Capgemini", "Accenture"] },
-                { category: "Product Companies", companies: ["Zoho", "Freshworks", "Thoughtworks", "Mindtree"] }
-            ]
+            process: ["NEET UG Qualified", "WBMC State Counseling (WBMCC)", "Seat Allocation", "Document Verification"],
+            eligibility: ["10+2 with PCB (50% for Gen, 40% for Reserved)", "Valid NEET Score", "Age 17+"],
+            documents: ["NEET Admit Card & Scorecard", "10th/12th Marksheets", "Provisional Allotment Letter", "ID Proof & Photographs"]
         },
-        admissions: {
-            process: [
-                "Appear for WBJEE / JEE Main entrance exam",
-                "Check cutoff ranks and eligibility on official website",
-                "Register for WBJEE Counseling or apply through JEE Main quota",
-                "Fill college preference order during counseling",
-                "Attend document verification upon seat allotment",
-                "Pay admission fees and confirm seat"
-            ],
-            eligibility: [
-                "Passed 10+2 with Physics, Chemistry and Mathematics",
-                "Minimum 60% aggregate marks in PCM (55% for reserved categories)",
-                "Valid WBJEE or JEE Main score",
-                "Age requirement: 17 years as of December 31st of admission year"
-            ],
-            documents: [
-                "10th and 12th Marksheets and Certificates",
-                "WBJEE/JEE Main Scorecard and Rank Card",
-                "Domicile Certificate (for WB candidates)",
-                "Category Certificate (if applicable)",
-                "Transfer Certificate from previous institution",
-                "Passport size photographs (8-10 copies)",
-                "Aadhaar Card"
-            ]
-        },
-        keyDates: [
-            { event: "WBJEE Registration", date: "December 2025" },
-            { event: "WBJEE Exam", date: "April 2026" },
-            { event: "WBJEE Result", date: "June 2026" },
-            { event: "Counseling Starts", date: "July 2026" },
-            { event: "Classes Begin", date: "August 2026" }
-        ],
-        whyChoose: [
-            "35+ years of academic excellence and industry reputation",
-            "Located in the heart of Salt Lake IT Hub with proximity to major IT companies",
-            "Strong placement record with 95%+ placement rate consistently",
-            "NAAC 'A' Grade accreditation ensuring quality education",
-            "Modern infrastructure with AI/ML labs, IoT center, and digital library",
-            "Active alumni network spanning across global tech companies",
-            "Industry partnerships for internships and live projects"
-        ],
-        scholarships: [
-            { title: "Merit Scholarships", items: [{ label: "WBJEE Rank < 1000", value: "50% Tuition Fee Waiver" }, { label: "WBJEE Rank < 3000", value: "25% Tuition Fee Waiver" }] },
-            { title: "TFW Scheme", items: [{ label: "Tuition Fee Waiver", value: "Full Tuition Fee Waived" }] }
-        ],
-        alumni: {
-            description: "IEM boasts a strong alumni network of 20,000+ graduates working in leading companies worldwide. Alumni actively participate in campus recruitment, mentorship, and guest lectures.",
-            companies: ["Google", "Amazon", "Microsoft", "Goldman Sachs", "JP Morgan", "TCS", "Infosys", "Wipro"],
-            achievements: ["Multiple IEM alumni in leadership positions at Fortune 500 companies", "Several successful startup founders from IEM", "Active IEM Alumni Association with annual meets"]
-        },
-        compare: [
-            { parameter: "NIRF Rank Band", thisCollege: "101-150", competitor1: "76-100 (Heritage)", competitor2: "151-200 (TINT)" },
-            { parameter: "Highest Package", thisCollege: "₹32 LPA", competitor1: "₹28 LPA", competitor2: "₹20 LPA" },
-            { parameter: "Average Package", thisCollege: "₹6.5 LPA", competitor1: "₹5.8 LPA", competitor2: "₹5.0 LPA" },
-            { parameter: "Total Fees (4 Years)", thisCollege: "₹8.5 Lakhs", competitor1: "₹9 Lakhs", competitor2: "₹7 Lakhs" }
-        ],
         faqs: [
-            { question: "Is IEM Kolkata a good college?", answer: "Yes, IEM is one of the top private engineering colleges in West Bengal with NAAC 'A' grade accreditation, strong placements (95%+), and a legacy of 35+ years." },
-            { question: "What is the fee structure of IEM?", answer: "The total B.Tech fee at IEM is approximately ₹8.4 - 8.65 Lakhs for 4 years, excluding hostel and mess charges." },
-            { question: "What is the WBJEE cutoff for IEM CSE?", answer: "The WBJEE cutoff for CSE at IEM typically ranges from Rank 3287 to 6398 depending on the year and category." },
-            { question: "Does IEM have hostels?", answer: "Yes, IEM has separate hostels for boys and girls with modern facilities. Hostel fees are around ₹70,000 - 90,000 per year." },
-            { question: "What companies visit IEM for placements?", answer: "Top recruiters include Amazon, Microsoft, TCS, Cognizant, Wipro, Infosys, Capgemini, Accenture, Zoho, and many more." }, { question: "Does the college provide internship support?", answer: "Yes, the college has a dedicated placement cell that assists students in securing summer internships and industrial training." }, { question: "Is there a dedicated placement cell?", answer: "Yes, the Training and Placement Cell works year-round to bring top companies for recruitment and trains students in soft skills." }, { question: "Are there hostel facilities available?", answer: "Yes, separate hostel facilities are available for boys and girls with all necessary amenities and security." }
+            { question: "Is ICARE Haldia NMC approved?", answer: "Yes, the institution is fully recognized by the National Medical Commission (NMC)." },
+            { question: "What is the location advantage of ICARE?", answer: "Located in the industrial city of Haldia, the college offers students unique exposure to industrial health and diverse clinical cases." },
+            { question: "What are the facilities in Dr. B.C. Roy Hospital?", answer: "The 500+ bed hospital includes intensive care units, advanced modular ORs, and specialized dialysis and diagnostic units." }
         ],
-        galleryImages: [
-            { url: "https://placehold.co/800x600/1e293b/fff?text=Campus+View", alt: "Campus View" },
-            { url: "https://placehold.co/800x600/1e293b/fff?text=Library", alt: "Library" },
-            { url: "https://placehold.co/800x600/1e293b/fff?text=Laboratories", alt: "Laboratories" },
-            { url: "https://placehold.co/800x600/1e293b/fff?text=Hostel", alt: "Student Hostel" }
-        ],
-        whyChooseAkashTalks: [
-            "Direct admission assistance without any hidden charges",
-            "Expert guidance on WBJEE counseling and seat allocation",
-            "Transparent fee structure information and scholarship guidance",
-            "Personalized career counseling to choose the right branch",
-            "End-to-end support from application to admission confirmation",
-            "Access to exclusive student reviews and insider tips",
-            "Post-admission support for hostel and documentation"
-        ]
     },
 {
         id: "new-med-17",
@@ -1050,43 +1194,6 @@ export const colleges: College[] = [
         }
     },
 {
-        id: "wb-5",
-        slug: "jis-college-of-engineering",
-        name: "JIS College of Engineering",
-        location: "Kalyani, West Bengal",
-        state: "West Bengal",
-        rating: 4.1,
-        reviews: 1500,
-        fees: "₹ 4.2L - 6.52L Total",
-        courses: ["B.Tech", "M.Tech"],
-        type: "Private",
-        tags: ["Autonomous", "Research Focus", "Good Infrastructure"],
-        established: "2000",
-        description: "Autonomous institute with excellent research facilities, diverse courses, and growing reputation.",
-        imageUrl: "/images/colleges/jis-college-of-engineering.jpg",
-        about: "JIS College of Engineering (JISCE) is an autonomous engineering college located in Kalyani, West Bengal. It is part of the JIS Group and has gained Autonomous status, allowing it to design its own curriculum. The college is known for its research focus and modern infrastructure. The institute emphasizes a holistic development approach, encouraging students to participate in technical fests, hackathons, and research projects. With a curriculum designed to meet industry 4.0 standards, students are trained in emerging technologies like AI, ML, and IoT. The campus provides a vibrant atmosphere with various clubs and societies for extracurricular activities.",
-        highlights: ["Autonomous Status", "Research Focus", "Good Infrastructure", "Part of JIS Group", "NAAC Accredited", "Experienced Faculty", "Modern Infrastructure", "Holistic Development", "Industry-Ready Curriculum"],
-        infrastructure: ["Modern Labs", "Central Library", "Hostels", "Sports Complex", "Auditorium"],
-        cutoffs: [{ title: "WBJEE Cutoff 2024", table: [{ label: "CSE", value: "Rank 8000 - 15000" }, { label: "ECE", value: "Rank 12000 - 20000" }] }],
-        coursesDetails: [{ name: "Computer Science and Engineering", duration: "4 Years", type: "B.Tech" }, { name: "Electronics & Communication Engineering", duration: "4 Years", type: "B.Tech" }, { name: "Electrical Engineering", duration: "4 Years", type: "B.Tech" }],
-        feesDetails: [{ title: "B.Tech Fee Structure (2024-25)", items: [{ label: "Total B.Tech (4 Years)", value: "₹4.2 - 6.52 Lakhs" }], note: "Varies depending on B.Tech specialization" }],
-        placements: { stats: [{ label: "Highest Package", value: "₹20 LPA" }, { label: "Average Package", value: "₹5 LPA" }, { label: "Placement Rate", value: "85%+" }], topRecruiters: [{ category: "IT", companies: ["TCS", "Wipro", "Cognizant", "Capgemini"] }] },
-        admissions: { process: ["WBJEE counseling", "Document verification"], eligibility: ["10+2 with PCM"], documents: ["Marksheets", "WBJEE Rank Card"] },
-        keyDates: [{ event: "WBJEE Counseling", date: "July 2026" }, { event: "Classes Begin", date: "August 2026" }],
-        whyChoose: ["Autonomous curriculum", "Research opportunities", "Good placements", "Modern campus"],
-        scholarships: [{ title: "Merit Scholarship", items: [{ label: "Top WBJEE Rankers", value: "Up to 40% fee waiver" }] }, { title: "JIS Group Scholarship", items: [{ label: "Economically Weaker Sections", value: "Special fee concession" }] }],
-        alumni: { description: "Strong alumni network across IT industry.", companies: ["TCS", "Wipro", "Cognizant", "Capgemini", "Infosys"] },
-        compare: [{ parameter: "Status", thisCollege: "Autonomous", competitor1: "Non-Autonomous (RCCIIT)", competitor2: "Autonomous (Heritage)" }, { parameter: "Average Package", thisCollege: "₹5 LPA", competitor1: "₹4 LPA", competitor2: "₹5.8 LPA" }],
-        faqs: [{ question: "Is JISCE autonomous?", answer: "Yes, JISCE has autonomous status which allows it to design industry-relevant curriculum." }, { question: "Does the college provide internship support?", answer: "Yes, the college has a dedicated placement cell that assists students in securing summer internships and industrial training." }, { question: "Is there a dedicated placement cell?", answer: "Yes, the Training and Placement Cell works year-round to bring top companies for recruitment and trains students in soft skills." }, { question: "Are there hostel facilities available?", answer: "Yes, separate hostel facilities are available for boys and girls with all necessary amenities and security." }],
-        galleryImages: [
-            { url: "https://placehold.co/800x600/1e293b/fff?text=Campus+View", alt: "Campus View" },
-            { url: "https://placehold.co/800x600/1e293b/fff?text=Library", alt: "Library" },
-            { url: "https://placehold.co/800x600/1e293b/fff?text=Laboratories", alt: "Laboratories" },
-            { url: "https://placehold.co/800x600/1e293b/fff?text=Hostel", alt: "Student Hostel" }
-        ],
-        whyChooseAkashTalks: ["Autonomous college guidance", "Research program information", "Complete admission support", "Post-admission support for hostel and documentation", "Guidance on scholarship applications and education loans", "Zero hidden charges policy"]
-    },
-{
         id: "new-med-2",
         slug: "jis-medical-kolkata",
         name: "JIS School of Medical Science and Research",
@@ -1100,22 +1207,38 @@ export const colleges: College[] = [
         description: "Part of reputed JIS Group with modern medical education facilities.",
         imageUrl: "/images/colleges/jis-medical-kolkata.jpg",
         tags: ["Medical", "MBBS"],
-        about: "Part of reputed JIS Group with modern medical education facilities.",
-        highlights: ["Attached Teaching Hospital", "Modern Infrastructure", "Experienced Faculty"],
+        about: "JIS School of Medical Science and Research (JISMS&R), located in Santoshpur, Kolkata, is a premier private medical institution established by the JIS Group. The college is equipped with state-of-the-art infrastructure, including a 500+ bed multi-specialty hospital, advanced simulation labs, and modern research facilities. JISMS&R aims to provide comprehensive medical training and high-quality healthcare services to the community.",
+        highlights: ["Part of JIS Group", "500+ Bed Hospital", "Kolkata Location", "Smart Classrooms", "Modern Skill Labs", "NMC Approved MBBS", "Excellent Patient Flow"],
         coursesDetails: [
             { name: "MBBS", duration: "5.5 Years", type: "Full Time" }
         ],
+        neetCutoffs: [{ year: "2024", managementQuota: { rank: "515", score: "182450" } }],
+        hospital: { name: "JIS Hospital", beds: 500 },
+        internship: { duration: "12 months", stipend: "₹18,000/month" },
         feesDetails: [
             {
                 title: "Management Quota (MQ) Fees",
-                items: [{ label: "Total Fees", value: "₹99,55,000" }]
+                items: [
+                    { label: "Total Package (5 Years)", value: "₹99,55,000" },
+                    { label: "Admission Fee", value: "₹50,000" }
+                ],
+                note: "Fees include tuition, but exclude hostel and university examination fees."
             }
         ],
+        hostelFees: [
+            { roomType: "AC (Double Sharing)", annual: "₹1,50,000" },
+            { roomType: "Non-AC (Double Sharing)", annual: "₹1,00,000" }
+        ],
         admissions: {
-            process: ["Apply through NEET counseling", "Document verification", "Fee payment"],
-            eligibility: ["10+2 with PCB minimum 50%", "Valid NEET UG Rank"],
-            documents: ["10th/12th Marksheets", "NEET Scorecard", "ID Proof", "Photographs"]
-        }
+            process: ["NEET UG Qualified", "WBMC State Counseling Participation", "Seat Allotment", "Reporting and Document Verification"],
+            eligibility: ["10+2 with PCB minimum 50% for UR, 40% for Reserved", "Age 17+ years", "Valid NEET UG Rank"],
+            documents: ["NEET Admit Card & Scorecard", "10th/12th Marksheets", "Provisional Allotment Letter", "ID Proof & Photographs"]
+        },
+        faqs: [
+            { question: "Is JIS Medical College recognized?", answer: "Yes, the institution is recognized by the National Medical Commission (NMC) and is affiliated with the West Bengal University of Health Sciences (WBUHS)." },
+            { question: "Where is the campus located?", answer: "The campus is located in Santoshpur, Kolkata, which is well-connected to the main city." },
+            { question: "What is the hospital patient load?", answer: "The attached JIS Hospital sees a steady growth in patient footfall across various departments, offering students ample clinical practice." }
+        ],
     },
 {
         id: "wb-med-3",
@@ -1130,22 +1253,39 @@ export const colleges: College[] = [
         reviews: 180,
         courses: ["MBBS"],
         description: "Located near AIIMS Kalyani with growing medical education facilities.",
-        about: "JMN Medical College is a private medical college located 2 hours from Kolkata, near AIIMS Kalyani. It offers MBBS program with modern facilities and is growing in reputation. The college is committed to producing competent healthcare professionals with a strong ethical foundation. It offers a comprehensive learning environment with access to a high-patient-flow hospital for clinical training. Students gain hands-on experience under the guidance of experienced senior doctors and faculty members.",
-        highlights: ["Near AIIMS Kalyani", "Modern Campus", "Growing Infrastructure", "Affordable Fees", "24x7 Emergency Services", "State-of-the-art Labs", "High Patient Flow", "Experienced Doctors"],
-        neetCutoffs: [{ year: "2024", managementQuota: { rank: "400000", score: "300" } }],
-        mqFees: { total: "₹88,00,000", perSemester: "₹9,50,000", admissionFee: "₹50,000", breakdown: "Total During Admission = ₹21,50,000" },
+        about: "JMN Medical College is a premier private medical institution located in Chakdaha, near AIIMS Kalyani, West Bengal. Established with the vision of providing top-tier medical education, the college is part of the JMN Group. It offers an advanced learning environment with a 350+ bed teaching hospital, modern lecture theaters, and state-of-the-art pathology and radiology departments. Its proximity to AIIMS Kalyani offers students a conducive academic atmosphere.",
+        highlights: ["Near AIIMS Kalyani", "Advanced Diagnostic Lab", "350+ Bed Teaching Hospital", "Modern Residential Campus", "NMC Recognized MBBS", "Nadia District Location", "High-Tech Skill Labs"],
+        coursesDetails: [
+            { name: "MBBS", duration: "5.5 Years", type: "Full Time" }
+        ],
+        neetCutoffs: [{ year: "2024", managementQuota: { rank: "542000", score: "168" } }],
+        hospital: { name: "JMN Hospital", beds: 350 },
+        internship: { duration: "12 months", stipend: "₹18,000/month" },
+        feesDetails: [
+            {
+                title: "Management Quota (MQ) Fees",
+                items: [
+                    { label: "Total Package (5 Years)", value: "₹88,00,000" },
+                    { label: "Admission Fee", value: "₹50,000" },
+                    { label: "Total During Admission", value: "₹21,50,000" }
+                ],
+                note: "Package covers entire tuition fee for the MBBS course."
+            }
+        ],
         hostelFees: [
             { roomType: "Double Occupancy Non-AC", annual: "₹1,44,000", deposit: "₹15,000" },
             { roomType: "Double Occupancy AC", annual: "₹1,96,000", deposit: "₹15,000" }
         ],
-        miscFees: [{ label: "Hostel Admission Fee", value: "₹10,000 (One time)" }, { label: "Caution Deposit", value: "₹15,000" }, { label: "Sports & Cultural", value: "₹1,85,000" }],
-        securityDeposit: "₹15,000 (Caution Deposit)",
-        coursesSeats: [{ course: "MBBS", totalSeats: 100, managementQuota: 100 }],
-        hospital: { name: "JMN Hospital", beds: 350, patientLoad: "Moderate" },
-        internship: { duration: "12 months", stipend: "₹15,000/month" },
-        admissionProcess: ["Apply through NEET counseling", "Inform college before allotment", "Payment via Cheque/DD"],
-        facultyDepartments: ["Anatomy", "Physiology", "Biochemistry", "Pharmacology", "Pathology", "Medicine", "Surgery"],
-        faqs: [{ question: "Where is JMN Medical College?", answer: "It is located 2 hours from Kolkata, near AIIMS Kalyani." }, { question: "Is the medical degree recognized?", answer: "Yes, the MBBS degree is recognized by the NMC (National Medical Commission) and is valid for practice across India and abroad after clearing licensing exams." }, { question: "What is the patient flow in the hospital?", answer: "The attached teaching hospital has a good patient flow, ensuring excellent clinical exposure and hands-on training for students." }, { question: "Are residential facilities available?", answer: "Yes, the campus provides comfortable hostel accommodation for students, creating a conducive environment for study and rest." }],
+        admissions: {
+            process: ["NEET UG Eligibility", "WB State NEET Counseling Participation", "Seat Allotment", "Reporting and Document Verification"],
+            eligibility: ["10+2 with PCB minimum 50% for UR", "Valid NEET UG Rank", "Age 17+ years"],
+            documents: ["NEET Admit Card & Scorecard", "10th/12th Marksheets", "Provisional Allotment Letter", "ID Proof & Photographs"]
+        },
+        faqs: [
+            { question: "Is JMN Medical College approved by NMC?", answer: "Yes, the institution is recognized by the National Medical Commission (NMC)." },
+            { question: "How far is JMN from Kolkata?", answer: "The college is located in Chakdaha, which is approximately a 1.5 to 2-hour drive from Kolkata and very close to Kalyani." },
+            { question: "Does the college offer internship stipends?", answer: "Yes, JMN Medical College offers competitive internship stipends to students during their 12-month mandatory internship." }
+        ],
         galleryImages: [
             { url: "https://placehold.co/800x600/1e293b/fff?text=Campus+View", alt: "Campus View" },
             { url: "https://placehold.co/800x600/1e293b/fff?text=Library", alt: "Library" },
@@ -1535,20 +1675,23 @@ export const colleges: College[] = [
         rating: 3.9,
         reviews: 160,
         courses: ["MBBS"],
-        description: "Private medical college in Meerut, part of NCR region.",
-        about: "NCR Institute of Medical Sciences is located in Meerut, offering medical education in the NCR region since 2018. The college is committed to producing competent healthcare professionals with a strong ethical foundation. It offers a comprehensive learning environment with access to a high-patient-flow hospital for clinical training. Students gain hands-on experience under the guidance of experienced senior doctors and faculty members.",
-        highlights: ["NCR Location", "Meerut City", "Growing College", "24x7 Emergency Services", "State-of-the-art Labs", "High Patient Flow", "Experienced Doctors"],
+        about: "The National Capital Region Institute of Medical Sciences (NCRIMS) is a premier private medical institution located in Meerut, Uttar Pradesh. Established in 2018, it is situated on a sprawling 20-acre campus along the Hapur-Meerut Road. The institute serves the medical needs of the NCR region with a 450+ bed multi-specialty hospital, offering ultra-modern diagnostic and therapeutic facilities. NCRIMS is dedicated to imparting quality medical education and high-standard healthcare services.",
+        highlights: ["NCR Region Connectivity", "20-Acre Modern Campus", "450+ Bed Multi-specialty Hospital", "NMC Recognized MBBS", "Advanced Diagnostic Wing", "24x7 Emergency Services", "Experienced Academic Faculty"],
         neetCutoffs: [{ year: "2024", managementQuota: { rank: "441", score: "298141" } }],
         mqFees: { total: "₹1,21,99,170", perSemester: "₹12,19,917" },
         hostelFees: [{ roomType: "Standard Room", annual: "₹1,65,000" }],
         miscFees: [{ label: "Misc Fees", value: "₹94,160" }],
         securityDeposit: "₹3,00,000",
         coursesSeats: [{ course: "MBBS", totalSeats: 100, managementQuota: 100 }],
-        hospital: { name: "NCR Hospital", beds: 400 },
+        hospital: { name: "NCR Hospital (Multi-specialty)", beds: 450 },
         internship: { duration: "12 months", stipend: "₹15,000/month" },
-        admissionProcess: ["Apply through NEET counseling", "Document verification", "Fee payment"],
-        facultyDepartments: ["Anatomy", "Physiology", "Biochemistry", "Pharmacology", "Pathology", "Medicine", "Surgery"],
-        faqs: [{ question: "Where is NCR Medical Sciences?", answer: "Located in Meerut, part of NCR region." }, { question: "Is the medical degree recognized?", answer: "Yes, the MBBS degree is recognized by the NMC (National Medical Commission) and is valid for practice across India and abroad after clearing licensing exams." }, { question: "What is the patient flow in the hospital?", answer: "The attached teaching hospital has a good patient flow, ensuring excellent clinical exposure and hands-on training for students." }, { question: "Are residential facilities available?", answer: "Yes, the campus provides comfortable hostel accommodation for students, creating a conducive environment for study and rest." }],
+        admissionProcess: ["NEET UG Eligibility", "UP State NEET Counseling (UPDGME)", "Seat Allocation and Allotment Letter", "Reporting at College for Documentation"],
+        facultyDepartments: ["Anatomy", "Physiology", "Biochemistry", "Pharmacology", "Pathology", "Microbiology", "Forensic Medicine", "Community Medicine", "Medicine", "Surgery", "Pediatrics"],
+        faqs: [
+            { question: "Where exactly is NCRIMS located?", answer: "NCRIMS is located on the Hapur-Meerut Road in Meerut, offering excellent connectivity to the Delhi-NCR region." },
+            { question: "Is the MBBS degree from NCRIMS valid?", answer: "Yes, the MBBS program is recognized by the National Medical Commission (NMC) and the college is affiliated with Ch. Charan Singh University, Meerut." },
+            { question: "What facilities are available in the hospital?", answer: "The attached hospital features 450+ beds, 24x7 emergency services, modern ICUs, modular OTs, and a complete diagnostic wing with imaging and lab services." }
+        ],
         galleryImages: [
             { url: "https://placehold.co/800x600/1e293b/fff?text=Campus+View", alt: "Campus View" },
             { url: "https://placehold.co/800x600/1e293b/fff?text=Library", alt: "Library" },
@@ -1828,42 +1971,7 @@ export const colleges: College[] = [
         ],
         whyChooseAkashTalks: ["Direct admission support", "Program guidance", "Complete counseling", "Post-admission support for hostel and documentation", "Guidance on scholarship applications and education loans", "Zero hidden charges policy"]
     },
-{
-        id: "wb-4",
-        slug: "rcc-institute-of-information-technology",
-        name: "RCC Institute of Information Technology",
-        location: "Kolkata, West Bengal",
-        state: "West Bengal",
-        rating: 3.9,
-        reviews: 800,
-        fees: "₹ 6.04L Total",
-        courses: ["B.Tech", "MCA"],
-        type: "Government",
-        tags: ["Semi-Government", "Affordable", "IT Focused"],
-        established: "2000",
-        description: "A semi-government engineering college in Kolkata known for specialized IT education and affordable fees.",
-        imageUrl: "/images/colleges/rcc-institute-of-information-technology.png",
-        about: "RCC Institute of Information Technology (RCCIIT) is a semi-government engineering college established in 2000. It is approved by AICTE and affiliated to MAKAUT. The institute focuses on Information Technology and Computer Science education. The institute emphasizes a holistic development approach, encouraging students to participate in technical fests, hackathons, and research projects. With a curriculum designed to meet industry 4.0 standards, students are trained in emerging technologies like AI, ML, and IoT. The campus provides a vibrant atmosphere with various clubs and societies for extracurricular activities.",
-        highlights: ["Semi-Government Status", "Affordable Fees", "IT and CSE Focus", "Good Faculty", "Experienced Faculty", "Modern Infrastructure", "Holistic Development", "Industry-Ready Curriculum"],
-        cutoffs: [{ title: "WBJEE Cutoff 2024", table: [{ label: "CSE", value: "Rank 12000 - 20000" }, { label: "IT", value: "Rank 15000 - 25000" }] }],
-        coursesDetails: [{ name: "Computer Science and Engineering", duration: "4 Years", type: "B.Tech" }, { name: "Information Technology", duration: "4 Years", type: "B.Tech" }],
-        feesDetails: [{ title: "B.Tech Fee Structure (2024-25)", items: [{ label: "Total B.Tech (4 Years)", value: "₹6.04 Lakhs" }] }],
-        placements: { stats: [{ label: "Highest Package", value: "₹15 LPA" }, { label: "Average Package", value: "₹4 LPA" }], topRecruiters: [{ category: "IT", companies: ["TCS", "Wipro", "Infosys"] }] },
-        admissions: { process: ["WBJEE counseling"], eligibility: ["10+2 with PCM"], documents: ["Marksheets", "WBJEE Rank Card"] },
-        keyDates: [{ event: "WBJEE Counseling", date: "July 2026" }],
-        whyChoose: ["Semi-government status", "Affordable fees", "IT focused curriculum", "Central Kolkata location"],
-        scholarships: [{ title: "TFW Scheme", items: [{ label: "Tuition Fee Waiver", value: "Full Tuition Fee Waived for eligible students" }] }],
-        alumni: { description: "RCCIIT alumni work in IT companies across India.", companies: ["TCS", "Wipro", "Infosys", "Cognizant", "Tech Mahindra"] },
-        compare: [{ parameter: "Type", thisCollege: "Semi-Government", competitor1: "Private (IEM)", competitor2: "Private (Heritage)" }, { parameter: "Total Fees", thisCollege: "₹3.5-4.5 Lakhs", competitor1: "₹8.5 Lakhs", competitor2: "₹8-9 Lakhs" }],
-        faqs: [{ question: "Is RCCIIT a government college?", answer: "It's a semi-government college with government-aided status, making it affordable." }, { question: "Does the college provide internship support?", answer: "Yes, the college has a dedicated placement cell that assists students in securing summer internships and industrial training." }, { question: "Is there a dedicated placement cell?", answer: "Yes, the Training and Placement Cell works year-round to bring top companies for recruitment and trains students in soft skills." }, { question: "Are there hostel facilities available?", answer: "Yes, separate hostel facilities are available for boys and girls with all necessary amenities and security." }],
-        galleryImages: [
-            { url: "https://placehold.co/800x600/1e293b/fff?text=Campus+View", alt: "Campus View" },
-            { url: "https://placehold.co/800x600/1e293b/fff?text=Library", alt: "Library" },
-            { url: "https://placehold.co/800x600/1e293b/fff?text=Laboratories", alt: "Laboratories" },
-            { url: "https://placehold.co/800x600/1e293b/fff?text=Hostel", alt: "Student Hostel" }
-        ],
-        whyChooseAkashTalks: ["Affordable college guidance", "IT career counseling", "Admission support", "Post-admission support for hostel and documentation", "Guidance on scholarship applications and education loans", "Zero hidden charges policy"]
-    },
+
 {
         id: "up-med-22",
         slug: "rohilkhand-medical-bareilly",
@@ -2401,61 +2509,6 @@ export const colleges: College[] = [
         whyChooseAkashTalks: ["SET preparation guidance", "Symbiosis admission support", "Scholarship assistance", "Complete counseling", "Post-admission support for hostel and documentation", "Guidance on scholarship applications and education loans", "Zero hidden charges policy"]
     },
 {
-        id: "2",
-        slug: "techno-india-salt-lake",
-        name: "Techno India Main Salt Lake",
-        location: "Salt Lake, Kolkata",
-        state: "West Bengal",
-        rating: 4.2,
-        reviews: 1420,
-        fees: "₹ 4L - 6L Total",
-        courses: ["B.Tech", "M.Tech", "BBA", "MBA", "MCA"],
-        type: "Private",
-        tags: ["Industry Connect", "NAAC Accredited", "Affordable"],
-        logoUrl: "/footer-logo.jpg",
-        established: "2001",
-        description: "Leading private engineering college in Salt Lake with strong industry connections and excellent placement record.",
-        imageUrl: "/images/colleges/techno-india-salt-lake.png",
-        about: "Techno India Salt Lake is one of the flagship institutes of the Techno India Group, established in 2001. Located in the heart of Salt Lake City, it offers a wide range of undergraduate and postgraduate programs in engineering, management, and computer applications. The college is known for its affordable fee structure and strong industry connections. The institute emphasizes a holistic development approach, encouraging students to participate in technical fests, hackathons, and research projects. With a curriculum designed to meet industry 4.0 standards, students are trained in emerging technologies like AI, ML, and IoT. The campus provides a vibrant atmosphere with various clubs and societies for extracurricular activities.",
-        highlights: ["NAAC Accredited", "Part of Techno India Group", "Affordable Fee Structure", "Strong Industry Connections", "Modern Campus in Salt Lake", "Experienced Faculty", "Modern Infrastructure", "Holistic Development", "Industry-Ready Curriculum"],
-        infrastructure: ["Modern Campus with IT Labs", "Well-equipped Libraries", "Seminar Halls", "Sports Facilities", "Cafeteria"],
-        cutoffs: [{ title: "WBJEE Cutoff 2024", table: [{ label: "CSE", value: "Rank 8000 - 15000" }, { label: "IT", value: "Rank 10000 - 18000" }, { label: "ECE", value: "Rank 12000 - 20000" }], description: "Admission through WBJEE counseling." }],
-        coursesDetails: [
-            { name: "Computer Science and Engineering", duration: "4 Years", type: "B.Tech" },
-            { name: "Information Technology", duration: "4 Years", type: "B.Tech" },
-            { name: "Electronics & Communication Engineering", duration: "4 Years", type: "B.Tech" },
-            { name: "Electrical Engineering", duration: "4 Years", type: "B.Tech" },
-            { name: "Master of Business Administration", duration: "2 Years", type: "MBA" }
-        ],
-        feesDetails: [{ title: "B.Tech Fee Structure (2024-25)", items: [{ label: "Annual Fee", value: "₹1 - 1.5 Lakhs" }, { label: "Total B.Tech (4 Years)", value: "₹4.02 - 6 Lakhs" }], note: "Affordable options available in Kolkata depending on branch." }],
-        placements: {
-            stats: [{ label: "Highest Package", value: "₹18 LPA" }, { label: "Average Package", value: "₹4.5 LPA" }, { label: "Placement Rate", value: "85%+" }],
-            highlights: ["Strong IT sector placements", "Regular campus drives"],
-            topRecruiters: [{ category: "IT Companies", companies: ["TCS", "Wipro", "Infosys", "Cognizant", "Capgemini"] }]
-        },
-        admissions: {
-            process: ["Appear for WBJEE", "Participate in counseling", "Document verification", "Fee payment"],
-            eligibility: ["10+2 with PCM", "Valid WBJEE score"],
-            documents: ["10th & 12th Marksheets", "WBJEE Rank Card", "Category Certificate"]
-        },
-        keyDates: [{ event: "WBJEE Counseling", date: "July 2026" }, { event: "Classes Begin", date: "August 2026" }],
-        whyChoose: ["Affordable fee structure", "Salt Lake location with IT hub proximity", "Part of established Techno India Group", "Good placement support"],
-        scholarships: [{ title: "Merit Scholarship", items: [{ label: "Top WBJEE Rankers", value: "Up to 30% fee waiver" }] }],
-        alumni: { description: "Strong network of Techno India alumni working in IT companies across India.", companies: ["TCS", "Wipro", "Infosys", "Cognizant", "Capgemini"] },
-        compare: [{ parameter: "Average Package", thisCollege: "₹4.5 LPA", competitor1: "₹6.5 LPA (IEM)", competitor2: "₹5.8 LPA (Heritage)" }, { parameter: "Total Fees (4 Years)", thisCollege: "₹4-5.2 Lakhs", competitor1: "₹8.5 Lakhs (IEM)", competitor2: "₹8-9 Lakhs (Heritage)" }],
-        faqs: [
-            { question: "Is Techno India Salt Lake good for CSE?", answer: "Yes, it offers quality CSE education at an affordable price with decent placements in IT companies." },
-            { question: "What is the fee at Techno India?", answer: "The annual fee is around ₹1-1.3 Lakhs, making it one of the most affordable options." }, { question: "Does the college provide internship support?", answer: "Yes, the college has a dedicated placement cell that assists students in securing summer internships and industrial training." }, { question: "Is there a dedicated placement cell?", answer: "Yes, the Training and Placement Cell works year-round to bring top companies for recruitment and trains students in soft skills." }, { question: "Are there hostel facilities available?", answer: "Yes, separate hostel facilities are available for boys and girls with all necessary amenities and security." }
-        ],
-        galleryImages: [
-            { url: "https://placehold.co/800x600/1e293b/fff?text=Campus+View", alt: "Campus View" },
-            { url: "https://placehold.co/800x600/1e293b/fff?text=Library", alt: "Library" },
-            { url: "https://placehold.co/800x600/1e293b/fff?text=Laboratories", alt: "Laboratories" },
-            { url: "https://placehold.co/800x600/1e293b/fff?text=Hostel", alt: "Student Hostel" }
-        ],
-        whyChooseAkashTalks: ["Expert counseling for WBJEE admissions", "Transparent fee guidance", "Scholarship assistance", "Complete admission support", "Post-admission hostel help", "Post-admission support for hostel and documentation", "Guidance on scholarship applications and education loans", "Zero hidden charges policy"]
-    },
-{
         id: "wb-7",
         slug: "techno-international-new-town",
         name: "Techno International New Town (TINT)",
@@ -2820,7 +2873,7 @@ export const exams: Exam[] = [
         id: "wbjee",
         slug: "wbjee-2026",
         name: "WBJEE 2026",
-        logoUrl: "/images/exams/wbjee-logo.png",
+        logoUrl: "https://placehold.co/100x100/10b981/ffffff?text=WBJEE",
         fullName: "West Bengal Joint Entrance Examination",
         description: "State-level entrance exam for admission to undergraduate engineering, technology, pharmacy, and architecture courses in West Bengal.",
         date: "April 2026 (Expected)",
@@ -2876,7 +2929,7 @@ export const exams: Exam[] = [
         id: "srmjeee",
         slug: "srmjeee-2026",
         name: "SRMJEEE 2026",
-        logoUrl: "/images/exams/srmjeee-logo.png",
+        logoUrl: "https://placehold.co/100x100/f59e0b/ffffff?text=SRMJEEE",
         fullName: "SRM Joint Engineering Entrance Examination",
         description: "Common entrance examination for admission to B.Tech programs at all SRM Group campuses.",
         date: "Phase 1: April 2026 | Phase 2: June 2026",
@@ -2930,7 +2983,7 @@ export const exams: Exam[] = [
         id: "iemcet",
         slug: "iemcet-entrance-exam",
         name: "IEM CET 2026",
-        logoUrl: "/images/exams/iemcet-logo.png",
+        logoUrl: "https://placehold.co/100x100/7c3aed/ffffff?text=IEM+CET",
         fullName: "IEM Common Entrance Test",
         description: "Entrance test for admission to various undergraduate and postgraduate courses at IEM Kolkata and UEM.",
         date: "Multiple Phases (March-July 2026)",
@@ -2978,7 +3031,7 @@ export const exams: Exam[] = [
         id: "iemjee",
         slug: "iemjee",
         name: "IEMJEE 2026",
-        logoUrl: "/images/exams/iemjee-logo.png",
+        logoUrl: "https://placehold.co/100x100/f43f5e/ffffff?text=IEMJEE",
         fullName: "Institute of Engineering & Management Joint Entrance Exam",
         description: "Exam for admission to B.Tech, BCA, BBA, M.Tech, MCA, MBA courses of IEM Group.",
         date: "Multiple Phases (Online)",
@@ -3018,6 +3071,63 @@ export const exams: Exam[] = [
             { question: "Is there an exam fee?", answer: "Currently, there is no examination fee for appearing in IEMJEE." },
             { question: "Can I get admission in IEM Kolkata through IEMJEE?", answer: "IEMJEE is primarily for UEM Jaipur and UEM Kolkata. For IEM Kolkata (MAKAUT affiliated), WBJEE/JEE Main is the main route, but management quota seats *might* consider it. Check with admission cell." }, { question: "Does the college provide internship support?", answer: "Yes, the college has a dedicated placement cell that assists students in securing summer internships and industrial training." }, { question: "Is there a dedicated placement cell?", answer: "Yes, the Training and Placement Cell works year-round to bring top companies for recruitment and trains students in soft skills." }, { question: "Are there hostel facilities available?", answer: "Yes, separate hostel facilities are available for boys and girls with all necessary amenities and security." }, { question: "How can Akash Talks help in counseling?", answer: "We provide personalized rank analysis and college preference lists to help you get the best seat." }, { question: "Is the application process online?", answer: "Yes, the entire application process is conducted online through the official portal." }, { question: "What documents are needed for counseling?", answer: "Standard documents include Admit Card, Rank Card, 10th/12th Marksheets, and Domicile Certificate." }
         ]
+    },
+    {
+        id: "comedk",
+        slug: "comedk-uget-2026",
+        name: "COMEDK UGET 2026",
+        logoUrl: "https://placehold.co/100x100/06b6d4/ffffff?text=COMEDK",
+        fullName: "Consortium of Medical, Engineering and Dental Colleges of Karnataka Undergraduate Entrance Test",
+        description: "National-level entrance exam for admission into around 190 private engineering colleges in Karnataka.",
+        date: "May 9, 2026",
+        applicationLink: "https://www.comedk.org/",
+        introduction: "COMEDK UGET (Undergraduate Entrance Test) is a prominent national-level entrance examination for students aspiring to pursue engineering in Karnataka's top private institutions. It provides a gateway to approximately 190 member colleges, offering over 20,000 seats. Known for its focus on speed and accuracy, COMEDK attracts students from across India for its quality of technical education and placement opportunities in Bangalore, the Silicon Valley of India.",
+        aboutExam: "The Consortium of Medical, Engineering, and Dental Colleges of Karnataka (COMEDK) is an autonomous body that conducts UGET for admission to B.E./B.Tech courses. The exam is conducted online as a Computer-Based Test (CBT) at various centers across India. COMEDK ensures a merit-based, fair, and transparent admission process for professional courses. It is a highly sought-after exam due to the concentration of premier engineering colleges in the Karnataka region. Akash Talks assists students throughout the COMEDK journey, from registration to centralized counseling support.",
+        overview: "COMEDK UGET is a national-level entrance exam conducted for admission into undergraduate engineering programs in around 190 private colleges in Karnataka. The exam is held in an online, computer-based mode and tests candidates on Physics, Chemistry, and Mathematics. With no negative marking, it is considered a student-friendly but highly competitive exam due to the limited number of seats in top-tier colleges like RVCE, MSRIT, and BMSCE.",
+        importantDates: [
+            { event: "Notification Release", date: "January 2026" },
+            { event: "Registration Start", date: "February 2026" },
+            { event: "Registration End", date: "April 2026" },
+            { event: "Admit Card Release", date: "Last week of April 2026" },
+            { event: "COMEDK UGET 2026 Exam", date: "May 9, 2026" },
+            { event: "Results Release", date: "Last week of May 2026" },
+            { event: "Counseling Registration", date: "June 2026" }
+        ],
+        applicationProcess: [
+            { step: "Registration", description: "Register on comedk.org using basic details like name, email, and phone." },
+            { step: "Fill Form", description: "Login with credentials and fill in personal, academic, and category details." },
+            { step: "Upload Documents", description: "Upload scanned copy of photograph, signature, and parent's signature." },
+            { step: "Fee Payment", description: "Pay the application fee (approx ₹1800 + GST) via online payment modes." },
+            { step: "Select Test City", description: "Choose your preferred test center from the available list across India." }
+        ],
+        documents: [
+            "Class 10 Marksheet (as age proof)",
+            "Class 12 Marksheet (if available)",
+            "Scanned Photograph and Signature",
+            "Scanned Parent's Signature",
+            "Valid Photo ID Proof (Aadhaar, PAN, Passport)",
+            "Caste/Category Certificate (if applicable for Karnataka candidates)"
+        ],
+        eligibility: [
+            "Passed 10+2 or equivalent examination from a recognized board.",
+            "Physics, Chemistry, and Mathematics must be compulsory subjects along with English.",
+            "Minimum 45% aggregate in PCM in 10+2 (40% for SC/ST/OBC of Karnataka state).",
+            "There is no requirement of minimum marks in English, but the candidate must have passed it.",
+            "Diploma candidates are NOT eligible (no lateral entry)."
+        ],
+        examPattern: {
+            mode: "Online (Computer Based Test)",
+            duration: "3 Hours",
+            totalMarks: "180",
+            markingScheme: "+1 per correct answer, No Negative Marking",
+            subjects: ["Mathematics (60 Q)", "Physics (60 Q)", "Chemistry (60 Q)"]
+        },
+        counselling: "COMEDK conducts a centralized, completely web-based online counseling process. Candidates must register for counseling, pay the fee, and upload documents for verification. After verification, rank holders can participate in choice filling and seat allotment rounds. Allotted candidates must report to the college to confirm their admission.",
+        faqs: [
+            { question: "Is there any negative marking?", answer: "No, there is no negative marking in COMEDK UGET." },
+            { question: "Can outside Karnataka students apply?", answer: "Yes, students from all over India are eligible for COMEDK seats under the non-reservation category." },
+            { question: "Is COMEDK easier than JEE Main?", answer: "The level of questions is generally moderate compared to JEE Main, but the speed required is higher as you have to solve 180 questions in 180 minutes." }, { question: "Does the college provide internship support?", answer: "Yes, member colleges have dedicated placement cell that assists students in securing summer internships and industrial training." }, { question: "Is there a dedicated placement cell?", answer: "Yes, top colleges under COMEDK like RVCE and BMSCE have excellent placement records with dedicated cells." }, { question: "Are there hostel facilities available?", answer: "Yes, most member colleges provide hostel facilities for outstation students." }, { question: "How can Akash Talks help in counseling?", answer: "We provide personalized rank analysis and branch selection guidance for COMEDK colleges." }
+        ]
     }
 ];
 
@@ -3029,10 +3139,6 @@ export const collegesByState = colleges.reduce((acc, college) => {
     acc[college.state].push(college);
     return acc;
 }, {} as Record<string, College[]>);
-
-export const exams: Exam[] = [
-
-];
 
 // Company contact information
 export const companyInfo = {

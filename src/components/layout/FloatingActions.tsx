@@ -84,7 +84,7 @@ export function FloatingActions() {
           animate={{ x: 0 }}
           transition={{ delay: 0.1 }}
           whileHover={{ x: -8 }}
-          className="pointer-events-auto flex items-center bg-d2c-royal text-white p-3 shadow-lg hover:shadow-xl transition-all group overflow-hidden"
+          className="pointer-events-auto flex items-center bg-d2c-sky text-white p-3 shadow-lg hover:shadow-xl transition-all group overflow-hidden"
           title="Request a Callback"
         >
           <PhoneCall className="w-6 h-6 shrink-0 fill-current" />

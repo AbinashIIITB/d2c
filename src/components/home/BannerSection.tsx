@@ -5,9 +5,9 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 import Image from "next/image";
 
 const slides = [
-  { id: 1, image: "/banners/campus_1_new.jpg", alt: "Scenic University Campus Entrance — Direct2Campus Partner Institution" },
-  { id: 2, image: "/banners/campus_2_new.jpg", alt: "Annual Convocation Ceremony at a Partner Institution — Direct2Campus" },
-  { id: 3, image: "/banners/campus_3_new.jpg", alt: "Students at a Partner Campus — Direct2Campus" },
+  { id: 1, image: "/images/banners/heritage_enhanced.png", alt: "Heritage Institute of Medical Sciences, Varanasi - High-definition Campus View" },
+  { id: 2, image: "/images/banners/jis_enhanced.png", alt: "JIS College of Engineering Campus — Direct2Campus Partner Institution" },
+  { id: 3, image: "/images/banners/ncr_enhanced.png", alt: "NCR Institute of Medical Sciences, Meerut — AI-Enhanced Exterior" },
 ];
 
 const AUTO_INTERVAL = 5000;

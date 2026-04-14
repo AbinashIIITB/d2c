@@ -4,8 +4,7 @@ import { useState, useRef, useEffect } from "react"
 import { Search, Building2, BookOpen } from "lucide-react"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
-import { colleges } from "@/lib/data"
-import examsData from "@/data/exams.json"
+import { colleges, exams } from "@/lib/data"
 
 type SearchMode = "all" | "colleges" | "exams"
 
@@ -72,11 +71,11 @@ export function AutoSuggestSearch({
   }
   
   if (mode === "all" || mode === "exams") {
-    examsData.forEach(e => allItems.push({
+    exams.forEach(e => allItems.push({
       id: `e_${e.id}`,
-      title: e.title,
+      title: e.name,
       subtitle: "Entrance Exam",
-      url: e.link,
+      url: `/exams/${e.slug}`,
       icon: "exam",
       imageUrl: e.logoUrl
     }))

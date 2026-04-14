@@ -5,8 +5,7 @@ import Link from "next/link"
 import { usePathname, useRouter } from "next/navigation"
 import { motion, AnimatePresence } from "framer-motion"
 import { Menu, X, ChevronDown, PhoneCall, Search, ArrowLeft, Building2, BookOpen } from "lucide-react"
-import { colleges } from "@/lib/data"
-import examsData from "@/data/exams.json"
+import { colleges, exams } from "@/lib/data"
 
 const NAV_LINKS = [
   { label: "Home", href: "/" },
@@ -50,11 +49,11 @@ export function Navbar() {
       icon: "college" as const,
       imageUrl: c.imageUrl,
     })),
-    ...examsData.map(e => ({
+    ...exams.map(e => ({
       id: `e_${e.id}`,
-      title: e.title,
+      title: e.name,
       subtitle: "Entrance Exam",
-      url: e.link,
+      url: `/exams/${e.slug}`,
       icon: "exam" as const,
       imageUrl: e.logoUrl,
     })),
@@ -140,12 +139,12 @@ export function Navbar() {
   }
 
   return (
-    <header className="fixed top-4 md:top-5 left-0 right-0 z-50 transition-all duration-300" ref={mobileSearchContainerRef}>
+    <header className="fixed top-4 min-[903px]:top-5 left-0 right-0 z-50 transition-all duration-300" ref={mobileSearchContainerRef}>
       <div className="content-boundary">
         <div 
           onMouseEnter={() => setIsHovered(true)}
           onMouseLeave={() => setIsHovered(false)}
-          className={`rounded-2xl transition-all duration-300 flex items-center justify-between h-14 md:h-16 px-5 md:px-6 ${
+          className={`rounded-2xl transition-all duration-300 flex items-center justify-between h-14 min-[903px]:h-16 px-5 min-[903px]:px-6 ${
             showSolidBg 
               ? "bg-white shadow-[0_8px_30px_rgba(0,0,0,0.12)] border border-gray-100" 
               : "bg-transparent border border-transparent"
@@ -160,7 +159,7 @@ export function Navbar() {
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
                 transition={{ duration: 0.2 }}
-                className="md:hidden flex items-center gap-3 w-full"
+                className="min-[903px]:hidden flex items-center gap-3 w-full"
               >
                 <button
                   onClick={() => {
@@ -203,7 +202,7 @@ export function Navbar() {
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
                 transition={{ duration: 0.15 }}
-                className="md:hidden flex items-center justify-between w-full"
+                className="min-[903px]:hidden flex items-center justify-between w-full"
               >
                 {/* Brand */}
                 <Link href="/" className="flex items-center gap-2 z-50 shrink-0">
@@ -265,8 +264,8 @@ export function Navbar() {
           </AnimatePresence>
 
           {/* ── DESKTOP BRAND ── */}
-          <Link href="/" className="hidden md:flex items-center gap-2 z-50 shrink-0 pr-4">
-            <span className={`font-sora font-bold text-lg md:text-xl tracking-tight transition-colors duration-300 ${
+          <Link href="/" className="hidden min-[903px]:flex items-center gap-2 z-50 shrink-0 pr-4">
+            <span className={`font-sora font-bold text-lg min-[903px]:text-xl tracking-tight transition-colors duration-300 ${
               showSolidBg ? "text-d2c-navy" : "text-white"
             }`}>
               Direct<span className="text-d2c-royal">2</span>Campus
@@ -274,7 +273,7 @@ export function Navbar() {
           </Link>
 
           {/* ── DESKTOP NAV ── */}
-          <nav className="hidden md:flex items-center justify-center gap-1 flex-1">
+          <nav className="hidden min-[903px]:flex items-center justify-center gap-1 flex-1">
             {NAV_LINKS.map((link) => (
               <div
                 key={link.label}
@@ -337,7 +336,7 @@ export function Navbar() {
           </nav>
 
           {/* ── DESKTOP CTA ── */}
-          <div className="hidden md:flex items-center gap-3">
+          <div className="hidden min-[903px]:flex items-center gap-3">
             <div 
               className="relative flex items-center" 
               ref={searchContainerRef}
@@ -371,7 +370,7 @@ export function Navbar() {
             
             <Link
               href="/contact"
-              className={`flex items-center shrink-0 gap-2 px-5 py-2 rounded-xl font-semibold text-xs md:text-sm transition-all duration-300 border ${
+              className={`flex items-center shrink-0 gap-2 px-5 py-2 rounded-xl font-semibold text-xs min-[903px]:text-sm transition-all duration-300 border ${
                 showSolidBg
                   ? "bg-d2c-royal border-d2c-royal text-white hover:bg-d2c-navy hover:border-d2c-navy shadow-md hover:shadow-lg"
                   : "border-white/40 text-white hover:bg-white/10"
@@ -385,7 +384,7 @@ export function Navbar() {
       </div>
 
       {/* ── MOBILE SEARCH SUGGESTIONS (shown below navbar like menu bar) ── */}
-      <div className="content-boundary mt-2 w-full md:hidden">
+      <div className="content-boundary mt-2 w-full min-[903px]:hidden">
         <AnimatePresence>
           {mobileSearchOpen && mobileFilteredItems.length > 0 && (
             <motion.div
@@ -481,7 +480,7 @@ export function Navbar() {
       </div>
 
       {/* ── MOBILE MENU ── */}
-      <div className="content-boundary mt-2 w-full md:hidden">
+      <div className="content-boundary mt-2 w-full min-[903px]:hidden">
         <AnimatePresence>
           {mobileMenuOpen && (
             <motion.div
