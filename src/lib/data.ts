@@ -148,7 +148,7 @@ export type MedicalCollege = College;
 
 // --- Colleges Data (Preserved 28 items) ---
 export const colleges: College[] = [
-{
+    {
         id: "1",
         slug: "iem-salt-lake",
         name: "Institute of Engineering & Management (Salt Lake)",
@@ -273,7 +273,8 @@ export const colleges: College[] = [
             "Access to exclusive student reviews and insider tips",
             "Post-admission support for hostel and documentation"
         ]
-    }, {
+    },
+    {
         id: "2",
         slug: "techno-india-salt-lake",
         name: "Techno India Main Salt Lake",
@@ -327,7 +328,8 @@ export const colleges: College[] = [
             { url: "https://placehold.co/800x600/1e293b/fff?text=Hostel", alt: "Student Hostel" }
         ],
         whyChooseAkashTalks: ["Expert counseling for WBJEE admissions", "Transparent fee guidance", "Scholarship assistance", "Complete admission support", "Post-admission hostel help", "Post-admission support for hostel and documentation", "Guidance on scholarship applications and education loans", "Zero hidden charges policy"]
-    }, {
+    },
+    {
         id: "wb-3",
         slug: "haldia-institute-of-technology",
         name: "Haldia Institute of Technology",
@@ -373,7 +375,8 @@ export const colleges: College[] = [
             { url: "https://placehold.co/800x600/1e293b/fff?text=Hostel", alt: "Student Hostel" }
         ],
         whyChooseAkashTalks: ["Guidance for core branch selection", "Industrial placement insights", "Hostel and location guidance", "Complete admission assistance", "Post-admission support for hostel and documentation", "Guidance on scholarship applications and education loans", "Zero hidden charges policy"]
-    }, {
+    },
+    {
         id: "wb-4",
         slug: "rcc-institute-of-information-technology",
         name: "RCC Institute of Information Technology",
@@ -409,7 +412,8 @@ export const colleges: College[] = [
             { url: "https://placehold.co/800x600/1e293b/fff?text=Hostel", alt: "Student Hostel" }
         ],
         whyChooseAkashTalks: ["Affordable college guidance", "IT career counseling", "Admission support", "Post-admission support for hostel and documentation", "Guidance on scholarship applications and education loans", "Zero hidden charges policy"]
-    }, {
+    },
+    {
         id: "wb-5",
         slug: "jis-college-of-engineering",
         name: "JIS College of Engineering",
@@ -445,7 +449,8 @@ export const colleges: College[] = [
             { url: "https://placehold.co/800x600/1e293b/fff?text=Hostel", alt: "Student Hostel" }
         ],
         whyChooseAkashTalks: ["Autonomous college guidance", "Research program information", "Complete admission support", "Post-admission support for hostel and documentation", "Guidance on scholarship applications and education loans", "Zero hidden charges policy"]
-    }, {
+    },
+    {
         id: "wb-6",
         slug: "heritage-institute-of-technology",
         name: "Heritage Institute of Technology",
@@ -481,7 +486,8 @@ export const colleges: College[] = [
             { url: "https://placehold.co/800x600/1e293b/fff?text=Hostel", alt: "Student Hostel" }
         ],
         whyChooseAkashTalks: ["Top college admission guidance", "WBJEE counseling support", "Scholarship information", "Complete documentation help", "Post-admission support for hostel and documentation", "Guidance on scholarship applications and education loans", "Zero hidden charges policy"]
-    }, {
+    },
+    {
         id: "wb-10",
         slug: "academy-of-technology",
         name: "Academy of Technology (AOT)",
@@ -517,9 +523,12 @@ export const colleges: College[] = [
             { url: "https://placehold.co/800x600/1e293b/fff?text=Laboratories", alt: "Laboratories" },
             { url: "https://placehold.co/800x600/1e293b/fff?text=Hostel", alt: "Student Hostel" }
         ],
-        whyChooseAkashTalks: ["Placement-focused college guidance", "Discipline and culture insights", "Fee and scholarship support", "Complete admission assistance", "Hostel guidance for residential campus", "Post-admission support for hostel and documentation", "Guidance on scholarship applications and education loans", "Zero hidden charges policy"]
+        whyChooseAkashTalks: ["Placement-focused college guidance", "Discipline and culture insights", "Fee and scholarship support", "Complete admission assistance", "Hostel guidance for residential campus", "Post-admission support for hostel and documentation", "Guidance on scholarship applications and education loans", "Zero hidden charges policy"],
+        alumni: {
+        "description": "Active alumni network with graduates in top positions globally."
+}
     },
-{
+    {
         id: "ka-6",
         slug: "acharya-institute-of-technology",
         name: "Acharya Institute of Technology",
@@ -550,9 +559,23 @@ export const colleges: College[] = [
             { url: "https://placehold.co/800x600/1e293b/fff?text=Laboratories", alt: "Laboratories" },
             { url: "https://placehold.co/800x600/1e293b/fff?text=Hostel", alt: "Student Hostel" }
         ],
-        whyChooseAkashTalks: ["Affordable college guidance", "COMEDK support", "Direct admission help", "Complete assistance", "Post-admission support for hostel and documentation", "Guidance on scholarship applications and education loans", "Zero hidden charges policy"]
+        whyChooseAkashTalks: ["Affordable college guidance", "COMEDK support", "Direct admission help", "Complete assistance", "Post-admission support for hostel and documentation", "Guidance on scholarship applications and education loans", "Zero hidden charges policy"],
+        scholarships: [
+        {
+                "title": "Merit Scholarship",
+                "items": [
+                        {
+                                "label": "Top Rankers",
+                                "value": "Varies"
+                        }
+                ]
+        }
+],
+        alumni: {
+        "description": "Active alumni network with graduates in top positions globally."
+}
     },
-{
+    {
         id: "new-med-9",
         slug: "ajay-sangaal-shamli",
         name: "Ajay Sangaal Institute of Medical Science & Research",
@@ -581,9 +604,66 @@ export const colleges: College[] = [
             process: ["Apply through NEET counseling", "Document verification", "Fee payment"],
             eligibility: ["10+2 with PCB minimum 50%", "Valid NEET UG Rank"],
             documents: ["10th/12th Marksheets", "NEET Scorecard", "ID Proof", "Photographs"]
+        },
+        infrastructure: [
+        "Multi-specialty Hospital",
+        "Digital Library",
+        "Medical Research Labs",
+        "Hostels",
+        "Anatomy Museum"
+],
+        placements: {
+        "stats": [
+                {
+                        "label": "Internship Completion",
+                        "value": "100%"
+                },
+                {
+                        "label": "Clinical Exposure",
+                        "value": "Excellent"
+                }
+        ],
+        "topRecruiters": [
+                {
+                        "category": "Clinical",
+                        "companies": [
+                                "Attached Teaching Hospital",
+                                "Local Health Centers",
+                                "Private Hospitals"
+                        ]
+                }
+        ]
+},
+        scholarships: [
+        {
+                "title": "State Scholarships",
+                "items": [
+                        {
+                                "label": "EWS/Reserved",
+                                "value": "Fee Reimbursement as per govt norms"
+                        }
+                ]
         }
+],
+        alumni: {
+        "description": "Alumni practicing as reputed doctors and healthcare professionals across India and abroad."
+},
+        faqs: [
+        {
+                "question": "Is the medical degree recognized?",
+                "answer": "Yes, the MBBS degree is recognized by the National Medical Commission (NMC) and is valid for practice across India and abroad after clearing licensing exams."
+        },
+        {
+                "question": "What is the patient flow in the hospital?",
+                "answer": "The attached teaching hospital has a good patient flow, ensuring excellent clinical exposure and hands-on training for students."
+        },
+        {
+                "question": "Are residential facilities available?",
+                "answer": "Yes, the campus provides comfortable hostel accommodation for students, creating a conducive environment for study and rest."
+        }
+]
     },
-{
+    {
         id: "ka-3",
         slug: "bms-college-of-engineering",
         name: "B.M.S. College of Engineering",
@@ -615,9 +695,20 @@ export const colleges: College[] = [
             { url: "https://placehold.co/800x600/1e293b/fff?text=Laboratories", alt: "Laboratories" },
             { url: "https://placehold.co/800x600/1e293b/fff?text=Hostel", alt: "Student Hostel" }
         ],
-        whyChooseAkashTalks: ["Legacy institution guidance", "COMEDK support", "Management quota help", "Complete assistance", "Post-admission support for hostel and documentation", "Guidance on scholarship applications and education loans", "Zero hidden charges policy"]
+        whyChooseAkashTalks: ["Legacy institution guidance", "COMEDK support", "Management quota help", "Complete assistance", "Post-admission support for hostel and documentation", "Guidance on scholarship applications and education loans", "Zero hidden charges policy"],
+        scholarships: [
+        {
+                "title": "Merit Scholarship",
+                "items": [
+                        {
+                                "label": "Top Rankers",
+                                "value": "Varies"
+                        }
+                ]
+        }
+]
     },
-{
+    {
         id: "up-med-37",
         slug: "bs-kushwah-kanpur",
         name: "Dr. B.S. Kushwah Institute of Medical College",
@@ -649,9 +740,88 @@ export const colleges: College[] = [
             { url: "https://placehold.co/800x600/1e293b/fff?text=Laboratories", alt: "Laboratories" },
             { url: "https://placehold.co/800x600/1e293b/fff?text=Hostel", alt: "Student Hostel" }
         ],
-        whyChooseAkashTalks: ["Kanpur medical guidance", "Fee clarity", "Complete support", "Post-admission support for hostel and documentation", "Guidance on scholarship applications and education loans", "Zero hidden charges policy"]
+        whyChooseAkashTalks: ["Kanpur medical guidance", "Fee clarity", "Complete support", "Post-admission support for hostel and documentation", "Guidance on scholarship applications and education loans", "Zero hidden charges policy"],
+        infrastructure: [
+        "Multi-specialty Hospital",
+        "Digital Library",
+        "Medical Research Labs",
+        "Hostels",
+        "Anatomy Museum"
+],
+        coursesDetails: [
+        {
+                "name": "MBBS",
+                "duration": "5.5 Years",
+                "type": "Full Time"
+        }
+],
+        feesDetails: [
+        {
+                "title": "Fee Structure",
+                "items": [
+                        {
+                                "label": "Annual Fee",
+                                "value": "Varies"
+                        }
+                ]
+        }
+],
+        placements: {
+        "stats": [
+                {
+                        "label": "Internship Completion",
+                        "value": "100%"
+                },
+                {
+                        "label": "Clinical Exposure",
+                        "value": "Excellent"
+                }
+        ],
+        "topRecruiters": [
+                {
+                        "category": "Clinical",
+                        "companies": [
+                                "Attached Teaching Hospital",
+                                "Local Health Centers",
+                                "Private Hospitals"
+                        ]
+                }
+        ]
+},
+        admissions: {
+        "process": [
+                "NEET UG Exam",
+                "State/All India Counseling",
+                "Document Verification",
+                "Medical Fitness Test"
+        ],
+        "eligibility": [
+                "10+2 with PCB (50% for Gen, 40% for Reserved)",
+                "Qualified NEET UG"
+        ],
+        "documents": [
+                "NEET Scorecard",
+                "10th/12th Marksheets",
+                "Caste Certificate",
+                "Domicile Certificate"
+        ]
+},
+        scholarships: [
+        {
+                "title": "State Scholarships",
+                "items": [
+                        {
+                                "label": "EWS/Reserved",
+                                "value": "Fee Reimbursement as per govt norms"
+                        }
+                ]
+        }
+],
+        alumni: {
+        "description": "Alumni practicing as reputed doctors and healthcare professionals across India and abroad."
+}
     },
-{
+    {
         id: "od-3",
         slug: "c-v-raman-global-university",
         name: "C. V. Raman Global University",
@@ -681,9 +851,30 @@ export const colleges: College[] = [
             { url: "https://placehold.co/800x600/1e293b/fff?text=Laboratories", alt: "Laboratories" },
             { url: "https://placehold.co/800x600/1e293b/fff?text=Hostel", alt: "Student Hostel" }
         ],
-        whyChooseAkashTalks: ["Skill-focused college guidance", "Industry partnership insights", "Complete admission support", "Post-admission support for hostel and documentation", "Guidance on scholarship applications and education loans", "Zero hidden charges policy"]
+        whyChooseAkashTalks: ["Skill-focused college guidance", "Industry partnership insights", "Complete admission support", "Post-admission support for hostel and documentation", "Guidance on scholarship applications and education loans", "Zero hidden charges policy"],
+        infrastructure: [
+        "Modern Labs",
+        "Central Library",
+        "Hostels",
+        "Sports Complex",
+        "Auditorium"
+],
+        scholarships: [
+        {
+                "title": "Merit Scholarship",
+                "items": [
+                        {
+                                "label": "Top Rankers",
+                                "value": "Varies"
+                        }
+                ]
+        }
+],
+        alumni: {
+        "description": "Active alumni network with graduates in top positions globally."
+}
     },
-{
+    {
         id: "new-med-10",
         slug: "career-institute-lucknow",
         name: "Career Institute of Medical Sciences & Hospital",
@@ -712,9 +903,66 @@ export const colleges: College[] = [
             process: ["Apply through NEET counseling", "Document verification", "Fee payment"],
             eligibility: ["10+2 with PCB minimum 50%", "Valid NEET UG Rank"],
             documents: ["10th/12th Marksheets", "NEET Scorecard", "ID Proof", "Photographs"]
+        },
+        infrastructure: [
+        "Multi-specialty Hospital",
+        "Digital Library",
+        "Medical Research Labs",
+        "Hostels",
+        "Anatomy Museum"
+],
+        placements: {
+        "stats": [
+                {
+                        "label": "Internship Completion",
+                        "value": "100%"
+                },
+                {
+                        "label": "Clinical Exposure",
+                        "value": "Excellent"
+                }
+        ],
+        "topRecruiters": [
+                {
+                        "category": "Clinical",
+                        "companies": [
+                                "Attached Teaching Hospital",
+                                "Local Health Centers",
+                                "Private Hospitals"
+                        ]
+                }
+        ]
+},
+        scholarships: [
+        {
+                "title": "State Scholarships",
+                "items": [
+                        {
+                                "label": "EWS/Reserved",
+                                "value": "Fee Reimbursement as per govt norms"
+                        }
+                ]
         }
+],
+        alumni: {
+        "description": "Alumni practicing as reputed doctors and healthcare professionals across India and abroad."
+},
+        faqs: [
+        {
+                "question": "Is the medical degree recognized?",
+                "answer": "Yes, the MBBS degree is recognized by the National Medical Commission (NMC) and is valid for practice across India and abroad after clearing licensing exams."
+        },
+        {
+                "question": "What is the patient flow in the hospital?",
+                "answer": "The attached teaching hospital has a good patient flow, ensuring excellent clinical exposure and hands-on training for students."
+        },
+        {
+                "question": "Are residential facilities available?",
+                "answer": "Yes, the campus provides comfortable hostel accommodation for students, creating a conducive environment for study and rest."
+        }
+]
     },
-{
+    {
         id: "mh-4",
         slug: "d-y-patil-university",
         name: "D.Y. Patil University",
@@ -744,9 +992,30 @@ export const colleges: College[] = [
             { url: "https://placehold.co/800x600/1e293b/fff?text=Laboratories", alt: "Laboratories" },
             { url: "https://placehold.co/800x600/1e293b/fff?text=Hostel", alt: "Student Hostel" }
         ],
-        whyChooseAkashTalks: ["Direct admission guidance", "Campus and program insights", "Complete support", "Post-admission support for hostel and documentation", "Guidance on scholarship applications and education loans", "Zero hidden charges policy"]
+        whyChooseAkashTalks: ["Direct admission guidance", "Campus and program insights", "Complete support", "Post-admission support for hostel and documentation", "Guidance on scholarship applications and education loans", "Zero hidden charges policy"],
+        infrastructure: [
+        "Modern Labs",
+        "Central Library",
+        "Hostels",
+        "Sports Complex",
+        "Auditorium"
+],
+        scholarships: [
+        {
+                "title": "Merit Scholarship",
+                "items": [
+                        {
+                                "label": "Top Rankers",
+                                "value": "Varies"
+                        }
+                ]
+        }
+],
+        alumni: {
+        "description": "Active alumni network with graduates in top positions globally."
+}
     },
-{
+    {
         id: "ka-2",
         slug: "dayananda-sagar-university",
         name: "Dayananda Sagar University",
@@ -776,9 +1045,30 @@ export const colleges: College[] = [
             { url: "https://placehold.co/800x600/1e293b/fff?text=Laboratories", alt: "Laboratories" },
             { url: "https://placehold.co/800x600/1e293b/fff?text=Hostel", alt: "Student Hostel" }
         ],
-        whyChooseAkashTalks: ["Direct admission assistance", "Fee negotiation support", "Complete counseling", "Hostel guidance", "Post-admission support for hostel and documentation", "Guidance on scholarship applications and education loans", "Zero hidden charges policy"]
+        whyChooseAkashTalks: ["Direct admission assistance", "Fee negotiation support", "Complete counseling", "Hostel guidance", "Post-admission support for hostel and documentation", "Guidance on scholarship applications and education loans", "Zero hidden charges policy"],
+        infrastructure: [
+        "Modern Labs",
+        "Central Library",
+        "Hostels",
+        "Sports Complex",
+        "Auditorium"
+],
+        scholarships: [
+        {
+                "title": "Merit Scholarship",
+                "items": [
+                        {
+                                "label": "Top Rankers",
+                                "value": "Varies"
+                        }
+                ]
+        }
+],
+        alumni: {
+        "description": "Active alumni network with graduates in top positions globally."
+}
     },
-{
+    {
         id: "uk-2",
         slug: "doon-university",
         name: "Doon University",
@@ -808,9 +1098,30 @@ export const colleges: College[] = [
             { url: "https://placehold.co/800x600/1e293b/fff?text=Laboratories", alt: "Laboratories" },
             { url: "https://placehold.co/800x600/1e293b/fff?text=Hostel", alt: "Student Hostel" }
         ],
-        whyChooseAkashTalks: ["Government college guidance", "Affordable option counseling", "Complete admission support", "Post-admission support for hostel and documentation", "Guidance on scholarship applications and education loans", "Zero hidden charges policy"]
+        whyChooseAkashTalks: ["Government college guidance", "Affordable option counseling", "Complete admission support", "Post-admission support for hostel and documentation", "Guidance on scholarship applications and education loans", "Zero hidden charges policy"],
+        infrastructure: [
+        "Modern Labs",
+        "Central Library",
+        "Hostels",
+        "Sports Complex",
+        "Auditorium"
+],
+        scholarships: [
+        {
+                "title": "Merit Scholarship",
+                "items": [
+                        {
+                                "label": "Top Rankers",
+                                "value": "Varies"
+                        }
+                ]
+        }
+],
+        alumni: {
+        "description": "Active alumni network with graduates in top positions globally."
+}
     },
-{
+    {
         id: "mh-1",
         slug: "dr-d-y-patil-vidyapeeth-pune",
         name: "Dr. D. Y. Patil Vidyapeeth",
@@ -840,9 +1151,30 @@ export const colleges: College[] = [
             { url: "https://placehold.co/800x600/1e293b/fff?text=Laboratories", alt: "Laboratories" },
             { url: "https://placehold.co/800x600/1e293b/fff?text=Hostel", alt: "Student Hostel" }
         ],
-        whyChooseAkashTalks: ["Deemed university guidance", "Multiple program counseling", "Complete admission support", "Post-admission support for hostel and documentation", "Guidance on scholarship applications and education loans", "Zero hidden charges policy"]
+        whyChooseAkashTalks: ["Deemed university guidance", "Multiple program counseling", "Complete admission support", "Post-admission support for hostel and documentation", "Guidance on scholarship applications and education loans", "Zero hidden charges policy"],
+        infrastructure: [
+        "Multi-specialty Hospital",
+        "Digital Library",
+        "Medical Research Labs",
+        "Hostels",
+        "Anatomy Museum"
+],
+        scholarships: [
+        {
+                "title": "State Scholarships",
+                "items": [
+                        {
+                                "label": "EWS/Reserved",
+                                "value": "Fee Reimbursement as per govt norms"
+                        }
+                ]
+        }
+],
+        alumni: {
+        "description": "Alumni practicing as reputed doctors and healthcare professionals across India and abroad."
+}
     },
-{
+    {
         id: "up-med-3",
         slug: "eras-medical-lucknow",
         name: "Era's Lucknow Medical College & Hospital",
@@ -874,9 +1206,88 @@ export const colleges: College[] = [
             { url: "https://placehold.co/800x600/1e293b/fff?text=Laboratories", alt: "Laboratories" },
             { url: "https://placehold.co/800x600/1e293b/fff?text=Hostel", alt: "Student Hostel" }
         ],
-        whyChooseAkashTalks: ["Era's admission guidance", "Fee negotiation", "Complete support", "Post-admission support for hostel and documentation", "Guidance on scholarship applications and education loans", "Zero hidden charges policy"]
+        whyChooseAkashTalks: ["Era's admission guidance", "Fee negotiation", "Complete support", "Post-admission support for hostel and documentation", "Guidance on scholarship applications and education loans", "Zero hidden charges policy"],
+        infrastructure: [
+        "Multi-specialty Hospital",
+        "Digital Library",
+        "Medical Research Labs",
+        "Hostels",
+        "Anatomy Museum"
+],
+        coursesDetails: [
+        {
+                "name": "MBBS",
+                "duration": "5.5 Years",
+                "type": "Full Time"
+        }
+],
+        feesDetails: [
+        {
+                "title": "Fee Structure",
+                "items": [
+                        {
+                                "label": "Annual Fee",
+                                "value": "Varies"
+                        }
+                ]
+        }
+],
+        placements: {
+        "stats": [
+                {
+                        "label": "Internship Completion",
+                        "value": "100%"
+                },
+                {
+                        "label": "Clinical Exposure",
+                        "value": "Excellent"
+                }
+        ],
+        "topRecruiters": [
+                {
+                        "category": "Clinical",
+                        "companies": [
+                                "Attached Teaching Hospital",
+                                "Local Health Centers",
+                                "Private Hospitals"
+                        ]
+                }
+        ]
+},
+        admissions: {
+        "process": [
+                "NEET UG Exam",
+                "State/All India Counseling",
+                "Document Verification",
+                "Medical Fitness Test"
+        ],
+        "eligibility": [
+                "10+2 with PCB (50% for Gen, 40% for Reserved)",
+                "Qualified NEET UG"
+        ],
+        "documents": [
+                "NEET Scorecard",
+                "10th/12th Marksheets",
+                "Caste Certificate",
+                "Domicile Certificate"
+        ]
+},
+        scholarships: [
+        {
+                "title": "State Scholarships",
+                "items": [
+                        {
+                                "label": "EWS/Reserved",
+                                "value": "Fee Reimbursement as per govt norms"
+                        }
+                ]
+        }
+],
+        alumni: {
+        "description": "Alumni practicing as reputed doctors and healthcare professionals across India and abroad."
+}
     },
-{
+    {
         id: "up-med-4",
         slug: "fh-medical-college-agra",
         name: "F.H. Medical College",
@@ -908,9 +1319,88 @@ export const colleges: College[] = [
             { url: "https://placehold.co/800x600/1e293b/fff?text=Laboratories", alt: "Laboratories" },
             { url: "https://placehold.co/800x600/1e293b/fff?text=Hostel", alt: "Student Hostel" }
         ],
-        whyChooseAkashTalks: ["Agra medical guidance", "Fee clarity", "Complete support", "Post-admission support for hostel and documentation", "Guidance on scholarship applications and education loans", "Zero hidden charges policy"]
+        whyChooseAkashTalks: ["Agra medical guidance", "Fee clarity", "Complete support", "Post-admission support for hostel and documentation", "Guidance on scholarship applications and education loans", "Zero hidden charges policy"],
+        infrastructure: [
+        "Multi-specialty Hospital",
+        "Digital Library",
+        "Medical Research Labs",
+        "Hostels",
+        "Anatomy Museum"
+],
+        coursesDetails: [
+        {
+                "name": "MBBS",
+                "duration": "5.5 Years",
+                "type": "Full Time"
+        }
+],
+        feesDetails: [
+        {
+                "title": "Fee Structure",
+                "items": [
+                        {
+                                "label": "Annual Fee",
+                                "value": "Varies"
+                        }
+                ]
+        }
+],
+        placements: {
+        "stats": [
+                {
+                        "label": "Internship Completion",
+                        "value": "100%"
+                },
+                {
+                        "label": "Clinical Exposure",
+                        "value": "Excellent"
+                }
+        ],
+        "topRecruiters": [
+                {
+                        "category": "Clinical",
+                        "companies": [
+                                "Attached Teaching Hospital",
+                                "Local Health Centers",
+                                "Private Hospitals"
+                        ]
+                }
+        ]
+},
+        admissions: {
+        "process": [
+                "NEET UG Exam",
+                "State/All India Counseling",
+                "Document Verification",
+                "Medical Fitness Test"
+        ],
+        "eligibility": [
+                "10+2 with PCB (50% for Gen, 40% for Reserved)",
+                "Qualified NEET UG"
+        ],
+        "documents": [
+                "NEET Scorecard",
+                "10th/12th Marksheets",
+                "Caste Certificate",
+                "Domicile Certificate"
+        ]
+},
+        scholarships: [
+        {
+                "title": "State Scholarships",
+                "items": [
+                        {
+                                "label": "EWS/Reserved",
+                                "value": "Fee Reimbursement as per govt norms"
+                        }
+                ]
+        }
+],
+        alumni: {
+        "description": "Alumni practicing as reputed doctors and healthcare professionals across India and abroad."
+}
     },
-{
+    {
         id: "up-med-5",
         slug: "gs-medical-hapur",
         name: "G.S Medical College & Hospital",
@@ -942,9 +1432,88 @@ export const colleges: College[] = [
             { url: "https://placehold.co/800x600/1e293b/fff?text=Laboratories", alt: "Laboratories" },
             { url: "https://placehold.co/800x600/1e293b/fff?text=Hostel", alt: "Student Hostel" }
         ],
-        whyChooseAkashTalks: ["NCR medical guidance", "Fee clarity", "Complete support", "Post-admission support for hostel and documentation", "Guidance on scholarship applications and education loans", "Zero hidden charges policy"]
+        whyChooseAkashTalks: ["NCR medical guidance", "Fee clarity", "Complete support", "Post-admission support for hostel and documentation", "Guidance on scholarship applications and education loans", "Zero hidden charges policy"],
+        infrastructure: [
+        "Multi-specialty Hospital",
+        "Digital Library",
+        "Medical Research Labs",
+        "Hostels",
+        "Anatomy Museum"
+],
+        coursesDetails: [
+        {
+                "name": "MBBS",
+                "duration": "5.5 Years",
+                "type": "Full Time"
+        }
+],
+        feesDetails: [
+        {
+                "title": "Fee Structure",
+                "items": [
+                        {
+                                "label": "Annual Fee",
+                                "value": "Varies"
+                        }
+                ]
+        }
+],
+        placements: {
+        "stats": [
+                {
+                        "label": "Internship Completion",
+                        "value": "100%"
+                },
+                {
+                        "label": "Clinical Exposure",
+                        "value": "Excellent"
+                }
+        ],
+        "topRecruiters": [
+                {
+                        "category": "Clinical",
+                        "companies": [
+                                "Attached Teaching Hospital",
+                                "Local Health Centers",
+                                "Private Hospitals"
+                        ]
+                }
+        ]
+},
+        admissions: {
+        "process": [
+                "NEET UG Exam",
+                "State/All India Counseling",
+                "Document Verification",
+                "Medical Fitness Test"
+        ],
+        "eligibility": [
+                "10+2 with PCB (50% for Gen, 40% for Reserved)",
+                "Qualified NEET UG"
+        ],
+        "documents": [
+                "NEET Scorecard",
+                "10th/12th Marksheets",
+                "Caste Certificate",
+                "Domicile Certificate"
+        ]
+},
+        scholarships: [
+        {
+                "title": "State Scholarships",
+                "items": [
+                        {
+                                "label": "EWS/Reserved",
+                                "value": "Fee Reimbursement as per govt norms"
+                        }
+                ]
+        }
+],
+        alumni: {
+        "description": "Alumni practicing as reputed doctors and healthcare professionals across India and abroad."
+}
     },
-{
+    {
         id: "up-med-6",
         slug: "heritage-medical-varanasi",
         name: "Heritage Institute of Medical Sciences",
@@ -981,9 +1550,88 @@ export const colleges: College[] = [
             { url: "https://placehold.co/800x600/1e293b/fff?text=Laboratories", alt: "Laboratories" },
             { url: "https://placehold.co/800x600/1e293b/fff?text=Hostel", alt: "Student Hostel" }
         ],
-        whyChooseAkashTalks: ["Varanasi medical guidance", "Fee clarity", "Complete support", "Post-admission support for hostel and documentation", "Guidance on scholarship applications and education loans", "Zero hidden charges policy"]
+        whyChooseAkashTalks: ["Varanasi medical guidance", "Fee clarity", "Complete support", "Post-admission support for hostel and documentation", "Guidance on scholarship applications and education loans", "Zero hidden charges policy"],
+        infrastructure: [
+        "Multi-specialty Hospital",
+        "Digital Library",
+        "Medical Research Labs",
+        "Hostels",
+        "Anatomy Museum"
+],
+        coursesDetails: [
+        {
+                "name": "MBBS",
+                "duration": "5.5 Years",
+                "type": "Full Time"
+        }
+],
+        feesDetails: [
+        {
+                "title": "Fee Structure",
+                "items": [
+                        {
+                                "label": "Annual Fee",
+                                "value": "Varies"
+                        }
+                ]
+        }
+],
+        placements: {
+        "stats": [
+                {
+                        "label": "Internship Completion",
+                        "value": "100%"
+                },
+                {
+                        "label": "Clinical Exposure",
+                        "value": "Excellent"
+                }
+        ],
+        "topRecruiters": [
+                {
+                        "category": "Clinical",
+                        "companies": [
+                                "Attached Teaching Hospital",
+                                "Local Health Centers",
+                                "Private Hospitals"
+                        ]
+                }
+        ]
+},
+        admissions: {
+        "process": [
+                "NEET UG Exam",
+                "State/All India Counseling",
+                "Document Verification",
+                "Medical Fitness Test"
+        ],
+        "eligibility": [
+                "10+2 with PCB (50% for Gen, 40% for Reserved)",
+                "Qualified NEET UG"
+        ],
+        "documents": [
+                "NEET Scorecard",
+                "10th/12th Marksheets",
+                "Caste Certificate",
+                "Domicile Certificate"
+        ]
+},
+        scholarships: [
+        {
+                "title": "State Scholarships",
+                "items": [
+                        {
+                                "label": "EWS/Reserved",
+                                "value": "Fee Reimbursement as per govt norms"
+                        }
+                ]
+        }
+],
+        alumni: {
+        "description": "Alumni practicing as reputed doctors and healthcare professionals across India and abroad."
+}
     },
-{
+    {
         id: "up-med-7",
         slug: "hind-medical-barabanki",
         name: "Hind Institute of Medical Sciences",
@@ -1015,9 +1663,88 @@ export const colleges: College[] = [
             { url: "https://placehold.co/800x600/1e293b/fff?text=Laboratories", alt: "Laboratories" },
             { url: "https://placehold.co/800x600/1e293b/fff?text=Hostel", alt: "Student Hostel" }
         ],
-        whyChooseAkashTalks: ["Lucknow region guidance", "Fee clarity", "Complete support", "Post-admission support for hostel and documentation", "Guidance on scholarship applications and education loans", "Zero hidden charges policy"]
+        whyChooseAkashTalks: ["Lucknow region guidance", "Fee clarity", "Complete support", "Post-admission support for hostel and documentation", "Guidance on scholarship applications and education loans", "Zero hidden charges policy"],
+        infrastructure: [
+        "Multi-specialty Hospital",
+        "Digital Library",
+        "Medical Research Labs",
+        "Hostels",
+        "Anatomy Museum"
+],
+        coursesDetails: [
+        {
+                "name": "MBBS",
+                "duration": "5.5 Years",
+                "type": "Full Time"
+        }
+],
+        feesDetails: [
+        {
+                "title": "Fee Structure",
+                "items": [
+                        {
+                                "label": "Annual Fee",
+                                "value": "Varies"
+                        }
+                ]
+        }
+],
+        placements: {
+        "stats": [
+                {
+                        "label": "Internship Completion",
+                        "value": "100%"
+                },
+                {
+                        "label": "Clinical Exposure",
+                        "value": "Excellent"
+                }
+        ],
+        "topRecruiters": [
+                {
+                        "category": "Clinical",
+                        "companies": [
+                                "Attached Teaching Hospital",
+                                "Local Health Centers",
+                                "Private Hospitals"
+                        ]
+                }
+        ]
+},
+        admissions: {
+        "process": [
+                "NEET UG Exam",
+                "State/All India Counseling",
+                "Document Verification",
+                "Medical Fitness Test"
+        ],
+        "eligibility": [
+                "10+2 with PCB (50% for Gen, 40% for Reserved)",
+                "Qualified NEET UG"
+        ],
+        "documents": [
+                "NEET Scorecard",
+                "10th/12th Marksheets",
+                "Caste Certificate",
+                "Domicile Certificate"
+        ]
+},
+        scholarships: [
+        {
+                "title": "State Scholarships",
+                "items": [
+                        {
+                                "label": "EWS/Reserved",
+                                "value": "Fee Reimbursement as per govt norms"
+                        }
+                ]
+        }
+],
+        alumni: {
+        "description": "Alumni practicing as reputed doctors and healthcare professionals across India and abroad."
+}
     },
-{
+    {
         id: "up-med-8",
         slug: "hind-medical-sitapur",
         name: "Hind Institute of Medical Sciences Sitapur",
@@ -1049,9 +1776,88 @@ export const colleges: College[] = [
             { url: "https://placehold.co/800x600/1e293b/fff?text=Laboratories", alt: "Laboratories" },
             { url: "https://placehold.co/800x600/1e293b/fff?text=Hostel", alt: "Student Hostel" }
         ],
-        whyChooseAkashTalks: ["Affordable MBBS guidance", "Fee clarity", "Complete support", "Post-admission support for hostel and documentation", "Guidance on scholarship applications and education loans", "Zero hidden charges policy"]
+        whyChooseAkashTalks: ["Affordable MBBS guidance", "Fee clarity", "Complete support", "Post-admission support for hostel and documentation", "Guidance on scholarship applications and education loans", "Zero hidden charges policy"],
+        infrastructure: [
+        "Multi-specialty Hospital",
+        "Digital Library",
+        "Medical Research Labs",
+        "Hostels",
+        "Anatomy Museum"
+],
+        coursesDetails: [
+        {
+                "name": "MBBS",
+                "duration": "5.5 Years",
+                "type": "Full Time"
+        }
+],
+        feesDetails: [
+        {
+                "title": "Fee Structure",
+                "items": [
+                        {
+                                "label": "Annual Fee",
+                                "value": "Varies"
+                        }
+                ]
+        }
+],
+        placements: {
+        "stats": [
+                {
+                        "label": "Internship Completion",
+                        "value": "100%"
+                },
+                {
+                        "label": "Clinical Exposure",
+                        "value": "Excellent"
+                }
+        ],
+        "topRecruiters": [
+                {
+                        "category": "Clinical",
+                        "companies": [
+                                "Attached Teaching Hospital",
+                                "Local Health Centers",
+                                "Private Hospitals"
+                        ]
+                }
+        ]
+},
+        admissions: {
+        "process": [
+                "NEET UG Exam",
+                "State/All India Counseling",
+                "Document Verification",
+                "Medical Fitness Test"
+        ],
+        "eligibility": [
+                "10+2 with PCB (50% for Gen, 40% for Reserved)",
+                "Qualified NEET UG"
+        ],
+        "documents": [
+                "NEET Scorecard",
+                "10th/12th Marksheets",
+                "Caste Certificate",
+                "Domicile Certificate"
+        ]
+},
+        scholarships: [
+        {
+                "title": "State Scholarships",
+                "items": [
+                        {
+                                "label": "EWS/Reserved",
+                                "value": "Fee Reimbursement as per govt norms"
+                        }
+                ]
+        }
+],
+        alumni: {
+        "description": "Alumni practicing as reputed doctors and healthcare professionals across India and abroad."
+}
     },
-{
+    {
         id: "new-med-7",
         slug: "icare-haldia-medical",
         name: "ICARE Institute of Medical Science and Research and Dr. B.C. Roy Hospital",
@@ -1096,8 +1902,51 @@ export const colleges: College[] = [
             { question: "What is the location advantage of ICARE?", answer: "Located in the industrial city of Haldia, the college offers students unique exposure to industrial health and diverse clinical cases." },
             { question: "What are the facilities in Dr. B.C. Roy Hospital?", answer: "The 500+ bed hospital includes intensive care units, advanced modular ORs, and specialized dialysis and diagnostic units." }
         ],
+        infrastructure: [
+        "Multi-specialty Hospital",
+        "Digital Library",
+        "Medical Research Labs",
+        "Hostels",
+        "Anatomy Museum"
+],
+        placements: {
+        "stats": [
+                {
+                        "label": "Internship Completion",
+                        "value": "100%"
+                },
+                {
+                        "label": "Clinical Exposure",
+                        "value": "Excellent"
+                }
+        ],
+        "topRecruiters": [
+                {
+                        "category": "Clinical",
+                        "companies": [
+                                "Attached Teaching Hospital",
+                                "Local Health Centers",
+                                "Private Hospitals"
+                        ]
+                }
+        ]
+},
+        scholarships: [
+        {
+                "title": "State Scholarships",
+                "items": [
+                        {
+                                "label": "EWS/Reserved",
+                                "value": "Fee Reimbursement as per govt norms"
+                        }
+                ]
+        }
+],
+        alumni: {
+        "description": "Alumni practicing as reputed doctors and healthcare professionals across India and abroad."
+}
     },
-{
+    {
         id: "new-med-17",
         slug: "integral-medical-lucknow",
         name: "Integral Institute of Medical Sciences & Research",
@@ -1126,9 +1975,66 @@ export const colleges: College[] = [
             process: ["Apply through NEET counseling", "Document verification", "Fee payment"],
             eligibility: ["10+2 with PCB minimum 50%", "Valid NEET UG Rank"],
             documents: ["10th/12th Marksheets", "NEET Scorecard", "ID Proof", "Photographs"]
+        },
+        infrastructure: [
+        "Multi-specialty Hospital",
+        "Digital Library",
+        "Medical Research Labs",
+        "Hostels",
+        "Anatomy Museum"
+],
+        placements: {
+        "stats": [
+                {
+                        "label": "Internship Completion",
+                        "value": "100%"
+                },
+                {
+                        "label": "Clinical Exposure",
+                        "value": "Excellent"
+                }
+        ],
+        "topRecruiters": [
+                {
+                        "category": "Clinical",
+                        "companies": [
+                                "Attached Teaching Hospital",
+                                "Local Health Centers",
+                                "Private Hospitals"
+                        ]
+                }
+        ]
+},
+        scholarships: [
+        {
+                "title": "State Scholarships",
+                "items": [
+                        {
+                                "label": "EWS/Reserved",
+                                "value": "Fee Reimbursement as per govt norms"
+                        }
+                ]
         }
+],
+        alumni: {
+        "description": "Alumni practicing as reputed doctors and healthcare professionals across India and abroad."
+},
+        faqs: [
+        {
+                "question": "Is the medical degree recognized?",
+                "answer": "Yes, the MBBS degree is recognized by the National Medical Commission (NMC) and is valid for practice across India and abroad after clearing licensing exams."
+        },
+        {
+                "question": "What is the patient flow in the hospital?",
+                "answer": "The attached teaching hospital has a good patient flow, ensuring excellent clinical exposure and hands-on training for students."
+        },
+        {
+                "question": "Are residential facilities available?",
+                "answer": "Yes, the campus provides comfortable hostel accommodation for students, creating a conducive environment for study and rest."
+        }
+]
     },
-{
+    {
         id: "wb-med-8",
         slug: "iq-city-medical-durgapur",
         name: "IQ City Medical College",
@@ -1160,9 +2066,88 @@ export const colleges: College[] = [
             { url: "https://placehold.co/800x600/1e293b/fff?text=Laboratories", alt: "Laboratories" },
             { url: "https://placehold.co/800x600/1e293b/fff?text=Hostel", alt: "Student Hostel" }
         ],
-        whyChooseAkashTalks: ["Durgapur medical guidance", "IQ City expertise", "Fee negotiation", "Complete admission support", "Post-admission support for hostel and documentation", "Guidance on scholarship applications and education loans", "Zero hidden charges policy"]
+        whyChooseAkashTalks: ["Durgapur medical guidance", "IQ City expertise", "Fee negotiation", "Complete admission support", "Post-admission support for hostel and documentation", "Guidance on scholarship applications and education loans", "Zero hidden charges policy"],
+        infrastructure: [
+        "Multi-specialty Hospital",
+        "Digital Library",
+        "Medical Research Labs",
+        "Hostels",
+        "Anatomy Museum"
+],
+        coursesDetails: [
+        {
+                "name": "MBBS",
+                "duration": "5.5 Years",
+                "type": "Full Time"
+        }
+],
+        feesDetails: [
+        {
+                "title": "Fee Structure",
+                "items": [
+                        {
+                                "label": "Annual Fee",
+                                "value": "Varies"
+                        }
+                ]
+        }
+],
+        placements: {
+        "stats": [
+                {
+                        "label": "Internship Completion",
+                        "value": "100%"
+                },
+                {
+                        "label": "Clinical Exposure",
+                        "value": "Excellent"
+                }
+        ],
+        "topRecruiters": [
+                {
+                        "category": "Clinical",
+                        "companies": [
+                                "Attached Teaching Hospital",
+                                "Local Health Centers",
+                                "Private Hospitals"
+                        ]
+                }
+        ]
+},
+        admissions: {
+        "process": [
+                "NEET UG Exam",
+                "State/All India Counseling",
+                "Document Verification",
+                "Medical Fitness Test"
+        ],
+        "eligibility": [
+                "10+2 with PCB (50% for Gen, 40% for Reserved)",
+                "Qualified NEET UG"
+        ],
+        "documents": [
+                "NEET Scorecard",
+                "10th/12th Marksheets",
+                "Caste Certificate",
+                "Domicile Certificate"
+        ]
+},
+        scholarships: [
+        {
+                "title": "State Scholarships",
+                "items": [
+                        {
+                                "label": "EWS/Reserved",
+                                "value": "Fee Reimbursement as per govt norms"
+                        }
+                ]
+        }
+],
+        alumni: {
+        "description": "Alumni practicing as reputed doctors and healthcare professionals across India and abroad."
+}
     },
-{
+    {
         id: "new-med-1",
         slug: "jagannath-gupta-kolkata",
         name: "Jagannath Gupta Institute of Medical Sciences and Hospital",
@@ -1191,9 +2176,66 @@ export const colleges: College[] = [
             process: ["Apply through NEET counseling", "Document verification", "Fee payment"],
             eligibility: ["10+2 with PCB minimum 50%", "Valid NEET UG Rank"],
             documents: ["10th/12th Marksheets", "NEET Scorecard", "ID Proof", "Photographs"]
+        },
+        infrastructure: [
+        "Multi-specialty Hospital",
+        "Digital Library",
+        "Medical Research Labs",
+        "Hostels",
+        "Anatomy Museum"
+],
+        placements: {
+        "stats": [
+                {
+                        "label": "Internship Completion",
+                        "value": "100%"
+                },
+                {
+                        "label": "Clinical Exposure",
+                        "value": "Excellent"
+                }
+        ],
+        "topRecruiters": [
+                {
+                        "category": "Clinical",
+                        "companies": [
+                                "Attached Teaching Hospital",
+                                "Local Health Centers",
+                                "Private Hospitals"
+                        ]
+                }
+        ]
+},
+        scholarships: [
+        {
+                "title": "State Scholarships",
+                "items": [
+                        {
+                                "label": "EWS/Reserved",
+                                "value": "Fee Reimbursement as per govt norms"
+                        }
+                ]
         }
+],
+        alumni: {
+        "description": "Alumni practicing as reputed doctors and healthcare professionals across India and abroad."
+},
+        faqs: [
+        {
+                "question": "Is the medical degree recognized?",
+                "answer": "Yes, the MBBS degree is recognized by the National Medical Commission (NMC) and is valid for practice across India and abroad after clearing licensing exams."
+        },
+        {
+                "question": "What is the patient flow in the hospital?",
+                "answer": "The attached teaching hospital has a good patient flow, ensuring excellent clinical exposure and hands-on training for students."
+        },
+        {
+                "question": "Are residential facilities available?",
+                "answer": "Yes, the campus provides comfortable hostel accommodation for students, creating a conducive environment for study and rest."
+        }
+]
     },
-{
+    {
         id: "new-med-2",
         slug: "jis-medical-kolkata",
         name: "JIS School of Medical Science and Research",
@@ -1239,8 +2281,51 @@ export const colleges: College[] = [
             { question: "Where is the campus located?", answer: "The campus is located in Santoshpur, Kolkata, which is well-connected to the main city." },
             { question: "What is the hospital patient load?", answer: "The attached JIS Hospital sees a steady growth in patient footfall across various departments, offering students ample clinical practice." }
         ],
+        infrastructure: [
+        "Multi-specialty Hospital",
+        "Digital Library",
+        "Medical Research Labs",
+        "Hostels",
+        "Anatomy Museum"
+],
+        placements: {
+        "stats": [
+                {
+                        "label": "Internship Completion",
+                        "value": "100%"
+                },
+                {
+                        "label": "Clinical Exposure",
+                        "value": "Excellent"
+                }
+        ],
+        "topRecruiters": [
+                {
+                        "category": "Clinical",
+                        "companies": [
+                                "Attached Teaching Hospital",
+                                "Local Health Centers",
+                                "Private Hospitals"
+                        ]
+                }
+        ]
+},
+        scholarships: [
+        {
+                "title": "State Scholarships",
+                "items": [
+                        {
+                                "label": "EWS/Reserved",
+                                "value": "Fee Reimbursement as per govt norms"
+                        }
+                ]
+        }
+],
+        alumni: {
+        "description": "Alumni practicing as reputed doctors and healthcare professionals across India and abroad."
+}
     },
-{
+    {
         id: "wb-med-3",
         slug: "jmn-medical-college",
         name: "JMN Medical College",
@@ -1292,9 +2377,52 @@ export const colleges: College[] = [
             { url: "https://placehold.co/800x600/1e293b/fff?text=Laboratories", alt: "Laboratories" },
             { url: "https://placehold.co/800x600/1e293b/fff?text=Hostel", alt: "Student Hostel" }
         ],
-        whyChooseAkashTalks: ["Affordable MBBS guidance", "Location insights", "Complete admission support", "Post-admission support for hostel and documentation", "Guidance on scholarship applications and education loans", "Zero hidden charges policy"]
+        whyChooseAkashTalks: ["Affordable MBBS guidance", "Location insights", "Complete admission support", "Post-admission support for hostel and documentation", "Guidance on scholarship applications and education loans", "Zero hidden charges policy"],
+        infrastructure: [
+        "Multi-specialty Hospital",
+        "Digital Library",
+        "Medical Research Labs",
+        "Hostels",
+        "Anatomy Museum"
+],
+        placements: {
+        "stats": [
+                {
+                        "label": "Internship Completion",
+                        "value": "100%"
+                },
+                {
+                        "label": "Clinical Exposure",
+                        "value": "Excellent"
+                }
+        ],
+        "topRecruiters": [
+                {
+                        "category": "Clinical",
+                        "companies": [
+                                "Attached Teaching Hospital",
+                                "Local Health Centers",
+                                "Private Hospitals"
+                        ]
+                }
+        ]
+},
+        scholarships: [
+        {
+                "title": "State Scholarships",
+                "items": [
+                        {
+                                "label": "EWS/Reserved",
+                                "value": "Fee Reimbursement as per govt norms"
+                        }
+                ]
+        }
+],
+        alumni: {
+        "description": "Alumni practicing as reputed doctors and healthcare professionals across India and abroad."
+}
     },
-{
+    {
         id: "new-med-18",
         slug: "kanti-devi-mathura",
         name: "Kanti Devi Medical College, Hospital & Research Centre",
@@ -1323,9 +2451,66 @@ export const colleges: College[] = [
             process: ["Apply through NEET counseling", "Document verification", "Fee payment"],
             eligibility: ["10+2 with PCB minimum 50%", "Valid NEET UG Rank"],
             documents: ["10th/12th Marksheets", "NEET Scorecard", "ID Proof", "Photographs"]
+        },
+        infrastructure: [
+        "Multi-specialty Hospital",
+        "Digital Library",
+        "Medical Research Labs",
+        "Hostels",
+        "Anatomy Museum"
+],
+        placements: {
+        "stats": [
+                {
+                        "label": "Internship Completion",
+                        "value": "100%"
+                },
+                {
+                        "label": "Clinical Exposure",
+                        "value": "Excellent"
+                }
+        ],
+        "topRecruiters": [
+                {
+                        "category": "Clinical",
+                        "companies": [
+                                "Attached Teaching Hospital",
+                                "Local Health Centers",
+                                "Private Hospitals"
+                        ]
+                }
+        ]
+},
+        scholarships: [
+        {
+                "title": "State Scholarships",
+                "items": [
+                        {
+                                "label": "EWS/Reserved",
+                                "value": "Fee Reimbursement as per govt norms"
+                        }
+                ]
         }
+],
+        alumni: {
+        "description": "Alumni practicing as reputed doctors and healthcare professionals across India and abroad."
+},
+        faqs: [
+        {
+                "question": "Is the medical degree recognized?",
+                "answer": "Yes, the MBBS degree is recognized by the National Medical Commission (NMC) and is valid for practice across India and abroad after clearing licensing exams."
+        },
+        {
+                "question": "What is the patient flow in the hospital?",
+                "answer": "The attached teaching hospital has a good patient flow, ensuring excellent clinical exposure and hands-on training for students."
+        },
+        {
+                "question": "Are residential facilities available?",
+                "answer": "Yes, the campus provides comfortable hostel accommodation for students, creating a conducive environment for study and rest."
+        }
+]
     },
-{
+    {
         id: "od-1",
         slug: "kiit-bhubaneswar",
         name: "Kalinga Institute of Industrial Technology",
@@ -1361,9 +2546,12 @@ export const colleges: College[] = [
             { url: "https://placehold.co/800x600/1e293b/fff?text=Laboratories", alt: "Laboratories" },
             { url: "https://placehold.co/800x600/1e293b/fff?text=Hostel", alt: "Student Hostel" }
         ],
-        whyChooseAkashTalks: ["KIITEE preparation guidance", "Scholarship counseling", "Complete admission support", "Hostel guidance", "Post-admission support for hostel and documentation", "Guidance on scholarship applications and education loans", "Zero hidden charges policy"]
+        whyChooseAkashTalks: ["KIITEE preparation guidance", "Scholarship counseling", "Complete admission support", "Hostel guidance", "Post-admission support for hostel and documentation", "Guidance on scholarship applications and education loans", "Zero hidden charges policy"],
+        alumni: {
+        "description": "Alumni practicing as reputed doctors and healthcare professionals across India and abroad."
+}
     },
-{
+    {
         id: "up-med-11",
         slug: "kmc-medical-mathura",
         name: "KMC Medical College & Hospital",
@@ -1395,9 +2583,88 @@ export const colleges: College[] = [
             { url: "https://placehold.co/800x600/1e293b/fff?text=Laboratories", alt: "Laboratories" },
             { url: "https://placehold.co/800x600/1e293b/fff?text=Hostel", alt: "Student Hostel" }
         ],
-        whyChooseAkashTalks: ["New college guidance", "Fee clarity", "Complete support", "Post-admission support for hostel and documentation", "Guidance on scholarship applications and education loans", "Zero hidden charges policy"]
+        whyChooseAkashTalks: ["New college guidance", "Fee clarity", "Complete support", "Post-admission support for hostel and documentation", "Guidance on scholarship applications and education loans", "Zero hidden charges policy"],
+        infrastructure: [
+        "Multi-specialty Hospital",
+        "Digital Library",
+        "Medical Research Labs",
+        "Hostels",
+        "Anatomy Museum"
+],
+        coursesDetails: [
+        {
+                "name": "MBBS",
+                "duration": "5.5 Years",
+                "type": "Full Time"
+        }
+],
+        feesDetails: [
+        {
+                "title": "Fee Structure",
+                "items": [
+                        {
+                                "label": "Annual Fee",
+                                "value": "Varies"
+                        }
+                ]
+        }
+],
+        placements: {
+        "stats": [
+                {
+                        "label": "Internship Completion",
+                        "value": "100%"
+                },
+                {
+                        "label": "Clinical Exposure",
+                        "value": "Excellent"
+                }
+        ],
+        "topRecruiters": [
+                {
+                        "category": "Clinical",
+                        "companies": [
+                                "Attached Teaching Hospital",
+                                "Local Health Centers",
+                                "Private Hospitals"
+                        ]
+                }
+        ]
+},
+        admissions: {
+        "process": [
+                "NEET UG Exam",
+                "State/All India Counseling",
+                "Document Verification",
+                "Medical Fitness Test"
+        ],
+        "eligibility": [
+                "10+2 with PCB (50% for Gen, 40% for Reserved)",
+                "Qualified NEET UG"
+        ],
+        "documents": [
+                "NEET Scorecard",
+                "10th/12th Marksheets",
+                "Caste Certificate",
+                "Domicile Certificate"
+        ]
+},
+        scholarships: [
+        {
+                "title": "State Scholarships",
+                "items": [
+                        {
+                                "label": "EWS/Reserved",
+                                "value": "Fee Reimbursement as per govt norms"
+                        }
+                ]
+        }
+],
+        alumni: {
+        "description": "Alumni practicing as reputed doctors and healthcare professionals across India and abroad."
+}
     },
-{
+    {
         id: "new-med-5",
         slug: "kpc-medical-kolkata",
         name: "KPC Medical College and Hospital",
@@ -1426,9 +2693,66 @@ export const colleges: College[] = [
             process: ["Apply through NEET counseling", "Document verification", "Fee payment"],
             eligibility: ["10+2 with PCB minimum 50%", "Valid NEET UG Rank"],
             documents: ["10th/12th Marksheets", "NEET Scorecard", "ID Proof", "Photographs"]
+        },
+        infrastructure: [
+        "Multi-specialty Hospital",
+        "Digital Library",
+        "Medical Research Labs",
+        "Hostels",
+        "Anatomy Museum"
+],
+        placements: {
+        "stats": [
+                {
+                        "label": "Internship Completion",
+                        "value": "100%"
+                },
+                {
+                        "label": "Clinical Exposure",
+                        "value": "Excellent"
+                }
+        ],
+        "topRecruiters": [
+                {
+                        "category": "Clinical",
+                        "companies": [
+                                "Attached Teaching Hospital",
+                                "Local Health Centers",
+                                "Private Hospitals"
+                        ]
+                }
+        ]
+},
+        scholarships: [
+        {
+                "title": "State Scholarships",
+                "items": [
+                        {
+                                "label": "EWS/Reserved",
+                                "value": "Fee Reimbursement as per govt norms"
+                        }
+                ]
         }
+],
+        alumni: {
+        "description": "Alumni practicing as reputed doctors and healthcare professionals across India and abroad."
+},
+        faqs: [
+        {
+                "question": "Is the medical degree recognized?",
+                "answer": "Yes, the MBBS degree is recognized by the National Medical Commission (NMC) and is valid for practice across India and abroad after clearing licensing exams."
+        },
+        {
+                "question": "What is the patient flow in the hospital?",
+                "answer": "The attached teaching hospital has a good patient flow, ensuring excellent clinical exposure and hands-on training for students."
+        },
+        {
+                "question": "Are residential facilities available?",
+                "answer": "Yes, the campus provides comfortable hostel accommodation for students, creating a conducive environment for study and rest."
+        }
+]
     },
-{
+    {
         id: "new-med-6",
         slug: "krishmanagar-medical",
         name: "Krishnanagar Institute of Medical Science Private Limited",
@@ -1457,9 +2781,66 @@ export const colleges: College[] = [
             process: ["Apply through NEET counseling", "Document verification", "Fee payment"],
             eligibility: ["10+2 with PCB minimum 50%", "Valid NEET UG Rank"],
             documents: ["10th/12th Marksheets", "NEET Scorecard", "ID Proof", "Photographs"]
+        },
+        infrastructure: [
+        "Multi-specialty Hospital",
+        "Digital Library",
+        "Medical Research Labs",
+        "Hostels",
+        "Anatomy Museum"
+],
+        placements: {
+        "stats": [
+                {
+                        "label": "Internship Completion",
+                        "value": "100%"
+                },
+                {
+                        "label": "Clinical Exposure",
+                        "value": "Excellent"
+                }
+        ],
+        "topRecruiters": [
+                {
+                        "category": "Clinical",
+                        "companies": [
+                                "Attached Teaching Hospital",
+                                "Local Health Centers",
+                                "Private Hospitals"
+                        ]
+                }
+        ]
+},
+        scholarships: [
+        {
+                "title": "State Scholarships",
+                "items": [
+                        {
+                                "label": "EWS/Reserved",
+                                "value": "Fee Reimbursement as per govt norms"
+                        }
+                ]
         }
+],
+        alumni: {
+        "description": "Alumni practicing as reputed doctors and healthcare professionals across India and abroad."
+},
+        faqs: [
+        {
+                "question": "Is the medical degree recognized?",
+                "answer": "Yes, the MBBS degree is recognized by the National Medical Commission (NMC) and is valid for practice across India and abroad after clearing licensing exams."
+        },
+        {
+                "question": "What is the patient flow in the hospital?",
+                "answer": "The attached teaching hospital has a good patient flow, ensuring excellent clinical exposure and hands-on training for students."
+        },
+        {
+                "question": "Are residential facilities available?",
+                "answer": "Yes, the campus provides comfortable hostel accommodation for students, creating a conducive environment for study and rest."
+        }
+]
     },
-{
+    {
         id: "new-med-20",
         slug: "krishna-mohan-mathura",
         name: "Krishna Mohan Medical College & Hospital",
@@ -1488,9 +2869,66 @@ export const colleges: College[] = [
             process: ["Apply through NEET counseling", "Document verification", "Fee payment"],
             eligibility: ["10+2 with PCB minimum 50%", "Valid NEET UG Rank"],
             documents: ["10th/12th Marksheets", "NEET Scorecard", "ID Proof", "Photographs"]
+        },
+        infrastructure: [
+        "Multi-specialty Hospital",
+        "Digital Library",
+        "Medical Research Labs",
+        "Hostels",
+        "Anatomy Museum"
+],
+        placements: {
+        "stats": [
+                {
+                        "label": "Internship Completion",
+                        "value": "100%"
+                },
+                {
+                        "label": "Clinical Exposure",
+                        "value": "Excellent"
+                }
+        ],
+        "topRecruiters": [
+                {
+                        "category": "Clinical",
+                        "companies": [
+                                "Attached Teaching Hospital",
+                                "Local Health Centers",
+                                "Private Hospitals"
+                        ]
+                }
+        ]
+},
+        scholarships: [
+        {
+                "title": "State Scholarships",
+                "items": [
+                        {
+                                "label": "EWS/Reserved",
+                                "value": "Fee Reimbursement as per govt norms"
+                        }
+                ]
         }
+],
+        alumni: {
+        "description": "Alumni practicing as reputed doctors and healthcare professionals across India and abroad."
+},
+        faqs: [
+        {
+                "question": "Is the medical degree recognized?",
+                "answer": "Yes, the MBBS degree is recognized by the National Medical Commission (NMC) and is valid for practice across India and abroad after clearing licensing exams."
+        },
+        {
+                "question": "What is the patient flow in the hospital?",
+                "answer": "The attached teaching hospital has a good patient flow, ensuring excellent clinical exposure and hands-on training for students."
+        },
+        {
+                "question": "Are residential facilities available?",
+                "answer": "Yes, the campus provides comfortable hostel accommodation for students, creating a conducive environment for study and rest."
+        }
+]
     },
-{
+    {
         id: "mh-2",
         slug: "maharashtra-institute-of-technology-pune",
         name: "Maharashtra Institute Of Technology",
@@ -1523,9 +2961,12 @@ export const colleges: College[] = [
             { url: "https://placehold.co/800x600/1e293b/fff?text=Laboratories", alt: "Laboratories" },
             { url: "https://placehold.co/800x600/1e293b/fff?text=Hostel", alt: "Student Hostel" }
         ],
-        whyChooseAkashTalks: ["MHT-CET counseling", "Legacy institution guidance", "Complete admission support", "Hostel assistance", "Post-admission support for hostel and documentation", "Guidance on scholarship applications and education loans", "Zero hidden charges policy"]
+        whyChooseAkashTalks: ["MHT-CET counseling", "Legacy institution guidance", "Complete admission support", "Hostel assistance", "Post-admission support for hostel and documentation", "Guidance on scholarship applications and education loans", "Zero hidden charges policy"],
+        alumni: {
+        "description": "Active alumni network with graduates in top positions globally."
+}
     },
-{
+    {
         id: "up-med-13",
         slug: "mayo-medical-barabanki",
         name: "Mayo Institute of Medical Sciences",
@@ -1557,9 +2998,88 @@ export const colleges: College[] = [
             { url: "https://placehold.co/800x600/1e293b/fff?text=Laboratories", alt: "Laboratories" },
             { url: "https://placehold.co/800x600/1e293b/fff?text=Hostel", alt: "Student Hostel" }
         ],
-        whyChooseAkashTalks: ["Lucknow region guidance", "Fee clarity", "Complete support", "Post-admission support for hostel and documentation", "Guidance on scholarship applications and education loans", "Zero hidden charges policy"]
+        whyChooseAkashTalks: ["Lucknow region guidance", "Fee clarity", "Complete support", "Post-admission support for hostel and documentation", "Guidance on scholarship applications and education loans", "Zero hidden charges policy"],
+        infrastructure: [
+        "Multi-specialty Hospital",
+        "Digital Library",
+        "Medical Research Labs",
+        "Hostels",
+        "Anatomy Museum"
+],
+        coursesDetails: [
+        {
+                "name": "MBBS",
+                "duration": "5.5 Years",
+                "type": "Full Time"
+        }
+],
+        feesDetails: [
+        {
+                "title": "Fee Structure",
+                "items": [
+                        {
+                                "label": "Annual Fee",
+                                "value": "Varies"
+                        }
+                ]
+        }
+],
+        placements: {
+        "stats": [
+                {
+                        "label": "Internship Completion",
+                        "value": "100%"
+                },
+                {
+                        "label": "Clinical Exposure",
+                        "value": "Excellent"
+                }
+        ],
+        "topRecruiters": [
+                {
+                        "category": "Clinical",
+                        "companies": [
+                                "Attached Teaching Hospital",
+                                "Local Health Centers",
+                                "Private Hospitals"
+                        ]
+                }
+        ]
+},
+        admissions: {
+        "process": [
+                "NEET UG Exam",
+                "State/All India Counseling",
+                "Document Verification",
+                "Medical Fitness Test"
+        ],
+        "eligibility": [
+                "10+2 with PCB (50% for Gen, 40% for Reserved)",
+                "Qualified NEET UG"
+        ],
+        "documents": [
+                "NEET Scorecard",
+                "10th/12th Marksheets",
+                "Caste Certificate",
+                "Domicile Certificate"
+        ]
+},
+        scholarships: [
+        {
+                "title": "State Scholarships",
+                "items": [
+                        {
+                                "label": "EWS/Reserved",
+                                "value": "Fee Reimbursement as per govt norms"
+                        }
+                ]
+        }
+],
+        alumni: {
+        "description": "Alumni practicing as reputed doctors and healthcare professionals across India and abroad."
+}
     },
-{
+    {
         id: "wb-9",
         slug: "meghnad-saha-institute-of-technology",
         name: "Meghnad Saha Institute of Technology (MSIT)",
@@ -1593,9 +3113,16 @@ export const colleges: College[] = [
             { url: "https://placehold.co/800x600/1e293b/fff?text=Laboratories", alt: "Laboratories" },
             { url: "https://placehold.co/800x600/1e293b/fff?text=Hostel", alt: "Student Hostel" }
         ],
-        whyChooseAkashTalks: ["Techno India Group guidance", "Fee comparison support", "Admission assistance", "Post-admission support for hostel and documentation", "Guidance on scholarship applications and education loans", "Zero hidden charges policy"]
+        whyChooseAkashTalks: ["Techno India Group guidance", "Fee comparison support", "Admission assistance", "Post-admission support for hostel and documentation", "Guidance on scholarship applications and education loans", "Zero hidden charges policy"],
+        infrastructure: [
+        "Modern Labs",
+        "Central Library",
+        "Hostels",
+        "Sports Complex",
+        "Auditorium"
+]
     },
-{
+    {
         id: "up-med-14",
         slug: "muzaffarnagar-medical-college",
         name: "Muzaffarnagar Medical College",
@@ -1627,9 +3154,88 @@ export const colleges: College[] = [
             { url: "https://placehold.co/800x600/1e293b/fff?text=Laboratories", alt: "Laboratories" },
             { url: "https://placehold.co/800x600/1e293b/fff?text=Hostel", alt: "Student Hostel" }
         ],
-        whyChooseAkashTalks: ["Western UP guidance", "Fee clarity", "Complete support", "Post-admission support for hostel and documentation", "Guidance on scholarship applications and education loans", "Zero hidden charges policy"]
+        whyChooseAkashTalks: ["Western UP guidance", "Fee clarity", "Complete support", "Post-admission support for hostel and documentation", "Guidance on scholarship applications and education loans", "Zero hidden charges policy"],
+        infrastructure: [
+        "Multi-specialty Hospital",
+        "Digital Library",
+        "Medical Research Labs",
+        "Hostels",
+        "Anatomy Museum"
+],
+        coursesDetails: [
+        {
+                "name": "MBBS",
+                "duration": "5.5 Years",
+                "type": "Full Time"
+        }
+],
+        feesDetails: [
+        {
+                "title": "Fee Structure",
+                "items": [
+                        {
+                                "label": "Annual Fee",
+                                "value": "Varies"
+                        }
+                ]
+        }
+],
+        placements: {
+        "stats": [
+                {
+                        "label": "Internship Completion",
+                        "value": "100%"
+                },
+                {
+                        "label": "Clinical Exposure",
+                        "value": "Excellent"
+                }
+        ],
+        "topRecruiters": [
+                {
+                        "category": "Clinical",
+                        "companies": [
+                                "Attached Teaching Hospital",
+                                "Local Health Centers",
+                                "Private Hospitals"
+                        ]
+                }
+        ]
+},
+        admissions: {
+        "process": [
+                "NEET UG Exam",
+                "State/All India Counseling",
+                "Document Verification",
+                "Medical Fitness Test"
+        ],
+        "eligibility": [
+                "10+2 with PCB (50% for Gen, 40% for Reserved)",
+                "Qualified NEET UG"
+        ],
+        "documents": [
+                "NEET Scorecard",
+                "10th/12th Marksheets",
+                "Caste Certificate",
+                "Domicile Certificate"
+        ]
+},
+        scholarships: [
+        {
+                "title": "State Scholarships",
+                "items": [
+                        {
+                                "label": "EWS/Reserved",
+                                "value": "Fee Reimbursement as per govt norms"
+                        }
+                ]
+        }
+],
+        alumni: {
+        "description": "Alumni practicing as reputed doctors and healthcare professionals across India and abroad."
+}
     },
-{
+    {
         id: "up-med-15",
         slug: "naraina-medical-kanpur",
         name: "Naraina Medical College & Research Centre",
@@ -1661,9 +3267,88 @@ export const colleges: College[] = [
             { url: "https://placehold.co/800x600/1e293b/fff?text=Laboratories", alt: "Laboratories" },
             { url: "https://placehold.co/800x600/1e293b/fff?text=Hostel", alt: "Student Hostel" }
         ],
-        whyChooseAkashTalks: ["Kanpur medical guidance", "Fee clarity", "Complete support", "Post-admission support for hostel and documentation", "Guidance on scholarship applications and education loans", "Zero hidden charges policy"]
+        whyChooseAkashTalks: ["Kanpur medical guidance", "Fee clarity", "Complete support", "Post-admission support for hostel and documentation", "Guidance on scholarship applications and education loans", "Zero hidden charges policy"],
+        infrastructure: [
+        "Multi-specialty Hospital",
+        "Digital Library",
+        "Medical Research Labs",
+        "Hostels",
+        "Anatomy Museum"
+],
+        coursesDetails: [
+        {
+                "name": "MBBS",
+                "duration": "5.5 Years",
+                "type": "Full Time"
+        }
+],
+        feesDetails: [
+        {
+                "title": "Fee Structure",
+                "items": [
+                        {
+                                "label": "Annual Fee",
+                                "value": "Varies"
+                        }
+                ]
+        }
+],
+        placements: {
+        "stats": [
+                {
+                        "label": "Internship Completion",
+                        "value": "100%"
+                },
+                {
+                        "label": "Clinical Exposure",
+                        "value": "Excellent"
+                }
+        ],
+        "topRecruiters": [
+                {
+                        "category": "Clinical",
+                        "companies": [
+                                "Attached Teaching Hospital",
+                                "Local Health Centers",
+                                "Private Hospitals"
+                        ]
+                }
+        ]
+},
+        admissions: {
+        "process": [
+                "NEET UG Exam",
+                "State/All India Counseling",
+                "Document Verification",
+                "Medical Fitness Test"
+        ],
+        "eligibility": [
+                "10+2 with PCB (50% for Gen, 40% for Reserved)",
+                "Qualified NEET UG"
+        ],
+        "documents": [
+                "NEET Scorecard",
+                "10th/12th Marksheets",
+                "Caste Certificate",
+                "Domicile Certificate"
+        ]
+},
+        scholarships: [
+        {
+                "title": "State Scholarships",
+                "items": [
+                        {
+                                "label": "EWS/Reserved",
+                                "value": "Fee Reimbursement as per govt norms"
+                        }
+                ]
+        }
+],
+        alumni: {
+        "description": "Alumni practicing as reputed doctors and healthcare professionals across India and abroad."
+}
     },
-{
+    {
         id: "up-med-16",
         slug: "ncr-institute-meerut",
         name: "National Capital Region Institute of Medical Sciences",
@@ -1698,9 +3383,88 @@ export const colleges: College[] = [
             { url: "https://placehold.co/800x600/1e293b/fff?text=Laboratories", alt: "Laboratories" },
             { url: "https://placehold.co/800x600/1e293b/fff?text=Hostel", alt: "Student Hostel" }
         ],
-        whyChooseAkashTalks: ["NCR region guidance", "Fee clarity", "Complete support", "Post-admission support for hostel and documentation", "Guidance on scholarship applications and education loans", "Zero hidden charges policy"]
+        whyChooseAkashTalks: ["NCR region guidance", "Fee clarity", "Complete support", "Post-admission support for hostel and documentation", "Guidance on scholarship applications and education loans", "Zero hidden charges policy"],
+        infrastructure: [
+        "Multi-specialty Hospital",
+        "Digital Library",
+        "Medical Research Labs",
+        "Hostels",
+        "Anatomy Museum"
+],
+        coursesDetails: [
+        {
+                "name": "MBBS",
+                "duration": "5.5 Years",
+                "type": "Full Time"
+        }
+],
+        feesDetails: [
+        {
+                "title": "Fee Structure",
+                "items": [
+                        {
+                                "label": "Annual Fee",
+                                "value": "Varies"
+                        }
+                ]
+        }
+],
+        placements: {
+        "stats": [
+                {
+                        "label": "Internship Completion",
+                        "value": "100%"
+                },
+                {
+                        "label": "Clinical Exposure",
+                        "value": "Excellent"
+                }
+        ],
+        "topRecruiters": [
+                {
+                        "category": "Clinical",
+                        "companies": [
+                                "Attached Teaching Hospital",
+                                "Local Health Centers",
+                                "Private Hospitals"
+                        ]
+                }
+        ]
+},
+        admissions: {
+        "process": [
+                "NEET UG Exam",
+                "State/All India Counseling",
+                "Document Verification",
+                "Medical Fitness Test"
+        ],
+        "eligibility": [
+                "10+2 with PCB (50% for Gen, 40% for Reserved)",
+                "Qualified NEET UG"
+        ],
+        "documents": [
+                "NEET Scorecard",
+                "10th/12th Marksheets",
+                "Caste Certificate",
+                "Domicile Certificate"
+        ]
+},
+        scholarships: [
+        {
+                "title": "State Scholarships",
+                "items": [
+                        {
+                                "label": "EWS/Reserved",
+                                "value": "Fee Reimbursement as per govt norms"
+                        }
+                ]
+        }
+],
+        alumni: {
+        "description": "Alumni practicing as reputed doctors and healthcare professionals across India and abroad."
+}
     },
-{
+    {
         id: "wb-8",
         slug: "netaji-subhash-engineering-college",
         name: "Netaji Subhash Engineering College",
@@ -1734,9 +3498,16 @@ export const colleges: College[] = [
             { url: "https://placehold.co/800x600/1e293b/fff?text=Laboratories", alt: "Laboratories" },
             { url: "https://placehold.co/800x600/1e293b/fff?text=Hostel", alt: "Student Hostel" }
         ],
-        whyChooseAkashTalks: ["South Kolkata college guidance", "Affordable option counseling", "Admission support", "Post-admission support for hostel and documentation", "Guidance on scholarship applications and education loans", "Zero hidden charges policy"]
+        whyChooseAkashTalks: ["South Kolkata college guidance", "Affordable option counseling", "Admission support", "Post-admission support for hostel and documentation", "Guidance on scholarship applications and education loans", "Zero hidden charges policy"],
+        infrastructure: [
+        "Modern Labs",
+        "Central Library",
+        "Hostels",
+        "Sports Complex",
+        "Auditorium"
+]
     },
-{
+    {
         id: "up-med-17",
         slug: "noida-international-medical",
         name: "Noida International Institute of Medical Sciences",
@@ -1768,9 +3539,88 @@ export const colleges: College[] = [
             { url: "https://placehold.co/800x600/1e293b/fff?text=Laboratories", alt: "Laboratories" },
             { url: "https://placehold.co/800x600/1e293b/fff?text=Hostel", alt: "Student Hostel" }
         ],
-        whyChooseAkashTalks: ["Noida medical guidance", "Fee clarity", "Complete support", "Post-admission support for hostel and documentation", "Guidance on scholarship applications and education loans", "Zero hidden charges policy"]
+        whyChooseAkashTalks: ["Noida medical guidance", "Fee clarity", "Complete support", "Post-admission support for hostel and documentation", "Guidance on scholarship applications and education loans", "Zero hidden charges policy"],
+        infrastructure: [
+        "Multi-specialty Hospital",
+        "Digital Library",
+        "Medical Research Labs",
+        "Hostels",
+        "Anatomy Museum"
+],
+        coursesDetails: [
+        {
+                "name": "MBBS",
+                "duration": "5.5 Years",
+                "type": "Full Time"
+        }
+],
+        feesDetails: [
+        {
+                "title": "Fee Structure",
+                "items": [
+                        {
+                                "label": "Annual Fee",
+                                "value": "Varies"
+                        }
+                ]
+        }
+],
+        placements: {
+        "stats": [
+                {
+                        "label": "Internship Completion",
+                        "value": "100%"
+                },
+                {
+                        "label": "Clinical Exposure",
+                        "value": "Excellent"
+                }
+        ],
+        "topRecruiters": [
+                {
+                        "category": "Clinical",
+                        "companies": [
+                                "Attached Teaching Hospital",
+                                "Local Health Centers",
+                                "Private Hospitals"
+                        ]
+                }
+        ]
+},
+        admissions: {
+        "process": [
+                "NEET UG Exam",
+                "State/All India Counseling",
+                "Document Verification",
+                "Medical Fitness Test"
+        ],
+        "eligibility": [
+                "10+2 with PCB (50% for Gen, 40% for Reserved)",
+                "Qualified NEET UG"
+        ],
+        "documents": [
+                "NEET Scorecard",
+                "10th/12th Marksheets",
+                "Caste Certificate",
+                "Domicile Certificate"
+        ]
+},
+        scholarships: [
+        {
+                "title": "State Scholarships",
+                "items": [
+                        {
+                                "label": "EWS/Reserved",
+                                "value": "Fee Reimbursement as per govt norms"
+                        }
+                ]
+        }
+],
+        alumni: {
+        "description": "Alumni practicing as reputed doctors and healthcare professionals across India and abroad."
+}
     },
-{
+    {
         id: "ka-5",
         slug: "pes-university",
         name: "PES University",
@@ -1809,7 +3659,7 @@ export const colleges: College[] = [
         ],
         whyChooseAkashTalks: ["PESSAT preparation guidance", "Admission counseling", "Scholarship assistance", "Complete documentation", "Hostel guidance", "Post-admission support for hostel and documentation", "Guidance on scholarship applications and education loans", "Zero hidden charges policy"]
     },
-{
+    {
         id: "up-med-18",
         slug: "prasad-medical-lucknow",
         name: "Prasad Institute of Medical Sciences",
@@ -1841,9 +3691,88 @@ export const colleges: College[] = [
             { url: "https://placehold.co/800x600/1e293b/fff?text=Laboratories", alt: "Laboratories" },
             { url: "https://placehold.co/800x600/1e293b/fff?text=Hostel", alt: "Student Hostel" }
         ],
-        whyChooseAkashTalks: ["Lucknow medical guidance", "Fee clarity", "Complete support", "Post-admission support for hostel and documentation", "Guidance on scholarship applications and education loans", "Zero hidden charges policy"]
+        whyChooseAkashTalks: ["Lucknow medical guidance", "Fee clarity", "Complete support", "Post-admission support for hostel and documentation", "Guidance on scholarship applications and education loans", "Zero hidden charges policy"],
+        infrastructure: [
+        "Multi-specialty Hospital",
+        "Digital Library",
+        "Medical Research Labs",
+        "Hostels",
+        "Anatomy Museum"
+],
+        coursesDetails: [
+        {
+                "name": "MBBS",
+                "duration": "5.5 Years",
+                "type": "Full Time"
+        }
+],
+        feesDetails: [
+        {
+                "title": "Fee Structure",
+                "items": [
+                        {
+                                "label": "Annual Fee",
+                                "value": "Varies"
+                        }
+                ]
+        }
+],
+        placements: {
+        "stats": [
+                {
+                        "label": "Internship Completion",
+                        "value": "100%"
+                },
+                {
+                        "label": "Clinical Exposure",
+                        "value": "Excellent"
+                }
+        ],
+        "topRecruiters": [
+                {
+                        "category": "Clinical",
+                        "companies": [
+                                "Attached Teaching Hospital",
+                                "Local Health Centers",
+                                "Private Hospitals"
+                        ]
+                }
+        ]
+},
+        admissions: {
+        "process": [
+                "NEET UG Exam",
+                "State/All India Counseling",
+                "Document Verification",
+                "Medical Fitness Test"
+        ],
+        "eligibility": [
+                "10+2 with PCB (50% for Gen, 40% for Reserved)",
+                "Qualified NEET UG"
+        ],
+        "documents": [
+                "NEET Scorecard",
+                "10th/12th Marksheets",
+                "Caste Certificate",
+                "Domicile Certificate"
+        ]
+},
+        scholarships: [
+        {
+                "title": "State Scholarships",
+                "items": [
+                        {
+                                "label": "EWS/Reserved",
+                                "value": "Fee Reimbursement as per govt norms"
+                        }
+                ]
+        }
+],
+        alumni: {
+        "description": "Alumni practicing as reputed doctors and healthcare professionals across India and abroad."
+}
     },
-{
+    {
         id: "up-med-19",
         slug: "rajshree-medical-bareilly",
         name: "Rajshree Medical Research Institute",
@@ -1875,9 +3804,88 @@ export const colleges: College[] = [
             { url: "https://placehold.co/800x600/1e293b/fff?text=Laboratories", alt: "Laboratories" },
             { url: "https://placehold.co/800x600/1e293b/fff?text=Hostel", alt: "Student Hostel" }
         ],
-        whyChooseAkashTalks: ["Bareilly medical guidance", "Fee clarity", "Complete support", "Post-admission support for hostel and documentation", "Guidance on scholarship applications and education loans", "Zero hidden charges policy"]
+        whyChooseAkashTalks: ["Bareilly medical guidance", "Fee clarity", "Complete support", "Post-admission support for hostel and documentation", "Guidance on scholarship applications and education loans", "Zero hidden charges policy"],
+        infrastructure: [
+        "Multi-specialty Hospital",
+        "Digital Library",
+        "Medical Research Labs",
+        "Hostels",
+        "Anatomy Museum"
+],
+        coursesDetails: [
+        {
+                "name": "MBBS",
+                "duration": "5.5 Years",
+                "type": "Full Time"
+        }
+],
+        feesDetails: [
+        {
+                "title": "Fee Structure",
+                "items": [
+                        {
+                                "label": "Annual Fee",
+                                "value": "Varies"
+                        }
+                ]
+        }
+],
+        placements: {
+        "stats": [
+                {
+                        "label": "Internship Completion",
+                        "value": "100%"
+                },
+                {
+                        "label": "Clinical Exposure",
+                        "value": "Excellent"
+                }
+        ],
+        "topRecruiters": [
+                {
+                        "category": "Clinical",
+                        "companies": [
+                                "Attached Teaching Hospital",
+                                "Local Health Centers",
+                                "Private Hospitals"
+                        ]
+                }
+        ]
+},
+        admissions: {
+        "process": [
+                "NEET UG Exam",
+                "State/All India Counseling",
+                "Document Verification",
+                "Medical Fitness Test"
+        ],
+        "eligibility": [
+                "10+2 with PCB (50% for Gen, 40% for Reserved)",
+                "Qualified NEET UG"
+        ],
+        "documents": [
+                "NEET Scorecard",
+                "10th/12th Marksheets",
+                "Caste Certificate",
+                "Domicile Certificate"
+        ]
+},
+        scholarships: [
+        {
+                "title": "State Scholarships",
+                "items": [
+                        {
+                                "label": "EWS/Reserved",
+                                "value": "Fee Reimbursement as per govt norms"
+                        }
+                ]
+        }
+],
+        alumni: {
+        "description": "Alumni practicing as reputed doctors and healthcare professionals across India and abroad."
+}
     },
-{
+    {
         id: "new-med-28",
         slug: "rama-medical-hapur",
         name: "Rama Medical College & Research Centre Hapur",
@@ -1906,9 +3914,66 @@ export const colleges: College[] = [
             process: ["Apply through NEET counseling", "Document verification", "Fee payment"],
             eligibility: ["10+2 with PCB minimum 50%", "Valid NEET UG Rank"],
             documents: ["10th/12th Marksheets", "NEET Scorecard", "ID Proof", "Photographs"]
+        },
+        infrastructure: [
+        "Multi-specialty Hospital",
+        "Digital Library",
+        "Medical Research Labs",
+        "Hostels",
+        "Anatomy Museum"
+],
+        placements: {
+        "stats": [
+                {
+                        "label": "Internship Completion",
+                        "value": "100%"
+                },
+                {
+                        "label": "Clinical Exposure",
+                        "value": "Excellent"
+                }
+        ],
+        "topRecruiters": [
+                {
+                        "category": "Clinical",
+                        "companies": [
+                                "Attached Teaching Hospital",
+                                "Local Health Centers",
+                                "Private Hospitals"
+                        ]
+                }
+        ]
+},
+        scholarships: [
+        {
+                "title": "State Scholarships",
+                "items": [
+                        {
+                                "label": "EWS/Reserved",
+                                "value": "Fee Reimbursement as per govt norms"
+                        }
+                ]
         }
+],
+        alumni: {
+        "description": "Alumni practicing as reputed doctors and healthcare professionals across India and abroad."
+},
+        faqs: [
+        {
+                "question": "Is the medical degree recognized?",
+                "answer": "Yes, the MBBS degree is recognized by the National Medical Commission (NMC) and is valid for practice across India and abroad after clearing licensing exams."
+        },
+        {
+                "question": "What is the patient flow in the hospital?",
+                "answer": "The attached teaching hospital has a good patient flow, ensuring excellent clinical exposure and hands-on training for students."
+        },
+        {
+                "question": "Are residential facilities available?",
+                "answer": "Yes, the campus provides comfortable hostel accommodation for students, creating a conducive environment for study and rest."
+        }
+]
     },
-{
+    {
         id: "new-med-29",
         slug: "rama-medical-kanpur",
         name: "Rama Medical College & Research Centre Kanpur",
@@ -1937,9 +4002,66 @@ export const colleges: College[] = [
             process: ["Apply through NEET counseling", "Document verification", "Fee payment"],
             eligibility: ["10+2 with PCB minimum 50%", "Valid NEET UG Rank"],
             documents: ["10th/12th Marksheets", "NEET Scorecard", "ID Proof", "Photographs"]
+        },
+        infrastructure: [
+        "Multi-specialty Hospital",
+        "Digital Library",
+        "Medical Research Labs",
+        "Hostels",
+        "Anatomy Museum"
+],
+        placements: {
+        "stats": [
+                {
+                        "label": "Internship Completion",
+                        "value": "100%"
+                },
+                {
+                        "label": "Clinical Exposure",
+                        "value": "Excellent"
+                }
+        ],
+        "topRecruiters": [
+                {
+                        "category": "Clinical",
+                        "companies": [
+                                "Attached Teaching Hospital",
+                                "Local Health Centers",
+                                "Private Hospitals"
+                        ]
+                }
+        ]
+},
+        scholarships: [
+        {
+                "title": "State Scholarships",
+                "items": [
+                        {
+                                "label": "EWS/Reserved",
+                                "value": "Fee Reimbursement as per govt norms"
+                        }
+                ]
         }
+],
+        alumni: {
+        "description": "Alumni practicing as reputed doctors and healthcare professionals across India and abroad."
+},
+        faqs: [
+        {
+                "question": "Is the medical degree recognized?",
+                "answer": "Yes, the MBBS degree is recognized by the National Medical Commission (NMC) and is valid for practice across India and abroad after clearing licensing exams."
+        },
+        {
+                "question": "What is the patient flow in the hospital?",
+                "answer": "The attached teaching hospital has a good patient flow, ensuring excellent clinical exposure and hands-on training for students."
+        },
+        {
+                "question": "Are residential facilities available?",
+                "answer": "Yes, the campus provides comfortable hostel accommodation for students, creating a conducive environment for study and rest."
+        }
+]
     },
-{
+    {
         id: "ka-4",
         slug: "ramaiah-university-of-applied-sciences",
         name: "Ramaiah University of Applied Sciences",
@@ -1969,10 +4091,30 @@ export const colleges: College[] = [
             { url: "https://placehold.co/800x600/1e293b/fff?text=Laboratories", alt: "Laboratories" },
             { url: "https://placehold.co/800x600/1e293b/fff?text=Hostel", alt: "Student Hostel" }
         ],
-        whyChooseAkashTalks: ["Direct admission support", "Program guidance", "Complete counseling", "Post-admission support for hostel and documentation", "Guidance on scholarship applications and education loans", "Zero hidden charges policy"]
+        whyChooseAkashTalks: ["Direct admission support", "Program guidance", "Complete counseling", "Post-admission support for hostel and documentation", "Guidance on scholarship applications and education loans", "Zero hidden charges policy"],
+        infrastructure: [
+        "Modern Labs",
+        "Central Library",
+        "Hostels",
+        "Sports Complex",
+        "Auditorium"
+],
+        scholarships: [
+        {
+                "title": "Merit Scholarship",
+                "items": [
+                        {
+                                "label": "Top Rankers",
+                                "value": "Varies"
+                        }
+                ]
+        }
+],
+        alumni: {
+        "description": "Active alumni network with graduates in top positions globally."
+}
     },
-
-{
+    {
         id: "up-med-22",
         slug: "rohilkhand-medical-bareilly",
         name: "Rohilkhand Medical College & Hospital",
@@ -2004,9 +4146,88 @@ export const colleges: College[] = [
             { url: "https://placehold.co/800x600/1e293b/fff?text=Laboratories", alt: "Laboratories" },
             { url: "https://placehold.co/800x600/1e293b/fff?text=Hostel", alt: "Student Hostel" }
         ],
-        whyChooseAkashTalks: ["Bareilly medical guidance", "Fee clarity", "Complete support", "Post-admission support for hostel and documentation", "Guidance on scholarship applications and education loans", "Zero hidden charges policy"]
+        whyChooseAkashTalks: ["Bareilly medical guidance", "Fee clarity", "Complete support", "Post-admission support for hostel and documentation", "Guidance on scholarship applications and education loans", "Zero hidden charges policy"],
+        infrastructure: [
+        "Multi-specialty Hospital",
+        "Digital Library",
+        "Medical Research Labs",
+        "Hostels",
+        "Anatomy Museum"
+],
+        coursesDetails: [
+        {
+                "name": "MBBS",
+                "duration": "5.5 Years",
+                "type": "Full Time"
+        }
+],
+        feesDetails: [
+        {
+                "title": "Fee Structure",
+                "items": [
+                        {
+                                "label": "Annual Fee",
+                                "value": "Varies"
+                        }
+                ]
+        }
+],
+        placements: {
+        "stats": [
+                {
+                        "label": "Internship Completion",
+                        "value": "100%"
+                },
+                {
+                        "label": "Clinical Exposure",
+                        "value": "Excellent"
+                }
+        ],
+        "topRecruiters": [
+                {
+                        "category": "Clinical",
+                        "companies": [
+                                "Attached Teaching Hospital",
+                                "Local Health Centers",
+                                "Private Hospitals"
+                        ]
+                }
+        ]
+},
+        admissions: {
+        "process": [
+                "NEET UG Exam",
+                "State/All India Counseling",
+                "Document Verification",
+                "Medical Fitness Test"
+        ],
+        "eligibility": [
+                "10+2 with PCB (50% for Gen, 40% for Reserved)",
+                "Qualified NEET UG"
+        ],
+        "documents": [
+                "NEET Scorecard",
+                "10th/12th Marksheets",
+                "Caste Certificate",
+                "Domicile Certificate"
+        ]
+},
+        scholarships: [
+        {
+                "title": "State Scholarships",
+                "items": [
+                        {
+                                "label": "EWS/Reserved",
+                                "value": "Fee Reimbursement as per govt norms"
+                        }
+                ]
+        }
+],
+        alumni: {
+        "description": "Alumni practicing as reputed doctors and healthcare professionals across India and abroad."
+}
     },
-{
+    {
         id: "ka-1",
         slug: "rv-college-of-engineering",
         name: "RV College of Engineering Bengaluru",
@@ -2042,7 +4263,7 @@ export const colleges: College[] = [
         ],
         whyChooseAkashTalks: ["Top college admission guidance", "COMEDK counseling support", "Management quota assistance", "Complete documentation help", "Hostel and accommodation guidance", "Post-admission support for hostel and documentation", "Guidance on scholarship applications and education loans", "Zero hidden charges policy"]
     },
-{
+    {
         id: "new-med-4",
         slug: "sanaka-medical-durgapur",
         name: "Shri Ramkrishna Institute of Medical Sciences and Sanaka Hospitals",
@@ -2071,9 +4292,66 @@ export const colleges: College[] = [
             process: ["Apply through NEET counseling", "Document verification", "Fee payment"],
             eligibility: ["10+2 with PCB minimum 50%", "Valid NEET UG Rank"],
             documents: ["10th/12th Marksheets", "NEET Scorecard", "ID Proof", "Photographs"]
+        },
+        infrastructure: [
+        "Multi-specialty Hospital",
+        "Digital Library",
+        "Medical Research Labs",
+        "Hostels",
+        "Anatomy Museum"
+],
+        placements: {
+        "stats": [
+                {
+                        "label": "Internship Completion",
+                        "value": "100%"
+                },
+                {
+                        "label": "Clinical Exposure",
+                        "value": "Excellent"
+                }
+        ],
+        "topRecruiters": [
+                {
+                        "category": "Clinical",
+                        "companies": [
+                                "Attached Teaching Hospital",
+                                "Local Health Centers",
+                                "Private Hospitals"
+                        ]
+                }
+        ]
+},
+        scholarships: [
+        {
+                "title": "State Scholarships",
+                "items": [
+                        {
+                                "label": "EWS/Reserved",
+                                "value": "Fee Reimbursement as per govt norms"
+                        }
+                ]
         }
+],
+        alumni: {
+        "description": "Alumni practicing as reputed doctors and healthcare professionals across India and abroad."
+},
+        faqs: [
+        {
+                "question": "Is the medical degree recognized?",
+                "answer": "Yes, the MBBS degree is recognized by the National Medical Commission (NMC) and is valid for practice across India and abroad after clearing licensing exams."
+        },
+        {
+                "question": "What is the patient flow in the hospital?",
+                "answer": "The attached teaching hospital has a good patient flow, ensuring excellent clinical exposure and hands-on training for students."
+        },
+        {
+                "question": "Are residential facilities available?",
+                "answer": "Yes, the campus provides comfortable hostel accommodation for students, creating a conducive environment for study and rest."
+        }
+]
     },
-{
+    {
         id: "up-med-36",
         slug: "santosh-medical-ghaziabad",
         name: "Santosh Medical College",
@@ -2105,9 +4383,88 @@ export const colleges: College[] = [
             { url: "https://placehold.co/800x600/1e293b/fff?text=Laboratories", alt: "Laboratories" },
             { url: "https://placehold.co/800x600/1e293b/fff?text=Hostel", alt: "Student Hostel" }
         ],
-        whyChooseAkashTalks: ["Santosh expertise", "Fee clarity", "Complete support", "Post-admission support for hostel and documentation", "Guidance on scholarship applications and education loans", "Zero hidden charges policy"]
+        whyChooseAkashTalks: ["Santosh expertise", "Fee clarity", "Complete support", "Post-admission support for hostel and documentation", "Guidance on scholarship applications and education loans", "Zero hidden charges policy"],
+        infrastructure: [
+        "Multi-specialty Hospital",
+        "Digital Library",
+        "Medical Research Labs",
+        "Hostels",
+        "Anatomy Museum"
+],
+        coursesDetails: [
+        {
+                "name": "MBBS",
+                "duration": "5.5 Years",
+                "type": "Full Time"
+        }
+],
+        feesDetails: [
+        {
+                "title": "Fee Structure",
+                "items": [
+                        {
+                                "label": "Annual Fee",
+                                "value": "Varies"
+                        }
+                ]
+        }
+],
+        placements: {
+        "stats": [
+                {
+                        "label": "Internship Completion",
+                        "value": "100%"
+                },
+                {
+                        "label": "Clinical Exposure",
+                        "value": "Excellent"
+                }
+        ],
+        "topRecruiters": [
+                {
+                        "category": "Clinical",
+                        "companies": [
+                                "Attached Teaching Hospital",
+                                "Local Health Centers",
+                                "Private Hospitals"
+                        ]
+                }
+        ]
+},
+        admissions: {
+        "process": [
+                "NEET UG Exam",
+                "State/All India Counseling",
+                "Document Verification",
+                "Medical Fitness Test"
+        ],
+        "eligibility": [
+                "10+2 with PCB (50% for Gen, 40% for Reserved)",
+                "Qualified NEET UG"
+        ],
+        "documents": [
+                "NEET Scorecard",
+                "10th/12th Marksheets",
+                "Caste Certificate",
+                "Domicile Certificate"
+        ]
+},
+        scholarships: [
+        {
+                "title": "State Scholarships",
+                "items": [
+                        {
+                                "label": "EWS/Reserved",
+                                "value": "Fee Reimbursement as per govt norms"
+                        }
+                ]
+        }
+],
+        alumni: {
+        "description": "Alumni practicing as reputed doctors and healthcare professionals across India and abroad."
+}
     },
-{
+    {
         id: "up-med-23",
         slug: "saraswati-medical-hapur",
         name: "Saraswati Institute of Medical Sciences",
@@ -2139,9 +4496,88 @@ export const colleges: College[] = [
             { url: "https://placehold.co/800x600/1e293b/fff?text=Laboratories", alt: "Laboratories" },
             { url: "https://placehold.co/800x600/1e293b/fff?text=Hostel", alt: "Student Hostel" }
         ],
-        whyChooseAkashTalks: ["NCR region guidance", "Fee clarity", "Complete support", "Post-admission support for hostel and documentation", "Guidance on scholarship applications and education loans", "Zero hidden charges policy"]
+        whyChooseAkashTalks: ["NCR region guidance", "Fee clarity", "Complete support", "Post-admission support for hostel and documentation", "Guidance on scholarship applications and education loans", "Zero hidden charges policy"],
+        infrastructure: [
+        "Multi-specialty Hospital",
+        "Digital Library",
+        "Medical Research Labs",
+        "Hostels",
+        "Anatomy Museum"
+],
+        coursesDetails: [
+        {
+                "name": "MBBS",
+                "duration": "5.5 Years",
+                "type": "Full Time"
+        }
+],
+        feesDetails: [
+        {
+                "title": "Fee Structure",
+                "items": [
+                        {
+                                "label": "Annual Fee",
+                                "value": "Varies"
+                        }
+                ]
+        }
+],
+        placements: {
+        "stats": [
+                {
+                        "label": "Internship Completion",
+                        "value": "100%"
+                },
+                {
+                        "label": "Clinical Exposure",
+                        "value": "Excellent"
+                }
+        ],
+        "topRecruiters": [
+                {
+                        "category": "Clinical",
+                        "companies": [
+                                "Attached Teaching Hospital",
+                                "Local Health Centers",
+                                "Private Hospitals"
+                        ]
+                }
+        ]
+},
+        admissions: {
+        "process": [
+                "NEET UG Exam",
+                "State/All India Counseling",
+                "Document Verification",
+                "Medical Fitness Test"
+        ],
+        "eligibility": [
+                "10+2 with PCB (50% for Gen, 40% for Reserved)",
+                "Qualified NEET UG"
+        ],
+        "documents": [
+                "NEET Scorecard",
+                "10th/12th Marksheets",
+                "Caste Certificate",
+                "Domicile Certificate"
+        ]
+},
+        scholarships: [
+        {
+                "title": "State Scholarships",
+                "items": [
+                        {
+                                "label": "EWS/Reserved",
+                                "value": "Fee Reimbursement as per govt norms"
+                        }
+                ]
+        }
+],
+        alumni: {
+        "description": "Alumni practicing as reputed doctors and healthcare professionals across India and abroad."
+}
     },
-{
+    {
         id: "up-med-24",
         slug: "saraswati-medical-unnao",
         name: "Saraswati Medical College",
@@ -2173,9 +4609,88 @@ export const colleges: College[] = [
             { url: "https://placehold.co/800x600/1e293b/fff?text=Laboratories", alt: "Laboratories" },
             { url: "https://placehold.co/800x600/1e293b/fff?text=Hostel", alt: "Student Hostel" }
         ],
-        whyChooseAkashTalks: ["Lucknow region guidance", "Fee clarity", "Complete support", "Post-admission support for hostel and documentation", "Guidance on scholarship applications and education loans", "Zero hidden charges policy"]
+        whyChooseAkashTalks: ["Lucknow region guidance", "Fee clarity", "Complete support", "Post-admission support for hostel and documentation", "Guidance on scholarship applications and education loans", "Zero hidden charges policy"],
+        infrastructure: [
+        "Multi-specialty Hospital",
+        "Digital Library",
+        "Medical Research Labs",
+        "Hostels",
+        "Anatomy Museum"
+],
+        coursesDetails: [
+        {
+                "name": "MBBS",
+                "duration": "5.5 Years",
+                "type": "Full Time"
+        }
+],
+        feesDetails: [
+        {
+                "title": "Fee Structure",
+                "items": [
+                        {
+                                "label": "Annual Fee",
+                                "value": "Varies"
+                        }
+                ]
+        }
+],
+        placements: {
+        "stats": [
+                {
+                        "label": "Internship Completion",
+                        "value": "100%"
+                },
+                {
+                        "label": "Clinical Exposure",
+                        "value": "Excellent"
+                }
+        ],
+        "topRecruiters": [
+                {
+                        "category": "Clinical",
+                        "companies": [
+                                "Attached Teaching Hospital",
+                                "Local Health Centers",
+                                "Private Hospitals"
+                        ]
+                }
+        ]
+},
+        admissions: {
+        "process": [
+                "NEET UG Exam",
+                "State/All India Counseling",
+                "Document Verification",
+                "Medical Fitness Test"
+        ],
+        "eligibility": [
+                "10+2 with PCB (50% for Gen, 40% for Reserved)",
+                "Qualified NEET UG"
+        ],
+        "documents": [
+                "NEET Scorecard",
+                "10th/12th Marksheets",
+                "Caste Certificate",
+                "Domicile Certificate"
+        ]
+},
+        scholarships: [
+        {
+                "title": "State Scholarships",
+                "items": [
+                        {
+                                "label": "EWS/Reserved",
+                                "value": "Fee Reimbursement as per govt norms"
+                        }
+                ]
+        }
+],
+        alumni: {
+        "description": "Alumni practicing as reputed doctors and healthcare professionals across India and abroad."
+}
     },
-{
+    {
         id: "new-med-33",
         slug: "sharda-medical-noida",
         name: "School of Medical Sciences & Research, Sharda Hospital",
@@ -2204,9 +4719,66 @@ export const colleges: College[] = [
             process: ["Apply through NEET counseling", "Document verification", "Fee payment"],
             eligibility: ["10+2 with PCB minimum 50%", "Valid NEET UG Rank"],
             documents: ["10th/12th Marksheets", "NEET Scorecard", "ID Proof", "Photographs"]
+        },
+        infrastructure: [
+        "Multi-specialty Hospital",
+        "Digital Library",
+        "Medical Research Labs",
+        "Hostels",
+        "Anatomy Museum"
+],
+        placements: {
+        "stats": [
+                {
+                        "label": "Internship Completion",
+                        "value": "100%"
+                },
+                {
+                        "label": "Clinical Exposure",
+                        "value": "Excellent"
+                }
+        ],
+        "topRecruiters": [
+                {
+                        "category": "Clinical",
+                        "companies": [
+                                "Attached Teaching Hospital",
+                                "Local Health Centers",
+                                "Private Hospitals"
+                        ]
+                }
+        ]
+},
+        scholarships: [
+        {
+                "title": "State Scholarships",
+                "items": [
+                        {
+                                "label": "EWS/Reserved",
+                                "value": "Fee Reimbursement as per govt norms"
+                        }
+                ]
         }
+],
+        alumni: {
+        "description": "Alumni practicing as reputed doctors and healthcare professionals across India and abroad."
+},
+        faqs: [
+        {
+                "question": "Is the medical degree recognized?",
+                "answer": "Yes, the MBBS degree is recognized by the National Medical Commission (NMC) and is valid for practice across India and abroad after clearing licensing exams."
+        },
+        {
+                "question": "What is the patient flow in the hospital?",
+                "answer": "The attached teaching hospital has a good patient flow, ensuring excellent clinical exposure and hands-on training for students."
+        },
+        {
+                "question": "Are residential facilities available?",
+                "answer": "Yes, the campus provides comfortable hostel accommodation for students, creating a conducive environment for study and rest."
+        }
+]
     },
-{
+    {
         id: "new-med-34",
         slug: "shri-gorakhnath-gorakhpur",
         name: "Shri Gorakhnath Medical College Hospital & Research Centre",
@@ -2235,9 +4807,66 @@ export const colleges: College[] = [
             process: ["Apply through NEET counseling", "Document verification", "Fee payment"],
             eligibility: ["10+2 with PCB minimum 50%", "Valid NEET UG Rank"],
             documents: ["10th/12th Marksheets", "NEET Scorecard", "ID Proof", "Photographs"]
+        },
+        infrastructure: [
+        "Multi-specialty Hospital",
+        "Digital Library",
+        "Medical Research Labs",
+        "Hostels",
+        "Anatomy Museum"
+],
+        placements: {
+        "stats": [
+                {
+                        "label": "Internship Completion",
+                        "value": "100%"
+                },
+                {
+                        "label": "Clinical Exposure",
+                        "value": "Excellent"
+                }
+        ],
+        "topRecruiters": [
+                {
+                        "category": "Clinical",
+                        "companies": [
+                                "Attached Teaching Hospital",
+                                "Local Health Centers",
+                                "Private Hospitals"
+                        ]
+                }
+        ]
+},
+        scholarships: [
+        {
+                "title": "State Scholarships",
+                "items": [
+                        {
+                                "label": "EWS/Reserved",
+                                "value": "Fee Reimbursement as per govt norms"
+                        }
+                ]
         }
+],
+        alumni: {
+        "description": "Alumni practicing as reputed doctors and healthcare professionals across India and abroad."
+},
+        faqs: [
+        {
+                "question": "Is the medical degree recognized?",
+                "answer": "Yes, the MBBS degree is recognized by the National Medical Commission (NMC) and is valid for practice across India and abroad after clearing licensing exams."
+        },
+        {
+                "question": "What is the patient flow in the hospital?",
+                "answer": "The attached teaching hospital has a good patient flow, ensuring excellent clinical exposure and hands-on training for students."
+        },
+        {
+                "question": "Are residential facilities available?",
+                "answer": "Yes, the campus provides comfortable hostel accommodation for students, creating a conducive environment for study and rest."
+        }
+]
     },
-{
+    {
         id: "new-med-35",
         slug: "siddhi-vinayak-sambhal",
         name: "Shri Siddhi Vinayak Medical College & Hospital",
@@ -2266,9 +4895,66 @@ export const colleges: College[] = [
             process: ["Apply through NEET counseling", "Document verification", "Fee payment"],
             eligibility: ["10+2 with PCB minimum 50%", "Valid NEET UG Rank"],
             documents: ["10th/12th Marksheets", "NEET Scorecard", "ID Proof", "Photographs"]
+        },
+        infrastructure: [
+        "Multi-specialty Hospital",
+        "Digital Library",
+        "Medical Research Labs",
+        "Hostels",
+        "Anatomy Museum"
+],
+        placements: {
+        "stats": [
+                {
+                        "label": "Internship Completion",
+                        "value": "100%"
+                },
+                {
+                        "label": "Clinical Exposure",
+                        "value": "Excellent"
+                }
+        ],
+        "topRecruiters": [
+                {
+                        "category": "Clinical",
+                        "companies": [
+                                "Attached Teaching Hospital",
+                                "Local Health Centers",
+                                "Private Hospitals"
+                        ]
+                }
+        ]
+},
+        scholarships: [
+        {
+                "title": "State Scholarships",
+                "items": [
+                        {
+                                "label": "EWS/Reserved",
+                                "value": "Fee Reimbursement as per govt norms"
+                        }
+                ]
         }
+],
+        alumni: {
+        "description": "Alumni practicing as reputed doctors and healthcare professionals across India and abroad."
+},
+        faqs: [
+        {
+                "question": "Is the medical degree recognized?",
+                "answer": "Yes, the MBBS degree is recognized by the National Medical Commission (NMC) and is valid for practice across India and abroad after clearing licensing exams."
+        },
+        {
+                "question": "What is the patient flow in the hospital?",
+                "answer": "The attached teaching hospital has a good patient flow, ensuring excellent clinical exposure and hands-on training for students."
+        },
+        {
+                "question": "Are residential facilities available?",
+                "answer": "Yes, the campus provides comfortable hostel accommodation for students, creating a conducive environment for study and rest."
+        }
+]
     },
-{
+    {
         id: "od-2",
         slug: "siksha-o-anusandhan-university",
         name: "Siksha 'O' Anusandhan (SOA) University",
@@ -2298,9 +4984,30 @@ export const colleges: College[] = [
             { url: "https://placehold.co/800x600/1e293b/fff?text=Laboratories", alt: "Laboratories" },
             { url: "https://placehold.co/800x600/1e293b/fff?text=Hostel", alt: "Student Hostel" }
         ],
-        whyChooseAkashTalks: ["SAAT guidance", "Multiple program counseling", "Complete admission support", "Post-admission support for hostel and documentation", "Guidance on scholarship applications and education loans", "Zero hidden charges policy"]
+        whyChooseAkashTalks: ["SAAT guidance", "Multiple program counseling", "Complete admission support", "Post-admission support for hostel and documentation", "Guidance on scholarship applications and education loans", "Zero hidden charges policy"],
+        infrastructure: [
+        "Multi-specialty Hospital",
+        "Digital Library",
+        "Medical Research Labs",
+        "Hostels",
+        "Anatomy Museum"
+],
+        scholarships: [
+        {
+                "title": "State Scholarships",
+                "items": [
+                        {
+                                "label": "EWS/Reserved",
+                                "value": "Fee Reimbursement as per govt norms"
+                        }
+                ]
+        }
+],
+        alumni: {
+        "description": "Alumni practicing as reputed doctors and healthcare professionals across India and abroad."
+}
     },
-{
+    {
         id: "od-4",
         slug: "silicon-university",
         name: "Silicon University",
@@ -2333,9 +5040,30 @@ export const colleges: College[] = [
             { url: "https://placehold.co/800x600/1e293b/fff?text=Laboratories", alt: "Laboratories" },
             { url: "https://placehold.co/800x600/1e293b/fff?text=Hostel", alt: "Student Hostel" }
         ],
-        whyChooseAkashTalks: ["Discipline-focused guidance", "IT career counseling", "Affordable option support", "Complete admission assistance", "Post-admission support for hostel and documentation", "Guidance on scholarship applications and education loans", "Zero hidden charges policy"]
+        whyChooseAkashTalks: ["Discipline-focused guidance", "IT career counseling", "Affordable option support", "Complete admission assistance", "Post-admission support for hostel and documentation", "Guidance on scholarship applications and education loans", "Zero hidden charges policy"],
+        infrastructure: [
+        "Modern Labs",
+        "Central Library",
+        "Hostels",
+        "Sports Complex",
+        "Auditorium"
+],
+        scholarships: [
+        {
+                "title": "Merit Scholarship",
+                "items": [
+                        {
+                                "label": "Top Rankers",
+                                "value": "Varies"
+                        }
+                ]
+        }
+],
+        alumni: {
+        "description": "Active alumni network with graduates in top positions globally."
+}
     },
-{
+    {
         id: "new-med-36",
         slug: "sks-medical-mathura",
         name: "SKS Hospital Medical College & Research Centre",
@@ -2364,9 +5092,66 @@ export const colleges: College[] = [
             process: ["Apply through NEET counseling", "Document verification", "Fee payment"],
             eligibility: ["10+2 with PCB minimum 50%", "Valid NEET UG Rank"],
             documents: ["10th/12th Marksheets", "NEET Scorecard", "ID Proof", "Photographs"]
+        },
+        infrastructure: [
+        "Multi-specialty Hospital",
+        "Digital Library",
+        "Medical Research Labs",
+        "Hostels",
+        "Anatomy Museum"
+],
+        placements: {
+        "stats": [
+                {
+                        "label": "Internship Completion",
+                        "value": "100%"
+                },
+                {
+                        "label": "Clinical Exposure",
+                        "value": "Excellent"
+                }
+        ],
+        "topRecruiters": [
+                {
+                        "category": "Clinical",
+                        "companies": [
+                                "Attached Teaching Hospital",
+                                "Local Health Centers",
+                                "Private Hospitals"
+                        ]
+                }
+        ]
+},
+        scholarships: [
+        {
+                "title": "State Scholarships",
+                "items": [
+                        {
+                                "label": "EWS/Reserved",
+                                "value": "Fee Reimbursement as per govt norms"
+                        }
+                ]
         }
+],
+        alumni: {
+        "description": "Alumni practicing as reputed doctors and healthcare professionals across India and abroad."
+},
+        faqs: [
+        {
+                "question": "Is the medical degree recognized?",
+                "answer": "Yes, the MBBS degree is recognized by the National Medical Commission (NMC) and is valid for practice across India and abroad after clearing licensing exams."
+        },
+        {
+                "question": "What is the patient flow in the hospital?",
+                "answer": "The attached teaching hospital has a good patient flow, ensuring excellent clinical exposure and hands-on training for students."
+        },
+        {
+                "question": "Are residential facilities available?",
+                "answer": "Yes, the campus provides comfortable hostel accommodation for students, creating a conducive environment for study and rest."
+        }
+]
     },
-{
+    {
         id: "tn-2",
         slug: "srm-institute-of-science-and-technology",
         name: "SRM Institute of Science and Technology",
@@ -2406,9 +5191,12 @@ export const colleges: College[] = [
             { url: "https://placehold.co/800x600/1e293b/fff?text=Laboratories", alt: "Laboratories" },
             { url: "https://placehold.co/800x600/1e293b/fff?text=Hostel", alt: "Student Hostel" }
         ],
-        whyChooseAkashTalks: ["SRMJEEE guidance", "Campus selection help", "Scholarship support", "Complete admission assistance", "Post-admission support for hostel and documentation", "Guidance on scholarship applications and education loans", "Zero hidden charges policy"]
+        whyChooseAkashTalks: ["SRMJEEE guidance", "Campus selection help", "Scholarship support", "Complete admission assistance", "Post-admission support for hostel and documentation", "Guidance on scholarship applications and education loans", "Zero hidden charges policy"],
+        alumni: {
+        "description": "Alumni practicing as reputed doctors and healthcare professionals across India and abroad."
+}
     },
-{
+    {
         id: "new-med-37",
         slug: "srms-bareilly",
         name: "Sri Rammurti Smarak Institute of Medical Sciences",
@@ -2437,9 +5225,66 @@ export const colleges: College[] = [
             process: ["Apply through NEET counseling", "Document verification", "Fee payment"],
             eligibility: ["10+2 with PCB minimum 50%", "Valid NEET UG Rank"],
             documents: ["10th/12th Marksheets", "NEET Scorecard", "ID Proof", "Photographs"]
+        },
+        infrastructure: [
+        "Multi-specialty Hospital",
+        "Digital Library",
+        "Medical Research Labs",
+        "Hostels",
+        "Anatomy Museum"
+],
+        placements: {
+        "stats": [
+                {
+                        "label": "Internship Completion",
+                        "value": "100%"
+                },
+                {
+                        "label": "Clinical Exposure",
+                        "value": "Excellent"
+                }
+        ],
+        "topRecruiters": [
+                {
+                        "category": "Clinical",
+                        "companies": [
+                                "Attached Teaching Hospital",
+                                "Local Health Centers",
+                                "Private Hospitals"
+                        ]
+                }
+        ]
+},
+        scholarships: [
+        {
+                "title": "State Scholarships",
+                "items": [
+                        {
+                                "label": "EWS/Reserved",
+                                "value": "Fee Reimbursement as per govt norms"
+                        }
+                ]
         }
+],
+        alumni: {
+        "description": "Alumni practicing as reputed doctors and healthcare professionals across India and abroad."
+},
+        faqs: [
+        {
+                "question": "Is the medical degree recognized?",
+                "answer": "Yes, the MBBS degree is recognized by the National Medical Commission (NMC) and is valid for practice across India and abroad after clearing licensing exams."
+        },
+        {
+                "question": "What is the patient flow in the hospital?",
+                "answer": "The attached teaching hospital has a good patient flow, ensuring excellent clinical exposure and hands-on training for students."
+        },
+        {
+                "question": "Are residential facilities available?",
+                "answer": "Yes, the campus provides comfortable hostel accommodation for students, creating a conducive environment for study and rest."
+        }
+]
     },
-{
+    {
         id: "up-med-30",
         slug: "subharti-medical-meerut",
         name: "Subharti Medical College",
@@ -2471,9 +5316,88 @@ export const colleges: College[] = [
             { url: "https://placehold.co/800x600/1e293b/fff?text=Laboratories", alt: "Laboratories" },
             { url: "https://placehold.co/800x600/1e293b/fff?text=Hostel", alt: "Student Hostel" }
         ],
-        whyChooseAkashTalks: ["Subharti expertise", "Fee clarity", "Complete support", "Post-admission support for hostel and documentation", "Guidance on scholarship applications and education loans", "Zero hidden charges policy"]
+        whyChooseAkashTalks: ["Subharti expertise", "Fee clarity", "Complete support", "Post-admission support for hostel and documentation", "Guidance on scholarship applications and education loans", "Zero hidden charges policy"],
+        infrastructure: [
+        "Multi-specialty Hospital",
+        "Digital Library",
+        "Medical Research Labs",
+        "Hostels",
+        "Anatomy Museum"
+],
+        coursesDetails: [
+        {
+                "name": "MBBS",
+                "duration": "5.5 Years",
+                "type": "Full Time"
+        }
+],
+        feesDetails: [
+        {
+                "title": "Fee Structure",
+                "items": [
+                        {
+                                "label": "Annual Fee",
+                                "value": "Varies"
+                        }
+                ]
+        }
+],
+        placements: {
+        "stats": [
+                {
+                        "label": "Internship Completion",
+                        "value": "100%"
+                },
+                {
+                        "label": "Clinical Exposure",
+                        "value": "Excellent"
+                }
+        ],
+        "topRecruiters": [
+                {
+                        "category": "Clinical",
+                        "companies": [
+                                "Attached Teaching Hospital",
+                                "Local Health Centers",
+                                "Private Hospitals"
+                        ]
+                }
+        ]
+},
+        admissions: {
+        "process": [
+                "NEET UG Exam",
+                "State/All India Counseling",
+                "Document Verification",
+                "Medical Fitness Test"
+        ],
+        "eligibility": [
+                "10+2 with PCB (50% for Gen, 40% for Reserved)",
+                "Qualified NEET UG"
+        ],
+        "documents": [
+                "NEET Scorecard",
+                "10th/12th Marksheets",
+                "Caste Certificate",
+                "Domicile Certificate"
+        ]
+},
+        scholarships: [
+        {
+                "title": "State Scholarships",
+                "items": [
+                        {
+                                "label": "EWS/Reserved",
+                                "value": "Fee Reimbursement as per govt norms"
+                        }
+                ]
+        }
+],
+        alumni: {
+        "description": "Alumni practicing as reputed doctors and healthcare professionals across India and abroad."
+}
     },
-{
+    {
         id: "mh-3",
         slug: "symbiosis-international-university",
         name: "Symbiosis International (Deemed University)",
@@ -2506,9 +5430,12 @@ export const colleges: College[] = [
             { url: "https://placehold.co/800x600/1e293b/fff?text=Laboratories", alt: "Laboratories" },
             { url: "https://placehold.co/800x600/1e293b/fff?text=Hostel", alt: "Student Hostel" }
         ],
-        whyChooseAkashTalks: ["SET preparation guidance", "Symbiosis admission support", "Scholarship assistance", "Complete counseling", "Post-admission support for hostel and documentation", "Guidance on scholarship applications and education loans", "Zero hidden charges policy"]
+        whyChooseAkashTalks: ["SET preparation guidance", "Symbiosis admission support", "Scholarship assistance", "Complete counseling", "Post-admission support for hostel and documentation", "Guidance on scholarship applications and education loans", "Zero hidden charges policy"],
+        alumni: {
+        "description": "Active alumni network with graduates in top positions globally."
+}
     },
-{
+    {
         id: "wb-7",
         slug: "techno-international-new-town",
         name: "Techno International New Town (TINT)",
@@ -2542,9 +5469,16 @@ export const colleges: College[] = [
             { url: "https://placehold.co/800x600/1e293b/fff?text=Laboratories", alt: "Laboratories" },
             { url: "https://placehold.co/800x600/1e293b/fff?text=Hostel", alt: "Student Hostel" }
         ],
-        whyChooseAkashTalks: ["New Town college guidance", "Innovation program information", "Admission assistance", "Post-admission support for hostel and documentation", "Guidance on scholarship applications and education loans", "Zero hidden charges policy"]
+        whyChooseAkashTalks: ["New Town college guidance", "Innovation program information", "Admission assistance", "Post-admission support for hostel and documentation", "Guidance on scholarship applications and education loans", "Zero hidden charges policy"],
+        infrastructure: [
+        "Modern Labs",
+        "Central Library",
+        "Hostels",
+        "Sports Complex",
+        "Auditorium"
+]
     },
-{
+    {
         id: "new-med-40",
         slug: "teerthankar-mahaveer-moradabad",
         name: "Teerthankar Mahaveer Medical College & Research Centre",
@@ -2573,9 +5507,66 @@ export const colleges: College[] = [
             process: ["Apply through NEET counseling", "Document verification", "Fee payment"],
             eligibility: ["10+2 with PCB minimum 50%", "Valid NEET UG Rank"],
             documents: ["10th/12th Marksheets", "NEET Scorecard", "ID Proof", "Photographs"]
+        },
+        infrastructure: [
+        "Multi-specialty Hospital",
+        "Digital Library",
+        "Medical Research Labs",
+        "Hostels",
+        "Anatomy Museum"
+],
+        placements: {
+        "stats": [
+                {
+                        "label": "Internship Completion",
+                        "value": "100%"
+                },
+                {
+                        "label": "Clinical Exposure",
+                        "value": "Excellent"
+                }
+        ],
+        "topRecruiters": [
+                {
+                        "category": "Clinical",
+                        "companies": [
+                                "Attached Teaching Hospital",
+                                "Local Health Centers",
+                                "Private Hospitals"
+                        ]
+                }
+        ]
+},
+        scholarships: [
+        {
+                "title": "State Scholarships",
+                "items": [
+                        {
+                                "label": "EWS/Reserved",
+                                "value": "Fee Reimbursement as per govt norms"
+                        }
+                ]
         }
+],
+        alumni: {
+        "description": "Alumni practicing as reputed doctors and healthcare professionals across India and abroad."
+},
+        faqs: [
+        {
+                "question": "Is the medical degree recognized?",
+                "answer": "Yes, the MBBS degree is recognized by the National Medical Commission (NMC) and is valid for practice across India and abroad after clearing licensing exams."
+        },
+        {
+                "question": "What is the patient flow in the hospital?",
+                "answer": "The attached teaching hospital has a good patient flow, ensuring excellent clinical exposure and hands-on training for students."
+        },
+        {
+                "question": "Are residential facilities available?",
+                "answer": "Yes, the campus provides comfortable hostel accommodation for students, creating a conducive environment for study and rest."
+        }
+]
     },
-{
+    {
         id: "new-med-39",
         slug: "ts-misra-lucknow",
         name: "T.S. Misra Medical College & Hospital",
@@ -2604,9 +5595,66 @@ export const colleges: College[] = [
             process: ["Apply through NEET counseling", "Document verification", "Fee payment"],
             eligibility: ["10+2 with PCB minimum 50%", "Valid NEET UG Rank"],
             documents: ["10th/12th Marksheets", "NEET Scorecard", "ID Proof", "Photographs"]
+        },
+        infrastructure: [
+        "Multi-specialty Hospital",
+        "Digital Library",
+        "Medical Research Labs",
+        "Hostels",
+        "Anatomy Museum"
+],
+        placements: {
+        "stats": [
+                {
+                        "label": "Internship Completion",
+                        "value": "100%"
+                },
+                {
+                        "label": "Clinical Exposure",
+                        "value": "Excellent"
+                }
+        ],
+        "topRecruiters": [
+                {
+                        "category": "Clinical",
+                        "companies": [
+                                "Attached Teaching Hospital",
+                                "Local Health Centers",
+                                "Private Hospitals"
+                        ]
+                }
+        ]
+},
+        scholarships: [
+        {
+                "title": "State Scholarships",
+                "items": [
+                        {
+                                "label": "EWS/Reserved",
+                                "value": "Fee Reimbursement as per govt norms"
+                        }
+                ]
         }
+],
+        alumni: {
+        "description": "Alumni practicing as reputed doctors and healthcare professionals across India and abroad."
+},
+        faqs: [
+        {
+                "question": "Is the medical degree recognized?",
+                "answer": "Yes, the MBBS degree is recognized by the National Medical Commission (NMC) and is valid for practice across India and abroad after clearing licensing exams."
+        },
+        {
+                "question": "What is the patient flow in the hospital?",
+                "answer": "The attached teaching hospital has a good patient flow, ensuring excellent clinical exposure and hands-on training for students."
+        },
+        {
+                "question": "Are residential facilities available?",
+                "answer": "Yes, the campus provides comfortable hostel accommodation for students, creating a conducive environment for study and rest."
+        }
+]
     },
-{
+    {
         id: "up-med-33",
         slug: "united-medial-prayagraj",
         name: "United Institute of Medical Sciences",
@@ -2638,9 +5686,88 @@ export const colleges: College[] = [
             { url: "https://placehold.co/800x600/1e293b/fff?text=Laboratories", alt: "Laboratories" },
             { url: "https://placehold.co/800x600/1e293b/fff?text=Hostel", alt: "Student Hostel" }
         ],
-        whyChooseAkashTalks: ["Prayagraj medical guidance", "Fee clarity", "Complete support", "Post-admission support for hostel and documentation", "Guidance on scholarship applications and education loans", "Zero hidden charges policy"]
+        whyChooseAkashTalks: ["Prayagraj medical guidance", "Fee clarity", "Complete support", "Post-admission support for hostel and documentation", "Guidance on scholarship applications and education loans", "Zero hidden charges policy"],
+        infrastructure: [
+        "Multi-specialty Hospital",
+        "Digital Library",
+        "Medical Research Labs",
+        "Hostels",
+        "Anatomy Museum"
+],
+        coursesDetails: [
+        {
+                "name": "MBBS",
+                "duration": "5.5 Years",
+                "type": "Full Time"
+        }
+],
+        feesDetails: [
+        {
+                "title": "Fee Structure",
+                "items": [
+                        {
+                                "label": "Annual Fee",
+                                "value": "Varies"
+                        }
+                ]
+        }
+],
+        placements: {
+        "stats": [
+                {
+                        "label": "Internship Completion",
+                        "value": "100%"
+                },
+                {
+                        "label": "Clinical Exposure",
+                        "value": "Excellent"
+                }
+        ],
+        "topRecruiters": [
+                {
+                        "category": "Clinical",
+                        "companies": [
+                                "Attached Teaching Hospital",
+                                "Local Health Centers",
+                                "Private Hospitals"
+                        ]
+                }
+        ]
+},
+        admissions: {
+        "process": [
+                "NEET UG Exam",
+                "State/All India Counseling",
+                "Document Verification",
+                "Medical Fitness Test"
+        ],
+        "eligibility": [
+                "10+2 with PCB (50% for Gen, 40% for Reserved)",
+                "Qualified NEET UG"
+        ],
+        "documents": [
+                "NEET Scorecard",
+                "10th/12th Marksheets",
+                "Caste Certificate",
+                "Domicile Certificate"
+        ]
+},
+        scholarships: [
+        {
+                "title": "State Scholarships",
+                "items": [
+                        {
+                                "label": "EWS/Reserved",
+                                "value": "Fee Reimbursement as per govt norms"
+                        }
+                ]
+        }
+],
+        alumni: {
+        "description": "Alumni practicing as reputed doctors and healthcare professionals across India and abroad."
+}
     },
-{
+    {
         id: "uk-1",
         slug: "upes-dehradun",
         name: "University of Petroleum and Energy Studies (UPES)",
@@ -2684,9 +5811,12 @@ export const colleges: College[] = [
             { url: "https://placehold.co/800x600/1e293b/fff?text=Laboratories", alt: "Laboratories" },
             { url: "https://placehold.co/800x600/1e293b/fff?text=Hostel", alt: "Student Hostel" }
         ],
-        whyChooseAkashTalks: ["Specialization guidance", "Domain career counseling", "Complete admission support", "Scholarship assistance", "Post-admission support for hostel and documentation", "Guidance on scholarship applications and education loans", "Zero hidden charges policy"]
+        whyChooseAkashTalks: ["Specialization guidance", "Domain career counseling", "Complete admission support", "Scholarship assistance", "Post-admission support for hostel and documentation", "Guidance on scholarship applications and education loans", "Zero hidden charges policy"],
+        alumni: {
+        "description": "Active alumni network with graduates in top positions globally."
+}
     },
-{
+    {
         id: "new-med-42",
         slug: "varunarjun-shahjahanpur",
         name: "Varunarjun Medical College & Rohilkhand Hospital",
@@ -2715,9 +5845,66 @@ export const colleges: College[] = [
             process: ["Apply through NEET counseling", "Document verification", "Fee payment"],
             eligibility: ["10+2 with PCB minimum 50%", "Valid NEET UG Rank"],
             documents: ["10th/12th Marksheets", "NEET Scorecard", "ID Proof", "Photographs"]
+        },
+        infrastructure: [
+        "Multi-specialty Hospital",
+        "Digital Library",
+        "Medical Research Labs",
+        "Hostels",
+        "Anatomy Museum"
+],
+        placements: {
+        "stats": [
+                {
+                        "label": "Internship Completion",
+                        "value": "100%"
+                },
+                {
+                        "label": "Clinical Exposure",
+                        "value": "Excellent"
+                }
+        ],
+        "topRecruiters": [
+                {
+                        "category": "Clinical",
+                        "companies": [
+                                "Attached Teaching Hospital",
+                                "Local Health Centers",
+                                "Private Hospitals"
+                        ]
+                }
+        ]
+},
+        scholarships: [
+        {
+                "title": "State Scholarships",
+                "items": [
+                        {
+                                "label": "EWS/Reserved",
+                                "value": "Fee Reimbursement as per govt norms"
+                        }
+                ]
         }
+],
+        alumni: {
+        "description": "Alumni practicing as reputed doctors and healthcare professionals across India and abroad."
+},
+        faqs: [
+        {
+                "question": "Is the medical degree recognized?",
+                "answer": "Yes, the MBBS degree is recognized by the National Medical Commission (NMC) and is valid for practice across India and abroad after clearing licensing exams."
+        },
+        {
+                "question": "What is the patient flow in the hospital?",
+                "answer": "The attached teaching hospital has a good patient flow, ensuring excellent clinical exposure and hands-on training for students."
+        },
+        {
+                "question": "Are residential facilities available?",
+                "answer": "Yes, the campus provides comfortable hostel accommodation for students, creating a conducive environment for study and rest."
+        }
+]
     },
-{
+    {
         id: "up-med-35",
         slug: "venkateswara-medical-amroha",
         name: "Venkateswara Institute of Medical Sciences",
@@ -2749,9 +5936,88 @@ export const colleges: College[] = [
             { url: "https://placehold.co/800x600/1e293b/fff?text=Laboratories", alt: "Laboratories" },
             { url: "https://placehold.co/800x600/1e293b/fff?text=Hostel", alt: "Student Hostel" }
         ],
-        whyChooseAkashTalks: ["UP medical guidance", "Fee clarity", "Complete support", "Post-admission support for hostel and documentation", "Guidance on scholarship applications and education loans", "Zero hidden charges policy"]
+        whyChooseAkashTalks: ["UP medical guidance", "Fee clarity", "Complete support", "Post-admission support for hostel and documentation", "Guidance on scholarship applications and education loans", "Zero hidden charges policy"],
+        infrastructure: [
+        "Multi-specialty Hospital",
+        "Digital Library",
+        "Medical Research Labs",
+        "Hostels",
+        "Anatomy Museum"
+],
+        coursesDetails: [
+        {
+                "name": "MBBS",
+                "duration": "5.5 Years",
+                "type": "Full Time"
+        }
+],
+        feesDetails: [
+        {
+                "title": "Fee Structure",
+                "items": [
+                        {
+                                "label": "Annual Fee",
+                                "value": "Varies"
+                        }
+                ]
+        }
+],
+        placements: {
+        "stats": [
+                {
+                        "label": "Internship Completion",
+                        "value": "100%"
+                },
+                {
+                        "label": "Clinical Exposure",
+                        "value": "Excellent"
+                }
+        ],
+        "topRecruiters": [
+                {
+                        "category": "Clinical",
+                        "companies": [
+                                "Attached Teaching Hospital",
+                                "Local Health Centers",
+                                "Private Hospitals"
+                        ]
+                }
+        ]
+},
+        admissions: {
+        "process": [
+                "NEET UG Exam",
+                "State/All India Counseling",
+                "Document Verification",
+                "Medical Fitness Test"
+        ],
+        "eligibility": [
+                "10+2 with PCB (50% for Gen, 40% for Reserved)",
+                "Qualified NEET UG"
+        ],
+        "documents": [
+                "NEET Scorecard",
+                "10th/12th Marksheets",
+                "Caste Certificate",
+                "Domicile Certificate"
+        ]
+},
+        scholarships: [
+        {
+                "title": "State Scholarships",
+                "items": [
+                        {
+                                "label": "EWS/Reserved",
+                                "value": "Fee Reimbursement as per govt norms"
+                        }
+                ]
+        }
+],
+        alumni: {
+        "description": "Alumni practicing as reputed doctors and healthcare professionals across India and abroad."
+}
     },
-{
+    {
         id: "tn-1",
         slug: "vit-vellore",
         name: "Vellore Institute of Technology (VIT)",
@@ -3033,7 +6299,7 @@ export const exams: Exam[] = [
         name: "IEMJEE 2026",
         logoUrl: "https://placehold.co/100x100/f43f5e/ffffff?text=IEMJEE",
         fullName: "Institute of Engineering & Management Joint Entrance Exam",
-        description: "Exam for admission to B.Tech, BCA, BBA, M.Tech, MCA, MBA courses of IEM Group.",
+        description: "Exam for admission to B.Tech, BCA, BBA, M.Tech, MCA, MBA courses of the prestigious IEM Group.",
         date: "Multiple Phases (Online)",
         applicationLink: "https://iemjee.iem.edu.in/",
         introduction: "IEMJEE (Institute of Engineering & Management Joint Entrance Exam) is the most direct route to UEM Jaipur and UEM Kolkata admissions. With multiple phases, free exam fee, and instant results, IEMJEE offers a hassle-free admission experience for aspiring engineers. This exam is a gateway to some of the most prestigious institutes in the region. Securing a good rank requires consistent preparation and a clear understanding of the syllabus.",
