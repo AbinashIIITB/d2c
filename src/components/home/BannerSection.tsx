@@ -62,7 +62,7 @@ export function BannerSection() {
   };
 
   return (
-    <section className="bg-d2c-white w-full pt-14 md:pt-24 lg:pt-32 pb-8">
+    <section className="bg-d2c-white w-full pt-4 md:pt-6 lg:pt-8 pb-8">
       <div className="content-boundary">
         {/* Top bar: navigation arrows on the left */}
         <div className="flex items-center gap-3 mb-4">

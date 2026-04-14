@@ -32,7 +32,7 @@ const trustItems = [
 
 export function TrustFeatures() {
   return (
-    <section className="py-12 md:py-16 bg-white relative">
+    <section className="pt-20 pb-4 md:pt-32 md:pb-6 bg-d2c-white relative">
       <div className="content-boundary">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8">
           {trustItems.map((item, idx) => (
