@@ -19,15 +19,6 @@ export default function AboutPage() {
         <HeroBackground bottomOffsetClass="bottom-24 sm:bottom-36 lg:bottom-40" />
 
         <div className="content-boundary relative z-10 text-center">
-          {/* Logo Showcase */}
-          <div className="relative w-48 sm:w-64 h-14 sm:h-16 mx-auto mix-blend-screen opacity-90 mb-4 sm:mb-6">
-            <Image
-              src="/logo-footer.png"
-              alt="Direct2Campus"
-              fill
-              className="object-contain object-center"
-            />
-          </div>
           <div className="inline-flex items-center gap-2 px-3 py-1.5 md:px-4 md:py-2 bg-white/10 backdrop-blur-sm border border-white/20 mb-6 md:mb-10 rounded-lg">
             <Shield className="w-4 h-4 text-d2c-sky" />
             <span className="text-sm font-medium tracking-wide text-white">India&apos;s Trusted Education Partner</span>
@@ -70,6 +61,21 @@ export default function AboutPage() {
       </section>
 
       <div className="content-boundary py-16 relative z-20">
+        
+        {/* Logo Placement in contents */}
+        <div className="flex justify-center mb-12">
+          <div className="relative w-full max-w-sm h-20 sm:h-24 bg-d2c-navy rounded-2xl flex items-center justify-center p-4 sm:p-6 shadow-md border border-gray-100">
+            <div className="relative w-full h-full opacity-95">
+              <Image
+                src="/logo-footer.png"
+                alt="Direct2Campus"
+                fill
+                className="object-contain object-center"
+              />
+            </div>
+          </div>
+        </div>
+
         <div className="prose prose-lg max-w-none text-d2c-text">
           <img src="https://images.unsplash.com/photo-1541339907198-e08756dedf3f?auto=format&fit=crop&q=80&w=1200" alt="Campus Building" className="w-full h-[400px] object-cover mb-12 shadow-md" />
           
