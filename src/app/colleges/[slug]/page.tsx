@@ -107,7 +107,7 @@ export default async function CollegeDetailPage({ params }: { params: Params }) 
             {(college.imageUrl || college.logoUrl) && (
               <div className="relative group shrink-0 mt-2">
                 <div className="absolute -inset-1 bg-gradient-to-br from-[#3B4CC0]/40 to-[#f6c804]/20 rounded-3xl blur-lg opacity-60 group-hover:opacity-100 transition-opacity duration-500" />
-                <div className="relative h-40 w-56 md:h-48 md:w-72 bg-white/[0.08] backdrop-blur-2xl rounded-2xl p-2 border border-white/[0.12] shadow-[0_24px_48px_-12px_rgba(0,0,0,0.3)] overflow-hidden">
+                <div className="relative h-48 w-64 md:h-64 md:w-96 bg-white/[0.08] backdrop-blur-2xl rounded-2xl p-2 border border-white/[0.12] shadow-[0_24px_48px_-12px_rgba(0,0,0,0.3)] overflow-hidden">
                   <img src={college.imageUrl || college.logoUrl} alt={`${college.name} Visual`} className="w-full h-full object-cover rounded-xl" />
                 </div>
               </div>

@@ -178,14 +178,6 @@ export function HeroSection() {
           {/* Left side: text content */}
           <div className="w-[50%] flex flex-col items-start relative z-10 pointer-events-none">
             <div className="w-full max-w-4xl pointer-events-auto">
-              <div className="relative w-56 lg:w-72 h-16 lg:h-20 mb-6 mix-blend-screen opacity-90">
-                <Image
-                  src="/logo-footer.png"
-                  alt="Direct2Campus"
-                  fill
-                  className="object-contain object-left"
-                />
-              </div>
               <h1 className="text-[4.25rem] font-sora font-bold tracking-tight mb-5 text-balance leading-[1.05]">
                 Get Direct Admission <br />
                 Guidance from <br />

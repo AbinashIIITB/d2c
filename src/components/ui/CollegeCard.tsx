@@ -11,8 +11,8 @@ export function CollegeCard({ college }: { college: College }) {
       href={`/colleges/${college.slug}`}
       className="group relative flex flex-col bg-white border border-slate-100 overflow-hidden h-full shadow-sm hover:shadow-2xl transition-all duration-500 rounded-2xl transform hover:-translate-y-2"
     >
-      {/* ── IMAGE SECTION (FIXED 16:9) ── */}
-      <div className="relative aspect-video w-full overflow-hidden bg-slate-100">
+      {/* ── IMAGE SECTION ── */}
+      <div className="relative h-56 sm:h-64 w-full overflow-hidden bg-slate-100">
         {/* Interaction Overlay */}
         <div className="absolute inset-0 bg-d2c-navy/0 group-hover:bg-d2c-navy/10 transition-colors duration-500 z-10" />
 

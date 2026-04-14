@@ -1597,6 +1597,1402 @@ export const exams: Exam[] = [
             { question: "Can I get admission in IEM Kolkata through IEMJEE?", answer: "IEMJEE is primarily for UEM Jaipur and UEM Kolkata. For IEM Kolkata (MAKAUT affiliated), WBJEE/JEE Main is the main route, but management quota seats *might* consider it. Check with admission cell." }, { question: "Does the college provide internship support?", answer: "Yes, the college has a dedicated placement cell that assists students in securing summer internships and industrial training." }, { question: "Is there a dedicated placement cell?", answer: "Yes, the Training and Placement Cell works year-round to bring top companies for recruitment and trains students in soft skills." }, { question: "Are there hostel facilities available?", answer: "Yes, separate hostel facilities are available for boys and girls with all necessary amenities and security." }, { question: "How can Akash Talks help in counseling?", answer: "We provide personalized rank analysis and college preference lists to help you get the best seat." }, { question: "Is the application process online?", answer: "Yes, the entire application process is conducted online through the official portal." }, { question: "What documents are needed for counseling?", answer: "Standard documents include Admit Card, Rank Card, 10th/12th Marksheets, and Domicile Certificate." }
         ]
     }
+,
+    {
+        id: "new-med-1",
+        slug: "jagannath-gupta-institute-of-medical-sciences-and-hospital",
+        name: "Jagannath Gupta Institute of Medical Sciences and Hospital",
+        location: "Kolkata, West Bengal",
+        state: "West Bengal",
+        rating: 4.0,
+        reviews: 66,
+        fees: "₹99,36,000",
+        courses: ["MBBS"],
+        type: "Private",
+        description: "Private medical college in Kolkata with attached hospital and modern facilities.",
+        imageUrl: "https://placehold.co/800x600/1e293b/fff?text=Jagannath+Gupta+Institute+of+Medical+Sciences+and+Hospital",
+        tags: ["Medical", "MBBS"],
+        about: "Private medical college in Kolkata with attached hospital and modern facilities.",
+        highlights: ["Attached Teaching Hospital", "Modern Infrastructure", "Experienced Faculty"],
+        coursesDetails: [
+            { name: "MBBS", duration: "5.5 Years", type: "Full Time" }
+        ],
+        feesDetails: [
+            {
+                title: "Management Quota (MQ) Fees",
+                items: [{ label: "Total Fees", value: "₹99,36,000" }]
+            }
+        ],
+        admissions: {
+            process: ["Apply through NEET counseling", "Document verification", "Fee payment"],
+            eligibility: ["10+2 with PCB minimum 50%", "Valid NEET UG Rank"],
+            documents: ["10th/12th Marksheets", "NEET Scorecard", "ID Proof", "Photographs"]
+        }
+    },
+    {
+        id: "new-med-2",
+        slug: "jis-school-of-medical-science-and-research",
+        name: "JIS School of Medical Science and Research",
+        location: "Kolkata, West Bengal",
+        state: "West Bengal",
+        rating: 4.0,
+        reviews: 87,
+        fees: "₹99,55,000",
+        courses: ["MBBS"],
+        type: "Private",
+        description: "Part of reputed JIS Group with modern medical education facilities.",
+        imageUrl: "https://placehold.co/800x600/1e293b/fff?text=JIS+School+of+Medical+Science+and+Research",
+        tags: ["Medical", "MBBS"],
+        about: "Part of reputed JIS Group with modern medical education facilities.",
+        highlights: ["Attached Teaching Hospital", "Modern Infrastructure", "Experienced Faculty"],
+        coursesDetails: [
+            { name: "MBBS", duration: "5.5 Years", type: "Full Time" }
+        ],
+        feesDetails: [
+            {
+                title: "Management Quota (MQ) Fees",
+                items: [{ label: "Total Fees", value: "₹99,55,000" }]
+            }
+        ],
+        admissions: {
+            process: ["Apply through NEET counseling", "Document verification", "Fee payment"],
+            eligibility: ["10+2 with PCB minimum 50%", "Valid NEET UG Rank"],
+            documents: ["10th/12th Marksheets", "NEET Scorecard", "ID Proof", "Photographs"]
+        }
+    },
+    {
+        id: "new-med-3",
+        slug: "jmn-medical-college",
+        name: "JMN Medical College",
+        location: "Near Kalyani, West Bengal",
+        state: "West Bengal",
+        rating: 4.0,
+        reviews: 138,
+        fees: "₹88,00,000",
+        courses: ["MBBS"],
+        type: "Private",
+        description: "Located near AIIMS Kalyani with growing medical education facilities.",
+        imageUrl: "https://placehold.co/800x600/1e293b/fff?text=JMN+Medical+College",
+        tags: ["Medical", "MBBS"],
+        about: "Located near AIIMS Kalyani with growing medical education facilities.",
+        highlights: ["Attached Teaching Hospital", "Modern Infrastructure", "Experienced Faculty"],
+        coursesDetails: [
+            { name: "MBBS", duration: "5.5 Years", type: "Full Time" }
+        ],
+        feesDetails: [
+            {
+                title: "Management Quota (MQ) Fees",
+                items: [{ label: "Total Fees", value: "₹88,00,000" }]
+            }
+        ],
+        admissions: {
+            process: ["Apply through NEET counseling", "Document verification", "Fee payment"],
+            eligibility: ["10+2 with PCB minimum 50%", "Valid NEET UG Rank"],
+            documents: ["10th/12th Marksheets", "NEET Scorecard", "ID Proof", "Photographs"]
+        }
+    },
+    {
+        id: "new-med-4",
+        slug: "shri-ramkrishna-institute-of-medical-sciences-and-sanaka-hospitals",
+        name: "Shri Ramkrishna Institute of Medical Sciences and Sanaka Hospitals",
+        location: "Durgapur, West Bengal",
+        state: "West Bengal",
+        rating: 4.0,
+        reviews: 90,
+        fees: "₹99,31,000",
+        courses: ["MBBS"],
+        type: "Private",
+        description: "Medical college in Durgapur with Sanaka Hospitals attachment.",
+        imageUrl: "https://placehold.co/800x600/1e293b/fff?text=Shri+Ramkrishna+Institute+of+Medical+Sciences+and+Sanaka+Hospitals",
+        tags: ["Medical", "MBBS"],
+        about: "Medical college in Durgapur with Sanaka Hospitals attachment.",
+        highlights: ["Attached Teaching Hospital", "Modern Infrastructure", "Experienced Faculty"],
+        coursesDetails: [
+            { name: "MBBS", duration: "5.5 Years", type: "Full Time" }
+        ],
+        feesDetails: [
+            {
+                title: "Management Quota (MQ) Fees",
+                items: [{ label: "Total Fees", value: "₹99,31,000" }]
+            }
+        ],
+        admissions: {
+            process: ["Apply through NEET counseling", "Document verification", "Fee payment"],
+            eligibility: ["10+2 with PCB minimum 50%", "Valid NEET UG Rank"],
+            documents: ["10th/12th Marksheets", "NEET Scorecard", "ID Proof", "Photographs"]
+        }
+    },
+    {
+        id: "new-med-5",
+        slug: "kpc-medical-college-and-hospital",
+        name: "KPC Medical College and Hospital",
+        location: "Jadavpur, Kolkata",
+        state: "Kolkata",
+        rating: 4.0,
+        reviews: 104,
+        fees: "₹72,00,000",
+        courses: ["MBBS"],
+        type: "Private",
+        description: "Established medical college in Jadavpur, Kolkata with good clinical exposure.",
+        imageUrl: "https://placehold.co/800x600/1e293b/fff?text=KPC+Medical+College+and+Hospital",
+        tags: ["Medical", "MBBS"],
+        about: "Established medical college in Jadavpur, Kolkata with good clinical exposure.",
+        highlights: ["Attached Teaching Hospital", "Modern Infrastructure", "Experienced Faculty"],
+        coursesDetails: [
+            { name: "MBBS", duration: "5.5 Years", type: "Full Time" }
+        ],
+        feesDetails: [
+            {
+                title: "Management Quota (MQ) Fees",
+                items: [{ label: "Total Fees", value: "₹72,00,000" }]
+            }
+        ],
+        admissions: {
+            process: ["Apply through NEET counseling", "Document verification", "Fee payment"],
+            eligibility: ["10+2 with PCB minimum 50%", "Valid NEET UG Rank"],
+            documents: ["10th/12th Marksheets", "NEET Scorecard", "ID Proof", "Photographs"]
+        }
+    },
+    {
+        id: "new-med-6",
+        slug: "krishnanagar-institute-of-medical-science-private-limited",
+        name: "Krishnanagar Institute of Medical Science Private Limited",
+        location: "Krishnanagar, West Bengal",
+        state: "West Bengal",
+        rating: 4.0,
+        reviews: 114,
+        fees: "₹91,00,000",
+        courses: ["MBBS"],
+        type: "Private",
+        description: "Medical college located 4 hours from Kolkata in Krishnanagar.",
+        imageUrl: "https://placehold.co/800x600/1e293b/fff?text=Krishnanagar+Institute+of+Medical+Science+Private+Limited",
+        tags: ["Medical", "MBBS"],
+        about: "Medical college located 4 hours from Kolkata in Krishnanagar.",
+        highlights: ["Attached Teaching Hospital", "Modern Infrastructure", "Experienced Faculty"],
+        coursesDetails: [
+            { name: "MBBS", duration: "5.5 Years", type: "Full Time" }
+        ],
+        feesDetails: [
+            {
+                title: "Management Quota (MQ) Fees",
+                items: [{ label: "Total Fees", value: "₹91,00,000" }]
+            }
+        ],
+        admissions: {
+            process: ["Apply through NEET counseling", "Document verification", "Fee payment"],
+            eligibility: ["10+2 with PCB minimum 50%", "Valid NEET UG Rank"],
+            documents: ["10th/12th Marksheets", "NEET Scorecard", "ID Proof", "Photographs"]
+        }
+    },
+    {
+        id: "new-med-7",
+        slug: "icare-institute-of-medical-science-and-research-and-dr-b-c-roy-hospital",
+        name: "ICARE Institute of Medical Science and Research and Dr. B.C. Roy Hospital",
+        location: "Haldia, West Bengal",
+        state: "West Bengal",
+        rating: 4.0,
+        reviews: 103,
+        fees: "₹90,00,000 (Settlement)",
+        courses: ["MBBS"],
+        type: "Private",
+        description: "Medical college in industrial hub of Haldia with Dr. B.C. Roy Hospital.",
+        imageUrl: "https://placehold.co/800x600/1e293b/fff?text=ICARE+Institute+of+Medical+Science+and+Research+and+Dr.+B.C.+Roy+Hospital",
+        tags: ["Medical", "MBBS"],
+        about: "Medical college in industrial hub of Haldia with Dr. B.C. Roy Hospital.",
+        highlights: ["Attached Teaching Hospital", "Modern Infrastructure", "Experienced Faculty"],
+        coursesDetails: [
+            { name: "MBBS", duration: "5.5 Years", type: "Full Time" }
+        ],
+        feesDetails: [
+            {
+                title: "Management Quota (MQ) Fees",
+                items: [{ label: "Total Fees", value: "₹90,00,000 (Settlement)" }]
+            }
+        ],
+        admissions: {
+            process: ["Apply through NEET counseling", "Document verification", "Fee payment"],
+            eligibility: ["10+2 with PCB minimum 50%", "Valid NEET UG Rank"],
+            documents: ["10th/12th Marksheets", "NEET Scorecard", "ID Proof", "Photographs"]
+        }
+    },
+    {
+        id: "new-med-8",
+        slug: "iq-city-medical-college",
+        name: "IQ City Medical College",
+        location: "Durgapur, West Bengal",
+        state: "West Bengal",
+        rating: 4.0,
+        reviews: 79,
+        fees: "₹1,00,00,000 (Settlement)",
+        courses: ["MBBS"],
+        type: "Private",
+        description: "Part of IQ City Complex in Durgapur with excellent infrastructure.",
+        imageUrl: "https://placehold.co/800x600/1e293b/fff?text=IQ+City+Medical+College",
+        tags: ["Medical", "MBBS"],
+        about: "Part of IQ City Complex in Durgapur with excellent infrastructure.",
+        highlights: ["Attached Teaching Hospital", "Modern Infrastructure", "Experienced Faculty"],
+        coursesDetails: [
+            { name: "MBBS", duration: "5.5 Years", type: "Full Time" }
+        ],
+        feesDetails: [
+            {
+                title: "Management Quota (MQ) Fees",
+                items: [{ label: "Total Fees", value: "₹1,00,00,000 (Settlement)" }]
+            }
+        ],
+        admissions: {
+            process: ["Apply through NEET counseling", "Document verification", "Fee payment"],
+            eligibility: ["10+2 with PCB minimum 50%", "Valid NEET UG Rank"],
+            documents: ["10th/12th Marksheets", "NEET Scorecard", "ID Proof", "Photographs"]
+        }
+    },
+    {
+        id: "new-med-9",
+        slug: "ajay-sangaal-institute-of-medical-science-research",
+        name: "Ajay Sangaal Institute of Medical Science & Research",
+        location: "Shamli, Uttar Pradesh",
+        state: "Uttar Pradesh",
+        rating: 4.0,
+        reviews: 136,
+        fees: "₹1,25,82,880",
+        courses: ["MBBS"],
+        type: "Private",
+        description: "New private medical college in Shamli with NEET based admissions.",
+        imageUrl: "https://placehold.co/800x600/1e293b/fff?text=Ajay+Sangaal+Institute+of+Medical+Science+&+Research",
+        tags: ["Medical", "MBBS"],
+        about: "New private medical college in Shamli with NEET based admissions.",
+        highlights: ["Attached Teaching Hospital", "Modern Infrastructure", "Experienced Faculty"],
+        coursesDetails: [
+            { name: "MBBS", duration: "5.5 Years", type: "Full Time" }
+        ],
+        feesDetails: [
+            {
+                title: "Management Quota (MQ) Fees",
+                items: [{ label: "Total Fees", value: "₹1,25,82,880" }]
+            }
+        ],
+        admissions: {
+            process: ["Apply through NEET counseling", "Document verification", "Fee payment"],
+            eligibility: ["10+2 with PCB minimum 50%", "Valid NEET UG Rank"],
+            documents: ["10th/12th Marksheets", "NEET Scorecard", "ID Proof", "Photographs"]
+        }
+    },
+    {
+        id: "new-med-10",
+        slug: "career-institute-of-medical-sciences-hospital",
+        name: "Career Institute of Medical Sciences & Hospital",
+        location: "Lucknow, Uttar Pradesh",
+        state: "Uttar Pradesh",
+        rating: 4.0,
+        reviews: 94,
+        fees: "₹1,20,00,000",
+        courses: ["MBBS"],
+        type: "Private",
+        description: "Established medical college in Lucknow with good clinical exposure.",
+        imageUrl: "https://placehold.co/800x600/1e293b/fff?text=Career+Institute+of+Medical+Sciences+&+Hospital",
+        tags: ["Medical", "MBBS"],
+        about: "Established medical college in Lucknow with good clinical exposure.",
+        highlights: ["Attached Teaching Hospital", "Modern Infrastructure", "Experienced Faculty"],
+        coursesDetails: [
+            { name: "MBBS", duration: "5.5 Years", type: "Full Time" }
+        ],
+        feesDetails: [
+            {
+                title: "Management Quota (MQ) Fees",
+                items: [{ label: "Total Fees", value: "₹1,20,00,000" }]
+            }
+        ],
+        admissions: {
+            process: ["Apply through NEET counseling", "Document verification", "Fee payment"],
+            eligibility: ["10+2 with PCB minimum 50%", "Valid NEET UG Rank"],
+            documents: ["10th/12th Marksheets", "NEET Scorecard", "ID Proof", "Photographs"]
+        }
+    },
+    {
+        id: "new-med-11",
+        slug: "era-s-lucknow-medical-college-hospital",
+        name: "Era's Lucknow Medical College & Hospital",
+        location: "Lucknow, Uttar Pradesh",
+        state: "Uttar Pradesh",
+        rating: 4.0,
+        reviews: 60,
+        fees: "₹1,66,00,000",
+        courses: ["MBBS"],
+        type: "Private",
+        description: "One of the oldest private medical colleges in Lucknow with excellent reputation.",
+        imageUrl: "https://placehold.co/800x600/1e293b/fff?text=Era's+Lucknow+Medical+College+&+Hospital",
+        tags: ["Medical", "MBBS"],
+        about: "One of the oldest private medical colleges in Lucknow with excellent reputation.",
+        highlights: ["Attached Teaching Hospital", "Modern Infrastructure", "Experienced Faculty"],
+        coursesDetails: [
+            { name: "MBBS", duration: "5.5 Years", type: "Full Time" }
+        ],
+        feesDetails: [
+            {
+                title: "Management Quota (MQ) Fees",
+                items: [{ label: "Total Fees", value: "₹1,66,00,000" }]
+            }
+        ],
+        admissions: {
+            process: ["Apply through NEET counseling", "Document verification", "Fee payment"],
+            eligibility: ["10+2 with PCB minimum 50%", "Valid NEET UG Rank"],
+            documents: ["10th/12th Marksheets", "NEET Scorecard", "ID Proof", "Photographs"]
+        }
+    },
+    {
+        id: "new-med-12",
+        slug: "f-h-medical-college",
+        name: "F.H. Medical College",
+        location: "Agra, Uttar Pradesh",
+        state: "Uttar Pradesh",
+        rating: 4.0,
+        reviews: 103,
+        fees: "₹1,65,00,000",
+        courses: ["MBBS"],
+        type: "Private",
+        description: "Private medical college in Agra with good infrastructure.",
+        imageUrl: "https://placehold.co/800x600/1e293b/fff?text=F.H.+Medical+College",
+        tags: ["Medical", "MBBS"],
+        about: "Private medical college in Agra with good infrastructure.",
+        highlights: ["Attached Teaching Hospital", "Modern Infrastructure", "Experienced Faculty"],
+        coursesDetails: [
+            { name: "MBBS", duration: "5.5 Years", type: "Full Time" }
+        ],
+        feesDetails: [
+            {
+                title: "Management Quota (MQ) Fees",
+                items: [{ label: "Total Fees", value: "₹1,65,00,000" }]
+            }
+        ],
+        admissions: {
+            process: ["Apply through NEET counseling", "Document verification", "Fee payment"],
+            eligibility: ["10+2 with PCB minimum 50%", "Valid NEET UG Rank"],
+            documents: ["10th/12th Marksheets", "NEET Scorecard", "ID Proof", "Photographs"]
+        }
+    },
+    {
+        id: "new-med-13",
+        slug: "g-s-medical-college-hospital",
+        name: "G.S Medical College & Hospital",
+        location: "Hapur, Uttar Pradesh",
+        state: "Uttar Pradesh",
+        rating: 4.0,
+        reviews: 59,
+        fees: "₹1,17,88,920",
+        courses: ["MBBS"],
+        type: "Private",
+        description: "Private medical college in Hapur near Delhi NCR.",
+        imageUrl: "https://placehold.co/800x600/1e293b/fff?text=G.S+Medical+College+&+Hospital",
+        tags: ["Medical", "MBBS"],
+        about: "Private medical college in Hapur near Delhi NCR.",
+        highlights: ["Attached Teaching Hospital", "Modern Infrastructure", "Experienced Faculty"],
+        coursesDetails: [
+            { name: "MBBS", duration: "5.5 Years", type: "Full Time" }
+        ],
+        feesDetails: [
+            {
+                title: "Management Quota (MQ) Fees",
+                items: [{ label: "Total Fees", value: "₹1,17,88,920" }]
+            }
+        ],
+        admissions: {
+            process: ["Apply through NEET counseling", "Document verification", "Fee payment"],
+            eligibility: ["10+2 with PCB minimum 50%", "Valid NEET UG Rank"],
+            documents: ["10th/12th Marksheets", "NEET Scorecard", "ID Proof", "Photographs"]
+        }
+    },
+    {
+        id: "new-med-14",
+        slug: "heritage-institute-of-medical-sciences",
+        name: "Heritage Institute of Medical Sciences",
+        location: "Varanasi, Uttar Pradesh",
+        state: "Uttar Pradesh",
+        rating: 4.0,
+        reviews: 59,
+        fees: "₹1,32,14,920",
+        courses: ["MBBS"],
+        type: "Private",
+        description: "Private medical college in the holy city of Varanasi.",
+        imageUrl: "https://placehold.co/800x600/1e293b/fff?text=Heritage+Institute+of+Medical+Sciences",
+        tags: ["Medical", "MBBS"],
+        about: "Private medical college in the holy city of Varanasi.",
+        highlights: ["Attached Teaching Hospital", "Modern Infrastructure", "Experienced Faculty"],
+        coursesDetails: [
+            { name: "MBBS", duration: "5.5 Years", type: "Full Time" }
+        ],
+        feesDetails: [
+            {
+                title: "Management Quota (MQ) Fees",
+                items: [{ label: "Total Fees", value: "₹1,32,14,920" }]
+            }
+        ],
+        admissions: {
+            process: ["Apply through NEET counseling", "Document verification", "Fee payment"],
+            eligibility: ["10+2 with PCB minimum 50%", "Valid NEET UG Rank"],
+            documents: ["10th/12th Marksheets", "NEET Scorecard", "ID Proof", "Photographs"]
+        }
+    },
+    {
+        id: "new-med-15",
+        slug: "hind-institute-of-medical-sciences",
+        name: "Hind Institute of Medical Sciences",
+        location: "Barabanki, Uttar Pradesh",
+        state: "Uttar Pradesh",
+        rating: 4.0,
+        reviews: 114,
+        fees: "₹1,40,47,340",
+        courses: ["MBBS"],
+        type: "Private",
+        description: "Well-established medical college near Lucknow.",
+        imageUrl: "https://placehold.co/800x600/1e293b/fff?text=Hind+Institute+of+Medical+Sciences",
+        tags: ["Medical", "MBBS"],
+        about: "Well-established medical college near Lucknow.",
+        highlights: ["Attached Teaching Hospital", "Modern Infrastructure", "Experienced Faculty"],
+        coursesDetails: [
+            { name: "MBBS", duration: "5.5 Years", type: "Full Time" }
+        ],
+        feesDetails: [
+            {
+                title: "Management Quota (MQ) Fees",
+                items: [{ label: "Total Fees", value: "₹1,40,47,340" }]
+            }
+        ],
+        admissions: {
+            process: ["Apply through NEET counseling", "Document verification", "Fee payment"],
+            eligibility: ["10+2 with PCB minimum 50%", "Valid NEET UG Rank"],
+            documents: ["10th/12th Marksheets", "NEET Scorecard", "ID Proof", "Photographs"]
+        }
+    },
+    {
+        id: "new-med-16",
+        slug: "hind-institute-of-medical-sciences-sitapur",
+        name: "Hind Institute of Medical Sciences Sitapur",
+        location: "Sitapur, Uttar Pradesh",
+        state: "Uttar Pradesh",
+        rating: 4.0,
+        reviews: 139,
+        fees: "₹1,07,72,290",
+        courses: ["MBBS"],
+        type: "Private",
+        description: "Private medical college in Sitapur with affordable fees.",
+        imageUrl: "https://placehold.co/800x600/1e293b/fff?text=Hind+Institute+of+Medical+Sciences+Sitapur",
+        tags: ["Medical", "MBBS"],
+        about: "Private medical college in Sitapur with affordable fees.",
+        highlights: ["Attached Teaching Hospital", "Modern Infrastructure", "Experienced Faculty"],
+        coursesDetails: [
+            { name: "MBBS", duration: "5.5 Years", type: "Full Time" }
+        ],
+        feesDetails: [
+            {
+                title: "Management Quota (MQ) Fees",
+                items: [{ label: "Total Fees", value: "₹1,07,72,290" }]
+            }
+        ],
+        admissions: {
+            process: ["Apply through NEET counseling", "Document verification", "Fee payment"],
+            eligibility: ["10+2 with PCB minimum 50%", "Valid NEET UG Rank"],
+            documents: ["10th/12th Marksheets", "NEET Scorecard", "ID Proof", "Photographs"]
+        }
+    },
+    {
+        id: "new-med-17",
+        slug: "integral-institute-of-medical-sciences-research",
+        name: "Integral Institute of Medical Sciences & Research",
+        location: "Lucknow, Uttar Pradesh",
+        state: "Uttar Pradesh",
+        rating: 4.0,
+        reviews: 70,
+        fees: "₹1,80,00,000",
+        courses: ["MBBS"],
+        type: "Private",
+        description: "Part of Integral University in Lucknow with good facilities.",
+        imageUrl: "https://placehold.co/800x600/1e293b/fff?text=Integral+Institute+of+Medical+Sciences+&+Research",
+        tags: ["Medical", "MBBS"],
+        about: "Part of Integral University in Lucknow with good facilities.",
+        highlights: ["Attached Teaching Hospital", "Modern Infrastructure", "Experienced Faculty"],
+        coursesDetails: [
+            { name: "MBBS", duration: "5.5 Years", type: "Full Time" }
+        ],
+        feesDetails: [
+            {
+                title: "Management Quota (MQ) Fees",
+                items: [{ label: "Total Fees", value: "₹1,80,00,000" }]
+            }
+        ],
+        admissions: {
+            process: ["Apply through NEET counseling", "Document verification", "Fee payment"],
+            eligibility: ["10+2 with PCB minimum 50%", "Valid NEET UG Rank"],
+            documents: ["10th/12th Marksheets", "NEET Scorecard", "ID Proof", "Photographs"]
+        }
+    },
+    {
+        id: "new-med-18",
+        slug: "kanti-devi-medical-college-hospital-research-centre",
+        name: "Kanti Devi Medical College, Hospital & Research Centre",
+        location: "Mathura, Uttar Pradesh",
+        state: "Uttar Pradesh",
+        rating: 4.0,
+        reviews: 92,
+        fees: "₹1,22,82,400",
+        courses: ["MBBS"],
+        type: "Private",
+        description: "Private medical college in the holy city of Mathura.",
+        imageUrl: "https://placehold.co/800x600/1e293b/fff?text=Kanti+Devi+Medical+College,+Hospital+&+Research+Centre",
+        tags: ["Medical", "MBBS"],
+        about: "Private medical college in the holy city of Mathura.",
+        highlights: ["Attached Teaching Hospital", "Modern Infrastructure", "Experienced Faculty"],
+        coursesDetails: [
+            { name: "MBBS", duration: "5.5 Years", type: "Full Time" }
+        ],
+        feesDetails: [
+            {
+                title: "Management Quota (MQ) Fees",
+                items: [{ label: "Total Fees", value: "₹1,22,82,400" }]
+            }
+        ],
+        admissions: {
+            process: ["Apply through NEET counseling", "Document verification", "Fee payment"],
+            eligibility: ["10+2 with PCB minimum 50%", "Valid NEET UG Rank"],
+            documents: ["10th/12th Marksheets", "NEET Scorecard", "ID Proof", "Photographs"]
+        }
+    },
+    {
+        id: "new-med-19",
+        slug: "kmc-medical-college-hospital",
+        name: "KMC Medical College & Hospital",
+        location: "Mathura, Uttar Pradesh",
+        state: "Uttar Pradesh",
+        rating: 4.0,
+        reviews: 122,
+        fees: "₹1,25,82,880",
+        courses: ["MBBS"],
+        type: "Private",
+        description: "New medical college in Mathura with modern facilities.",
+        imageUrl: "https://placehold.co/800x600/1e293b/fff?text=KMC+Medical+College+&+Hospital",
+        tags: ["Medical", "MBBS"],
+        about: "New medical college in Mathura with modern facilities.",
+        highlights: ["Attached Teaching Hospital", "Modern Infrastructure", "Experienced Faculty"],
+        coursesDetails: [
+            { name: "MBBS", duration: "5.5 Years", type: "Full Time" }
+        ],
+        feesDetails: [
+            {
+                title: "Management Quota (MQ) Fees",
+                items: [{ label: "Total Fees", value: "₹1,25,82,880" }]
+            }
+        ],
+        admissions: {
+            process: ["Apply through NEET counseling", "Document verification", "Fee payment"],
+            eligibility: ["10+2 with PCB minimum 50%", "Valid NEET UG Rank"],
+            documents: ["10th/12th Marksheets", "NEET Scorecard", "ID Proof", "Photographs"]
+        }
+    },
+    {
+        id: "new-med-20",
+        slug: "krishna-mohan-medical-college-hospital",
+        name: "Krishna Mohan Medical College & Hospital",
+        location: "Mathura, Uttar Pradesh",
+        state: "Uttar Pradesh",
+        rating: 4.0,
+        reviews: 99,
+        fees: "₹1,17,38,560",
+        courses: ["MBBS"],
+        type: "Private",
+        description: "Established medical college in Mathura with good reputation.",
+        imageUrl: "https://placehold.co/800x600/1e293b/fff?text=Krishna+Mohan+Medical+College+&+Hospital",
+        tags: ["Medical", "MBBS"],
+        about: "Established medical college in Mathura with good reputation.",
+        highlights: ["Attached Teaching Hospital", "Modern Infrastructure", "Experienced Faculty"],
+        coursesDetails: [
+            { name: "MBBS", duration: "5.5 Years", type: "Full Time" }
+        ],
+        feesDetails: [
+            {
+                title: "Management Quota (MQ) Fees",
+                items: [{ label: "Total Fees", value: "₹1,17,38,560" }]
+            }
+        ],
+        admissions: {
+            process: ["Apply through NEET counseling", "Document verification", "Fee payment"],
+            eligibility: ["10+2 with PCB minimum 50%", "Valid NEET UG Rank"],
+            documents: ["10th/12th Marksheets", "NEET Scorecard", "ID Proof", "Photographs"]
+        }
+    },
+    {
+        id: "new-med-21",
+        slug: "mayo-institute-of-medical-sciences",
+        name: "Mayo Institute of Medical Sciences",
+        location: "Barabanki, Uttar Pradesh",
+        state: "Uttar Pradesh",
+        rating: 4.0,
+        reviews: 75,
+        fees: "₹1,12,11,620",
+        courses: ["MBBS"],
+        type: "Private",
+        description: "Reputed medical college near Lucknow with good clinical exposure.",
+        imageUrl: "https://placehold.co/800x600/1e293b/fff?text=Mayo+Institute+of+Medical+Sciences",
+        tags: ["Medical", "MBBS"],
+        about: "Reputed medical college near Lucknow with good clinical exposure.",
+        highlights: ["Attached Teaching Hospital", "Modern Infrastructure", "Experienced Faculty"],
+        coursesDetails: [
+            { name: "MBBS", duration: "5.5 Years", type: "Full Time" }
+        ],
+        feesDetails: [
+            {
+                title: "Management Quota (MQ) Fees",
+                items: [{ label: "Total Fees", value: "₹1,12,11,620" }]
+            }
+        ],
+        admissions: {
+            process: ["Apply through NEET counseling", "Document verification", "Fee payment"],
+            eligibility: ["10+2 with PCB minimum 50%", "Valid NEET UG Rank"],
+            documents: ["10th/12th Marksheets", "NEET Scorecard", "ID Proof", "Photographs"]
+        }
+    },
+    {
+        id: "new-med-22",
+        slug: "muzaffarnagar-medical-college",
+        name: "Muzaffarnagar Medical College",
+        location: "Muzaffarnagar, Uttar Pradesh",
+        state: "Uttar Pradesh",
+        rating: 4.0,
+        reviews: 119,
+        fees: "₹1,39,38,830",
+        courses: ["MBBS"],
+        type: "Private",
+        description: "One of the older private medical colleges in Western UP.",
+        imageUrl: "https://placehold.co/800x600/1e293b/fff?text=Muzaffarnagar+Medical+College",
+        tags: ["Medical", "MBBS"],
+        about: "One of the older private medical colleges in Western UP.",
+        highlights: ["Attached Teaching Hospital", "Modern Infrastructure", "Experienced Faculty"],
+        coursesDetails: [
+            { name: "MBBS", duration: "5.5 Years", type: "Full Time" }
+        ],
+        feesDetails: [
+            {
+                title: "Management Quota (MQ) Fees",
+                items: [{ label: "Total Fees", value: "₹1,39,38,830" }]
+            }
+        ],
+        admissions: {
+            process: ["Apply through NEET counseling", "Document verification", "Fee payment"],
+            eligibility: ["10+2 with PCB minimum 50%", "Valid NEET UG Rank"],
+            documents: ["10th/12th Marksheets", "NEET Scorecard", "ID Proof", "Photographs"]
+        }
+    },
+    {
+        id: "new-med-23",
+        slug: "naraina-medical-college-research-centre",
+        name: "Naraina Medical College & Research Centre",
+        location: "Kanpur, Uttar Pradesh",
+        state: "Uttar Pradesh",
+        rating: 4.0,
+        reviews: 79,
+        fees: "₹1,21,46,830",
+        courses: ["MBBS"],
+        type: "Private",
+        description: "Private medical college in the industrial city of Kanpur.",
+        imageUrl: "https://placehold.co/800x600/1e293b/fff?text=Naraina+Medical+College+&+Research+Centre",
+        tags: ["Medical", "MBBS"],
+        about: "Private medical college in the industrial city of Kanpur.",
+        highlights: ["Attached Teaching Hospital", "Modern Infrastructure", "Experienced Faculty"],
+        coursesDetails: [
+            { name: "MBBS", duration: "5.5 Years", type: "Full Time" }
+        ],
+        feesDetails: [
+            {
+                title: "Management Quota (MQ) Fees",
+                items: [{ label: "Total Fees", value: "₹1,21,46,830" }]
+            }
+        ],
+        admissions: {
+            process: ["Apply through NEET counseling", "Document verification", "Fee payment"],
+            eligibility: ["10+2 with PCB minimum 50%", "Valid NEET UG Rank"],
+            documents: ["10th/12th Marksheets", "NEET Scorecard", "ID Proof", "Photographs"]
+        }
+    },
+    {
+        id: "new-med-24",
+        slug: "national-capital-region-institute-of-medical-sciences",
+        name: "National Capital Region Institute of Medical Sciences",
+        location: "Meerut, Uttar Pradesh",
+        state: "Uttar Pradesh",
+        rating: 4.0,
+        reviews: 80,
+        fees: "₹1,21,99,170",
+        courses: ["MBBS"],
+        type: "Private",
+        description: "Private medical college in Meerut, part of NCR region.",
+        imageUrl: "https://placehold.co/800x600/1e293b/fff?text=National+Capital+Region+Institute+of+Medical+Sciences",
+        tags: ["Medical", "MBBS"],
+        about: "Private medical college in Meerut, part of NCR region.",
+        highlights: ["Attached Teaching Hospital", "Modern Infrastructure", "Experienced Faculty"],
+        coursesDetails: [
+            { name: "MBBS", duration: "5.5 Years", type: "Full Time" }
+        ],
+        feesDetails: [
+            {
+                title: "Management Quota (MQ) Fees",
+                items: [{ label: "Total Fees", value: "₹1,21,99,170" }]
+            }
+        ],
+        admissions: {
+            process: ["Apply through NEET counseling", "Document verification", "Fee payment"],
+            eligibility: ["10+2 with PCB minimum 50%", "Valid NEET UG Rank"],
+            documents: ["10th/12th Marksheets", "NEET Scorecard", "ID Proof", "Photographs"]
+        }
+    },
+    {
+        id: "new-med-25",
+        slug: "noida-international-institute-of-medical-sciences",
+        name: "Noida International Institute of Medical Sciences",
+        location: "Greater Noida, Uttar Pradesh",
+        state: "Uttar Pradesh",
+        rating: 4.0,
+        reviews: 79,
+        fees: "₹1,19,22,110",
+        courses: ["MBBS"],
+        type: "Private",
+        description: "New medical college in Greater Noida with modern infrastructure.",
+        imageUrl: "https://placehold.co/800x600/1e293b/fff?text=Noida+International+Institute+of+Medical+Sciences",
+        tags: ["Medical", "MBBS"],
+        about: "New medical college in Greater Noida with modern infrastructure.",
+        highlights: ["Attached Teaching Hospital", "Modern Infrastructure", "Experienced Faculty"],
+        coursesDetails: [
+            { name: "MBBS", duration: "5.5 Years", type: "Full Time" }
+        ],
+        feesDetails: [
+            {
+                title: "Management Quota (MQ) Fees",
+                items: [{ label: "Total Fees", value: "₹1,19,22,110" }]
+            }
+        ],
+        admissions: {
+            process: ["Apply through NEET counseling", "Document verification", "Fee payment"],
+            eligibility: ["10+2 with PCB minimum 50%", "Valid NEET UG Rank"],
+            documents: ["10th/12th Marksheets", "NEET Scorecard", "ID Proof", "Photographs"]
+        }
+    },
+    {
+        id: "new-med-26",
+        slug: "prasad-institute-of-medical-sciences",
+        name: "Prasad Institute of Medical Sciences",
+        location: "Lucknow, Uttar Pradesh",
+        state: "Uttar Pradesh",
+        rating: 4.0,
+        reviews: 126,
+        fees: "₹1,10,39,320",
+        courses: ["MBBS"],
+        type: "Private",
+        description: "Private medical college in Lucknow with affordable fees.",
+        imageUrl: "https://placehold.co/800x600/1e293b/fff?text=Prasad+Institute+of+Medical+Sciences",
+        tags: ["Medical", "MBBS"],
+        about: "Private medical college in Lucknow with affordable fees.",
+        highlights: ["Attached Teaching Hospital", "Modern Infrastructure", "Experienced Faculty"],
+        coursesDetails: [
+            { name: "MBBS", duration: "5.5 Years", type: "Full Time" }
+        ],
+        feesDetails: [
+            {
+                title: "Management Quota (MQ) Fees",
+                items: [{ label: "Total Fees", value: "₹1,10,39,320" }]
+            }
+        ],
+        admissions: {
+            process: ["Apply through NEET counseling", "Document verification", "Fee payment"],
+            eligibility: ["10+2 with PCB minimum 50%", "Valid NEET UG Rank"],
+            documents: ["10th/12th Marksheets", "NEET Scorecard", "ID Proof", "Photographs"]
+        }
+    },
+    {
+        id: "new-med-27",
+        slug: "rajshree-medical-research-institute",
+        name: "Rajshree Medical Research Institute",
+        location: "Bareilly, Uttar Pradesh",
+        state: "Uttar Pradesh",
+        rating: 4.0,
+        reviews: 143,
+        fees: "₹1,47,40,870",
+        courses: ["MBBS"],
+        type: "Private",
+        description: "Established medical college in Bareilly with good reputation.",
+        imageUrl: "https://placehold.co/800x600/1e293b/fff?text=Rajshree+Medical+Research+Institute",
+        tags: ["Medical", "MBBS"],
+        about: "Established medical college in Bareilly with good reputation.",
+        highlights: ["Attached Teaching Hospital", "Modern Infrastructure", "Experienced Faculty"],
+        coursesDetails: [
+            { name: "MBBS", duration: "5.5 Years", type: "Full Time" }
+        ],
+        feesDetails: [
+            {
+                title: "Management Quota (MQ) Fees",
+                items: [{ label: "Total Fees", value: "₹1,47,40,870" }]
+            }
+        ],
+        admissions: {
+            process: ["Apply through NEET counseling", "Document verification", "Fee payment"],
+            eligibility: ["10+2 with PCB minimum 50%", "Valid NEET UG Rank"],
+            documents: ["10th/12th Marksheets", "NEET Scorecard", "ID Proof", "Photographs"]
+        }
+    },
+    {
+        id: "new-med-28",
+        slug: "rama-medical-college-research-centre-hapur",
+        name: "Rama Medical College & Research Centre Hapur",
+        location: "Hapur, Uttar Pradesh",
+        state: "Uttar Pradesh",
+        rating: 4.0,
+        reviews: 51,
+        fees: "₹1,30,99,680",
+        courses: ["MBBS"],
+        type: "Private",
+        description: "Established Rama group medical college near Delhi NCR.",
+        imageUrl: "https://placehold.co/800x600/1e293b/fff?text=Rama+Medical+College+&+Research+Centre+Hapur",
+        tags: ["Medical", "MBBS"],
+        about: "Established Rama group medical college near Delhi NCR.",
+        highlights: ["Attached Teaching Hospital", "Modern Infrastructure", "Experienced Faculty"],
+        coursesDetails: [
+            { name: "MBBS", duration: "5.5 Years", type: "Full Time" }
+        ],
+        feesDetails: [
+            {
+                title: "Management Quota (MQ) Fees",
+                items: [{ label: "Total Fees", value: "₹1,30,99,680" }]
+            }
+        ],
+        admissions: {
+            process: ["Apply through NEET counseling", "Document verification", "Fee payment"],
+            eligibility: ["10+2 with PCB minimum 50%", "Valid NEET UG Rank"],
+            documents: ["10th/12th Marksheets", "NEET Scorecard", "ID Proof", "Photographs"]
+        }
+    },
+    {
+        id: "new-med-29",
+        slug: "rama-medical-college-research-centre-kanpur",
+        name: "Rama Medical College & Research Centre Kanpur",
+        location: "Kanpur, Uttar Pradesh",
+        state: "Uttar Pradesh",
+        rating: 4.0,
+        reviews: 126,
+        fees: "₹1,27,18,560",
+        courses: ["MBBS"],
+        type: "Private",
+        description: "Established Rama group medical college in Kanpur with good reputation.",
+        imageUrl: "https://placehold.co/800x600/1e293b/fff?text=Rama+Medical+College+&+Research+Centre+Kanpur",
+        tags: ["Medical", "MBBS"],
+        about: "Established Rama group medical college in Kanpur with good reputation.",
+        highlights: ["Attached Teaching Hospital", "Modern Infrastructure", "Experienced Faculty"],
+        coursesDetails: [
+            { name: "MBBS", duration: "5.5 Years", type: "Full Time" }
+        ],
+        feesDetails: [
+            {
+                title: "Management Quota (MQ) Fees",
+                items: [{ label: "Total Fees", value: "₹1,27,18,560" }]
+            }
+        ],
+        admissions: {
+            process: ["Apply through NEET counseling", "Document verification", "Fee payment"],
+            eligibility: ["10+2 with PCB minimum 50%", "Valid NEET UG Rank"],
+            documents: ["10th/12th Marksheets", "NEET Scorecard", "ID Proof", "Photographs"]
+        }
+    },
+    {
+        id: "new-med-30",
+        slug: "rohilkhand-medical-college-hospital",
+        name: "Rohilkhand Medical College & Hospital",
+        location: "Bareilly, Uttar Pradesh",
+        state: "Uttar Pradesh",
+        rating: 4.0,
+        reviews: 148,
+        fees: "₹1,56,03,010",
+        courses: ["MBBS"],
+        type: "Private",
+        description: "One of the oldest private medical colleges in Rohilkhand region.",
+        imageUrl: "https://placehold.co/800x600/1e293b/fff?text=Rohilkhand+Medical+College+&+Hospital",
+        tags: ["Medical", "MBBS"],
+        about: "One of the oldest private medical colleges in Rohilkhand region.",
+        highlights: ["Attached Teaching Hospital", "Modern Infrastructure", "Experienced Faculty"],
+        coursesDetails: [
+            { name: "MBBS", duration: "5.5 Years", type: "Full Time" }
+        ],
+        feesDetails: [
+            {
+                title: "Management Quota (MQ) Fees",
+                items: [{ label: "Total Fees", value: "₹1,56,03,010" }]
+            }
+        ],
+        admissions: {
+            process: ["Apply through NEET counseling", "Document verification", "Fee payment"],
+            eligibility: ["10+2 with PCB minimum 50%", "Valid NEET UG Rank"],
+            documents: ["10th/12th Marksheets", "NEET Scorecard", "ID Proof", "Photographs"]
+        }
+    },
+    {
+        id: "new-med-31",
+        slug: "saraswati-institute-of-medical-sciences",
+        name: "Saraswati Institute of Medical Sciences",
+        location: "Hapur, Uttar Pradesh",
+        state: "Uttar Pradesh",
+        rating: 4.0,
+        reviews: 133,
+        fees: "₹1,18,16,710",
+        courses: ["MBBS"],
+        type: "Private",
+        description: "Established medical college in Hapur with good clinical exposure.",
+        imageUrl: "https://placehold.co/800x600/1e293b/fff?text=Saraswati+Institute+of+Medical+Sciences",
+        tags: ["Medical", "MBBS"],
+        about: "Established medical college in Hapur with good clinical exposure.",
+        highlights: ["Attached Teaching Hospital", "Modern Infrastructure", "Experienced Faculty"],
+        coursesDetails: [
+            { name: "MBBS", duration: "5.5 Years", type: "Full Time" }
+        ],
+        feesDetails: [
+            {
+                title: "Management Quota (MQ) Fees",
+                items: [{ label: "Total Fees", value: "₹1,18,16,710" }]
+            }
+        ],
+        admissions: {
+            process: ["Apply through NEET counseling", "Document verification", "Fee payment"],
+            eligibility: ["10+2 with PCB minimum 50%", "Valid NEET UG Rank"],
+            documents: ["10th/12th Marksheets", "NEET Scorecard", "ID Proof", "Photographs"]
+        }
+    },
+    {
+        id: "new-med-32",
+        slug: "saraswati-medical-college",
+        name: "Saraswati Medical College",
+        location: "Unnao, Uttar Pradesh",
+        state: "Uttar Pradesh",
+        rating: 4.0,
+        reviews: 141,
+        fees: "₹1,15,96,100",
+        courses: ["MBBS"],
+        type: "Private",
+        description: "Private medical college in Unnao near Lucknow.",
+        imageUrl: "https://placehold.co/800x600/1e293b/fff?text=Saraswati+Medical+College",
+        tags: ["Medical", "MBBS"],
+        about: "Private medical college in Unnao near Lucknow.",
+        highlights: ["Attached Teaching Hospital", "Modern Infrastructure", "Experienced Faculty"],
+        coursesDetails: [
+            { name: "MBBS", duration: "5.5 Years", type: "Full Time" }
+        ],
+        feesDetails: [
+            {
+                title: "Management Quota (MQ) Fees",
+                items: [{ label: "Total Fees", value: "₹1,15,96,100" }]
+            }
+        ],
+        admissions: {
+            process: ["Apply through NEET counseling", "Document verification", "Fee payment"],
+            eligibility: ["10+2 with PCB minimum 50%", "Valid NEET UG Rank"],
+            documents: ["10th/12th Marksheets", "NEET Scorecard", "ID Proof", "Photographs"]
+        }
+    },
+    {
+        id: "new-med-33",
+        slug: "school-of-medical-sciences-research-sharda-hospital",
+        name: "School of Medical Sciences & Research, Sharda Hospital",
+        location: "Greater Noida, Uttar Pradesh",
+        state: "Uttar Pradesh",
+        rating: 4.0,
+        reviews: 71,
+        fees: "₹1,50,00,000 (Approx)",
+        courses: ["MBBS"],
+        type: "Private",
+        description: "Part of Sharda University with excellent infrastructure.",
+        imageUrl: "https://placehold.co/800x600/1e293b/fff?text=School+of+Medical+Sciences+&+Research,+Sharda+Hospital",
+        tags: ["Medical", "MBBS"],
+        about: "Part of Sharda University with excellent infrastructure.",
+        highlights: ["Attached Teaching Hospital", "Modern Infrastructure", "Experienced Faculty"],
+        coursesDetails: [
+            { name: "MBBS", duration: "5.5 Years", type: "Full Time" }
+        ],
+        feesDetails: [
+            {
+                title: "Management Quota (MQ) Fees",
+                items: [{ label: "Total Fees", value: "₹1,50,00,000 (Approx)" }]
+            }
+        ],
+        admissions: {
+            process: ["Apply through NEET counseling", "Document verification", "Fee payment"],
+            eligibility: ["10+2 with PCB minimum 50%", "Valid NEET UG Rank"],
+            documents: ["10th/12th Marksheets", "NEET Scorecard", "ID Proof", "Photographs"]
+        }
+    },
+    {
+        id: "new-med-34",
+        slug: "shri-gorakhnath-medical-college-hospital-research-centre",
+        name: "Shri Gorakhnath Medical College Hospital & Research Centre",
+        location: "Gorakhpur, Uttar Pradesh",
+        state: "Uttar Pradesh",
+        rating: 4.0,
+        reviews: 123,
+        fees: "₹1,25,82,880",
+        courses: ["MBBS"],
+        type: "Private",
+        description: "New medical college in Gorakhpur with modern facilities.",
+        imageUrl: "https://placehold.co/800x600/1e293b/fff?text=Shri+Gorakhnath+Medical+College+Hospital+&+Research+Centre",
+        tags: ["Medical", "MBBS"],
+        about: "New medical college in Gorakhpur with modern facilities.",
+        highlights: ["Attached Teaching Hospital", "Modern Infrastructure", "Experienced Faculty"],
+        coursesDetails: [
+            { name: "MBBS", duration: "5.5 Years", type: "Full Time" }
+        ],
+        feesDetails: [
+            {
+                title: "Management Quota (MQ) Fees",
+                items: [{ label: "Total Fees", value: "₹1,25,82,880" }]
+            }
+        ],
+        admissions: {
+            process: ["Apply through NEET counseling", "Document verification", "Fee payment"],
+            eligibility: ["10+2 with PCB minimum 50%", "Valid NEET UG Rank"],
+            documents: ["10th/12th Marksheets", "NEET Scorecard", "ID Proof", "Photographs"]
+        }
+    },
+    {
+        id: "new-med-35",
+        slug: "shri-siddhi-vinayak-medical-college-hospital",
+        name: "Shri Siddhi Vinayak Medical College & Hospital",
+        location: "Sambhal, Uttar Pradesh",
+        state: "Uttar Pradesh",
+        rating: 4.0,
+        reviews: 99,
+        fees: "₹1,25,82,880",
+        courses: ["MBBS"],
+        type: "Private",
+        description: "New medical college in Sambhal with growing infrastructure.",
+        imageUrl: "https://placehold.co/800x600/1e293b/fff?text=Shri+Siddhi+Vinayak+Medical+College+&+Hospital",
+        tags: ["Medical", "MBBS"],
+        about: "New medical college in Sambhal with growing infrastructure.",
+        highlights: ["Attached Teaching Hospital", "Modern Infrastructure", "Experienced Faculty"],
+        coursesDetails: [
+            { name: "MBBS", duration: "5.5 Years", type: "Full Time" }
+        ],
+        feesDetails: [
+            {
+                title: "Management Quota (MQ) Fees",
+                items: [{ label: "Total Fees", value: "₹1,25,82,880" }]
+            }
+        ],
+        admissions: {
+            process: ["Apply through NEET counseling", "Document verification", "Fee payment"],
+            eligibility: ["10+2 with PCB minimum 50%", "Valid NEET UG Rank"],
+            documents: ["10th/12th Marksheets", "NEET Scorecard", "ID Proof", "Photographs"]
+        }
+    },
+    {
+        id: "new-med-36",
+        slug: "sks-hospital-medical-college-research-centre",
+        name: "SKS Hospital Medical College & Research Centre",
+        location: "Mathura, Uttar Pradesh",
+        state: "Uttar Pradesh",
+        rating: 4.0,
+        reviews: 133,
+        fees: "₹1,21,46,830",
+        courses: ["MBBS"],
+        type: "Private",
+        description: "New medical college in Mathura with modern infrastructure.",
+        imageUrl: "https://placehold.co/800x600/1e293b/fff?text=SKS+Hospital+Medical+College+&+Research+Centre",
+        tags: ["Medical", "MBBS"],
+        about: "New medical college in Mathura with modern infrastructure.",
+        highlights: ["Attached Teaching Hospital", "Modern Infrastructure", "Experienced Faculty"],
+        coursesDetails: [
+            { name: "MBBS", duration: "5.5 Years", type: "Full Time" }
+        ],
+        feesDetails: [
+            {
+                title: "Management Quota (MQ) Fees",
+                items: [{ label: "Total Fees", value: "₹1,21,46,830" }]
+            }
+        ],
+        admissions: {
+            process: ["Apply through NEET counseling", "Document verification", "Fee payment"],
+            eligibility: ["10+2 with PCB minimum 50%", "Valid NEET UG Rank"],
+            documents: ["10th/12th Marksheets", "NEET Scorecard", "ID Proof", "Photographs"]
+        }
+    },
+    {
+        id: "new-med-37",
+        slug: "sri-rammurti-smarak-institute-of-medical-sciences",
+        name: "Sri Rammurti Smarak Institute of Medical Sciences",
+        location: "Bareilly, Uttar Pradesh",
+        state: "Uttar Pradesh",
+        rating: 4.0,
+        reviews: 134,
+        fees: "₹1,64,85,120",
+        courses: ["MBBS"],
+        type: "Private",
+        description: "One of the oldest private medical colleges in Bareilly.",
+        imageUrl: "https://placehold.co/800x600/1e293b/fff?text=Sri+Rammurti+Smarak+Institute+of+Medical+Sciences",
+        tags: ["Medical", "MBBS"],
+        about: "One of the oldest private medical colleges in Bareilly.",
+        highlights: ["Attached Teaching Hospital", "Modern Infrastructure", "Experienced Faculty"],
+        coursesDetails: [
+            { name: "MBBS", duration: "5.5 Years", type: "Full Time" }
+        ],
+        feesDetails: [
+            {
+                title: "Management Quota (MQ) Fees",
+                items: [{ label: "Total Fees", value: "₹1,64,85,120" }]
+            }
+        ],
+        admissions: {
+            process: ["Apply through NEET counseling", "Document verification", "Fee payment"],
+            eligibility: ["10+2 with PCB minimum 50%", "Valid NEET UG Rank"],
+            documents: ["10th/12th Marksheets", "NEET Scorecard", "ID Proof", "Photographs"]
+        }
+    },
+    {
+        id: "new-med-38",
+        slug: "subharti-medical-college",
+        name: "Subharti Medical College",
+        location: "Meerut, Uttar Pradesh",
+        state: "Uttar Pradesh",
+        rating: 4.0,
+        reviews: 135,
+        fees: "₹1,15,81,330",
+        courses: ["MBBS"],
+        type: "Private",
+        description: "One of the oldest and most reputed private medical colleges in UP.",
+        imageUrl: "https://placehold.co/800x600/1e293b/fff?text=Subharti+Medical+College",
+        tags: ["Medical", "MBBS"],
+        about: "One of the oldest and most reputed private medical colleges in UP.",
+        highlights: ["Attached Teaching Hospital", "Modern Infrastructure", "Experienced Faculty"],
+        coursesDetails: [
+            { name: "MBBS", duration: "5.5 Years", type: "Full Time" }
+        ],
+        feesDetails: [
+            {
+                title: "Management Quota (MQ) Fees",
+                items: [{ label: "Total Fees", value: "₹1,15,81,330" }]
+            }
+        ],
+        admissions: {
+            process: ["Apply through NEET counseling", "Document verification", "Fee payment"],
+            eligibility: ["10+2 with PCB minimum 50%", "Valid NEET UG Rank"],
+            documents: ["10th/12th Marksheets", "NEET Scorecard", "ID Proof", "Photographs"]
+        }
+    },
+    {
+        id: "new-med-39",
+        slug: "t-s-misra-medical-college-hospital",
+        name: "T.S. Misra Medical College & Hospital",
+        location: "Lucknow, Uttar Pradesh",
+        state: "Uttar Pradesh",
+        rating: 4.0,
+        reviews: 52,
+        fees: "₹1,29,91,990",
+        courses: ["MBBS"],
+        type: "Private",
+        description: "Private medical college in Lucknow with good facilities.",
+        imageUrl: "https://placehold.co/800x600/1e293b/fff?text=T.S.+Misra+Medical+College+&+Hospital",
+        tags: ["Medical", "MBBS"],
+        about: "Private medical college in Lucknow with good facilities.",
+        highlights: ["Attached Teaching Hospital", "Modern Infrastructure", "Experienced Faculty"],
+        coursesDetails: [
+            { name: "MBBS", duration: "5.5 Years", type: "Full Time" }
+        ],
+        feesDetails: [
+            {
+                title: "Management Quota (MQ) Fees",
+                items: [{ label: "Total Fees", value: "₹1,29,91,990" }]
+            }
+        ],
+        admissions: {
+            process: ["Apply through NEET counseling", "Document verification", "Fee payment"],
+            eligibility: ["10+2 with PCB minimum 50%", "Valid NEET UG Rank"],
+            documents: ["10th/12th Marksheets", "NEET Scorecard", "ID Proof", "Photographs"]
+        }
+    },
+    {
+        id: "new-med-40",
+        slug: "teerthankar-mahaveer-medical-college-research-centre",
+        name: "Teerthankar Mahaveer Medical College & Research Centre",
+        location: "Moradabad, Uttar Pradesh",
+        state: "Uttar Pradesh",
+        rating: 4.0,
+        reviews: 109,
+        fees: "₹1,62,00,000",
+        courses: ["MBBS"],
+        type: "Private",
+        description: "Part of TMU with excellent infrastructure and hospital.",
+        imageUrl: "https://placehold.co/800x600/1e293b/fff?text=Teerthankar+Mahaveer+Medical+College+&+Research+Centre",
+        tags: ["Medical", "MBBS"],
+        about: "Part of TMU with excellent infrastructure and hospital.",
+        highlights: ["Attached Teaching Hospital", "Modern Infrastructure", "Experienced Faculty"],
+        coursesDetails: [
+            { name: "MBBS", duration: "5.5 Years", type: "Full Time" }
+        ],
+        feesDetails: [
+            {
+                title: "Management Quota (MQ) Fees",
+                items: [{ label: "Total Fees", value: "₹1,62,00,000" }]
+            }
+        ],
+        admissions: {
+            process: ["Apply through NEET counseling", "Document verification", "Fee payment"],
+            eligibility: ["10+2 with PCB minimum 50%", "Valid NEET UG Rank"],
+            documents: ["10th/12th Marksheets", "NEET Scorecard", "ID Proof", "Photographs"]
+        }
+    },
+    {
+        id: "new-med-41",
+        slug: "united-institute-of-medical-sciences",
+        name: "United Institute of Medical Sciences",
+        location: "Prayagraj, Uttar Pradesh",
+        state: "Uttar Pradesh",
+        rating: 4.0,
+        reviews: 121,
+        fees: "₹1,19,04,010",
+        courses: ["MBBS"],
+        type: "Private",
+        description: "New medical college in Prayagraj with modern facilities.",
+        imageUrl: "https://placehold.co/800x600/1e293b/fff?text=United+Institute+of+Medical+Sciences",
+        tags: ["Medical", "MBBS"],
+        about: "New medical college in Prayagraj with modern facilities.",
+        highlights: ["Attached Teaching Hospital", "Modern Infrastructure", "Experienced Faculty"],
+        coursesDetails: [
+            { name: "MBBS", duration: "5.5 Years", type: "Full Time" }
+        ],
+        feesDetails: [
+            {
+                title: "Management Quota (MQ) Fees",
+                items: [{ label: "Total Fees", value: "₹1,19,04,010" }]
+            }
+        ],
+        admissions: {
+            process: ["Apply through NEET counseling", "Document verification", "Fee payment"],
+            eligibility: ["10+2 with PCB minimum 50%", "Valid NEET UG Rank"],
+            documents: ["10th/12th Marksheets", "NEET Scorecard", "ID Proof", "Photographs"]
+        }
+    },
+    {
+        id: "new-med-42",
+        slug: "varunarjun-medical-college-rohilkhand-hospital",
+        name: "Varunarjun Medical College & Rohilkhand Hospital",
+        location: "Shahjahanpur, Uttar Pradesh",
+        state: "Uttar Pradesh",
+        rating: 4.0,
+        reviews: 78,
+        fees: "₹1,21,00,000",
+        courses: ["MBBS"],
+        type: "Private",
+        description: "Private medical college in Shahjahanpur with good hospital.",
+        imageUrl: "https://placehold.co/800x600/1e293b/fff?text=Varunarjun+Medical+College+&+Rohilkhand+Hospital",
+        tags: ["Medical", "MBBS"],
+        about: "Private medical college in Shahjahanpur with good hospital.",
+        highlights: ["Attached Teaching Hospital", "Modern Infrastructure", "Experienced Faculty"],
+        coursesDetails: [
+            { name: "MBBS", duration: "5.5 Years", type: "Full Time" }
+        ],
+        feesDetails: [
+            {
+                title: "Management Quota (MQ) Fees",
+                items: [{ label: "Total Fees", value: "₹1,21,00,000" }]
+            }
+        ],
+        admissions: {
+            process: ["Apply through NEET counseling", "Document verification", "Fee payment"],
+            eligibility: ["10+2 with PCB minimum 50%", "Valid NEET UG Rank"],
+            documents: ["10th/12th Marksheets", "NEET Scorecard", "ID Proof", "Photographs"]
+        }
+    },
+    {
+        id: "new-med-43",
+        slug: "venkateswara-institute-of-medical-sciences",
+        name: "Venkateswara Institute of Medical Sciences",
+        location: "Amroaha, Uttar Pradesh",
+        state: "Uttar Pradesh",
+        rating: 4.0,
+        reviews: 97,
+        fees: "₹1,11,05,080",
+        courses: ["MBBS"],
+        type: "Private",
+        description: "Private medical college in Amroaha with good infrastructure.",
+        imageUrl: "https://placehold.co/800x600/1e293b/fff?text=Venkateswara+Institute+of+Medical+Sciences",
+        tags: ["Medical", "MBBS"],
+        about: "Private medical college in Amroaha with good infrastructure.",
+        highlights: ["Attached Teaching Hospital", "Modern Infrastructure", "Experienced Faculty"],
+        coursesDetails: [
+            { name: "MBBS", duration: "5.5 Years", type: "Full Time" }
+        ],
+        feesDetails: [
+            {
+                title: "Management Quota (MQ) Fees",
+                items: [{ label: "Total Fees", value: "₹1,11,05,080" }]
+            }
+        ],
+        admissions: {
+            process: ["Apply through NEET counseling", "Document verification", "Fee payment"],
+            eligibility: ["10+2 with PCB minimum 50%", "Valid NEET UG Rank"],
+            documents: ["10th/12th Marksheets", "NEET Scorecard", "ID Proof", "Photographs"]
+        }
+    },
+    {
+        id: "new-med-44",
+        slug: "santosh-medical-college",
+        name: "Santosh Medical College",
+        location: "Ghaziabad, Uttar Pradesh",
+        state: "Uttar Pradesh",
+        rating: 4.0,
+        reviews: 113,
+        fees: "₹1,80,00,000 (Approx)",
+        courses: ["MBBS"],
+        type: "Private",
+        description: "One of the oldest and most reputed private medical colleges in NCR.",
+        imageUrl: "https://placehold.co/800x600/1e293b/fff?text=Santosh+Medical+College",
+        tags: ["Medical", "MBBS"],
+        about: "One of the oldest and most reputed private medical colleges in NCR.",
+        highlights: ["Attached Teaching Hospital", "Modern Infrastructure", "Experienced Faculty"],
+        coursesDetails: [
+            { name: "MBBS", duration: "5.5 Years", type: "Full Time" }
+        ],
+        feesDetails: [
+            {
+                title: "Management Quota (MQ) Fees",
+                items: [{ label: "Total Fees", value: "₹1,80,00,000 (Approx)" }]
+            }
+        ],
+        admissions: {
+            process: ["Apply through NEET counseling", "Document verification", "Fee payment"],
+            eligibility: ["10+2 with PCB minimum 50%", "Valid NEET UG Rank"],
+            documents: ["10th/12th Marksheets", "NEET Scorecard", "ID Proof", "Photographs"]
+        }
+    },
+    {
+        id: "new-med-45",
+        slug: "dr-b-s-kushwah-institute-of-medical-college",
+        name: "Dr. B.S. Kushwah Institute of Medical College",
+        location: "Kanpur, Uttar Pradesh",
+        state: "Uttar Pradesh",
+        rating: 4.0,
+        reviews: 137,
+        fees: "₹1,25,80,000",
+        courses: ["MBBS"],
+        type: "Private",
+        description: "New medical college in Kanpur with modern facilities.",
+        imageUrl: "https://placehold.co/800x600/1e293b/fff?text=Dr.+B.S.+Kushwah+Institute+of+Medical+College",
+        tags: ["Medical", "MBBS"],
+        about: "New medical college in Kanpur with modern facilities.",
+        highlights: ["Attached Teaching Hospital", "Modern Infrastructure", "Experienced Faculty"],
+        coursesDetails: [
+            { name: "MBBS", duration: "5.5 Years", type: "Full Time" }
+        ],
+        feesDetails: [
+            {
+                title: "Management Quota (MQ) Fees",
+                items: [{ label: "Total Fees", value: "₹1,25,80,000" }]
+            }
+        ],
+        admissions: {
+            process: ["Apply through NEET counseling", "Document verification", "Fee payment"],
+            eligibility: ["10+2 with PCB minimum 50%", "Valid NEET UG Rank"],
+            documents: ["10th/12th Marksheets", "NEET Scorecard", "ID Proof", "Photographs"]
+        }
+    }
 ];
 
 // Group colleges by state

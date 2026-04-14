@@ -6,7 +6,6 @@ import { MidPageContact } from "@/components/home/MidPageContact"
 import { TestimonialsSection } from "@/components/home/TestimonialsSection"
 import { StatesCoverage } from "@/components/home/StatesCoverage"
 import { CTASection } from "@/components/home/CTASection"
-import { LogoShowcase } from "@/components/home/LogoShowcase"
 
 
 export default function Home() {
@@ -20,7 +19,6 @@ export default function Home() {
       <MidPageContact />
       <TestimonialsSection />
       <StatesCoverage />
-      <LogoShowcase />
       <CTASection />
     </main>
   )
