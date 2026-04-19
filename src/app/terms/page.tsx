@@ -1,6 +1,10 @@
 import { Metadata } from "next"
 
-export const metadata: Metadata = { title: "Terms and Conditions | Direct2Campus" }
+export const metadata: Metadata = {
+  title: "Terms and Conditions",
+  description: "Review the terms and conditions for using Direct2Campus educational consultancy services, including admission facilitation disclaimers.",
+  alternates: { canonical: "https://direct2campus.com/terms" },
+}
 
 export default function TermsPage() {
   return (

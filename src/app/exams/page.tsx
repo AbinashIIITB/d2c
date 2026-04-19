@@ -5,15 +5,17 @@ import { HeroBackground } from "@/components/ui/HeroBackground"
 import { BookOpen, GraduationCap, FileText, Clock } from "lucide-react"
 
 export const metadata: Metadata = {
-  title: "Engineering & Medical Entrance Exams | Direct2Campus",
-  description: "Comprehensive guides, patterns, out-of-syllabus insights, and cutoff analysis for major Indian entrance exams.",
+  title: "Engineering & Medical Entrance Exams Guide",
+  description: "Comprehensive guides on JEE, NEET, WBJEE, COMEDK & more. Get paper patterns, cut-off analysis, out-of-syllabus insights & application deadlines for India's top entrance exams.",
+  keywords: ["JEE Main", "NEET", "WBJEE", "entrance exam guide", "engineering exam preparation", "medical entrance exam", "exam cutoff analysis"],
+  alternates: { canonical: "https://direct2campus.com/exams" },
 }
 
 export default function ExamsPage() {
   return (
     <div className="pb-16 bg-d2c-white min-h-screen">
       {/* Hero-style header matching homepage */}
-      <section className="relative isolate flex flex-col items-center justify-center min-[1025px]:justify-start min-h-[65vh] min-[1025px]:min-h-[85vh] text-d2c-white pt-12 pb-12 sm:pt-6 min-[1025px]:pt-48 lg:pt-36 overflow-hidden -mb-24 sm:-mb-36 lg:-mb-40">
+      <section className="relative isolate flex flex-col items-center justify-center min-[1025px]:justify-start max-[340px]:min-h-[756px] min-h-[605px] min-[1025px]:min-h-[85vh] text-d2c-white pt-12 pb-12 sm:pt-6 min-[1025px]:pt-48 lg:pt-36 overflow-hidden -mb-24 sm:-mb-36 lg:-mb-40">
         {/* ── Split Background Engine ── */}
         <div className="absolute inset-0 bottom-24 sm:bottom-36 lg:bottom-40 bg-d2c-navy z-0 border-b-4 border-d2c-royal" />
 

@@ -1,6 +1,10 @@
 import { Metadata } from "next"
 
-export const metadata: Metadata = { title: "Privacy Policy | Direct2Campus" }
+export const metadata: Metadata = {
+  title: "Privacy Policy",
+  description: "Read the Direct2Campus privacy policy. Learn how we collect, use, and protect your personal data when using our educational consultancy services.",
+  alternates: { canonical: "https://direct2campus.com/privacy" },
+}
 
 export default function PrivacyPage() {
   return (

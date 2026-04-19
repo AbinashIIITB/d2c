@@ -7,15 +7,17 @@ import { CollegesGrid } from "./CollegesGrid"
 import { HeroBackground } from "@/components/ui/HeroBackground"
 
 export const metadata: Metadata = {
-  title: "Top Colleges in India | Direct2Campus",
-  description: "Browse premium engineering, medical, and management institutions for direct admission.",
+  title: "Top Engineering & Medical Colleges in India",
+  description: "Browse 150+ premium engineering, medical, and management institutions. Compare fees, placements, rankings & get direct admission guidance at Direct2Campus.",
+  keywords: ["top engineering colleges India", "medical colleges direct admission", "B.Tech colleges", "MBBS colleges", "management quota colleges"],
+  alternates: { canonical: "https://direct2campus.com/colleges" },
 }
 
 export default function CollegesPage() {
   return (
     <div className="pb-16 bg-d2c-white min-h-screen">
       {/* Hero-style header matching homepage */}
-      <section className="relative isolate flex flex-col items-center justify-center min-[1025px]:justify-start min-h-[65vh] min-[1025px]:min-h-[85vh] text-d2c-white pt-12 pb-12 sm:pt-6 min-[1025px]:pt-48 lg:pt-36 overflow-hidden -mb-24 sm:-mb-36 lg:-mb-40">
+      <section className="relative isolate flex flex-col items-center justify-center min-[1025px]:justify-start max-[340px]:min-h-[756px] min-h-[605px] min-[1025px]:min-h-[85vh] text-d2c-white pt-12 pb-12 sm:pt-6 min-[1025px]:pt-48 lg:pt-36 overflow-hidden -mb-24 sm:-mb-36 lg:-mb-40">
         {/* ── Split Background Engine ── */}
         <div className="absolute inset-0 bottom-24 sm:bottom-36 lg:bottom-40 bg-d2c-navy z-0 border-b-4 border-d2c-royal" />
 

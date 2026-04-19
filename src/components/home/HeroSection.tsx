@@ -30,7 +30,7 @@ export function HeroSection() {
   }, []);
 
   return (
-    <section className="relative flex flex-col items-center justify-center min-h-[75vh] lg:min-h-[90vh] text-d2c-white pt-20 pb-20 md:pt-40 md:pb-20 overflow-hidden pointer-events-none -mb-24 sm:-mb-36 lg:-mb-40">
+    <section className="relative flex flex-col items-center justify-center max-[370px]:min-h-[774px] min-h-[704px] lg:min-h-[90vh] text-d2c-white pt-20 pb-20 md:pt-40 md:pb-20 overflow-hidden pointer-events-none -mb-24 sm:-mb-36 lg:-mb-40">
       {/* ── Split Background Engine ── */}
       <div className="absolute top-0 left-0 right-0 bottom-24 sm:bottom-36 lg:bottom-40 bg-d2c-navy -z-20 border-b-4 border-d2c-royal" />
 

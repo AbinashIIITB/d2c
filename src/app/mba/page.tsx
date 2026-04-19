@@ -4,8 +4,10 @@ import { Briefcase, Building2, TrendingUp, Users, ArrowRight } from "lucide-reac
 import { AnimatedPatternBg } from "@/components/ui/AnimatedPatternBg"
 
 export const metadata: Metadata = {
-  title: "MBA & PGDM Admissions | Direct2Campus",
-  description: "Secure your future with direct admission in top B-Schools across India for MBA and PGDM programs.",
+  title: "MBA & PGDM Direct Admissions in Top B-Schools",
+  description: "Skip CAT/XAT — secure guaranteed management quota seats in Tier-1 & Tier-2 B-Schools across India. Expert MBA admission counselling at Direct2Campus.",
+  keywords: ["MBA direct admission", "PGDM admission", "top B-Schools India", "management quota MBA", "MBA admission counselling"],
+  alternates: { canonical: "https://direct2campus.com/mba" },
 }
 
 export default function MBAPage() {

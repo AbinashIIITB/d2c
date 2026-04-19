@@ -16,8 +16,16 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
   }
   
   return {
-    title: `${exam.name} Admission & Pattern Guide | Direct2Campus`,
-    description: exam.description,
+    title: `${exam.name} – Admission & Pattern Guide 2026`,
+    description: `${(exam.description || '').slice(0, 155)}…`,
+    keywords: [exam.name, `${exam.name} exam`, `${exam.name} pattern`, `${exam.name} eligibility`, `${exam.name} cutoff`],
+    alternates: { canonical: `https://direct2campus.com/exams/${slug}` },
+    openGraph: {
+      title: `${exam.name} Guide | Direct2Campus`,
+      description: exam.description,
+      url: `https://direct2campus.com/exams/${slug}`,
+      images: exam.logoUrl ? [{ url: exam.logoUrl, alt: exam.name }] : [],
+    },
   }
 }
 

@@ -4,8 +4,10 @@ import { Calendar, User } from "lucide-react"
 import blogPosts from "@/data/blog.json"
 
 export const metadata: Metadata = {
-  title: "Blog & Admission Insights | Direct2Campus",
-  description: "Read latest tips, guides, and updates regarding college admissions and career counseling.",
+  title: "Blog & Admission Insights",
+  description: "Expert tips, guides & latest updates on college admissions, entrance exams, and career counseling. Stay ahead with Direct2Campus insights.",
+  keywords: ["college admission tips", "entrance exam guide", "career counseling blog", "admission updates India"],
+  alternates: { canonical: "https://direct2campus.com/blog" },
 }
 
 export default function BlogListingPage() {

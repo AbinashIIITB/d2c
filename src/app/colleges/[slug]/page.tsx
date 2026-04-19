@@ -50,8 +50,16 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
   }
   
   return {
-    title: `${college.name} - Direct Admission, Fees & Placement | Direct2Campus`,
-    description: college.about || college.description,
+    title: `${college.name} – Direct Admission, Fees & Placement`,
+    description: `${(college.about || college.description || '').slice(0, 155)}…`,
+    keywords: [college.name, `${college.name} admission`, `${college.name} fees`, `${college.name} placement`, college.type, college.location],
+    alternates: { canonical: `https://direct2campus.com/colleges/${slug}` },
+    openGraph: {
+      title: `${college.name} – Direct Admission | Direct2Campus`,
+      description: college.about || college.description,
+      url: `https://direct2campus.com/colleges/${slug}`,
+      images: college.imageUrl ? [{ url: college.imageUrl, alt: college.name }] : [],
+    },
   }
 }
 
