@@ -55,8 +55,8 @@ export function CollegesGrid({ initialColleges }: { initialColleges: College[] }
 
     // Auto-scroll to college list when arriving with query params
     if (hasFilter) {
+      window.dispatchEvent(new Event("hide-nav-force"))
       setTimeout(() => {
-        window.dispatchEvent(new Event("hide-nav-force"))
         gridRef.current?.scrollIntoView({ behavior: "smooth", block: "start" })
       }, 400)
     }
@@ -70,8 +70,8 @@ export function CollegesGrid({ initialColleges }: { initialColleges: College[] }
     }
     // Only scroll if a real filter is selected (not the default "All" values)
     if (selectedDept !== "All Colleges" || selectedState !== "All States") {
+      window.dispatchEvent(new Event("hide-nav-force"))
       setTimeout(() => {
-        window.dispatchEvent(new Event("hide-nav-force"))
         gridRef.current?.scrollIntoView({ behavior: "smooth", block: "start" })
       }, 100)
     }

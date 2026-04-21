@@ -103,7 +103,7 @@ export function Navbar() {
       const heroThreshold = window.innerHeight * 0.85; // Roughly the visual height of most hero sections
 
       if (isForceHidden.current) {
-        if (currentScrollY < heroThreshold) {
+        if (currentScrollY < heroThreshold && currentScrollY < lastScrollY.current) {
           isForceHidden.current = false
           setIsVisible(true)
         } else {
