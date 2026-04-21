@@ -13,14 +13,7 @@ const TEXTS = ["B.Tech", "MBA", "Medical"];
 
 export function HeroSection() {
   const [textIndex, setTextIndex] = useState(0);
-  const [phone, setPhone] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
-
-  const handleHeroSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!phone || phone.length < 10) return;
-    setIsModalOpen(true);
-  };
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -30,7 +23,7 @@ export function HeroSection() {
   }, []);
 
   return (
-    <section className="relative flex flex-col items-center justify-center max-[370px]:min-h-[774px] min-h-[704px] lg:min-h-[90vh] text-d2c-white pt-20 pb-20 md:pt-40 md:pb-20 overflow-hidden pointer-events-none -mb-24 sm:-mb-36 lg:-mb-40">
+    <section className="relative flex flex-col items-center justify-center max-[370px]:min-h-[774px] min-h-[704px] lg:min-h-[90vh] text-d2c-white pt-20 pb-20 md:pt-20 lg:pt-40 md:pb-20 overflow-hidden pointer-events-none -mb-24 sm:-mb-36 lg:-mb-40">
       {/* ── Split Background Engine ── */}
       <div className="absolute top-0 left-0 right-0 bottom-24 sm:bottom-36 lg:bottom-40 bg-d2c-navy -z-20 border-b-4 border-d2c-royal" />
 
@@ -88,32 +81,22 @@ export function HeroSection() {
           </p>
         </div>
 
-        {/* ── Counselling Bar ── */}
-        <div className="w-full pointer-events-auto">
-          <form
-            className="relative flex items-center w-full bg-white rounded-full p-1.5 shadow-[0_4px_24px_rgba(255,255,255,0.12)] ring-4 ring-white/10"
-            onSubmit={handleHeroSubmit}
+        {/* ── Action Buttons ── */}
+        <div className="w-full pointer-events-auto flex flex-col sm:flex-row gap-3">
+          <button
+            onClick={() => setIsModalOpen(true)}
+            className="w-full px-6 py-3.5 bg-d2c-solid-blue hover:bg-blue-700 text-white font-bold text-[13px] transition-all flex items-center justify-center rounded-full shadow-[0_4px_14px_rgba(74,144,226,0.3)] gap-2"
           >
-            <div className="flex items-center pl-3.5 pr-2.5 text-neutral-500 font-semibold text-[12px] sm:text-[13px]">
-              +91
-            </div>
-            <div className="w-[1px] h-5 bg-neutral-200"></div>
-            <input
-              type="tel"
-              placeholder="Enter mobile number"
-              className="flex-1 bg-transparent px-2.5 py-2 text-d2c-navy font-semibold placeholder:text-neutral-400 placeholder:font-medium focus:outline-none text-[12px] sm:text-[13px] w-full min-w-0"
-              maxLength={10}
-              value={phone}
-              onChange={(e) => setPhone(e.target.value)}
-              required
-            />
-            <button
-              type="submit"
-              className="px-4 sm:px-6 py-2.5 bg-d2c-solid-blue hover:bg-blue-700 text-white font-bold text-[12px] sm:text-[13px] transition-colors flex items-center justify-center rounded-full shadow-[0_4px_14px_rgba(74,144,226,0.3)] shrink-0 gap-1.5 whitespace-nowrap"
-            >
-              Counselling
-            </button>
-          </form>
+            Get Free Counselling
+            <MessageCircle className="w-4 h-4" />
+          </button>
+          <Link
+            href="/colleges"
+            className="w-full px-6 py-3.5 bg-white text-d2c-navy hover:text-d2c-royal font-bold text-[13px] transition-all flex items-center justify-center rounded-full shadow-md gap-2"
+          >
+            Explore Colleges
+            <ArrowRight className="w-4 h-4" />
+          </Link>
         </div>
 
         {/* ── Trust Badges — inline, matching counselling bar width ── */}
@@ -159,16 +142,6 @@ export function HeroSection() {
             </div>
           </div>
 
-          {/* ── Explore link ── */}
-          <div className="mt-5 flex justify-center">
-            <Link
-              href="/colleges"
-              className="inline-flex items-center gap-2 text-[12px] sm:text-[13px] font-semibold text-white/80 hover:text-white transition-colors"
-            >
-              Explore 90+ Colleges
-              <ArrowRight className="w-3.5 h-3.5" />
-            </Link>
-          </div>
         </div>
       </div>
 
@@ -189,32 +162,21 @@ export function HeroSection() {
               </p>
             </div>
 
-            <div className="w-full max-w-xl pointer-events-auto mt-2">
-              <form
-                className="relative flex items-center w-full bg-white rounded-full p-1.5 shadow-[0_4px_30px_rgba(255,255,255,0.15)] ring-4 ring-white/10"
-                onSubmit={handleHeroSubmit}
+            <div className="w-full max-w-xl pointer-events-auto mt-6 flex flex-wrap gap-4">
+              <button
+                onClick={() => setIsModalOpen(true)}
+                className="px-8 py-3.5 bg-d2c-solid-blue hover:bg-blue-700 text-white font-bold text-sm transition-all flex items-center justify-center rounded-full shadow-[0_4px_14px_rgba(74,144,226,0.3)] shrink-0 gap-2"
               >
-                <div className="flex items-center pl-4 pr-3 text-neutral-500 font-semibold text-sm">
-                  +91
-                </div>
-                <div className="w-[1px] h-5 bg-neutral-200"></div>
-                <input
-                  type="tel"
-                  placeholder="Enter mobile number"
-                  className="flex-1 bg-transparent px-3 py-2 text-d2c-navy font-semibold placeholder:text-neutral-400 placeholder:font-medium focus:outline-none text-sm w-full"
-                  maxLength={10}
-                  value={phone}
-                  onChange={(e) => setPhone(e.target.value)}
-                  required
-                />
-                <button
-                  type="submit"
-                  className="px-8 py-2.5 bg-d2c-solid-blue hover:bg-blue-700 text-white font-bold text-sm transition-colors flex items-center justify-center rounded-full shadow-[0_4px_14px_rgba(74,144,226,0.3)] shrink-0 gap-2"
-                >
-                  Get Free Counselling
-                  <ArrowRight className="w-4 h-4" />
-                </button>
-              </form>
+                Get Free Counselling
+                <MessageCircle className="w-5 h-5" />
+              </button>
+              <Link
+                href="/colleges"
+                className="px-8 py-3.5 bg-white text-d2c-navy hover:text-d2c-royal hover:shadow-lg font-bold text-sm transition-all flex items-center justify-center rounded-full shrink-0 gap-2"
+              >
+                Explore Colleges
+                <ArrowRight className="w-5 h-5" />
+              </Link>
             </div>
           </div>
 
@@ -321,7 +283,6 @@ export function HeroSection() {
       <CallbackModal 
         isOpen={isModalOpen} 
         onClose={() => setIsModalOpen(false)} 
-        initialPhone={phone} 
       />
     </section>
   );

@@ -27,6 +27,7 @@ import { AutoSuggestSearch } from "@/components/ui/AutoSuggestSearch"
 
 export function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false)
+  const [isVisible, setIsVisible] = useState(true)
   const [isHovered, setIsHovered] = useState(false)
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null)
@@ -38,6 +39,8 @@ export function Navbar() {
   const searchContainerRef = useRef<HTMLDivElement>(null)
   const mobileSearchInputRef = useRef<HTMLInputElement>(null)
   const mobileSearchContainerRef = useRef<HTMLDivElement>(null)
+  const lastScrollY = useRef(0)
+  const isForceHidden = useRef(false)
 
   // Build search items for mobile
   const allSearchItems = [
@@ -93,11 +96,47 @@ export function Navbar() {
   }, [])
 
   useEffect(() => {
-    const handleScroll = () => setIsScrolled(window.scrollY > 20)
-    window.addEventListener("scroll", handleScroll)
-    // trigger once to check initial state
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY
+      setIsScrolled(currentScrollY > 20)
+
+      const heroThreshold = window.innerHeight * 0.85; // Roughly the visual height of most hero sections
+
+      if (isForceHidden.current) {
+        if (currentScrollY < heroThreshold) {
+          isForceHidden.current = false
+          setIsVisible(true)
+        } else {
+          lastScrollY.current = currentScrollY
+          return
+        }
+      }
+
+      if (currentScrollY > lastScrollY.current && currentScrollY > heroThreshold) {
+        // Scrolling down past hero section
+        setIsVisible(false)
+        setSearchOpen(false)
+      } else if (currentScrollY < lastScrollY.current || currentScrollY <= heroThreshold) {
+        // Scrolling up or at top
+        setIsVisible(true)
+      }
+
+      lastScrollY.current = currentScrollY
+    }
+
+    const handleForceHide = () => {
+      isForceHidden.current = true
+      setIsVisible(false)
+    }
+
+    window.addEventListener("scroll", handleScroll, { passive: true })
+    window.addEventListener("hide-nav-force", handleForceHide)
     handleScroll()
-    return () => window.removeEventListener("scroll", handleScroll)
+    
+    return () => {
+      window.removeEventListener("scroll", handleScroll)
+      window.removeEventListener("hide-nav-force", handleForceHide)
+    }
   }, [])
 
   useEffect(() => {
@@ -106,6 +145,8 @@ export function Navbar() {
     setSearchOpen(false)
     setMobileSearchOpen(false)
     setMobileQuery("")
+    isForceHidden.current = false
+    setIsVisible(true)
   }, [pathname])
 
   // Auto-focus mobile search input when opened
@@ -139,7 +180,13 @@ export function Navbar() {
   }
 
   return (
-    <header className="fixed top-4 min-[1025px]:top-5 left-0 right-0 z-50 transition-all duration-300" ref={mobileSearchContainerRef}>
+    <header 
+      className={`fixed left-0 right-0 z-50 transition-transform duration-300 ${
+        isVisible ? "translate-y-4 min-[1025px]:translate-y-5" : "-translate-y-[150%]"
+      }`} 
+      style={{ top: 0 }}
+      ref={mobileSearchContainerRef}
+    >
       <div className="content-boundary">
         <div 
           onMouseEnter={() => setIsHovered(true)}

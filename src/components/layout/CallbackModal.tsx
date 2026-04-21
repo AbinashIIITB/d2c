@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react"
 import { motion, AnimatePresence } from "framer-motion"
-import { X, PhoneCall } from "lucide-react"
+import { X, PhoneCall, MessageCircle } from "lucide-react"
 
 export function CallbackModal({ isOpen, onClose, initialPhone = "" }: { isOpen: boolean, onClose: () => void, initialPhone?: string }) {
   const [formData, setFormData] = useState({ name: "", phone: initialPhone })
@@ -121,6 +121,31 @@ export function CallbackModal({ isOpen, onClose, initialPhone = "" }: { isOpen: 
                 >
                   {status === "SUBMITTING" ? "Submitting..." : "Submit Request"}
                 </button>
+
+                <div className="relative flex items-center pt-2">
+                  <div className="flex-grow border-t border-gray-200"></div>
+                  <span className="flex-shrink-0 mx-4 text-d2c-muted text-sm font-semibold">OR</span>
+                  <div className="flex-grow border-t border-gray-200"></div>
+                </div>
+                
+                <div className="flex gap-4 w-full">
+                  <a
+                    href="tel:+916200325137"
+                    className="flex-1 flex items-center justify-center gap-2 py-3 bg-d2c-navy text-white font-semibold hover:bg-d2c-navy/90 transition-colors"
+                  >
+                    <PhoneCall className="w-5 h-5" />
+                    Call Us
+                  </a>
+                  <a
+                    href="https://wa.me/916200325137"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex-1 flex items-center justify-center gap-2 py-3 bg-[#25D366] text-white font-semibold hover:bg-[#25D366]/90 transition-colors"
+                  >
+                    <MessageCircle className="w-5 h-5 fill-current" />
+                    WhatsApp
+                  </a>
+                </div>
               </>
             )}
           </form>

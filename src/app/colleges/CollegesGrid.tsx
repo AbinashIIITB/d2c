@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useMemo, useEffect } from "react"
+import { useState, useMemo, useEffect, useRef } from "react"
 import { useSearchParams } from "next/navigation"
 import Link from "next/link"
 import { MapPin, Search, Star, Building2, ArrowUpRight, ChevronRight, Filter } from "lucide-react"
@@ -22,6 +22,8 @@ export function CollegesGrid({ initialColleges }: { initialColleges: College[] }
   const [search, setSearch] = useState("")
   const [selectedDept, setSelectedDept] = useState("All Colleges")
   const [selectedState, setSelectedState] = useState("All States")
+  const gridRef = useRef<HTMLDivElement>(null)
+  const isInitialMount = useRef(true)
 
   const uniqueStates = useMemo(() => {
     const states = initialColleges.map((c) => {
@@ -33,9 +35,11 @@ export function CollegesGrid({ initialColleges }: { initialColleges: College[] }
 
   // Read URL query params and set filters
   useEffect(() => {
+    let hasFilter = false
     const typeParam = searchParams.get("type")
     if (typeParam && TYPE_TO_DEPT[typeParam.toLowerCase()]) {
       setSelectedDept(TYPE_TO_DEPT[typeParam.toLowerCase()])
+      hasFilter = true
     }
 
     const stateParam = searchParams.get("state")
@@ -45,9 +49,33 @@ export function CollegesGrid({ initialColleges }: { initialColleges: College[] }
       const match = uniqueStates.find((s) => s.toLowerCase() === normalized)
       if (match) {
         setSelectedState(match)
+        hasFilter = true
       }
     }
+
+    // Auto-scroll to college list when arriving with query params
+    if (hasFilter) {
+      setTimeout(() => {
+        window.dispatchEvent(new Event("hide-nav-force"))
+        gridRef.current?.scrollIntoView({ behavior: "smooth", block: "start" })
+      }, 400)
+    }
   }, [searchParams, uniqueStates])
+
+  // Auto-scroll when user manually changes a filter (skip initial mount)
+  useEffect(() => {
+    if (isInitialMount.current) {
+      isInitialMount.current = false
+      return
+    }
+    // Only scroll if a real filter is selected (not the default "All" values)
+    if (selectedDept !== "All Colleges" || selectedState !== "All States") {
+      setTimeout(() => {
+        window.dispatchEvent(new Event("hide-nav-force"))
+        gridRef.current?.scrollIntoView({ behavior: "smooth", block: "start" })
+      }, 100)
+    }
+  }, [selectedDept, selectedState])
 
   const filteredColleges = initialColleges.filter((col) => {
     // 1. Search Query
@@ -79,7 +107,7 @@ export function CollegesGrid({ initialColleges }: { initialColleges: College[] }
   })
 
   return (
-    <div>
+    <div ref={gridRef} id="colleges-list">
       <div className="max-w-4xl mx-auto mb-12 flex flex-col md:flex-row gap-4 relative z-40">
         <div className="flex-1">
           <AutoSuggestSearch 

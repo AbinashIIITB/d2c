@@ -161,7 +161,7 @@ export function StatesCoverage() {
                   }}
                 >
                   <Link
-                    href={`/colleges?state=${state.ref}`}
+                    href={`/colleges?state=${state.ref}#colleges-list`}
                     className="group block bg-white/[0.04] hover:bg-white/[0.08] border border-white/[0.08] hover:border-white/20 rounded-xl p-5 transition-all duration-300"
                   >
                     <div className="flex items-start justify-between mb-3">
