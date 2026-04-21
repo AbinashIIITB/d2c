@@ -14,7 +14,7 @@ export default function MBAPage() {
   return (
     <div className="pb-20 bg-d2c-white min-h-screen">
       {/* Hero Section — matches Homepage */}
-      <section className="relative min-h-[70vh] flex flex-col items-center justify-center overflow-hidden bg-d2c-navy text-white py-20 pt-32">
+      <section className="relative min-h-[650px] flex flex-col items-center justify-center overflow-hidden bg-d2c-navy text-white py-20 pt-32">
         <AnimatedPatternBg opacity={0.1} speed={160} />
 
         {/* Decorative background blurs */}

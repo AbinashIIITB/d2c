@@ -65,18 +65,18 @@ export function Navbar() {
   const mobileFilteredColleges = mobileQuery.trim() === ""
     ? allSearchItems.filter(i => i.icon === "college").slice(0, 4)
     : allSearchItems.filter(item =>
-        item.icon === "college" &&
-        (item.title.toLowerCase().includes(mobileQuery.toLowerCase()) ||
-         item.subtitle.toLowerCase().includes(mobileQuery.toLowerCase()))
-      ).slice(0, 4)
+      item.icon === "college" &&
+      (item.title.toLowerCase().includes(mobileQuery.toLowerCase()) ||
+        item.subtitle.toLowerCase().includes(mobileQuery.toLowerCase()))
+    ).slice(0, 4)
 
   const mobileFilteredExams = mobileQuery.trim() === ""
     ? allSearchItems.filter(i => i.icon === "exam").slice(0, 3)
     : allSearchItems.filter(item =>
-        item.icon === "exam" &&
-        (item.title.toLowerCase().includes(mobileQuery.toLowerCase()) ||
-         item.subtitle.toLowerCase().includes(mobileQuery.toLowerCase()))
-      ).slice(0, 3)
+      item.icon === "exam" &&
+      (item.title.toLowerCase().includes(mobileQuery.toLowerCase()) ||
+        item.subtitle.toLowerCase().includes(mobileQuery.toLowerCase()))
+    ).slice(0, 3)
 
   const mobileFilteredItems = [...mobileFilteredColleges, ...mobileFilteredExams]
   const [mobileActiveIndex, setMobileActiveIndex] = useState(-1)
@@ -132,7 +132,7 @@ export function Navbar() {
     window.addEventListener("scroll", handleScroll, { passive: true })
     window.addEventListener("hide-nav-force", handleForceHide)
     handleScroll()
-    
+
     return () => {
       window.removeEventListener("scroll", handleScroll)
       window.removeEventListener("hide-nav-force", handleForceHide)
@@ -180,22 +180,20 @@ export function Navbar() {
   }
 
   return (
-    <header 
-      className={`fixed left-0 right-0 z-50 transition-transform duration-300 ${
-        isVisible ? "translate-y-4 min-[1025px]:translate-y-5" : "-translate-y-[150%]"
-      }`} 
+    <header
+      className={`fixed left-0 right-0 z-50 transition-transform duration-300 ${isVisible ? "translate-y-4 min-[1025px]:translate-y-5" : "-translate-y-[150%]"
+        }`}
       style={{ top: 0 }}
       ref={mobileSearchContainerRef}
     >
       <div className="content-boundary">
-        <div 
+        <div
           onMouseEnter={() => setIsHovered(true)}
           onMouseLeave={() => setIsHovered(false)}
-          className={`rounded-2xl transition-all duration-300 flex items-center justify-between h-14 min-[1025px]:h-16 px-5 min-[1025px]:px-6 ${
-            showSolidBg 
-              ? "bg-white shadow-[0_8px_30px_rgba(0,0,0,0.12)] border border-gray-100" 
+          className={`rounded-2xl transition-all duration-300 flex items-center justify-between h-14 min-[1025px]:h-16 px-5 min-[1025px]:px-6 ${showSolidBg
+              ? "bg-white shadow-[0_8px_30px_rgba(0,0,0,0.12)] border border-gray-100"
               : "bg-transparent border border-transparent"
-          }`}
+            }`}
         >
           {/* ── MOBILE SEARCH MODE ── */}
           <AnimatePresence mode="wait">
@@ -253,9 +251,8 @@ export function Navbar() {
               >
                 {/* Brand */}
                 <Link href="/" className="flex items-center gap-2 z-50 shrink-0">
-                  <span className={`font-sora font-bold text-lg tracking-tight transition-colors duration-300 ${
-                    showSolidBg ? "text-d2c-navy" : "text-white"
-                  }`}>
+                  <span className={`font-sora font-bold text-lg tracking-tight transition-colors duration-300 ${showSolidBg ? "text-d2c-navy" : "text-white"
+                    }`}>
                     Direct<span className="text-d2c-royal">2</span>Campus
                   </span>
                 </Link>
@@ -263,9 +260,8 @@ export function Navbar() {
                 {/* Mobile right icons */}
                 <div className="flex items-center gap-1">
                   <button
-                    className={`p-2 rounded-lg transition-colors ${
-                      showSolidBg ? "text-d2c-navy hover:bg-gray-100" : "text-white hover:bg-white/10"
-                    }`}
+                    className={`p-2 rounded-lg transition-colors ${showSolidBg ? "text-d2c-navy hover:bg-gray-100" : "text-white hover:bg-white/10"
+                      }`}
                     onClick={() => {
                       setMobileSearchOpen(true)
                       setMobileMenuOpen(false)
@@ -312,9 +308,8 @@ export function Navbar() {
 
           {/* ── DESKTOP BRAND ── */}
           <Link href="/" className="hidden min-[1025px]:flex items-center gap-2 z-50 shrink-0 pr-4">
-            <span className={`font-sora font-bold text-lg min-[1025px]:text-xl tracking-tight transition-colors duration-300 ${
-              showSolidBg ? "text-d2c-navy" : "text-white"
-            }`}>
+            <span className={`font-sora font-bold text-lg min-[1025px]:text-xl tracking-tight transition-colors duration-300 ${showSolidBg ? "text-d2c-navy" : "text-white"
+              }`}>
               Direct<span className="text-d2c-royal">2</span>Campus
             </span>
           </Link>
@@ -345,9 +340,8 @@ export function Navbar() {
                   {link.label}
                   {link.dropdown && (
                     <ChevronDown
-                      className={`w-3.5 h-3.5 transition-transform duration-200 ${
-                        activeDropdown === link.label ? "rotate-180" : ""
-                      }`}
+                      className={`w-3.5 h-3.5 transition-transform duration-200 ${activeDropdown === link.label ? "rotate-180" : ""
+                        }`}
                     />
                   )}
                 </Link>
@@ -384,22 +378,21 @@ export function Navbar() {
 
           {/* ── DESKTOP CTA ── */}
           <div className="hidden min-[1025px]:flex items-center gap-3">
-            <div 
-              className="relative flex items-center" 
+            <div
+              className="relative flex items-center"
               ref={searchContainerRef}
               onMouseEnter={() => setSearchOpen(true)}
               onMouseLeave={() => setSearchOpen(false)}
             >
-              <button 
+              <button
                 onClick={() => setSearchOpen(!searchOpen)}
-                className={`p-2 rounded-full transition-colors flex items-center justify-center ${
-                  showSolidBg ? "text-d2c-navy hover:bg-gray-100" : "text-white hover:bg-white/10"
-                }`}
+                className={`p-2 rounded-full transition-colors flex items-center justify-center ${showSolidBg ? "text-d2c-navy hover:bg-gray-100" : "text-white hover:bg-white/10"
+                  }`}
                 aria-label="Search"
               >
                 <Search className="w-5 h-5" />
               </button>
-              
+
               <AnimatePresence>
                 {searchOpen && (
                   <motion.div
@@ -414,14 +407,13 @@ export function Navbar() {
                 )}
               </AnimatePresence>
             </div>
-            
+
             <Link
               href="/contact"
-              className={`flex items-center shrink-0 gap-2 px-5 py-2 rounded-xl font-semibold text-xs min-[1025px]:text-sm transition-all duration-300 border ${
-                showSolidBg
+              className={`flex items-center shrink-0 gap-2 px-5 py-2 rounded-xl font-semibold text-xs min-[1025px]:text-sm transition-all duration-300 border ${showSolidBg
                   ? "bg-d2c-royal border-d2c-royal text-white hover:bg-d2c-navy hover:border-d2c-navy shadow-md hover:shadow-lg"
                   : "border-white/40 text-white hover:bg-white/10"
-              }`}
+                }`}
             >
               <PhoneCall className="w-4 h-4" />
               Apply Now
@@ -454,9 +446,8 @@ export function Navbar() {
                         <button
                           key={item.id}
                           onClick={() => handleMobileSearchSelect(item.url)}
-                          className={`flex items-center gap-3 w-full px-3 py-2.5 rounded-xl transition-colors text-left ${
-                            index === mobileActiveIndex ? "bg-d2c-ice" : "hover:bg-gray-50"
-                          }`}
+                          className={`flex items-center gap-3 w-full px-3 py-2.5 rounded-xl transition-colors text-left ${index === mobileActiveIndex ? "bg-d2c-ice" : "hover:bg-gray-50"
+                            }`}
                         >
                           <div className="w-9 h-9 rounded-lg bg-white border border-gray-100 flex items-center justify-center shrink-0 overflow-hidden shadow-sm p-1">
                             {item.imageUrl ? (
@@ -496,9 +487,8 @@ export function Navbar() {
                         <button
                           key={item.id}
                           onClick={() => handleMobileSearchSelect(item.url)}
-                          className={`flex items-center gap-3 w-full px-3 py-2.5 rounded-xl transition-colors text-left ${
-                            index === mobileActiveIndex ? "bg-d2c-ice" : "hover:bg-gray-50"
-                          }`}
+                          className={`flex items-center gap-3 w-full px-3 py-2.5 rounded-xl transition-colors text-left ${index === mobileActiveIndex ? "bg-d2c-ice" : "hover:bg-gray-50"
+                            }`}
                         >
                           <div className="w-9 h-9 rounded-lg bg-white border border-gray-100 flex items-center justify-center shrink-0 overflow-hidden shadow-sm p-1">
                             {item.imageUrl ? (
@@ -538,44 +528,43 @@ export function Navbar() {
               className="bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden origin-top"
             >
               <div className="py-4 px-2 flex flex-col gap-1">
-              {NAV_LINKS.map((link) => (
-                <div key={link.label}>
-                  <Link
-                    href={link.href}
-                    className={`block px-4 py-3 rounded-lg font-sora font-semibold text-base transition-colors ${
-                      pathname === link.href
-                        ? "bg-d2c-ice text-d2c-royal"
-                        : "text-d2c-navy hover:bg-gray-50"
-                    }`}
-                  >
-                    {link.label}
-                  </Link>
-                  {link.dropdown && (
-                    <div className="pl-8 flex flex-col gap-1 mt-1">
-                      {link.dropdown.map((drop) => (
-                        <Link
-                          key={drop.label}
-                          href={drop.href}
-                          className="text-gray-500 py-2 text-sm font-medium hover:text-d2c-royal transition-colors"
-                        >
-                          {drop.label}
-                        </Link>
-                      ))}
-                    </div>
-                  )}
-                </div>
-              ))}
-              <Link
-                href="/contact"
-                className="mt-3 mx-2 flex items-center justify-center gap-2 px-6 py-4 bg-d2c-royal text-white font-semibold text-base rounded-xl"
-              >
-                <PhoneCall className="w-5 h-5" />
-                Request Callback
-              </Link>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+                {NAV_LINKS.map((link) => (
+                  <div key={link.label}>
+                    <Link
+                      href={link.href}
+                      className={`block px-4 py-3 rounded-lg font-sora font-semibold text-base transition-colors ${pathname === link.href
+                          ? "bg-d2c-ice text-d2c-royal"
+                          : "text-d2c-navy hover:bg-gray-50"
+                        }`}
+                    >
+                      {link.label}
+                    </Link>
+                    {link.dropdown && (
+                      <div className="pl-8 flex flex-col gap-1 mt-1">
+                        {link.dropdown.map((drop) => (
+                          <Link
+                            key={drop.label}
+                            href={drop.href}
+                            className="text-gray-500 py-2 text-sm font-medium hover:text-d2c-royal transition-colors"
+                          >
+                            {drop.label}
+                          </Link>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                ))}
+                <Link
+                  href="/contact"
+                  className="mt-3 mx-2 flex items-center justify-center gap-2 px-6 py-4 bg-d2c-royal text-white font-semibold text-base rounded-xl"
+                >
+                  <PhoneCall className="w-5 h-5" />
+                  Request Callback
+                </Link>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
     </header>
   )

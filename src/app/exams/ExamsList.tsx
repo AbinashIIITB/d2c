@@ -7,14 +7,15 @@ import { motion, AnimatePresence } from "framer-motion"
 import { AutoSuggestSearch } from "@/components/ui/AutoSuggestSearch"
 import { Exam } from "@/lib/data"
 
-const ACCENT_COLORS = [
-  { from: "from-blue-600", to: "to-indigo-700", bg: "bg-blue-50", text: "text-blue-700", border: "border-blue-100" },
-  { from: "from-emerald-600", to: "to-teal-700", bg: "bg-emerald-50", text: "text-emerald-700", border: "border-emerald-100" },
-  { from: "from-amber-500", to: "to-orange-600", bg: "bg-amber-50", text: "text-amber-700", border: "border-amber-100" },
-  { from: "from-violet-600", to: "to-purple-700", bg: "bg-violet-50", text: "text-violet-700", border: "border-violet-100" },
-  { from: "from-rose-500", to: "to-pink-600", bg: "bg-rose-50", text: "text-rose-700", border: "border-rose-100" },
-  { from: "from-cyan-500", to: "to-blue-600", bg: "bg-cyan-50", text: "text-cyan-700", border: "border-cyan-100" },
-]
+const EXAM_COLORS: Record<string, any> = {
+  "bitsat": { from: "from-blue-600", to: "to-indigo-700", bg: "bg-blue-50", text: "text-blue-700", border: "border-blue-100" },
+  "wbjee": { from: "from-emerald-600", to: "to-teal-700", bg: "bg-emerald-50", text: "text-emerald-700", border: "border-emerald-100" },
+  "srmjeee": { from: "from-amber-500", to: "to-orange-600", bg: "bg-amber-50", text: "text-amber-700", border: "border-amber-100" },
+  "iemcet": { from: "from-violet-600", to: "to-purple-700", bg: "bg-violet-50", text: "text-violet-700", border: "border-violet-100" },
+  "iemjee": { from: "from-rose-500", to: "to-pink-600", bg: "bg-rose-50", text: "text-rose-700", border: "border-rose-100" },
+  "comedk": { from: "from-cyan-500", to: "to-blue-600", bg: "bg-cyan-50", text: "text-cyan-700", border: "border-cyan-100" },
+}
+const DEFAULT_COLOR = { from: "from-gray-600", to: "to-gray-700", bg: "bg-gray-50", text: "text-gray-700", border: "border-gray-100" };
 
 export function ExamsList({ initialExams }: { initialExams: Exam[] }) {
   const [search, setSearch] = useState("")
@@ -43,7 +44,7 @@ export function ExamsList({ initialExams }: { initialExams: Exam[] }) {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
           <AnimatePresence>
             {filteredExams.map((exam, idx) => {
-              const accent = ACCENT_COLORS[idx % ACCENT_COLORS.length]
+              const accent = EXAM_COLORS[exam.id] || DEFAULT_COLOR;
               return (
                 <motion.div
                   key={exam.id}

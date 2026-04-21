@@ -30,6 +30,7 @@ import { colleges } from "@/lib/data"
 import { AnimatedPatternBg } from "@/components/ui/AnimatedPatternBg"
 import { ScrollSpyTOC, FloatingMobileTOC } from "@/components/ui/ScrollSpyTOC"
 import { CollegeEnquiryForm } from "@/components/ui/CollegeEnquiryForm"
+import { ApplyNowButton } from "@/components/ui/ApplyNowButton"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 
@@ -83,7 +84,7 @@ export default async function CollegeDetailPage({ params }: { params: Params }) 
   }
 
   return (
-    <div className="pb-20 min-h-screen bg-[#faf8ff]">
+    <div className="pb-6 lg:pb-12 min-h-screen bg-[#faf8ff]">
       
       {/* ═══════════════════════════════════════════
           HERO SECTION
@@ -110,9 +111,9 @@ export default async function CollegeDetailPage({ params }: { params: Params }) 
             
             {/* Image — Glassmorphic container */}
             {(college.imageUrl || college.logoUrl) && (
-              <div className="relative group shrink-0 mt-2">
+              <div className="relative group shrink-0 mt-2 w-full lg:w-auto">
                 <div className="absolute -inset-1 bg-gradient-to-br from-[#3B4CC0]/40 to-[#f6c804]/20 rounded-3xl blur-lg opacity-60 group-hover:opacity-100 transition-opacity duration-500" />
-                <div className="relative h-48 w-64 md:h-64 md:w-96 bg-white/[0.08] backdrop-blur-2xl rounded-2xl p-2 border border-white/[0.12] shadow-[0_24px_48px_-12px_rgba(0,0,0,0.3)] overflow-hidden">
+                <div className="relative w-full aspect-video lg:aspect-auto lg:h-64 lg:w-96 bg-white/[0.08] backdrop-blur-2xl rounded-2xl p-2 border border-white/[0.12] shadow-[0_24px_48px_-12px_rgba(0,0,0,0.3)] overflow-hidden">
                   <img src={college.imageUrl || college.logoUrl} alt={`${college.name} Visual`} className="w-full h-full object-cover rounded-xl" />
                 </div>
               </div>
@@ -148,12 +149,7 @@ export default async function CollegeDetailPage({ params }: { params: Params }) 
 
               {/* Action buttons */}
               <div className="flex flex-wrap gap-3">
-                <Button asChild className="bg-[#22c55e] hover:bg-[#16a34a] text-white font-bold h-12 px-8 rounded-xl shadow-[0_8px_24px_-4px_rgba(34,197,94,0.4)] hover:shadow-[0_12px_32px_-4px_rgba(34,197,94,0.5)] transition-all duration-300 hover:-translate-y-0.5">
-                  <Link href="#enquiry-form">
-                    <GraduationCap className="w-5 h-5 mr-2" /> Apply Now
-                    <ChevronRight className="w-4 h-4 ml-1" />
-                  </Link>
-                </Button>
+                <ApplyNowButton collegeName={college.name} />
                 <Button variant="outline" asChild className="bg-white/[0.04] border-white/[0.1] text-white hover:bg-white/[0.08] h-12 px-8 rounded-xl backdrop-blur-sm transition-all duration-300 hover:-translate-y-0.5">
                   <Link href="https://wa.me/916200325137" target="_blank">
                     <MessageSquare className="w-5 h-5 mr-2" /> WhatsApp Us
@@ -637,20 +633,6 @@ export default async function CollegeDetailPage({ params }: { params: Params }) 
 
       {/* Floating Mobile TOC */}
       <FloatingMobileTOC sections={sections} className="lg:hidden" />
-      
-      {/* Bottom Sticky Action Bar for Mobile */}
-      <div className="fixed bottom-0 left-0 right-0 z-40 bg-white/95 backdrop-blur-xl border-t border-[#c6c6cd]/20 p-4 lg:hidden flex gap-3 shadow-[0_-8px_32px_-8px_rgba(0,0,0,0.1)]">
-        <Button asChild className="flex-1 bg-[#22c55e] hover:bg-[#16a34a] text-white font-bold rounded-xl h-12 shadow-[0_4px_12px_-2px_rgba(34,197,94,0.3)]">
-          <Link href="https://wa.me/916200325137" target="_blank">
-            <MessageSquare className="w-5 h-5 mr-2" /> WhatsApp
-          </Link>
-        </Button>
-        <Button asChild className="flex-1 bg-[#0B1120] hover:bg-[#1e2a5a] text-white font-bold rounded-xl h-12">
-          <Link href="tel:+916200325137">
-            <PhoneCall className="w-5 h-5 mr-2" /> Call Now
-          </Link>
-        </Button>
-      </div>
     </div>
   )
 }

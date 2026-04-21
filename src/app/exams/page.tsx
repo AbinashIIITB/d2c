@@ -15,7 +15,7 @@ export default function ExamsPage() {
   return (
     <div className="pb-16 bg-d2c-white min-h-screen">
       {/* Hero-style header matching homepage */}
-      <section className="relative isolate flex flex-col items-center justify-center min-[1025px]:justify-start max-[340px]:min-h-[756px] min-h-[605px] min-[1025px]:min-h-[85vh] text-d2c-white pt-12 pb-12 sm:pt-6 min-[1025px]:pt-48 lg:pt-36 overflow-hidden -mb-24 sm:-mb-36 lg:-mb-40">
+      <section className="relative isolate flex flex-col items-center justify-center min-[1025px]:justify-start max-[340px]:min-h-[756px] min-h-[605px] min-[1025px]:min-h-[800px] text-d2c-white pt-12 pb-12 sm:pt-6 min-[1025px]:pt-48 lg:pt-36 overflow-hidden -mb-24 sm:-mb-36 lg:-mb-40">
         {/* ── Split Background Engine ── */}
         <div className="absolute inset-0 bottom-24 sm:bottom-36 lg:bottom-40 bg-d2c-navy z-0 border-b-4 border-d2c-royal" />
 
@@ -70,7 +70,7 @@ export default function ExamsPage() {
       </section>
 
       <div className="content-boundary py-12 relative z-20">
-        <ExamsList initialExams={exams} />
+        <ExamsList initialExams={[...exams.filter(e => e.id.includes('iem')), ...exams.filter(e => !e.id.includes('iem'))]} />
       </div>
     </div>
   )

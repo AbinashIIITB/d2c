@@ -1,11 +1,13 @@
 "use client"
 
 import { useState, useEffect } from "react"
+import { usePathname } from "next/navigation"
 import { motion, AnimatePresence } from "framer-motion"
 import { MessageCircle, ArrowUp, PhoneCall } from "lucide-react"
 import { CallbackModal } from "./CallbackModal"
 
 export function FloatingActions() {
+  const pathname = usePathname()
   const [showScrollTop, setShowScrollTop] = useState(false)
   const [isModalOpen, setIsModalOpen] = useState(false)
 
@@ -94,32 +96,33 @@ export function FloatingActions() {
         </motion.button>
       </div>
 
-      {/* Mobile Floating Actions */}
-      <div className="fixed bottom-24 right-4 z-40 flex flex-col gap-3 md:hidden">
-        <AnimatePresence>
-          {showScrollTop && (
-            <motion.button
-              initial={{ opacity: 0, scale: 0.5, y: 10 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.5, y: 10 }}
-              onClick={scrollToTop}
-              className="w-14 h-14 bg-white shadow-[0_4px_20px_rgba(30,58,138,0.2)] flex items-center justify-center text-d2c-navy border border-gray-100"
-              aria-label="Scroll to top"
-            >
-              <ArrowUp className="w-6 h-6" />
-            </motion.button>
-          )}
-        </AnimatePresence>
-        
+      {/* Mobile WhatsApp Action */}
+      <div className="fixed bottom-20 right-4 z-40 md:hidden">
         <a
           href="https://wa.me/916200325137"
           target="_blank"
           rel="noopener noreferrer"
-          className="w-14 h-14 bg-[#25D366] shadow-[0_4px_20px_rgba(37,211,102,0.4)] flex items-center justify-center text-white"
+          className="w-12 h-12 bg-[#25D366] shadow-[0_4px_20px_rgba(37,211,102,0.4)] flex items-center justify-center text-white rounded-full"
         >
-          <MessageCircle className="w-6 h-6 fill-current" />
+          <MessageCircle className="w-5 h-5 fill-current" />
         </a>
       </div>
+
+      {/* Mobile Go To Top */}
+      <AnimatePresence>
+        {showScrollTop && (
+          <motion.button
+            initial={{ opacity: 0, scale: 0.5, y: 10 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.5, y: 10 }}
+            onClick={scrollToTop}
+            className={`fixed ${pathname?.startsWith("/colleges/") ? "bottom-[200px]" : "bottom-[140px]"} right-4 z-40 w-12 h-12 bg-white shadow-[0_4px_20px_rgba(30,58,138,0.2)] flex items-center justify-center text-d2c-navy border border-gray-100 rounded-full md:hidden`}
+            aria-label="Scroll to top"
+          >
+            <ArrowUp className="w-5 h-5" />
+          </motion.button>
+        )}
+      </AnimatePresence>
 
       {/* Scroll to Top (Desktop Only - Kept for consistency if hidden manually elsewhere) */}
       <div className="fixed bottom-8 right-8 z-40 hidden md:flex">

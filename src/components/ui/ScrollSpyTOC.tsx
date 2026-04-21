@@ -286,7 +286,7 @@ export function FloatingMobileTOC({ sections, className = "" }: FloatingMobileTO
             {/* Floating Button - positioned above the contact button */}
             <motion.button
                 onClick={() => setIsOpen(true)}
-                className="fixed bottom-28 right-6 z-40 h-11 w-11 rounded-full bg-[#f6c804] text-black shadow-lg flex items-center justify-center"
+                className="fixed bottom-[140px] right-4 z-[60] h-12 w-12 rounded-full bg-[#f6c804] text-black shadow-[0_4px_20px_rgba(246,200,4,0.3)] flex items-center justify-center"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 initial={{ scale: 0, opacity: 0 }}
@@ -309,82 +309,44 @@ export function FloatingMobileTOC({ sections, className = "" }: FloatingMobileTO
                             onClick={() => setIsOpen(false)}
                         />
 
-                        {/* Drawer Content - Premium Dark Glassmorphism */}
+                        {/* Drawer Content - Clean White Menu Bar Design */}
                         <motion.div
-                            initial={{ y: "100%", opacity: 0.8 }}
-                            animate={{ y: 0, opacity: 1 }}
-                            exit={{ y: "100%", opacity: 0.8 }}
-                            transition={{
-                                type: "tween",
-                                duration: 0.35,
-                                ease: [0.32, 0.72, 0, 1]
-                            }}
-                            className="fixed bottom-0 left-0 right-0 z-50 rounded-t-[2rem] shadow-2xl max-h-[80vh] overflow-hidden"
+                            initial={{ opacity: 0, height: 0, y: 10 }}
+                            animate={{ opacity: 1, height: "auto", y: 0 }}
+                            exit={{ opacity: 0, height: 0, y: 10 }}
+                            transition={{ duration: 0.25 }}
+                            className="fixed bottom-0 left-0 right-0 z-50 bg-white rounded-t-3xl shadow-[0_-10px_40px_rgba(0,0,0,0.1)] border-t border-gray-100 overflow-hidden origin-bottom"
                         >
-                            {/* Gradient Background */}
-                            <div className="absolute inset-0 bg-gradient-to-br from-slate-900 via-[#1a1a2e] to-[#0f0f1a]" />
-                            <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,_rgba(246,200,4,0.08),_transparent_50%)]" />
+                            {/* Handle bar */}
+                            <div className="flex justify-center pt-3 pb-1">
+                                <div className="w-12 h-1.5 rounded-full bg-gray-200" />
+                            </div>
 
                             {/* Content Container */}
-                            <div className="relative z-10">
-                                {/* Handle bar */}
-                                <div className="flex justify-center pt-4 pb-2">
-                                    <div className="w-10 h-1 rounded-full bg-white/25" />
-                                </div>
-
+                            <div className="py-2 px-3 pb-8 flex flex-col gap-1 max-h-[80vh] overflow-y-auto">
                                 {/* Header */}
-                                <div className="px-5 pb-4">
-                                    <div className="flex items-center gap-3">
-                                        <div className="p-2.5 rounded-2xl bg-gradient-to-br from-[#f6c804] to-[#e5b703] shadow-lg shadow-[#f6c804]/20">
-                                            <BookOpen className="h-5 w-5 text-black" />
-                                        </div>
-                                        <div>
-                                            <h3 className="text-lg font-bold text-white">Quick Navigation</h3>
-                                            <p className="text-xs text-white/50">Tap to jump to section</p>
-                                        </div>
-                                    </div>
+                                <div className="px-4 pb-3 mb-1">
+                                    <h3 className="text-[11px] font-bold text-gray-400 uppercase tracking-wider">Quick Navigation</h3>
                                 </div>
-
-                                {/* Divider */}
-                                <div className="mx-5 h-px bg-gradient-to-r from-transparent via-white/10 to-transparent" />
-
+                                
                                 {/* Sections List */}
-                                <div className="overflow-y-auto max-h-[calc(80vh-140px)] py-3 px-3">
-                                    <nav className="space-y-1.5">
-                                        {sections.map(({ id, label, iconName }) => {
-                                            const isActive = activeSection === id
-                                            const Icon = iconMap[iconName] || Building2
-                                            return (
-                                                <button
-                                                    key={id}
-                                                    onClick={() => handleSectionClick(id)}
-                                                    className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-left transition-all duration-200 ${isActive
-                                                        ? "bg-[#f6c804] text-black shadow-lg shadow-[#f6c804]/30"
-                                                        : "text-white/70 hover:bg-white/5 hover:text-white active:scale-[0.98]"
-                                                        }`}
-                                                >
-                                                    <div className={`p-2 rounded-lg transition-colors ${isActive
-                                                        ? "bg-black/15"
-                                                        : "bg-white/5"
-                                                        }`}>
-                                                        <Icon className="h-4 w-4" />
-                                                    </div>
-                                                    <span className="font-medium text-sm">{label}</span>
-                                                    {isActive && (
-                                                        <div className="ml-auto">
-                                                            <div className="h-1.5 w-1.5 rounded-full bg-black/40" />
-                                                        </div>
-                                                    )}
-                                                </button>
-                                            )
-                                        })}
-                                    </nav>
-                                </div>
-
-                                {/* Close hint */}
-                                <div className="text-center pb-6 pt-2">
-                                    <p className="text-[11px] text-white/30 tracking-wide uppercase">Tap outside to close</p>
-                                </div>
+                                {sections.map(({ id, label, iconName }) => {
+                                    const isActive = activeSection === id
+                                    const Icon = iconMap[iconName] || Building2
+                                    return (
+                                        <button
+                                            key={id}
+                                            onClick={() => handleSectionClick(id)}
+                                            className={`flex items-center gap-3 w-full px-4 py-3 rounded-xl font-sora font-semibold text-sm sm:text-base transition-colors text-left ${isActive
+                                                ? "bg-d2c-ice text-d2c-royal"
+                                                : "text-d2c-navy hover:bg-gray-50"
+                                                }`}
+                                        >
+                                            <Icon className={`h-4 w-4 sm:h-5 sm:w-5 ${isActive ? "text-d2c-royal" : "text-gray-400"}`} />
+                                            <span>{label}</span>
+                                        </button>
+                                    )
+                                })}
                             </div>
                         </motion.div>
                     </>
