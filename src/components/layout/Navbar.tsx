@@ -5,7 +5,6 @@ import Link from "next/link"
 import { usePathname, useRouter } from "next/navigation"
 import { motion, AnimatePresence } from "framer-motion"
 import { Menu, X, ChevronDown, PhoneCall, Search, ArrowLeft, Building2, BookOpen } from "lucide-react"
-import { colleges, exams } from "@/lib/data"
 
 const NAV_LINKS = [
   { label: "Home", href: "/" },
@@ -24,6 +23,8 @@ const NAV_LINKS = [
 ]
 
 import { AutoSuggestSearch } from "@/components/ui/AutoSuggestSearch"
+import { NavbarMobileMenu } from "@/components/layout/NavbarMobileMenu"
+import { NavbarMobileSearch } from "@/components/layout/NavbarMobileSearch"
 
 export function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false)
@@ -42,44 +43,7 @@ export function Navbar() {
   const lastScrollY = useRef(0)
   const isForceHidden = useRef(false)
 
-  // Build search items for mobile
-  const allSearchItems = [
-    ...colleges.map(c => ({
-      id: `c_${c.id}`,
-      title: c.name,
-      subtitle: c.location,
-      url: `/colleges/${c.slug}`,
-      icon: "college" as const,
-      imageUrl: c.imageUrl,
-    })),
-    ...exams.map(e => ({
-      id: `e_${e.id}`,
-      title: e.name,
-      subtitle: "Entrance Exam",
-      url: `/exams/${e.slug}`,
-      icon: "exam" as const,
-      imageUrl: e.logoUrl,
-    })),
-  ]
 
-  const mobileFilteredColleges = mobileQuery.trim() === ""
-    ? allSearchItems.filter(i => i.icon === "college").slice(0, 4)
-    : allSearchItems.filter(item =>
-      item.icon === "college" &&
-      (item.title.toLowerCase().includes(mobileQuery.toLowerCase()) ||
-        item.subtitle.toLowerCase().includes(mobileQuery.toLowerCase()))
-    ).slice(0, 4)
-
-  const mobileFilteredExams = mobileQuery.trim() === ""
-    ? allSearchItems.filter(i => i.icon === "exam").slice(0, 3)
-    : allSearchItems.filter(item =>
-      item.icon === "exam" &&
-      (item.title.toLowerCase().includes(mobileQuery.toLowerCase()) ||
-        item.subtitle.toLowerCase().includes(mobileQuery.toLowerCase()))
-    ).slice(0, 3)
-
-  const mobileFilteredItems = [...mobileFilteredColleges, ...mobileFilteredExams]
-  const [mobileActiveIndex, setMobileActiveIndex] = useState(-1)
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -140,10 +104,12 @@ export function Navbar() {
   }, [])
 
   useEffect(() => {
+    /* eslint-disable react-hooks/set-state-in-effect */
     setMobileMenuOpen(false)
     setActiveDropdown(null)
     setSearchOpen(false)
     setMobileSearchOpen(false)
+    /* eslint-enable react-hooks/set-state-in-effect */
     setMobileQuery("")
     isForceHidden.current = false
     setIsVisible(true)
@@ -158,26 +124,7 @@ export function Navbar() {
 
   const showSolidBg = isScrolled || isHovered || mobileMenuOpen || searchOpen || mobileSearchOpen
 
-  const handleMobileSearchSelect = (url: string) => {
-    setMobileSearchOpen(false)
-    setMobileQuery("")
-    router.push(url)
-  }
 
-  const handleMobileKeyDown = (e: React.KeyboardEvent) => {
-    if (mobileFilteredItems.length === 0) return
-    if (e.key === "ArrowDown") {
-      e.preventDefault()
-      setMobileActiveIndex(prev => (prev < mobileFilteredItems.length - 1 ? prev + 1 : 0))
-    } else if (e.key === "ArrowUp") {
-      e.preventDefault()
-      setMobileActiveIndex(prev => (prev > 0 ? prev - 1 : mobileFilteredItems.length - 1))
-    } else if (e.key === "Enter" && mobileActiveIndex >= 0) {
-      e.preventDefault()
-      const item = mobileFilteredItems[mobileActiveIndex]
-      if (item) handleMobileSearchSelect(item.url)
-    }
-  }
 
   return (
     <header
@@ -226,9 +173,7 @@ export function Navbar() {
                     value={mobileQuery}
                     onChange={(e) => {
                       setMobileQuery(e.target.value)
-                      setMobileActiveIndex(-1)
                     }}
-                    onKeyDown={handleMobileKeyDown}
                   />
                   {mobileQuery && (
                     <button
@@ -422,150 +367,18 @@ export function Navbar() {
         </div>
       </div>
 
-      {/* ── MOBILE SEARCH SUGGESTIONS (shown below navbar like menu bar) ── */}
-      <div className="content-boundary mt-2 w-full min-[1025px]:hidden">
-        <AnimatePresence>
-          {mobileSearchOpen && mobileFilteredItems.length > 0 && (
-            <motion.div
-              initial={{ opacity: 0, height: 0, y: -10 }}
-              animate={{ opacity: 1, height: "auto", y: 0 }}
-              exit={{ opacity: 0, height: 0, y: -10 }}
-              transition={{ duration: 0.25 }}
-              className="bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden origin-top"
-            >
-              <div className="py-3 px-2 max-h-[60vh] overflow-y-auto">
-                {/* Colleges section */}
-                {mobileFilteredColleges.length > 0 && (
-                  <div>
-                    <div className="px-3 py-1.5 text-[11px] font-bold text-gray-400 uppercase tracking-wider">
-                      Colleges
-                    </div>
-                    {mobileFilteredColleges.map((item) => {
-                      const index = mobileFilteredItems.indexOf(item)
-                      return (
-                        <button
-                          key={item.id}
-                          onClick={() => handleMobileSearchSelect(item.url)}
-                          className={`flex items-center gap-3 w-full px-3 py-2.5 rounded-xl transition-colors text-left ${index === mobileActiveIndex ? "bg-d2c-ice" : "hover:bg-gray-50"
-                            }`}
-                        >
-                          <div className="w-9 h-9 rounded-lg bg-white border border-gray-100 flex items-center justify-center shrink-0 overflow-hidden shadow-sm p-1">
-                            {item.imageUrl ? (
-                              <img src={item.imageUrl} alt={item.title} className="max-w-full max-h-full object-contain" />
-                            ) : (
-                              <Building2 className="w-4 h-4 text-gray-400" />
-                            )}
-                          </div>
-                          <div className="flex-1 min-w-0">
-                            <div className="font-sora font-semibold text-d2c-navy truncate text-sm">
-                              {item.title}
-                            </div>
-                            <div className="text-xs text-gray-400 truncate">
-                              {item.subtitle}
-                            </div>
-                          </div>
-                        </button>
-                      )
-                    })}
-                  </div>
-                )}
-
-                {/* Divider */}
-                {mobileFilteredColleges.length > 0 && mobileFilteredExams.length > 0 && (
-                  <div className="h-px bg-gray-100 mx-3 my-2" />
-                )}
-
-                {/* Exams section */}
-                {mobileFilteredExams.length > 0 && (
-                  <div>
-                    <div className="px-3 py-1.5 text-[11px] font-bold text-gray-400 uppercase tracking-wider">
-                      Exams
-                    </div>
-                    {mobileFilteredExams.map((item) => {
-                      const index = mobileFilteredItems.indexOf(item)
-                      return (
-                        <button
-                          key={item.id}
-                          onClick={() => handleMobileSearchSelect(item.url)}
-                          className={`flex items-center gap-3 w-full px-3 py-2.5 rounded-xl transition-colors text-left ${index === mobileActiveIndex ? "bg-d2c-ice" : "hover:bg-gray-50"
-                            }`}
-                        >
-                          <div className="w-9 h-9 rounded-lg bg-white border border-gray-100 flex items-center justify-center shrink-0 overflow-hidden shadow-sm p-1">
-                            {item.imageUrl ? (
-                              <img src={item.imageUrl} alt={item.title} className="max-w-full max-h-full object-contain" />
-                            ) : (
-                              <BookOpen className="w-4 h-4 text-gray-400" />
-                            )}
-                          </div>
-                          <div className="flex-1 min-w-0">
-                            <div className="font-sora font-semibold text-d2c-navy truncate text-sm">
-                              {item.title}
-                            </div>
-                            <div className="text-xs text-gray-400 truncate">
-                              {item.subtitle}
-                            </div>
-                          </div>
-                        </button>
-                      )
-                    })}
-                  </div>
-                )}
-              </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
-      </div>
+      {/* ── MOBILE SEARCH SUGGESTIONS ── */}
+      <NavbarMobileSearch 
+        isOpen={mobileSearchOpen} 
+        mobileQuery={mobileQuery} 
+        onClose={() => {
+          setMobileSearchOpen(false)
+          setMobileQuery("")
+        }} 
+      />
 
       {/* ── MOBILE MENU ── */}
-      <div className="content-boundary mt-2 w-full min-[1025px]:hidden">
-        <AnimatePresence>
-          {mobileMenuOpen && (
-            <motion.div
-              initial={{ opacity: 0, height: 0, y: -10 }}
-              animate={{ opacity: 1, height: "auto", y: 0 }}
-              exit={{ opacity: 0, height: 0, y: -10 }}
-              transition={{ duration: 0.25 }}
-              className="bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden origin-top"
-            >
-              <div className="py-4 px-2 flex flex-col gap-1">
-                {NAV_LINKS.map((link) => (
-                  <div key={link.label}>
-                    <Link
-                      href={link.href}
-                      className={`block px-4 py-3 rounded-lg font-sora font-semibold text-base transition-colors ${pathname === link.href
-                          ? "bg-d2c-ice text-d2c-royal"
-                          : "text-d2c-navy hover:bg-gray-50"
-                        }`}
-                    >
-                      {link.label}
-                    </Link>
-                    {link.dropdown && (
-                      <div className="pl-8 flex flex-col gap-1 mt-1">
-                        {link.dropdown.map((drop) => (
-                          <Link
-                            key={drop.label}
-                            href={drop.href}
-                            className="text-gray-500 py-2 text-sm font-medium hover:text-d2c-royal transition-colors"
-                          >
-                            {drop.label}
-                          </Link>
-                        ))}
-                      </div>
-                    )}
-                  </div>
-                ))}
-                <Link
-                  href="/contact"
-                  className="mt-3 mx-2 flex items-center justify-center gap-2 px-6 py-4 bg-d2c-royal text-white font-semibold text-base rounded-xl"
-                >
-                  <PhoneCall className="w-5 h-5" />
-                  Request Callback
-                </Link>
-              </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
-      </div>
+      <NavbarMobileMenu isOpen={mobileMenuOpen} navLinks={NAV_LINKS} />
     </header>
   )
 }

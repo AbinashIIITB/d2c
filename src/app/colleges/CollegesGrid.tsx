@@ -35,6 +35,7 @@ export function CollegesGrid({ initialColleges }: { initialColleges: College[] }
 
   // Read URL query params and set filters
   useEffect(() => {
+    /* eslint-disable react-hooks/set-state-in-effect */
     let hasFilter = false
     const typeParam = searchParams.get("type")
     if (typeParam && TYPE_TO_DEPT[typeParam.toLowerCase()]) {

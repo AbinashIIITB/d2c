@@ -1,7 +1,6 @@
 import Link from "next/link"
 
-import { AnimatedPatternBg } from "@/components/ui/AnimatedPatternBg"
-
+import Image from "next/image"
 export function Footer() {
   return (
     <footer className="bg-d2c-navy text-white pt-16 md:pt-24 pb-28 md:pb-12 border-t-4 border-d2c-royal relative overflow-hidden">
@@ -11,9 +10,11 @@ export function Footer() {
           {/* Brand Info */}
           <div className="flex flex-col gap-6 lg:col-span-1">
             <Link href="/" className="inline-block block w-full">
-              <img 
+              <Image 
                 src="/logo-footer.png" 
                 alt="Direct2Campus Logo" 
+                width={240}
+                height={96}
                 className="h-20 md:h-24 w-auto object-contain object-left drop-shadow-lg -ml-2"
               />
             </Link>

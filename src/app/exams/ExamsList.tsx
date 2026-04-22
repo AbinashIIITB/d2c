@@ -7,7 +7,7 @@ import { motion, AnimatePresence } from "framer-motion"
 import { AutoSuggestSearch } from "@/components/ui/AutoSuggestSearch"
 import { Exam } from "@/lib/data"
 
-const EXAM_COLORS: Record<string, any> = {
+const EXAM_COLORS: Record<string, { from: string, to: string, bg: string, text: string, border: string }> = {
   "bitsat": { from: "from-blue-600", to: "to-indigo-700", bg: "bg-blue-50", text: "text-blue-700", border: "border-blue-100" },
   "wbjee": { from: "from-emerald-600", to: "to-teal-700", bg: "bg-emerald-50", text: "text-emerald-700", border: "border-emerald-100" },
   "srmjeee": { from: "from-amber-500", to: "to-orange-600", bg: "bg-amber-50", text: "text-amber-700", border: "border-amber-100" },

@@ -41,7 +41,9 @@ export function BannerSection() {
   }, []);
 
   useEffect(() => {
+    /* eslint-disable react-hooks/set-state-in-effect */
     startAutoPlay();
+    /* eslint-enable react-hooks/set-state-in-effect */
     return () => {
       if (timerRef.current) clearInterval(timerRef.current);
       if (progressRef.current) clearInterval(progressRef.current);

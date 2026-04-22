@@ -2,7 +2,7 @@
 
 import { useRef, useEffect, useState } from "react"
 import Link from "next/link"
-import { motion, useInView, useMotionValue, useSpring, useTransform } from "framer-motion"
+import { motion, useInView } from "framer-motion"
 import { MapPin, ArrowRight, TrendingUp, GraduationCap, Building2, Users } from "lucide-react"
 import { CountUp } from "@/components/ui/CountUp"
 
@@ -29,29 +29,7 @@ const HERO_STATS = [
   { value: 98, suffix: "%", label: "Success Rate", icon: TrendingUp },
 ]
 
-// Animated counter component
-function AnimatedCounter({ value, suffix = "", isInView }: { value: number; suffix?: string; isInView: boolean }) {
-  const [displayValue, setDisplayValue] = useState(0)
 
-  useEffect(() => {
-    if (!isInView) return
-    let start = 0
-    const duration = 2000
-    const startTime = Date.now()
-
-    const animate = () => {
-      const elapsed = Date.now() - startTime
-      const progress = Math.min(elapsed / duration, 1)
-      // Ease out cubic
-      const eased = 1 - Math.pow(1 - progress, 3)
-      setDisplayValue(Math.floor(eased * value))
-      if (progress < 1) requestAnimationFrame(animate)
-    }
-    requestAnimationFrame(animate)
-  }, [isInView, value])
-
-  return <>{displayValue}{suffix}</>
-}
 
 export function StatesCoverage() {
   const ref = useRef(null)
