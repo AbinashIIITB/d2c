@@ -2,6 +2,7 @@ import Link from "next/link"
 import { motion, AnimatePresence } from "framer-motion"
 import { PhoneCall } from "lucide-react"
 import { usePathname } from "next/navigation"
+import { ApplyButton } from "@/components/ui/ApplyButton"
 
 interface NavLink {
   label: string
@@ -56,13 +57,13 @@ export function NavbarMobileMenu({ isOpen, navLinks }: NavbarMobileMenuProps) {
                   )}
                 </div>
               ))}
-              <Link
-                href="/contact"
+              <ApplyButton
                 className="mt-3 mx-2 flex items-center justify-center gap-2 px-6 py-4 bg-d2c-royal text-white font-semibold text-base rounded-xl"
+                context="Mobile Menu Callback Request"
               >
                 <PhoneCall className="w-5 h-5" />
                 Request Callback
-              </Link>
+              </ApplyButton>
             </div>
           </motion.div>
         )}

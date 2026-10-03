@@ -1,15 +1,19 @@
 "use client"
 
-import { useRef } from "react"
+import { useRef, useState, useEffect } from "react"
 import Link from "next/link"
 import { motion, useInView } from "framer-motion"
 import { MapPin, ChevronRight, Star, ArrowUpRight } from "lucide-react"
-import { colleges } from "@/lib/data"
 import { CollegeCard } from "@/components/ui/CollegeCard"
 
 export function FeaturedColleges() {
   const ref = useRef(null)
   const isInView = useInView(ref, { once: true, margin: "-100px" })
+  const [colleges, setColleges] = useState<any[]>([])
+
+  useEffect(() => {
+    fetch("/api/colleges").then(res => res.json()).then(data => setColleges(data || []));
+  }, []);
 
   const featuredColleges = colleges.slice(0, 6)
 

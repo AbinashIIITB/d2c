@@ -2,10 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Sora, DM_Sans, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 
-import { Navbar } from "@/components/layout/Navbar";
-import { Footer } from "@/components/layout/Footer";
-import { MobileBottomNav } from "@/components/layout/MobileBottomNav";
-import { FloatingActions } from "@/components/layout/FloatingActions";
+import { ConditionalLayout } from "@/components/layout/ConditionalLayout";
 
 const sora = Sora({
   variable: "--font-sora",
@@ -140,13 +137,9 @@ export default function RootLayout({
         />
       </head>
       <body className="min-h-full flex flex-col font-dm-sans bg-d2c-white text-d2c-text selection:bg-d2c-royal/30 selection:text-d2c-navy-dark">
-        <Navbar />
-        <main className="flex-1">
+        <ConditionalLayout>
           {children}
-        </main>
-        <Footer />
-        <MobileBottomNav />
-        <FloatingActions />
+        </ConditionalLayout>
       </body>
     </html>
   );

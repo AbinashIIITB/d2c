@@ -2,6 +2,7 @@ import { Metadata } from "next"
 import Link from "next/link"
 import { Briefcase, Building2, TrendingUp, Users, ArrowRight } from "lucide-react"
 import { AnimatedPatternBg } from "@/components/ui/AnimatedPatternBg"
+import { ApplyButton } from "@/components/ui/ApplyButton"
 
 export const metadata: Metadata = {
   title: "MBA & PGDM Direct Admissions in Top B-Schools",
@@ -45,9 +46,9 @@ export default function MBAPage() {
                   Browse B-Schools
                   <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
                 </Link>
-                <Link href="/contact" className="px-8 py-4 bg-white/10 border border-white/20 text-white font-semibold text-lg hover:bg-white/20 transition-colors flex items-center justify-center gap-2">
+                <ApplyButton className="px-8 py-4 bg-white/10 border border-white/20 text-white font-semibold text-lg hover:bg-white/20 transition-colors flex items-center justify-center gap-2" context="MBA Free Consultation">
                   Free Consultation
-                </Link>
+                </ApplyButton>
               </div>
             </div>
             <div className="hidden md:block relative">
@@ -139,9 +140,9 @@ export default function MBAPage() {
             <p className="text-d2c-ice mb-8 max-w-2xl mx-auto">
               Speak to our MBA admissions expert to check your eligibility profile and explore available colleges based on your budget and desired location.
             </p>
-            <Link href="/contact" className="inline-block bg-white text-d2c-navy hover:bg-d2c-ice px-8 py-4 font-bold transition-colors">
+            <ApplyButton className="inline-block bg-white text-d2c-navy hover:bg-d2c-ice px-8 py-4 font-bold transition-colors" context="MBA Profile Evaluation">
               Book Free Profile Evaluation
-            </Link>
+            </ApplyButton>
           </div>
         </div>
       </div>

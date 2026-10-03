@@ -4,7 +4,6 @@ import { useState, useRef, useEffect } from "react"
 import { Search, Building2, BookOpen } from "lucide-react"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
-import { colleges, exams } from "@/lib/data"
 
 type SearchMode = "all" | "colleges" | "exams"
 
@@ -39,6 +38,14 @@ export function AutoSuggestSearch({
   const [isOpen, setIsOpen] = useState(false)
   const [activeIndex, setActiveIndex] = useState(-1)
   const containerRef = useRef<HTMLDivElement>(null)
+  
+  const [dbColleges, setDbColleges] = useState<any[]>([])
+  const [dbExams, setDbExams] = useState<any[]>([])
+
+  useEffect(() => {
+    fetch("/api/colleges").then(res => res.json()).then(data => setDbColleges(data || []));
+    fetch("/api/exams").then(res => res.json()).then(data => setDbExams(data || []));
+  }, []);
 
   // External query state tracking (for grid filtering)
   useEffect(() => {
@@ -60,7 +67,7 @@ export function AutoSuggestSearch({
   const allItems: SearchItem[] = []
   
   if (mode === "all" || mode === "colleges") {
-    colleges.forEach(c => allItems.push({
+    dbColleges.forEach(c => allItems.push({
       id: `c_${c.id}`,
       title: c.name,
       subtitle: c.location,
@@ -71,7 +78,7 @@ export function AutoSuggestSearch({
   }
   
   if (mode === "all" || mode === "exams") {
-    exams.forEach(e => allItems.push({
+    dbExams.forEach(e => allItems.push({
       id: `e_${e.id}`,
       title: e.name,
       subtitle: "Entrance Exam",

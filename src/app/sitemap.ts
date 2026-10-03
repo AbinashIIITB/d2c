@@ -1,11 +1,13 @@
 import { MetadataRoute } from "next"
 
-// Data imports for dynamic routing
-import { colleges, exams } from "@/lib/data"
+import { supabaseAdmin } from "@/lib/supabase"
 import blogPosts from "@/data/blog.json"
 
-export default function sitemap(): MetadataRoute.Sitemap {
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = "https://direct2campus.com"
+  
+  const { data: colleges } = await supabaseAdmin.from('colleges').select('slug');
+  const { data: exams } = await supabaseAdmin.from('exams').select('slug');
 
   // Standard static routes
   const staticRoutes = [
@@ -26,7 +28,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   }))
 
   // Dynamic College Routes
-  const collegeRoutes = colleges.map((college) => ({
+  const collegeRoutes = (colleges || []).map((college) => ({
     url: `${baseUrl}/colleges/${college.slug}`,
     lastModified: new Date(),
     changeFrequency: "weekly" as const,
@@ -34,7 +36,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   }))
 
   // Dynamic Exam Routes
-  const examRoutes = exams.map((exam) => ({
+  const examRoutes = (exams || []).map((exam) => ({
     url: `${baseUrl}/exams/${exam.slug}`,
     lastModified: new Date(),
     changeFrequency: "weekly" as const,

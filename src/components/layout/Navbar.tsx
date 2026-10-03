@@ -25,6 +25,7 @@ const NAV_LINKS = [
 import { AutoSuggestSearch } from "@/components/ui/AutoSuggestSearch"
 import { NavbarMobileMenu } from "@/components/layout/NavbarMobileMenu"
 import { NavbarMobileSearch } from "@/components/layout/NavbarMobileSearch"
+import { ApplyModal } from "@/components/layout/ApplyModal"
 
 export function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false)
@@ -34,6 +35,7 @@ export function Navbar() {
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null)
   const [searchOpen, setSearchOpen] = useState(false)
   const [mobileSearchOpen, setMobileSearchOpen] = useState(false)
+  const [isApplyModalOpen, setIsApplyModalOpen] = useState(false)
   const [mobileQuery, setMobileQuery] = useState("")
   const pathname = usePathname()
   const router = useRouter()
@@ -109,6 +111,7 @@ export function Navbar() {
     setActiveDropdown(null)
     setSearchOpen(false)
     setMobileSearchOpen(false)
+    setIsApplyModalOpen(false)
     /* eslint-enable react-hooks/set-state-in-effect */
     setMobileQuery("")
     isForceHidden.current = false
@@ -353,8 +356,8 @@ export function Navbar() {
               </AnimatePresence>
             </div>
 
-            <Link
-              href="/contact"
+            <button
+              onClick={() => setIsApplyModalOpen(true)}
               className={`flex items-center shrink-0 gap-2 px-5 py-2 rounded-xl font-semibold text-xs min-[1025px]:text-sm transition-all duration-300 border ${showSolidBg
                   ? "bg-d2c-royal border-d2c-royal text-white hover:bg-d2c-navy hover:border-d2c-navy shadow-md hover:shadow-lg"
                   : "border-white/40 text-white hover:bg-white/10"
@@ -362,7 +365,7 @@ export function Navbar() {
             >
               <PhoneCall className="w-4 h-4" />
               Apply Now
-            </Link>
+            </button>
           </div>
         </div>
       </div>
@@ -379,6 +382,13 @@ export function Navbar() {
 
       {/* ── MOBILE MENU ── */}
       <NavbarMobileMenu isOpen={mobileMenuOpen} navLinks={NAV_LINKS} />
+
+      {/* ── APPLY MODAL ── */}
+      <ApplyModal 
+        isOpen={isApplyModalOpen} 
+        onClose={() => setIsApplyModalOpen(false)} 
+        context="General Website Enquiry" 
+      />
     </header>
   )
 }

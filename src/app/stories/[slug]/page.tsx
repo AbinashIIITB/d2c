@@ -3,6 +3,7 @@ import { Metadata } from "next"
 import Link from "next/link"
 import { ChevronRight, Quote, Star, ArrowLeft, GraduationCap, MessageCircle } from "lucide-react"
 import testimonialsData from "@/data/testimonials.json"
+import { ApplyButton } from "@/components/ui/ApplyButton"
 
 type Params = Promise<{ slug: string }>
 
@@ -186,12 +187,12 @@ export default async function StoryPage({ params }: { params: Params }) {
                   <MessageCircle className="w-5 h-5 fill-white" />
                   WhatsApp Now
                 </Link>
-                <Link
-                  href="/contact"
+                <ApplyButton
                   className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-white/[0.06] hover:bg-white/[0.1] text-white font-semibold rounded-xl border border-white/10 backdrop-blur-md transition-all duration-300 hover:-translate-y-0.5"
+                  context="Success Story: Free Counselling"
                 >
                   Request Free Counselling
-                </Link>
+                </ApplyButton>
               </div>
             </div>
           </div>

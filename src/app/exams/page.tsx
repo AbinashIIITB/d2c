@@ -1,6 +1,6 @@
 import { Metadata } from "next"
 import { ExamsList } from "./ExamsList"
-import { exams } from "@/lib/data"
+import { supabaseAdmin } from "@/lib/supabase"
 import { HeroBackground } from "@/components/ui/HeroBackground"
 import { BookOpen, GraduationCap, FileText, Clock } from "lucide-react"
 
@@ -11,7 +11,20 @@ export const metadata: Metadata = {
   alternates: { canonical: "https://direct2campus.com/exams" },
 }
 
-export default function ExamsPage() {
+export default async function ExamsPage() {
+  const { data: rawExams } = await supabaseAdmin.from('exams').select('*').order('name');
+  
+  const exams = (rawExams || []).map(e => ({
+    ...e,
+    fullName: e.full_name,
+    logoUrl: e.logo_url,
+    applicationLink: e.application_link,
+    aboutExam: e.about_exam,
+    importantDates: e.important_dates,
+    applicationProcess: e.application_process,
+    examPattern: e.exam_pattern,
+  }));
+
   return (
     <div className="pb-16 bg-d2c-white min-h-screen">
       {/* Hero-style header matching homepage */}
@@ -70,7 +83,7 @@ export default function ExamsPage() {
       </section>
 
       <div className="content-boundary py-12 relative z-20">
-        <ExamsList initialExams={[...exams.filter(e => e.id.includes('iem')), ...exams.filter(e => !e.id.includes('iem'))]} />
+        <ExamsList initialExams={exams as any} />
       </div>
     </div>
   )

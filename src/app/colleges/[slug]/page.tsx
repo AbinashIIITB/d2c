@@ -26,7 +26,7 @@ import {
   Globe,
   Zap
 } from "lucide-react"
-import { colleges } from "@/lib/data"
+import { supabaseAdmin } from "@/lib/supabase"
 import { AnimatedPatternBg } from "@/components/ui/AnimatedPatternBg"
 import { ScrollSpyTOC, FloatingMobileTOC } from "@/components/ui/ScrollSpyTOC"
 import { CollegeHero } from "@/components/colleges/CollegeHero"
@@ -39,14 +39,19 @@ import { Button } from "@/components/ui/button"
 type Params = Promise<{ slug: string }>
 
 export async function generateStaticParams() {
-  return colleges.map((college) => ({
+  const { data: colleges } = await supabaseAdmin.from('colleges').select('slug');
+  return (colleges || []).map((college) => ({
     slug: college.slug,
   }))
 }
 
 export async function generateMetadata({ params }: { params: Params }): Promise<Metadata> {
   const { slug } = await params
-  const college = colleges.find(c => c.slug === slug)
+  const { data: college } = await supabaseAdmin
+    .from('colleges')
+    .select('name, description, about, type, location, tags, image_url')
+    .eq('slug', slug)
+    .single();
   
   if (!college) {
     return { title: "College Not Found" }
@@ -55,13 +60,21 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
   return {
     title: `${college.name} – Direct Admission, Fees & Placement`,
     description: `${(college.about || college.description || '').slice(0, 155)}…`,
-    keywords: [college.name, `${college.name} admission`, `${college.name} fees`, `${college.name} placement`, college.type, college.location],
+    keywords: [
+      college.name, 
+      `${college.name} admission`, 
+      `${college.name} fees`, 
+      `${college.name} placement`, 
+      college.type, 
+      college.location,
+      ...(college.tags || [])
+    ],
     alternates: { canonical: `https://direct2campus.com/colleges/${slug}` },
     openGraph: {
       title: `${college.name} – Direct Admission | Direct2Campus`,
       description: college.about || college.description,
       url: `https://direct2campus.com/colleges/${slug}`,
-      images: college.imageUrl ? [{ url: college.imageUrl, alt: college.name }] : [],
+      images: college.image_url ? [{ url: college.image_url, alt: college.name }] : [],
     },
   }
 }
@@ -79,11 +92,29 @@ const sections = [
 
 export default async function CollegeDetailPage({ params }: { params: Params }) {
   const { slug } = await params
-  const college = colleges.find(c => c.slug === slug)
+  const { data: rawCollege } = await supabaseAdmin
+    .from('colleges')
+    .select('*')
+    .eq('slug', slug)
+    .single();
 
-  if (!college) {
+  if (!rawCollege) {
     notFound()
   }
+
+  // Map snake_case to camelCase
+  const college = {
+    ...rawCollege,
+    imageUrl: rawCollege.image_url,
+    logoUrl: rawCollege.logo_url,
+    coverUrl: rawCollege.cover_url,
+    coursesDetails: rawCollege.courses_details,
+    feesDetails: rawCollege.fees_details,
+    keyDates: rawCollege.key_dates,
+    whyChoose: rawCollege.why_choose,
+    galleryImages: rawCollege.gallery_images,
+    whyChooseAkashTalks: rawCollege.why_choose_akash_talks,
+  };
 
   return (
     <div className="pb-6 lg:pb-12 min-h-screen bg-[#faf8ff]">

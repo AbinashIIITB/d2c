@@ -7,7 +7,7 @@ export async function POST(req: Request) {
     // Map payload explicitly
     const structuredRow = {
       leadType: data.leadType || "Unknown",
-      name: data.name || "",
+      name: data.name || (data.firstName ? `${data.firstName} ${data.lastName || ""}`.trim() : ""),
       phone: data.phone || "",
       email: data.email || "",
       message: data.message || "",

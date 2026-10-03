@@ -3,12 +3,18 @@ import Link from "next/link"
 import { motion, AnimatePresence } from "framer-motion"
 import { Building2, BookOpen } from "lucide-react"
 import { useRouter } from "next/navigation"
-import { colleges, exams } from "@/lib/data"
 
-// Optional: you can build caching strictly here to keep Navbar.tsx lightweight.
 function useMobileSearchData() {
+  const [dbColleges, setDbColleges] = useState<any[]>([])
+  const [dbExams, setDbExams] = useState<any[]>([])
+
+  useEffect(() => {
+    fetch("/api/colleges").then(res => res.json()).then(data => setDbColleges(data || []));
+    fetch("/api/exams").then(res => res.json()).then(data => setDbExams(data || []));
+  }, []);
+
   return [
-    ...colleges.map(c => ({
+    ...dbColleges.map(c => ({
       id: `c_${c.id}`,
       title: c.name,
       subtitle: c.location,
@@ -16,7 +22,7 @@ function useMobileSearchData() {
       icon: "college" as const,
       imageUrl: c.imageUrl,
     })),
-    ...exams.map(e => ({
+    ...dbExams.map(e => ({
       id: `e_${e.id}`,
       title: e.name,
       subtitle: "Entrance Exam",

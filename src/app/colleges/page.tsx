@@ -2,7 +2,7 @@ import { Suspense } from "react"
 import { Metadata } from "next"
 import Link from "next/link"
 import { Building2, GraduationCap, MapPin } from "lucide-react"
-import { colleges } from "@/lib/data"
+import { supabaseAdmin } from "@/lib/supabase"
 import { CollegesGrid } from "./CollegesGrid"
 import { HeroBackground } from "@/components/ui/HeroBackground"
 
@@ -13,7 +13,16 @@ export const metadata: Metadata = {
   alternates: { canonical: "https://direct2campus.com/colleges" },
 }
 
-export default function CollegesPage() {
+export default async function CollegesPage() {
+  const { data: rawColleges } = await supabaseAdmin.from('colleges').select('*').order('name');
+  
+  const colleges = (rawColleges || []).map(c => ({
+    ...c,
+    imageUrl: c.image_url,
+    logoUrl: c.logo_url,
+    coverUrl: c.cover_url,
+  }));
+
   return (
     <div className="pb-16 bg-d2c-white min-h-screen">
       {/* Hero-style header matching homepage */}
@@ -73,7 +82,7 @@ export default function CollegesPage() {
 
       <div className="content-boundary py-12 relative z-20">
         <Suspense fallback={<div className="text-center py-24 text-d2c-muted">Loading colleges...</div>}>
-          <CollegesGrid initialColleges={colleges} />
+          <CollegesGrid initialColleges={colleges as any} />
         </Suspense>
       </div>
     </div>

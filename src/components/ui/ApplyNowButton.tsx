@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { GraduationCap, ChevronRight } from "lucide-react";
-import { CollegeAdmissionModal } from "./CollegeAdmissionModal";
+import { ApplyModal } from "@/components/layout/ApplyModal";
 
 export function ApplyNowButton({ collegeName }: { collegeName: string }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -18,10 +18,10 @@ export function ApplyNowButton({ collegeName }: { collegeName: string }) {
         <ChevronRight className="w-4 h-4 ml-1" />
       </Button>
 
-      <CollegeAdmissionModal 
+      <ApplyModal 
         isOpen={isModalOpen} 
         onClose={() => setIsModalOpen(false)} 
-        collegeName={collegeName} 
+        context={`College: ${collegeName}`} 
       />
     </>
   );

@@ -1,13 +1,15 @@
 "use client";
 
-import { useRef } from "react";
+import { useState, useRef } from "react";
 import Link from "next/link";
 import { motion, useInView } from "framer-motion";
 import { PhoneCall, MessageCircle, Sparkles, ArrowUpRight } from "lucide-react";
+import { ApplyModal } from "@/components/layout/ApplyModal";
 
 export function CTASection() {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   return (
     <section className="py-24 md:py-32 relative overflow-hidden bg-white" ref={ref}>
@@ -77,13 +79,13 @@ export function CTASection() {
                 <ArrowUpRight className="w-5 h-5" />
               </Link>
 
-              <Link
-                href="/contact"
+              <button
+                onClick={() => setIsModalOpen(true)}
                 className="w-full sm:w-auto flex items-center justify-center gap-2 sm:gap-3 px-6 sm:px-10 py-3.5 sm:py-5 bg-white/5 hover:bg-white/10 text-white font-semibold text-sm sm:text-lg rounded-xl sm:rounded-2xl border border-white/10 backdrop-blur-md transition-all duration-300 hover:-translate-y-1"
               >
                 <PhoneCall className="w-5 h-5" />
                 Request Callback
-              </Link>
+              </button>
             </motion.div>
           </div>
 
@@ -92,6 +94,12 @@ export function CTASection() {
           <div className="absolute -top-24 -right-24 w-96 h-96 bg-d2c-gold/5 rounded-full blur-[120px]" />
         </div>
       </div>
+
+      <ApplyModal 
+        isOpen={isModalOpen} 
+        onClose={() => setIsModalOpen(false)} 
+        context="CTA Section Callback Request" 
+      />
     </section>
   );
 }

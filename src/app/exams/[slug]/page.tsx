@@ -2,14 +2,20 @@ import { notFound } from "next/navigation"
 import { Metadata } from "next"
 import Link from "next/link"
 import { ArrowLeft, BookOpen, Calendar, HelpCircle, AlertCircle, CheckCircle2, FileText, Info } from "lucide-react"
-import { exams } from "@/lib/data"
+import { supabaseAdmin } from "@/lib/supabase"
 import { AnimatedPatternBg } from "@/components/ui/AnimatedPatternBg"
+import { ExamApplyButton } from "@/components/ui/ExamApplyButton"
+import { ApplyButton } from "@/components/ui/ApplyButton"
 
 type Params = Promise<{ slug: string }>
 
 export async function generateMetadata({ params }: { params: Params }): Promise<Metadata> {
   const { slug } = await params
-  const exam = exams.find(e => e.slug === slug)
+  const { data: exam } = await supabaseAdmin
+    .from('exams')
+    .select('name, full_name, about_exam, tags, logo_url')
+    .eq('slug', slug)
+    .single();
   
   if (!exam) {
     return { title: "Exam Not Found" }
@@ -17,31 +23,54 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
   
   return {
     title: `${exam.name} – Admission & Pattern Guide 2026`,
-    description: `${(exam.description || '').slice(0, 155)}…`,
-    keywords: [exam.name, `${exam.name} exam`, `${exam.name} pattern`, `${exam.name} eligibility`, `${exam.name} cutoff`],
+    description: `${(exam.about_exam || '').slice(0, 155)}…`,
+    keywords: [
+      exam.name, 
+      `${exam.name} exam`, 
+      `${exam.name} pattern`, 
+      `${exam.name} eligibility`, 
+      `${exam.name} cutoff`,
+      ...((exam as any).tags || [])
+    ],
     alternates: { canonical: `https://direct2campus.com/exams/${slug}` },
     openGraph: {
       title: `${exam.name} Guide | Direct2Campus`,
-      description: exam.description,
+      description: exam.about_exam,
       url: `https://direct2campus.com/exams/${slug}`,
-      images: exam.logoUrl ? [{ url: exam.logoUrl, alt: exam.name }] : [],
+      images: exam.logo_url ? [{ url: exam.logo_url, alt: exam.name }] : [],
     },
   }
 }
 
 export async function generateStaticParams() {
-  return exams.map((exam) => ({
+  const { data: exams } = await supabaseAdmin.from('exams').select('slug');
+  return (exams || []).map((exam) => ({
     slug: exam.slug,
   }))
 }
 
 export default async function ExamDetailPage({ params }: { params: Params }) {
   const { slug } = await params
-  const exam = exams.find(e => e.slug === slug)
+  const { data: rawExam } = await supabaseAdmin
+    .from('exams')
+    .select('*')
+    .eq('slug', slug)
+    .single();
 
-  if (!exam) {
+  if (!rawExam) {
     notFound()
   }
+
+  const exam = {
+    ...rawExam,
+    fullName: rawExam.full_name,
+    logoUrl: rawExam.logo_url,
+    applicationLink: rawExam.application_link,
+    aboutExam: rawExam.about_exam,
+    importantDates: rawExam.important_dates,
+    applicationProcess: rawExam.application_process,
+    examPattern: rawExam.exam_pattern,
+  };
 
   return (
     <div className="pb-20 bg-d2c-white min-h-screen">
@@ -95,9 +124,7 @@ export default async function ExamDetailPage({ params }: { params: Params }) {
               <div className="flex items-center gap-3 text-d2c-muted mb-4 font-semibold uppercase text-xs tracking-wider">
                 <HelpCircle className="w-5 h-5 text-d2c-gold" /> Application
               </div>
-              <a href={exam.applicationLink} target="_blank" rel="noopener noreferrer" className="font-sora font-bold text-d2c-royal text-xl leading-tight hover:underline flex items-center gap-2">
-                Apply Here <ArrowLeft className="w-4 h-4 rotate-180" />
-              </a>
+              <ExamApplyButton examName={exam.name} />
               <p className="text-sm text-d2c-muted mt-2">Official Entrance Portal</p>
             </div>
           </div>
@@ -192,12 +219,12 @@ export default async function ExamDetailPage({ params }: { params: Params }) {
                   Management quota and direct admission options are available in top institutes accepting this exam. Get end-to-end counseling support from Akash Talks.
                 </p>
                 <div className="space-y-3">
-                  <Link 
-                    href="/contact"
+                  <ApplyButton 
                     className="block w-full bg-d2c-navy hover:bg-d2c-royal text-white py-4 rounded-xl font-bold transition-colors shadow-lg shadow-d2c-navy/20"
+                    context={`Exam Counseling: ${exam.name}`}
                   >
                     Get Free Counseling
-                  </Link>
+                  </ApplyButton>
                   <a 
                     href="tel:+919874878782"
                     className="block w-full bg-white border border-gray-200 text-d2c-navy py-4 rounded-xl font-bold transition-colors hover:bg-gray-50"
