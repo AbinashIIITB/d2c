@@ -12,7 +12,15 @@ export async function POST(req: Request) {
       email: data.email || "",
       message: data.message || "",
       interestedCollege: data.interestedCollege || "",
-      submittedAt: new Date().toISOString(),
+      submittedAt: new Date().toLocaleString("en-IN", {
+        timeZone: "Asia/Kolkata", 
+        day: "2-digit", 
+        month: "2-digit", 
+        year: "numeric", 
+        hour: "2-digit", 
+        minute: "2-digit", 
+        hour12: true
+      }).replace(/\//g, '-').replace(',', '').toUpperCase(),
     };
 
     const webhookUrl = process.env.GOOGLE_SHEETS_WEBHOOK_URL;
