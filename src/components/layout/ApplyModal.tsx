@@ -87,7 +87,7 @@ export function ApplyModal({ isOpen, onClose, context = "General" }: { isOpen: b
           initial={{ scale: 0.95, opacity: 0, y: 20 }}
           animate={{ scale: 1, opacity: 1, y: 0 }}
           exit={{ scale: 0.95, opacity: 0, y: 20 }}
-          className="bg-white rounded-3xl shadow-2xl overflow-hidden relative z-10 w-full max-w-md my-8"
+          className="bg-white rounded-3xl shadow-2xl overflow-hidden relative z-10 w-full max-w-2xl my-8"
         >
           {/* Header */}
           <div className="bg-d2c-navy p-6 md:p-8 text-center relative border-b-4 border-d2c-royal">
@@ -114,56 +114,58 @@ export function ApplyModal({ isOpen, onClose, context = "General" }: { isOpen: b
               </div>
             ) : (
               <>
-                <div>
-                  <label className="block text-sm font-semibold text-d2c-navy mb-2">Full Name</label>
-                  <input 
-                    required
-                    type="text" 
-                    value={formData.name}
-                    onChange={(e) => setFormData(prev => ({ ...prev, name: e.target.value }))}
-                    className="w-full px-4 py-3 border border-gray-200 text-d2c-navy focus:border-d2c-royal focus:ring-2 focus:ring-d2c-royal/20 outline-none transition-all rounded-lg"
-                    placeholder="Enter your name"
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-semibold text-d2c-navy mb-2">Phone Number</label>
-                  <input 
-                    required
-                    type="tel" 
-                    pattern="[0-9]{10}"
-                    value={formData.phone}
-                    onChange={(e) => setFormData(prev => ({ ...prev, phone: e.target.value }))}
-                    className="w-full px-4 py-3 border border-gray-200 text-d2c-navy focus:border-d2c-royal focus:ring-2 focus:ring-d2c-royal/20 outline-none transition-all rounded-lg"
-                    placeholder="10-digit mobile number"
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-semibold text-d2c-navy mb-2">Email Address</label>
-                  <input 
-                    type="email" 
-                    value={formData.email}
-                    onChange={(e) => setFormData(prev => ({ ...prev, email: e.target.value }))}
-                    className="w-full px-4 py-3 border border-gray-200 text-d2c-navy focus:border-d2c-royal focus:ring-2 focus:ring-d2c-royal/20 outline-none transition-all rounded-lg"
-                    placeholder="Email (Optional)"
-                  />
-                </div>
-                <div className="relative">
-                  <label className="block text-sm font-semibold text-d2c-navy mb-2">
-                    {isExamMode ? "Interested Exam (Optional)" : "Interested College (Optional)"}
-                  </label>
-                  <select 
-                    value={formData.selection}
-                    onChange={(e) => setFormData(prev => ({ ...prev, selection: e.target.value }))}
-                    className="w-full px-4 py-3 border border-gray-200 text-d2c-navy focus:border-d2c-royal focus:ring-2 focus:ring-d2c-royal/20 outline-none transition-all rounded-lg appearance-none bg-white pr-10"
-                  >
-                    <option value="">{isExamMode ? "Select an exam" : "Select a college"}</option>
-                    {isExamMode ? dbExams.map((exam) => (
-                      <option key={exam.id} value={exam.name}>{exam.name}</option>
-                    )) : dbColleges.map((c) => (
-                      <option key={c.id} value={c.name}>{c.name}</option>
-                    ))}
-                  </select>
-                  <ChevronDown className="absolute right-4 top-[38px] w-5 h-5 text-gray-400 pointer-events-none" />
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 w-full">
+                  <div>
+                    <label className="block text-sm font-semibold text-d2c-navy mb-2">Full Name</label>
+                    <input 
+                      required
+                      type="text" 
+                      value={formData.name}
+                      onChange={(e) => setFormData(prev => ({ ...prev, name: e.target.value }))}
+                      className="w-full px-4 py-3 border border-gray-200 text-d2c-navy focus:border-d2c-royal focus:ring-2 focus:ring-d2c-royal/20 outline-none transition-all rounded-lg"
+                      placeholder="Enter your name"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-semibold text-d2c-navy mb-2">Phone Number</label>
+                    <input 
+                      required
+                      type="tel" 
+                      pattern="[0-9]{10}"
+                      value={formData.phone}
+                      onChange={(e) => setFormData(prev => ({ ...prev, phone: e.target.value }))}
+                      className="w-full px-4 py-3 border border-gray-200 text-d2c-navy focus:border-d2c-royal focus:ring-2 focus:ring-d2c-royal/20 outline-none transition-all rounded-lg"
+                      placeholder="10-digit mobile number"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-semibold text-d2c-navy mb-2">Email Address</label>
+                    <input 
+                      type="email" 
+                      value={formData.email}
+                      onChange={(e) => setFormData(prev => ({ ...prev, email: e.target.value }))}
+                      className="w-full px-4 py-3 border border-gray-200 text-d2c-navy focus:border-d2c-royal focus:ring-2 focus:ring-d2c-royal/20 outline-none transition-all rounded-lg"
+                      placeholder="Email (Optional)"
+                    />
+                  </div>
+                  <div className="relative">
+                    <label className="block text-sm font-semibold text-d2c-navy mb-2">
+                      {isExamMode ? "Interested Exam (Optional)" : "Interested College (Optional)"}
+                    </label>
+                    <select 
+                      value={formData.selection}
+                      onChange={(e) => setFormData(prev => ({ ...prev, selection: e.target.value }))}
+                      className="w-full px-4 py-3 border border-gray-200 text-d2c-navy focus:border-d2c-royal focus:ring-2 focus:ring-d2c-royal/20 outline-none transition-all rounded-lg appearance-none bg-white pr-10"
+                    >
+                      <option value="">{isExamMode ? "Select an exam" : "Select a college"}</option>
+                      {isExamMode ? dbExams.map((exam) => (
+                        <option key={exam.id} value={exam.name}>{exam.name}</option>
+                      )) : dbColleges.map((c) => (
+                        <option key={c.id} value={c.name}>{c.name}</option>
+                      ))}
+                    </select>
+                    <ChevronDown className="absolute right-4 top-[38px] w-5 h-5 text-gray-400 pointer-events-none" />
+                  </div>
                 </div>
                 <button 
                   type="submit"
@@ -179,7 +181,7 @@ export function ApplyModal({ isOpen, onClose, context = "General" }: { isOpen: b
                   <div className="flex-grow border-t border-gray-200"></div>
                 </div>
                 
-                <div className="flex gap-4 w-full">
+                <div className="flex flex-col sm:flex-row gap-4 w-full">
                   <a
                     href="tel:+916200325137"
                     className="flex-1 flex items-center justify-center gap-2 py-3 bg-d2c-navy text-white rounded-lg font-semibold hover:bg-d2c-navy/90 transition-colors"

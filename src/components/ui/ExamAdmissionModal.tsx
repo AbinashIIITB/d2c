@@ -34,7 +34,7 @@ export function ExamAdmissionModal({ isOpen, onClose, examName }: { isOpen: bool
             initial={{ scale: 0.95, opacity: 0, y: 20 }}
             animate={{ scale: 1, opacity: 1, y: 0 }}
             exit={{ scale: 0.95, opacity: 0, y: 20 }}
-            className="bg-[#0B1120] rounded-[1.25rem] w-full max-w-md relative z-10 shadow-[0_24px_48px_-12px_rgba(11,17,32,0.8)] border border-white/10"
+            className="bg-[#0B1120] rounded-[1.25rem] w-full max-w-2xl relative z-10 shadow-[0_24px_48px_-12px_rgba(11,17,32,0.8)] border border-white/10"
           >
             {/* Background patterns */}
             <div className="absolute inset-0 rounded-[1.25rem] overflow-hidden pointer-events-none">
@@ -67,7 +67,7 @@ export function ExamAdmissionModal({ isOpen, onClose, examName }: { isOpen: bool
                 <div className="flex-grow border-t border-white/[0.06]"></div>
               </div>
 
-              <div className="flex gap-3 w-full">
+              <div className="flex flex-col sm:flex-row gap-3 w-full">
                 <a
                   href="tel:+916200325137"
                   className="flex-1 flex items-center justify-center gap-2 py-3.5 bg-white/[0.04] text-white text-sm font-semibold hover:bg-white/[0.08] border border-white/[0.06] rounded-xl transition-colors"
