@@ -23,7 +23,7 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
   }
   
   return {
-    title: `${exam.name} – Admission & Pattern Guide 2026`,
+    title: `${exam.name} – Admission & Pattern Guide 2027`,
     description: `${(exam.about_exam || '').slice(0, 155)}…`,
     keywords: [
       exam.name, 
@@ -89,7 +89,7 @@ export default async function ExamDetailPage({ params }: { params: Params }) {
             </div>
             <div className="text-center md:text-left">
               <div className="inline-block px-3 py-1 bg-d2c-sky/10 border border-d2c-sky/20 rounded-md text-d2c-sky text-xs font-bold uppercase tracking-widest mb-4">
-                Master Guide 2026
+                Master Guide 2027
               </div>
               <h1 className="text-4xl md:text-6xl font-sora font-bold text-white mb-4 line-tight">
                 {exam.name}
@@ -227,7 +227,7 @@ export default async function ExamDetailPage({ params }: { params: Params }) {
                     Get Free Counseling
                   </ApplyButton>
                   <a 
-                    href="tel:+919874878782"
+                    href="tel:+916200325137"
                     className="block w-full bg-white border border-gray-200 text-d2c-navy py-4 rounded-xl font-bold transition-colors hover:bg-gray-50"
                   >
                     Call Counselor

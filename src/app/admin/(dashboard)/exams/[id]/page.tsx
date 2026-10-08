@@ -110,7 +110,7 @@ export default async function EditExamPage({ params }: { params: Params }) {
             <input 
               name="tags"
               defaultValue={(exam.tags || []).join(', ')}
-              placeholder="e.g. engineering, jee main, entrance exam 2026"
+              placeholder="e.g. engineering, jee main, entrance exam 2027"
               className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-d2c-royal outline-none"
             />
             <p className="text-xs text-gray-500 mt-2">These tags will automatically be injected into the page metadata for better Google Rankings.</p>

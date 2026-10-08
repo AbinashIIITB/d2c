@@ -13,7 +13,7 @@ const VIDEOS = [
   },
   {
     id: "dQw4w9WgXcQ",
-    title: "MBA Admissions 2026 Strategy Guide",
+    title: "MBA Admissions 2027 Strategy Guide",
     thumbnail: "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?q=80&w=600&auto=format&fit=crop"
   },
   {

@@ -63,7 +63,7 @@ export default function SettingsPage() {
                 <label className="block text-sm font-semibold text-d2c-navy mb-2">Support Phone Number</label>
                 <input 
                   type="text"
-                  defaultValue="+91-9874878782"
+                  defaultValue="+91-6200325137"
                   className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-d2c-royal outline-none"
                 />
               </div>

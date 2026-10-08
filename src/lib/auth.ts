@@ -1,7 +1,7 @@
 import { SignJWT, jwtVerify } from 'jose';
 
 const SECRET_KEY = new TextEncoder().encode(
-  process.env.ADMIN_JWT_SECRET || 'super_secret_d2c_admin_key_2026'
+  process.env.ADMIN_JWT_SECRET || 'super_secret_d2c_admin_key_2027'
 );
 
 export async function createSession(role: string) {

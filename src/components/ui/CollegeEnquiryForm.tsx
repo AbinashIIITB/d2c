@@ -14,6 +14,7 @@ export function CollegeEnquiryForm({ collegeName }: CollegeEnquiryFormProps) {
         fullName: '',
         phone: '',
         email: '',
+        course: '',
     });
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [isSuccess, setIsSuccess] = useState(false);
@@ -38,7 +39,7 @@ export function CollegeEnquiryForm({ collegeName }: CollegeEnquiryFormProps) {
                     lastName,
                     phone: formData.phone,
                     email: formData.email,
-                    message: `Interested in admission at ${collegeName}`,
+                    message: `Interested in admission at ${collegeName}. Course: ${formData.course}`,
                     leadType: 'College Query',
                     interestedCollege: collegeName,
                 }),
@@ -49,7 +50,7 @@ export function CollegeEnquiryForm({ collegeName }: CollegeEnquiryFormProps) {
             }
 
             setIsSuccess(true);
-            setFormData({ fullName: '', phone: '', email: '' });
+            setFormData({ fullName: '', phone: '', email: '', course: '' });
         } catch {
             setError('Something went wrong. Please try again.');
         } finally {
@@ -103,6 +104,16 @@ export function CollegeEnquiryForm({ collegeName }: CollegeEnquiryFormProps) {
                         className="bg-white text-gray-900 border-gray-200 placeholder:text-gray-500 focus-visible:ring-[#3B4CC0]/20 focus-visible:border-[#3B4CC0]"
                         value={formData.email}
                         onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                    />
+                </div>
+                <div className="space-y-2 sm:col-span-2">
+                    <Input
+                        type="text"
+                        placeholder="Select Course/Branch (eg B Tech, M Tech, etc)"
+                        className="bg-white text-gray-900 border-gray-200 placeholder:text-gray-500 focus-visible:ring-[#3B4CC0]/20 focus-visible:border-[#3B4CC0]"
+                        value={formData.course}
+                        onChange={(e) => setFormData({ ...formData, course: e.target.value })}
+                        required
                     />
                 </div>
             </div>

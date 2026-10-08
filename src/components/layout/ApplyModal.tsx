@@ -6,7 +6,7 @@ import { motion, AnimatePresence } from "framer-motion"
 import { X, PhoneCall, MessageCircle, GraduationCap, ChevronDown } from "lucide-react"
 
 export function ApplyModal({ isOpen, onClose, context = "General" }: { isOpen: boolean, onClose: () => void, context?: string }) {
-  const [formData, setFormData] = useState({ name: "", phone: "", email: "", selection: "" })
+  const [formData, setFormData] = useState({ name: "", phone: "", email: "", selection: "", course: "" })
   const [status, setStatus] = useState<"IDLE" | "SUBMITTING" | "SUCCESS" | "ERROR">("IDLE")
   const [mounted, setMounted] = useState(false)
   const [dbColleges, setDbColleges] = useState<{ id: string, name: string }[]>([])
@@ -28,7 +28,7 @@ export function ApplyModal({ isOpen, onClose, context = "General" }: { isOpen: b
       } else if (context.startsWith("Exam: ")) {
         defaultSelection = context.replace("Exam: ", "");
       }
-      setFormData({ name: "", phone: "", email: "", selection: defaultSelection });
+      setFormData({ name: "", phone: "", email: "", selection: defaultSelection, course: "" });
       setStatus("IDLE");
     }
   }, [isOpen, context]);
@@ -46,7 +46,7 @@ export function ApplyModal({ isOpen, onClose, context = "General" }: { isOpen: b
           name: formData.name,
           phone: formData.phone,
           email: formData.email,
-          message: `Application context: ${context}`,
+          message: `Application context: ${context}. Course: ${formData.course}`,
           interestedCollege: formData.selection || context
         }),
       });
@@ -56,7 +56,7 @@ export function ApplyModal({ isOpen, onClose, context = "General" }: { isOpen: b
       setStatus("SUCCESS")
       setTimeout(() => {
         setStatus("IDLE")
-        setFormData({ name: "", phone: "", email: "", selection: "" })
+        setFormData({ name: "", phone: "", email: "", selection: "", course: "" })
         onClose()
       }, 3000)
     } catch (error) {
@@ -136,6 +136,17 @@ export function ApplyModal({ isOpen, onClose, context = "General" }: { isOpen: b
                       onChange={(e) => setFormData(prev => ({ ...prev, phone: e.target.value }))}
                       className="w-full px-4 py-3 border border-gray-200 text-d2c-navy focus:border-d2c-royal focus:ring-2 focus:ring-d2c-royal/20 outline-none transition-all rounded-lg"
                       placeholder="10-digit mobile number"
+                    />
+                  </div>
+                  <div className="sm:col-span-2">
+                    <label className="block text-sm font-semibold text-d2c-navy mb-2">Course/Branch</label>
+                    <input 
+                      required
+                      type="text" 
+                      value={formData.course}
+                      onChange={(e) => setFormData(prev => ({ ...prev, course: e.target.value }))}
+                      className="w-full px-4 py-3 border border-gray-200 text-d2c-navy focus:border-d2c-royal focus:ring-2 focus:ring-d2c-royal/20 outline-none transition-all rounded-lg"
+                      placeholder="Select Course/Branch (eg B Tech, M Tech, etc)"
                     />
                   </div>
                   <div>

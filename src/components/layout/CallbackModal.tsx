@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from "framer-motion"
 import { X, PhoneCall, MessageCircle } from "lucide-react"
 
 export function CallbackModal({ isOpen, onClose, initialPhone = "" }: { isOpen: boolean, onClose: () => void, initialPhone?: string }) {
-  const [formData, setFormData] = useState({ name: "", phone: initialPhone })
+  const [formData, setFormData] = useState({ name: "", phone: initialPhone, course: "" })
   const [status, setStatus] = useState<"IDLE" | "SUBMITTING" | "SUCCESS" | "ERROR">("IDLE")
 
   useEffect(() => {
@@ -27,6 +27,7 @@ export function CallbackModal({ isOpen, onClose, initialPhone = "" }: { isOpen: 
           leadType: "Free Counselling",
           name: formData.name,
           phone: formData.phone,
+          message: `Free Counselling callback requested. Course: ${formData.course}`,
         }),
       });
       
@@ -35,7 +36,7 @@ export function CallbackModal({ isOpen, onClose, initialPhone = "" }: { isOpen: 
       setStatus("SUCCESS")
       setTimeout(() => {
         setStatus("IDLE")
-        setFormData({ name: "", phone: "" })
+        setFormData({ name: "", phone: "", course: "" })
         onClose()
       }, 3000)
     } catch (error) {
@@ -100,6 +101,17 @@ export function CallbackModal({ isOpen, onClose, initialPhone = "" }: { isOpen: 
                     onChange={(e) => setFormData(prev => ({ ...prev, name: e.target.value }))}
                     className="w-full px-4 py-3 border border-gray-200 text-d2c-navy focus:border-d2c-royal focus:ring-2 focus:ring-d2c-royal/20 outline-none transition-all"
                     placeholder="Enter your name"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-semibold text-d2c-navy mb-2">Course/Branch</label>
+                  <input 
+                    required
+                    type="text" 
+                    value={formData.course}
+                    onChange={(e) => setFormData(prev => ({ ...prev, course: e.target.value }))}
+                    className="w-full px-4 py-3 border border-gray-200 text-d2c-navy focus:border-d2c-royal focus:ring-2 focus:ring-d2c-royal/20 outline-none transition-all"
+                    placeholder="Select Course/Branch (eg B Tech, M Tech, etc)"
                   />
                 </div>
                 <div>

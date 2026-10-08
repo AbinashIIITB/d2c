@@ -222,10 +222,10 @@ export const colleges: College[] = [
         },
         keyDates: [
             { event: "WBJEE Registration", date: "December 2025" },
-            { event: "WBJEE Exam", date: "April 2026" },
-            { event: "WBJEE Result", date: "June 2026" },
-            { event: "Counseling Starts", date: "July 2026" },
-            { event: "Classes Begin", date: "August 2026" }
+            { event: "WBJEE Exam", date: "April 2027" },
+            { event: "WBJEE Result", date: "June 2027" },
+            { event: "Counseling Starts", date: "July 2027" },
+            { event: "Classes Begin", date: "August 2027" }
         ],
         whyChoose: [
             "35+ years of academic excellence and industry reputation",
@@ -312,7 +312,7 @@ export const colleges: College[] = [
             eligibility: ["10+2 with PCM", "Valid WBJEE score"],
             documents: ["10th & 12th Marksheets", "WBJEE Rank Card", "Category Certificate"]
         },
-        keyDates: [{ event: "WBJEE Counseling", date: "July 2026" }, { event: "Classes Begin", date: "August 2026" }],
+        keyDates: [{ event: "WBJEE Counseling", date: "July 2027" }, { event: "Classes Begin", date: "August 2027" }],
         whyChoose: ["Affordable fee structure", "Salt Lake location with IT hub proximity", "Part of established Techno India Group", "Good placement support"],
         scholarships: [{ title: "Merit Scholarship", items: [{ label: "Top WBJEE Rankers", value: "Up to 30% fee waiver" }] }],
         alumni: { description: "Strong network of Techno India alumni working in IT companies across India.", companies: ["TCS", "Wipro", "Infosys", "Cognizant", "Capgemini"] },
@@ -362,7 +362,7 @@ export const colleges: College[] = [
             topRecruiters: [{ category: "Core Companies", companies: ["IOCL", "HPCL", "L&T", "Tata Steel", "Jindal"] }]
         },
         admissions: { process: ["WBJEE counseling", "Document verification", "Fee payment"], eligibility: ["10+2 with PCM", "Valid WBJEE score"], documents: ["Marksheets", "WBJEE Rank Card"] },
-        keyDates: [{ event: "WBJEE Counseling", date: "July 2026" }, { event: "Classes Begin", date: "August 2026" }],
+        keyDates: [{ event: "WBJEE Counseling", date: "July 2027" }, { event: "Classes Begin", date: "August 2027" }],
         whyChoose: ["Affordable fees", "Industrial location", "Strong core placements", "Large campus"],
         scholarships: [{ title: "Merit Scholarship", items: [{ label: "Merit Students", value: "Up to 25% fee waiver" }] }, { title: "TFW Scheme", items: [{ label: "Tuition Fee Waiver", value: "Full Tuition Fee Waived" }] }],
         alumni: { description: "HIT alumni work in major core sector companies across India.", companies: ["IOCL", "HPCL", "L&T", "Tata Steel", "ONGC", "NTPC"] },
@@ -399,7 +399,7 @@ export const colleges: College[] = [
         feesDetails: [{ title: "B.Tech Fee Structure (2024-25)", items: [{ label: "Total B.Tech (4 Years)", value: "₹6.04 Lakhs" }] }],
         placements: { stats: [{ label: "Highest Package", value: "₹15 LPA" }, { label: "Average Package", value: "₹4 LPA" }], topRecruiters: [{ category: "IT", companies: ["TCS", "Wipro", "Infosys"] }] },
         admissions: { process: ["WBJEE counseling"], eligibility: ["10+2 with PCM"], documents: ["Marksheets", "WBJEE Rank Card"] },
-        keyDates: [{ event: "WBJEE Counseling", date: "July 2026" }],
+        keyDates: [{ event: "WBJEE Counseling", date: "July 2027" }],
         whyChoose: ["Semi-government status", "Affordable fees", "IT focused curriculum", "Central Kolkata location"],
         scholarships: [{ title: "TFW Scheme", items: [{ label: "Tuition Fee Waiver", value: "Full Tuition Fee Waived for eligible students" }] }],
         alumni: { description: "RCCIIT alumni work in IT companies across India.", companies: ["TCS", "Wipro", "Infosys", "Cognizant", "Tech Mahindra"] },
@@ -436,7 +436,7 @@ export const colleges: College[] = [
         feesDetails: [{ title: "B.Tech Fee Structure (2024-25)", items: [{ label: "Total B.Tech (4 Years)", value: "₹4.2 - 6.52 Lakhs" }], note: "Varies depending on B.Tech specialization" }],
         placements: { stats: [{ label: "Highest Package", value: "₹20 LPA" }, { label: "Average Package", value: "₹5 LPA" }, { label: "Placement Rate", value: "85%+" }], topRecruiters: [{ category: "IT", companies: ["TCS", "Wipro", "Cognizant", "Capgemini"] }] },
         admissions: { process: ["WBJEE counseling", "Document verification"], eligibility: ["10+2 with PCM"], documents: ["Marksheets", "WBJEE Rank Card"] },
-        keyDates: [{ event: "WBJEE Counseling", date: "July 2026" }, { event: "Classes Begin", date: "August 2026" }],
+        keyDates: [{ event: "WBJEE Counseling", date: "July 2027" }, { event: "Classes Begin", date: "August 2027" }],
         whyChoose: ["Autonomous curriculum", "Research opportunities", "Good placements", "Modern campus"],
         scholarships: [{ title: "Merit Scholarship", items: [{ label: "Top WBJEE Rankers", value: "Up to 40% fee waiver" }] }, { title: "JIS Group Scholarship", items: [{ label: "Economically Weaker Sections", value: "Special fee concession" }] }],
         alumni: { description: "Strong alumni network across IT industry.", companies: ["TCS", "Wipro", "Cognizant", "Capgemini", "Infosys"] },
@@ -473,7 +473,7 @@ export const colleges: College[] = [
         feesDetails: [{ title: "B.Tech Fee Structure (2024-25)", items: [{ label: "Total B.Tech (4 Years)", value: "₹5.89 Lakhs" }], note: "Excludes hostel which is ~₹2.8 Lakhs extra" }],
         placements: { stats: [{ label: "Highest Package", value: "₹28 LPA" }, { label: "Average Package", value: "₹5.8 LPA" }, { label: "Placement Rate", value: "92%+" }], highlights: ["Top placements in West Bengal private colleges"], topRecruiters: [{ category: "Tech", companies: ["Amazon", "Microsoft", "TCS", "Cognizant", "Wipro", "Capgemini"] }] },
         admissions: { process: ["WBJEE counseling", "JEE Main quota available", "Document verification"], eligibility: ["10+2 with PCM", "Valid WBJEE/JEE Main score"], documents: ["Marksheets", "Rank Card", "Certificates"] },
-        keyDates: [{ event: "WBJEE Counseling", date: "July 2026" }],
+        keyDates: [{ event: "WBJEE Counseling", date: "July 2027" }],
         whyChoose: ["Top ranked in West Bengal", "Autonomous curriculum", "Excellent placements", "Modern infrastructure", "Strong alumni network"],
         scholarships: [{ title: "Merit Scholarship", items: [{ label: "Top WBJEE Rankers", value: "Up to 50% fee waiver" }] }],
         alumni: { description: "Strong alumni network with graduates in top companies.", companies: ["Google", "Amazon", "Microsoft", "Goldman Sachs"] },
@@ -510,7 +510,7 @@ export const colleges: College[] = [
         feesDetails: [{ title: "B.Tech Fee Structure (2024-25)", items: [{ label: "Total B.Tech (4 Years)", value: "₹2.6 - 4.7 Lakhs" }], note: "Affordable with good ROI" }],
         placements: { stats: [{ label: "Highest Package", value: "₹18 LPA" }, { label: "Average Package", value: "₹4.8 LPA" }, { label: "Placement Rate", value: "90%+" }], highlights: ["Strong TCS, Wipro, Cognizant placements"], topRecruiters: [{ category: "IT Services", companies: ["TCS", "Wipro", "Cognizant", "Infosys", "Capgemini", "Tech Mahindra"] }] },
         admissions: { process: ["WBJEE counseling", "Document verification"], eligibility: ["10+2 with PCM", "Valid WBJEE score"], documents: ["Marksheets", "WBJEE Rank Card", "Certificates"] },
-        keyDates: [{ event: "WBJEE Counseling", date: "July 2026" }],
+        keyDates: [{ event: "WBJEE Counseling", date: "July 2027" }],
         whyChoose: ["High placement rate (90%+)", "Strict discipline ensures focus", "Affordable fees", "Good for IT service placements", "Residential campus"],
         scholarships: [{ title: "Merit Scholarship", items: [{ label: "Top Performers", value: "Fee concession available" }] }],
         faqs: [
@@ -2536,7 +2536,7 @@ export const colleges: College[] = [
             topRecruiters: [{ category: "Tech", companies: ["Amazon", "Microsoft", "Google", "Oracle", "TCS", "Infosys"] }]
         },
         admissions: { process: ["Register for KIITEE", "Take KIITEE exam", "Counseling based on rank"], eligibility: ["10+2 with PCM", "KIITEE score"], documents: ["Marksheets", "KIITEE Rank Card"] },
-        keyDates: [{ event: "KIITEE Exam", date: "April-May 2026" }],
+        keyDates: [{ event: "KIITEE Exam", date: "April-May 2027" }],
         whyChoose: ["Top 20 in India", "Massive world-class campus", "100% placement assistance", "Strong social initiative (KISS)", "Affordable compared to peers"],
         scholarships: [{ title: "Merit Scholarship", items: [{ label: "Top KIITEE Rankers", value: "Up to 100% fee waiver" }] }],
         faqs: [{ question: "Is KIIT good for engineering?", answer: "Yes, KIIT is among the top 20 engineering institutions in India with excellent infrastructure and placements." }, { question: "Does the college provide internship support?", answer: "Yes, the college has a dedicated placement cell that assists students in securing summer internships and industrial training." }, { question: "Is there a dedicated placement cell?", answer: "Yes, the Training and Placement Cell works year-round to bring top companies for recruitment and trains students in soft skills." }, { question: "Are there hostel facilities available?", answer: "Yes, separate hostel facilities are available for boys and girls with all necessary amenities and security." }],
@@ -2951,7 +2951,7 @@ export const colleges: College[] = [
         feesDetails: [{ title: "B.Tech Fee Structure", items: [{ label: "Total B.Tech (4 Years)", value: "₹10 - 12 Lakhs" }] }],
         placements: { stats: [{ label: "Highest Package", value: "₹30 LPA" }, { label: "Average Package", value: "₹7 LPA" }, { label: "Placement Rate", value: "90%+" }], topRecruiters: [{ category: "Tech", companies: ["Microsoft", "Amazon", "TCS", "Infosys", "Wipro"] }] },
         admissions: { process: ["MHT-CET/JEE Main", "CAP Counseling", "Document verification"], eligibility: ["10+2 with PCM", "Valid MHT-CET/JEE score"], documents: ["Marksheets", "Rank Card", "Domicile"] },
-        keyDates: [{ event: "MHT-CET Exam", date: "May 2026" }, { event: "Counseling", date: "July 2026" }],
+        keyDates: [{ event: "MHT-CET Exam", date: "May 2027" }, { event: "Counseling", date: "July 2027" }],
         whyChoose: ["Legacy of 40+ years", "Top ranked in Maharashtra", "Strong placements", "Pune IT hub location"],
         scholarships: [{ title: "Merit Scholarship", items: [{ label: "Top Rankers", value: "Up to 50% fee waiver" }] }],
         faqs: [{ question: "Is MIT Pune good?", answer: "Yes, MIT Pune is one of the top private engineering colleges in Maharashtra with excellent legacy and placements." }, { question: "Does the college provide internship support?", answer: "Yes, the college has a dedicated placement cell that assists students in securing summer internships and industrial training." }, { question: "Is there a dedicated placement cell?", answer: "Yes, the Training and Placement Cell works year-round to bring top companies for recruitment and trains students in soft skills." }, { question: "Are there hostel facilities available?", answer: "Yes, separate hostel facilities are available for boys and girls with all necessary amenities and security." }],
@@ -3101,7 +3101,7 @@ export const colleges: College[] = [
         feesDetails: [{ title: "B.Tech Fee Structure (2024-25)", items: [{ label: "Total B.Tech (4 Years)", value: "₹5.55 - 6.97 Lakhs" }] }],
         placements: { stats: [{ label: "Highest Package", value: "₹15 LPA" }, { label: "Average Package", value: "₹4.2 LPA" }], topRecruiters: [{ category: "IT", companies: ["TCS", "Wipro", "Cognizant", "Infosys"] }] },
         admissions: { process: ["WBJEE counseling"], eligibility: ["10+2 with PCM"], documents: ["Marksheets", "WBJEE Rank Card"] },
-        keyDates: [{ event: "WBJEE Counseling", date: "July 2026" }],
+        keyDates: [{ event: "WBJEE Counseling", date: "July 2027" }],
         whyChoose: ["Part of Techno India Group", "Good faculty", "Affordable fees", "Decent placements"],
         scholarships: [{ title: "Techno India Scholarship", items: [{ label: "Merit Students", value: "Fee concession available" }] }],
         alumni: { description: "MSIT alumni work in IT companies.", companies: ["TCS", "Wipro", "Cognizant", "Infosys"] },
@@ -3486,7 +3486,7 @@ export const colleges: College[] = [
         feesDetails: [{ title: "B.Tech Fee Structure (2024-25)", items: [{ label: "Total B.Tech (4 Years)", value: "₹6.8 - 6.92 Lakhs" }], note: "Hostel charges are separate (~₹30,000/year)" }],
         placements: { stats: [{ label: "Highest Package", value: "₹12 LPA" }, { label: "Average Package", value: "₹3.8 LPA" }], topRecruiters: [{ category: "IT", companies: ["TCS", "Wipro", "Infosys"] }] },
         admissions: { process: ["WBJEE counseling"], eligibility: ["10+2 with PCM"], documents: ["Marksheets", "WBJEE Rank Card"] },
-        keyDates: [{ event: "WBJEE Counseling", date: "July 2026" }],
+        keyDates: [{ event: "WBJEE Counseling", date: "July 2027" }],
         whyChoose: ["South Kolkata location", "Metro connectivity", "Affordable fees", "Established since 1998"],
         scholarships: [{ title: "Merit Scholarship", items: [{ label: "Merit Students", value: "Fee concession available" }] }],
         alumni: { description: "NSEC alumni network in IT sector.", companies: ["TCS", "Wipro", "Infosys", "HCL"] },
@@ -3643,7 +3643,7 @@ export const colleges: College[] = [
         feesDetails: [{ title: "B.Tech Fee Structure (2024-25)", items: [{ label: "Total B.Tech (4 Years)", value: "₹18 - 20 Lakhs (PESSAT Quota)" }], note: "Management quota fees are significantly higher" }],
         placements: { stats: [{ label: "Highest Package", value: "₹55 LPA" }, { label: "Average Package", value: "₹14 LPA" }, { label: "Placement Rate", value: "97%+" }], highlights: ["Among highest placements in South India"], topRecruiters: [{ category: "Tech Giants", companies: ["Google", "Microsoft", "Amazon", "Goldman Sachs", "Oracle", "Adobe"] }] },
         admissions: { process: ["Register for PESSAT", "Take PESSAT exam", "Counseling based on rank"], eligibility: ["10+2 with PCM", "PESSAT score"], documents: ["Marksheets", "PESSAT Rank Card"] },
-        keyDates: [{ event: "PESSAT Exam", date: "April-May 2026" }, { event: "Counseling", date: "June 2026" }],
+        keyDates: [{ event: "PESSAT Exam", date: "April-May 2027" }, { event: "Counseling", date: "June 2027" }],
         whyChoose: ["Top placements in South India", "PESSAT ensures quality intake", "Modern infrastructure", "Strong alumni network", "Bangalore tech hub location"],
         scholarships: [{ title: "Merit Scholarship", items: [{ label: "Top PESSAT Rankers", value: "Up to 100% fee waiver" }] }],
         alumni: { companies: ["Google", "Microsoft", "Amazon", "Facebook", "Uber"] },
@@ -4250,7 +4250,7 @@ export const colleges: College[] = [
         feesDetails: [{ title: "B.E. Fee Structure (2024-25)", items: [{ label: "Total B.E. (4 Years)", value: "₹10 - 15 Lakhs+" }], note: "Varies heavily based on quota (COMEDK vs Management)" }],
         placements: { stats: [{ label: "Highest Package", value: "₹62 LPA" }, { label: "Average Package", value: "₹12 LPA" }, { label: "Placement Rate", value: "95%+" }], highlights: ["Top placements in Karnataka", "Multiple international offers"], topRecruiters: [{ category: "Tech Giants", companies: ["Google", "Microsoft", "Amazon", "Oracle", "Adobe", "Goldman Sachs"] }] },
         admissions: { process: ["Appear for COMEDK/KCET", "Participate in counseling", "Document verification"], eligibility: ["10+2 with PCM", "COMEDK/KCET score"], documents: ["Marksheets", "Rank Card", "Domicile"] },
-        keyDates: [{ event: "COMEDK Exam", date: "May 2026" }, { event: "Counseling", date: "June-July 2026" }],
+        keyDates: [{ event: "COMEDK Exam", date: "May 2027" }, { event: "Counseling", date: "June-July 2027" }],
         whyChoose: ["Top 50 in India", "Exceptional placements", "Legacy of 60+ years", "Strong industry connections", "Bangalore IT hub location"],
         scholarships: [{ title: "Merit Scholarship", items: [{ label: "Top COMEDK Rankers", value: "Up to 100% fee waiver" }] }],
         alumni: { description: "Strong global alumni network.", companies: ["Google", "Microsoft", "Amazon", "Facebook", "Apple"] },
@@ -5181,7 +5181,7 @@ export const colleges: College[] = [
             topRecruiters: [{ category: "Tech", companies: ["Amazon", "Microsoft", "Google", "TCS", "Infosys", "Cognizant"] }]
         },
         admissions: { process: ["Register for SRMJEEE", "Take SRMJEEE exam", "Counseling"], eligibility: ["10+2 with PCM", "SRMJEEE score"], documents: ["Marksheets", "SRMJEEE Rank Card"] },
-        keyDates: [{ event: "SRMJEEE Exam", date: "April-June 2026" }, { event: "Counseling", date: "June-July 2026" }],
+        keyDates: [{ event: "SRMJEEE Exam", date: "April-June 2027" }, { event: "Counseling", date: "June-July 2027" }],
         whyChoose: ["Top 15 in India", "Multiple campus options", "Strong placements", "Global exposure", "Massive campus"],
         scholarships: [{ title: "Merit Scholarship", items: [{ label: "Top Rankers", value: "Up to 100% fee waiver" }] }],
         faqs: [{ question: "Is SRM good for engineering?", answer: "Yes, SRM is among the top 15 engineering institutions in India with excellent infrastructure and placements." }, { question: "Does the college provide internship support?", answer: "Yes, the college has a dedicated placement cell that assists students in securing summer internships and industrial training." }, { question: "Is there a dedicated placement cell?", answer: "Yes, the Training and Placement Cell works year-round to bring top companies for recruitment and trains students in soft skills." }, { question: "Are there hostel facilities available?", answer: "Yes, separate hostel facilities are available for boys and girls with all necessary amenities and security." }],
@@ -5420,7 +5420,7 @@ export const colleges: College[] = [
         feesDetails: [{ title: "B.Tech Fee Structure", items: [{ label: "Total B.Tech (4 Years)", value: "₹12 - 15 Lakhs" }], note: "Premium fees with excellent ROI" }],
         placements: { stats: [{ label: "Highest Package", value: "₹35 LPA" }, { label: "Average Package", value: "₹9 LPA" }, { label: "Placement Rate", value: "95%+" }], topRecruiters: [{ category: "Tech", companies: ["Microsoft", "Amazon", "Goldman Sachs", "TCS", "Infosys"] }] },
         admissions: { process: ["Register for SET", "Take SET exam", "PI (Personal Interview)", "Counseling"], eligibility: ["10+2 with PCM", "SET score"], documents: ["Marksheets", "SET Score Card"] },
-        keyDates: [{ event: "SET Exam", date: "May 2026" }, { event: "PI & Counseling", date: "June 2026" }],
+        keyDates: [{ event: "SET Exam", date: "May 2027" }, { event: "PI & Counseling", date: "June 2027" }],
         whyChoose: ["Symbiosis brand value", "International exposure", "Excellent placements", "Modern campus", "Strong alumni"],
         scholarships: [{ title: "Merit Scholarship", items: [{ label: "Top SET Rankers", value: "Up to 100% scholarship" }] }],
         faqs: [{ question: "Is Symbiosis good for engineering?", answer: "Yes, SIT Pune offers quality engineering education with strong placements and international exposure." }, { question: "Does the college provide internship support?", answer: "Yes, the college has a dedicated placement cell that assists students in securing summer internships and industrial training." }, { question: "Is there a dedicated placement cell?", answer: "Yes, the Training and Placement Cell works year-round to bring top companies for recruitment and trains students in soft skills." }, { question: "Are there hostel facilities available?", answer: "Yes, separate hostel facilities are available for boys and girls with all necessary amenities and security." }],
@@ -5457,7 +5457,7 @@ export const colleges: College[] = [
         feesDetails: [{ title: "B.Tech Fee Structure (2024-25)", items: [{ label: "Total B.Tech (4 Years)", value: "₹5 - 7.65 Lakhs" }] }],
         placements: { stats: [{ label: "Highest Package", value: "₹20 LPA" }, { label: "Average Package", value: "₹5 LPA" }], topRecruiters: [{ category: "IT", companies: ["TCS", "Wipro", "Cognizant"] }] },
         admissions: { process: ["WBJEE counseling"], eligibility: ["10+2 with PCM"], documents: ["Marksheets", "WBJEE Rank Card"] },
-        keyDates: [{ event: "WBJEE Counseling", date: "July 2026" }],
+        keyDates: [{ event: "WBJEE Counseling", date: "July 2027" }],
         whyChoose: ["Modern New Town location", "Innovation focus", "Good infrastructure", "Growing reputation"],
         scholarships: [{ title: "Techno India Scholarship", items: [{ label: "Top Performers", value: "Up to 30% fee waiver" }] }],
         alumni: { description: "Growing alumni network in IT companies.", companies: ["TCS", "Wipro", "Cognizant", "Capgemini"] },
@@ -5798,7 +5798,7 @@ export const colleges: College[] = [
             topRecruiters: [{ category: "Domain Companies", companies: ["ONGC", "IOCL", "Amazon", "Microsoft", "Deloitte", "EY"] }]
         },
         admissions: { process: ["Apply through UPESEAT/JEE/Board Merit", "Counseling", "Program selection"], eligibility: ["10+2 with PCM"], documents: ["Marksheets", "ID Proof"] },
-        keyDates: [{ event: "UPESEAT Exam", date: "Multiple dates (2026)" }],
+        keyDates: [{ event: "UPESEAT Exam", date: "Multiple dates (2027)" }],
         whyChoose: ["Unique specializations", "Industry-focused curriculum", "High placements", "Scenic location", "Strong alumni"],
         scholarships: [{ title: "Merit Scholarship", items: [{ label: "Top Board Scores", value: "Up to 100% tuition waiver" }] }],
         faqs: [
@@ -6049,7 +6049,7 @@ export const colleges: College[] = [
             topRecruiters: [{ category: "Tech Giants", companies: ["Google", "Microsoft", "Amazon", "Goldman Sachs", "Deloitte", "Oracle", "Adobe"] }]
         },
         admissions: { process: ["Register for VITEEE", "Take VITEEE exam", "Counseling based on rank", "Choose campus and program"], eligibility: ["10+2 with PCM", "VITEEE score"], documents: ["Marksheets", "VITEEE Rank Card", "ID Proof"] },
-        keyDates: [{ event: "VITEEE Registration", date: "November 2025" }, { event: "VITEEE Exam", date: "April 2026" }, { event: "Counseling", date: "May-June 2026" }],
+        keyDates: [{ event: "VITEEE Registration", date: "November 2025" }, { event: "VITEEE Exam", date: "April 2027" }, { event: "Counseling", date: "May-June 2027" }],
         whyChoose: ["No. 1 Private University in India", "Exceptional placements (₹85 LPA highest)", "Global recognition", "Diverse student community", "Multiple campus options", "Strong alumni network"],
         scholarships: [{ title: "Merit Scholarship", items: [{ label: "VITEEE Top 50", value: "100% Tuition Fee Waiver" }, { label: "VITEEE Top 500", value: "75% Tuition Fee Waiver" }, { label: "VITEEE Top 1000", value: "50% Tuition Fee Waiver" }] }],
         alumni: { description: "Largest private university alumni network in India.", companies: ["Google", "Microsoft", "Amazon", "Facebook", "Apple", "Goldman Sachs", "McKinsey"] },
@@ -6072,24 +6072,24 @@ export const colleges: College[] = [
 export const exams: Exam[] = [
     {
         id: "bitsat",
-        slug: "bitsat-2026",
-        name: "BITSAT 2026",
+        slug: "bitsat-2027",
+        name: "BITSAT 2027",
         logoUrl: "https://placehold.co/100x100/2563eb/ffffff?text=BITSAT",
         fullName: "Birla Institute of Technology and Science Admission Test",
         description: "BITSAT is a computer-based online test for admission to Integrated First Degree Programmes of BITS Pilani Campuses in Pilani, Goa, and Hyderabad.",
-        date: "Session 1: May 2026 | Session 2: June 2026",
+        date: "Session 1: May 2027 | Session 2: June 2027",
         applicationLink: "https://www.bitsadmission.com/",
         introduction: "BITSAT (Birla Institute of Technology and Science Admission Test) is one of the most prestigious engineering entrance exams in India. Conducted by BITS Pilani, this exam opens doors to world-class education at three campuses - Pilani, Goa, and Hyderabad. With no reservation policy and purely merit-based admissions, BITSAT attracts the best minds from across India. This exam is a gateway to some of the most prestigious institutes in the region. Securing a good rank requires consistent preparation and a clear understanding of the syllabus.",
         aboutExam: "BITSAT is conducted by Birla Institute of Technology and Science (BITS), Pilani - an all-India Institute for higher education ranked among the top engineering institutions in India. BITS Pilani was established in 1964 by the late Mr. G.D. Birla and is now an Institute of Eminence. BITSAT is unique because it's one of the few exams in India that follows a strict merit-based admission policy with absolutely no reservation based on caste, category, or region. The exam has two sessions giving candidates two attempts, and bonus questions for those who finish early. Known for its competitive nature, this exam attracts thousands of aspirants every year. Akash Talks provides comprehensive guidance, from application filling to counseling, ensuring students make informed decisions.",
-        overview: "Birla Institute of Technology and Science Admission Test (BITSAT) is an entrance exam conducted by BITS Pilani. It is one of the most competitive engineering entrance exams in India. The exam is held for admission to B.E., B.Pharm, and M.Sc. programs at Pilani, Goa, and Hyderabad campuses. BITSAT 2026 will be conducted in two sessions, allowing candidates two attempts to improve their scores. The exam tests candidates on Physics, Chemistry, Mathematics/Biology, English Proficiency, and Logical Reasoning. The exam assesses candidates on their conceptual understanding and problem-solving skills. It is conducted annually and follows a strict pattern.",
+        overview: "Birla Institute of Technology and Science Admission Test (BITSAT) is an entrance exam conducted by BITS Pilani. It is one of the most competitive engineering entrance exams in India. The exam is held for admission to B.E., B.Pharm, and M.Sc. programs at Pilani, Goa, and Hyderabad campuses. BITSAT 2027 will be conducted in two sessions, allowing candidates two attempts to improve their scores. The exam tests candidates on Physics, Chemistry, Mathematics/Biology, English Proficiency, and Logical Reasoning. The exam assesses candidates on their conceptual understanding and problem-solving skills. It is conducted annually and follows a strict pattern.",
         importantDates: [
-            { event: "Application Start Date", date: "January 2026 (Tentative)" },
-            { event: "Application End Date", date: "April 2026 (Tentative)" },
-            { event: "Slot Booking Session 1", date: "Early May 2026" },
-            { event: "BITSAT Session 1 Exam", date: "Late May 2026" },
-            { event: "BITSAT Session 2 Application", date: "Late May - June 2026" },
-            { event: "BITSAT Session 2 Exam", date: "Mid June 2026" },
-            { event: "Counseling (Iteration 1)", date: "July 2026" }
+            { event: "Application Start Date", date: "January 2027 (Tentative)" },
+            { event: "Application End Date", date: "April 2027 (Tentative)" },
+            { event: "Slot Booking Session 1", date: "Early May 2027" },
+            { event: "BITSAT Session 1 Exam", date: "Late May 2027" },
+            { event: "BITSAT Session 2 Application", date: "Late May - June 2027" },
+            { event: "BITSAT Session 2 Exam", date: "Mid June 2027" },
+            { event: "Counseling (Iteration 1)", date: "July 2027" }
         ],
         applicationProcess: [
             { step: "Registration", description: "Visit the official website (bitsadmission.com) and register with a valid email ID and mobile number." },
@@ -6112,7 +6112,7 @@ export const exams: Exam[] = [
             "Minimum 75% aggregate marks in PCM/PCB subjects in 12th examination.",
             "Minimum 60% marks in each of Physics, Chemistry, and Mathematics/Biology individually.",
             "Proficiency in English is required.",
-            "Students potentially appearing for 12th exams in 2026 are also eligible."
+            "Students potentially appearing for 12th exams in 2027 are also eligible."
         ],
         examPattern: {
             mode: "Online (Computer Based Test)",
@@ -6137,23 +6137,23 @@ export const exams: Exam[] = [
     },
     {
         id: "wbjee",
-        slug: "wbjee-2026",
-        name: "WBJEE 2026",
+        slug: "wbjee-2027",
+        name: "WBJEE 2027",
         logoUrl: "https://placehold.co/100x100/10b981/ffffff?text=WBJEE",
         fullName: "West Bengal Joint Entrance Examination",
         description: "State-level entrance exam for admission to undergraduate engineering, technology, pharmacy, and architecture courses in West Bengal.",
-        date: "April 2026 (Expected)",
+        date: "April 2027 (Expected)",
         applicationLink: "https://wbjeeb.nic.in/",
         introduction: "WBJEE (West Bengal Joint Entrance Examination) is the gateway to top engineering colleges in West Bengal including Jadavpur University, IEM, Heritage, and 200+ other institutions. Known for its challenging mathematics section, WBJEE is one of the most respected state-level engineering entrance exams in India. This exam is a gateway to some of the most prestigious institutes in the region. Securing a good rank requires consistent preparation and a clear understanding of the syllabus.",
         aboutExam: "WBJEE is conducted by the West Bengal Joint Entrance Examinations Board (WBJEEB), a state government-controlled body established in 1962. The exam provides admission to over 200 engineering, pharmacy, and architecture colleges in West Bengal. WBJEEB has a legacy of conducting fair and transparent examinations. The exam is held in offline (OMR-based) mode and is known for its high-quality questions, especially in Mathematics which often features problems requiring deep conceptual understanding. Known for its competitive nature, this exam attracts thousands of aspirants every year. Akash Talks provides comprehensive guidance, from application filling to counseling, ensuring students make informed decisions.",
         overview: "The West Bengal Joint Entrance Examination (WBJEE) is a state-government controlled centralized test, conducted by the West Bengal Joint Entrance Examinations Board (WBJEEB). It is the gateway for admission to many private and governmental engineering institutions in West Bengal, including Jadavpur University. It is known for its high standard of questions, especially in Mathematics, and is conducted in offline (OMR) mode. The exam assesses candidates on their conceptual understanding and problem-solving skills. It is conducted annually and follows a strict pattern.",
         importantDates: [
             { event: "Registration Begins", date: "December 2025" },
-            { event: "Registration Ends", date: "February 2026" },
-            { event: "Correction Window", date: "February 2026" },
-            { event: "Admit Card Download", date: "April 2026" },
-            { event: "WBJEE 2026 Exam Date", date: "Last Sunday of April 2026 (Tentative)" },
-            { event: "Result Declaration", date: "June 2026" }
+            { event: "Registration Ends", date: "February 2027" },
+            { event: "Correction Window", date: "February 2027" },
+            { event: "Admit Card Download", date: "April 2027" },
+            { event: "WBJEE 2027 Exam Date", date: "Last Sunday of April 2027 (Tentative)" },
+            { event: "Result Declaration", date: "June 2027" }
         ],
         applicationProcess: [
             { step: "Online Registration", description: "Register on the official website wbjeeb.nic.in using name, mobile number, and email." },
@@ -6172,7 +6172,7 @@ export const exams: Exam[] = [
         ],
         eligibility: [
             "Must be a Citizen of India.",
-            "Lower age limit: 17 years as of 31st Dec 2026. No upper age limit for Engineering.",
+            "Lower age limit: 17 years as of 31st Dec 2027. No upper age limit for Engineering.",
             "Must have passed 10+2 with Physics and Mathematics along with any one of Chemistry/Biotechnology/Biology/Computer Science/Computer Application.",
             "Minimum 45% aggregate marks in the three compulsory subjects (40% for SC/ST/OBC/Pwd).",
             "Must have passed English in 10+2 with at least 30% marks."
@@ -6193,23 +6193,23 @@ export const exams: Exam[] = [
     },
     {
         id: "srmjeee",
-        slug: "srmjeee-2026",
-        name: "SRMJEEE 2026",
+        slug: "srmjeee-2027",
+        name: "SRMJEEE 2027",
         logoUrl: "https://placehold.co/100x100/f59e0b/ffffff?text=SRMJEEE",
         fullName: "SRM Joint Engineering Entrance Examination",
         description: "Common entrance examination for admission to B.Tech programs at all SRM Group campuses.",
-        date: "Phase 1: April 2026 | Phase 2: June 2026",
+        date: "Phase 1: April 2027 | Phase 2: June 2027",
         applicationLink: "https://applications.srmist.edu.in/",
         introduction: "SRMJEEE (SRM Joint Engineering Entrance Examination) is your ticket to one of India's largest and most prestigious private university systems. With campuses in Chennai, Ghaziabad, Andhra Pradesh, and more, SRMJEEE offers students multiple location options while maintaining quality education standards. This exam is a gateway to some of the most prestigious institutes in the region. Securing a good rank requires consistent preparation and a clear understanding of the syllabus.",
         aboutExam: "SRMJEEE is conducted by SRM Institute of Science and Technology (SRMIST), formerly known as SRM University. SRMIST is one of the top-ranked universities in India with NAAC A++ Grade and Top 15 NIRF ranking. The exam can be taken in Remote Proctored Online Mode (RPOM) from the comfort of your home, making it convenient for students across India and abroad. With no negative marking, SRMJEEE is considered one of the most student-friendly entrance exams. Known for its competitive nature, this exam attracts thousands of aspirants every year. Akash Talks provides comprehensive guidance, from application filling to counseling, ensuring students make informed decisions.",
         overview: "SRM Joint Engineering Entrance Examination (SRMJEEE) is conducted by SRM Institute of Science and Technology for admission to B.Tech programs across its campuses in Kattankulathur (Main Campus), Ramapuram, Vadapalani, Ghaziabad, Tiruchirappalli, and SRM University Sonepat & Andhra Pradesh. It is usually conducted in Remote Proctored Online Mode (RPOM), allowing candidates to take the exam from their homes. The exam assesses candidates on their conceptual understanding and problem-solving skills. It is conducted annually and follows a strict pattern.",
         importantDates: [
             { event: "Applications Open", date: "November 2025" },
-            { event: "Phase 1 Application Deadline", date: "April 2026 (Week 2)" },
-            { event: "Phase 1 Exam Slot Booking", date: "April 2026 (Week 3)" },
-            { event: "Phase 1 Exam", date: "April 2026 (Last Weekend)" },
-            { event: "Phase 2 Application Deadline", date: "June 2026 (Week 2)" },
-            { event: "Phase 2 Exam", date: "June 2026 (Weekend)" }
+            { event: "Phase 1 Application Deadline", date: "April 2027 (Week 2)" },
+            { event: "Phase 1 Exam Slot Booking", date: "April 2027 (Week 3)" },
+            { event: "Phase 1 Exam", date: "April 2027 (Last Weekend)" },
+            { event: "Phase 2 Application Deadline", date: "June 2027 (Week 2)" },
+            { event: "Phase 2 Exam", date: "June 2027 (Weekend)" }
         ],
         applicationProcess: [
             { step: "Register", description: "Sign up on srmist.edu.in using name, email, and mobile number." },
@@ -6248,20 +6248,20 @@ export const exams: Exam[] = [
     {
         id: "iemcet",
         slug: "iemcet-entrance-exam",
-        name: "IEM CET 2026",
+        name: "IEM CET 2027",
         logoUrl: "https://placehold.co/100x100/7c3aed/ffffff?text=IEM+CET",
         fullName: "IEM Common Entrance Test",
         description: "Entrance test for admission to various undergraduate and postgraduate courses at IEM Kolkata and UEM.",
-        date: "Multiple Phases (March-July 2026)",
+        date: "Multiple Phases (March-July 2027)",
         applicationLink: "https://iem.edu.in/",
         introduction: "IEMCET (IEM Common Entrance Test) is an entrance exam for students who want to join the prestigious University of Engineering & Management (UEM) and Institute of Engineering & Management (IEM) family. It's an excellent backup option for students who haven't appeared for WBJEE or JEE Main. This exam is a gateway to some of the most prestigious institutes in the region. Securing a good rank requires consistent preparation and a clear understanding of the syllabus.",
         aboutExam: "IEMCET is conducted by the IEM-UEM Group, one of the leading educational groups in Eastern India. The group runs IEM Kolkata (affiliated to MAKAUT), UEM Kolkata, and UEM Jaipur. The exam is designed to be student-friendly with multiple phases throughout the year, giving students several chances to qualify. The exam is often free of cost and can be taken from home online. Known for its competitive nature, this exam attracts thousands of aspirants every year. Akash Talks provides comprehensive guidance, from application filling to counseling, ensuring students make informed decisions.",
         overview: "IEMCET is conducted by the IEM-UEM group for admissions into its B.Tech, BCA, BBA, and other courses. It serves as a gateway for students who might not have appeared for WBJEE or want specifically to join the prestigious University of Engineering & Management (UEM) Jaipur/Kolkata and Institute of Engineering & Management (IEM). The exam assesses candidates on their conceptual understanding and problem-solving skills. It is conducted annually and follows a strict pattern.",
         importantDates: [
-            { event: "Registration Starts", date: "January 2026" },
-            { event: "Phase 1 Exam", date: "March 2026" },
-            { event: "Phase 2 Exam", date: "April 2026" },
-            { event: "Phase 3 Exam", date: "May 2026" },
+            { event: "Registration Starts", date: "January 2027" },
+            { event: "Phase 1 Exam", date: "March 2027" },
+            { event: "Phase 2 Exam", date: "April 2027" },
+            { event: "Phase 3 Exam", date: "May 2027" },
             { event: "Result Declaration", date: "Usually 3-4 days after exam date" }
         ],
         applicationProcess: [
@@ -6296,7 +6296,7 @@ export const exams: Exam[] = [
     {
         id: "iemjee",
         slug: "iemjee",
-        name: "IEMJEE 2026",
+        name: "IEMJEE 2027",
         logoUrl: "https://placehold.co/100x100/f43f5e/ffffff?text=IEMJEE",
         fullName: "Institute of Engineering & Management Joint Entrance Exam",
         description: "Exam for admission to B.Tech, BCA, BBA, M.Tech, MCA, MBA courses of the prestigious IEM Group.",
@@ -6306,10 +6306,10 @@ export const exams: Exam[] = [
         aboutExam: "IEMJEE is conducted by the IEM-UEM Group for admissions specifically to UEM Jaipur and UEM Kolkata. The exam has a unique feature of instant or near-instant result generation, allowing students to know their status within hours. The exam is completely free of cost in most phases and can be taken online from home. It's an excellent opportunity for students who missed other entrance exams or are specifically interested in the UEM campuses. Known for its competitive nature, this exam attracts thousands of aspirants every year. Akash Talks provides comprehensive guidance, from application filling to counseling, ensuring students make informed decisions.",
         overview: "IEMJEE is a common entrance examination for admission to B.Tech, BCA, BBA, M.Tech, MCA, M.Sc, and MBA courses of the IEM Group (IEM Kolkata and UEM Jaipur/Kolkata). It offers a seamless admission process for students aiming for these specific campuses. The exam is often conducted in multiple shifts and allows students to take it from home. The exam assesses candidates on their conceptual understanding and problem-solving skills. It is conducted annually and follows a strict pattern.",
         importantDates: [
-            { event: "Phase 1 Application", date: "January - February 2026" },
-            { event: "Phase 1 Exam", date: "February 2026" },
-            { event: "Phase 2 Application", date: "March - April 2026" },
-            { event: "Phase 2 Exam", date: "April 2026" }
+            { event: "Phase 1 Application", date: "January - February 2027" },
+            { event: "Phase 1 Exam", date: "February 2027" },
+            { event: "Phase 2 Application", date: "March - April 2027" },
+            { event: "Phase 2 Exam", date: "April 2027" }
         ],
         applicationProcess: [
             { step: "Visit Application Portal", description: "Go to iemjee.iem.edu.in." },
@@ -6340,24 +6340,24 @@ export const exams: Exam[] = [
     },
     {
         id: "comedk",
-        slug: "comedk-uget-2026",
-        name: "COMEDK UGET 2026",
+        slug: "comedk-uget-2027",
+        name: "COMEDK UGET 2027",
         logoUrl: "https://placehold.co/100x100/06b6d4/ffffff?text=COMEDK",
         fullName: "Consortium of Medical, Engineering and Dental Colleges of Karnataka Undergraduate Entrance Test",
         description: "National-level entrance exam for admission into around 190 private engineering colleges in Karnataka.",
-        date: "May 9, 2026",
+        date: "May 9, 2027",
         applicationLink: "https://www.comedk.org/",
         introduction: "COMEDK UGET (Undergraduate Entrance Test) is a prominent national-level entrance examination for students aspiring to pursue engineering in Karnataka's top private institutions. It provides a gateway to approximately 190 member colleges, offering over 20,000 seats. Known for its focus on speed and accuracy, COMEDK attracts students from across India for its quality of technical education and placement opportunities in Bangalore, the Silicon Valley of India.",
         aboutExam: "The Consortium of Medical, Engineering, and Dental Colleges of Karnataka (COMEDK) is an autonomous body that conducts UGET for admission to B.E./B.Tech courses. The exam is conducted online as a Computer-Based Test (CBT) at various centers across India. COMEDK ensures a merit-based, fair, and transparent admission process for professional courses. It is a highly sought-after exam due to the concentration of premier engineering colleges in the Karnataka region. Akash Talks assists students throughout the COMEDK journey, from registration to centralized counseling support.",
         overview: "COMEDK UGET is a national-level entrance exam conducted for admission into undergraduate engineering programs in around 190 private colleges in Karnataka. The exam is held in an online, computer-based mode and tests candidates on Physics, Chemistry, and Mathematics. With no negative marking, it is considered a student-friendly but highly competitive exam due to the limited number of seats in top-tier colleges like RVCE, MSRIT, and BMSCE.",
         importantDates: [
-            { event: "Notification Release", date: "January 2026" },
-            { event: "Registration Start", date: "February 2026" },
-            { event: "Registration End", date: "April 2026" },
-            { event: "Admit Card Release", date: "Last week of April 2026" },
-            { event: "COMEDK UGET 2026 Exam", date: "May 9, 2026" },
-            { event: "Results Release", date: "Last week of May 2026" },
-            { event: "Counseling Registration", date: "June 2026" }
+            { event: "Notification Release", date: "January 2027" },
+            { event: "Registration Start", date: "February 2027" },
+            { event: "Registration End", date: "April 2027" },
+            { event: "Admit Card Release", date: "Last week of April 2027" },
+            { event: "COMEDK UGET 2027 Exam", date: "May 9, 2027" },
+            { event: "Results Release", date: "Last week of May 2027" },
+            { event: "Counseling Registration", date: "June 2027" }
         ],
         applicationProcess: [
             { step: "Registration", description: "Register on comedk.org using basic details like name, email, and phone." },
@@ -6410,7 +6410,7 @@ export const collegesByState = colleges.reduce((acc, college) => {
 export const companyInfo = {
     name: "Akash Talks",
     tagline: "Direct Admission in B.Tech",
-    phones: ["+91 9874878782", "+91 8825352628"],
+    phones: ["+91 6200325137", "+91 8825352628"],
     email: "akashtalkscounselling@gmail.com",
     youtube: "https://www.youtube.com/@akash_talks",
     address: {
