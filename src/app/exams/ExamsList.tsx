@@ -6,6 +6,7 @@ import { Search, GraduationCap, ChevronRight, ArrowUpRight, BookOpen } from "luc
 import { motion, AnimatePresence } from "framer-motion"
 import { AutoSuggestSearch } from "@/components/ui/AutoSuggestSearch"
 import { Exam } from "@/lib/data"
+import { filterExams } from "@/lib/search"
 
 const EXAM_COLORS: Record<string, { from: string, to: string, bg: string, text: string, border: string }> = {
   "bitsat": { from: "from-blue-600", to: "to-indigo-700", bg: "bg-blue-50", text: "text-blue-700", border: "border-blue-100" },
@@ -20,9 +21,7 @@ const DEFAULT_COLOR = { from: "from-gray-600", to: "to-gray-700", bg: "bg-gray-5
 export function ExamsList({ initialExams }: { initialExams: Exam[] }) {
   const [search, setSearch] = useState("")
 
-  const filteredExams = initialExams.filter(exam => 
-    exam.name.toLowerCase().includes(search.toLowerCase())
-  )
+  const filteredExams = filterExams(initialExams, search)
 
   return (
     <div>

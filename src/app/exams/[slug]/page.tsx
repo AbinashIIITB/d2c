@@ -3,7 +3,7 @@ import { notFound } from "next/navigation"
 import { Metadata } from "next"
 import Link from "next/link"
 import { ArrowLeft, BookOpen, Calendar, HelpCircle, AlertCircle, CheckCircle2, FileText, Info } from "lucide-react"
-import { supabaseAdmin } from "@/lib/supabase"
+import { getAllExams, getExamByIdOrSlug } from "@/lib/data-service"
 import { AnimatedPatternBg } from "@/components/ui/AnimatedPatternBg"
 import { ExamApplyButton } from "@/components/ui/ExamApplyButton"
 import { ApplyButton } from "@/components/ui/ApplyButton"
@@ -12,11 +12,7 @@ type Params = Promise<{ slug: string }>
 
 export async function generateMetadata({ params }: { params: Params }): Promise<Metadata> {
   const { slug } = await params
-  const { data: exam } = await supabaseAdmin
-    .from('exams')
-    .select('name, full_name, about_exam, tags, logo_url')
-    .eq('slug', slug)
-    .single();
+  const exam = await getExamByIdOrSlug(slug);
   
   if (!exam) {
     return { title: "Exam Not Found" }
@@ -24,7 +20,7 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
   
   return {
     title: `${exam.name} – Admission & Pattern Guide 2027`,
-    description: `${(exam.about_exam || '').slice(0, 155)}…`,
+    description: `${(exam.aboutExam || exam.about_exam || '').slice(0, 155)}…`,
     keywords: [
       exam.name, 
       `${exam.name} exam`, 
@@ -36,15 +32,18 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
     alternates: { canonical: `https://direct2campus.com/exams/${slug}` },
     openGraph: {
       title: `${exam.name} Guide | Direct2Campus`,
-      description: exam.about_exam,
+      description: exam.aboutExam || exam.about_exam,
       url: `https://direct2campus.com/exams/${slug}`,
-      images: exam.logo_url ? [{ url: exam.logo_url, alt: exam.name }] : [],
+      images: exam.logoUrl || exam.logo_url ? [{ url: exam.logoUrl || exam.logo_url, alt: exam.name }] : [],
     },
   }
 }
 
+export const revalidate = 0;
+export const dynamicParams = true;
+
 export async function generateStaticParams() {
-  const { data: exams } = await supabaseAdmin.from('exams').select('slug');
+  const exams = await getAllExams();
   return (exams || []).map((exam) => ({
     slug: exam.slug,
   }))
@@ -52,26 +51,11 @@ export async function generateStaticParams() {
 
 export default async function ExamDetailPage({ params }: { params: Params }) {
   const { slug } = await params
-  const { data: rawExam } = await supabaseAdmin
-    .from('exams')
-    .select('*')
-    .eq('slug', slug)
-    .single();
+  const exam = await getExamByIdOrSlug(slug);
 
-  if (!rawExam) {
+  if (!exam) {
     notFound()
   }
-
-  const exam = {
-    ...rawExam,
-    fullName: rawExam.full_name,
-    logoUrl: rawExam.logo_url,
-    applicationLink: rawExam.application_link,
-    aboutExam: rawExam.about_exam,
-    importantDates: rawExam.important_dates,
-    applicationProcess: rawExam.application_process,
-    examPattern: rawExam.exam_pattern,
-  };
 
   return (
     <div className="pb-20 bg-d2c-white min-h-screen">

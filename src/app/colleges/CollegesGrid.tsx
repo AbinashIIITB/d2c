@@ -8,6 +8,7 @@ import { motion, AnimatePresence } from "framer-motion"
 import { CollegeCard } from "@/components/ui/CollegeCard"
 import { AutoSuggestSearch } from "@/components/ui/AutoSuggestSearch"
 import { College } from "@/lib/data"
+import { filterColleges } from "@/lib/search"
 
 // Map URL param values to filter values
 const TYPE_TO_DEPT: Record<string, string> = {
@@ -78,14 +79,10 @@ export function CollegesGrid({ initialColleges }: { initialColleges: College[] }
     }
   }, [selectedDept, selectedState])
 
-  const filteredColleges = initialColleges.filter((col) => {
-    // 1. Search Query
-    const searchLower = search.toLowerCase()
-    const matchesSearch =
-      col.name.toLowerCase().includes(searchLower) ||
-      col.location.toLowerCase().includes(searchLower)
+  const searchMatchedColleges = filterColleges(initialColleges, search)
 
-    // 2. Department filter
+  const filteredColleges = searchMatchedColleges.filter((col) => {
+    // 1. Department filter
     let matchesDept = true
     if (selectedDept !== "All Colleges") {
       const combinedText = (col.name + " " + (col.about || col.description || "")).toLowerCase()
@@ -98,13 +95,13 @@ export function CollegesGrid({ initialColleges }: { initialColleges: College[] }
       }
     }
 
-    // 3. State filter
+    // 2. State filter
     let matchesState = true
     if (selectedState !== "All States") {
       matchesState = col.location.includes(selectedState)
     }
 
-    return matchesSearch && matchesDept && matchesState
+    return matchesDept && matchesState
   })
 
   return (

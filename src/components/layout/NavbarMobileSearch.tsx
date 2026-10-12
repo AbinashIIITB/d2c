@@ -3,6 +3,23 @@ import Link from "next/link"
 import { motion, AnimatePresence } from "framer-motion"
 import { Building2, BookOpen } from "lucide-react"
 import { useRouter } from "next/navigation"
+import { searchAndRank } from "@/lib/search"
+
+type MobileSearchItem = {
+  id: string
+  title: string
+  subtitle: string
+  url: string
+  icon: "college" | "exam"
+  imageUrl?: string
+  slug?: string
+  tags?: string[]
+  courses?: string[]
+  fullName?: string
+  location?: string
+  matchedHighlight?: string
+  matchedBy?: string
+}
 
 function useMobileSearchData() {
   const [dbColleges, setDbColleges] = useState<any[]>([])
@@ -17,20 +34,27 @@ function useMobileSearchData() {
     ...dbColleges.map(c => ({
       id: `c_${c.id}`,
       title: c.name,
-      subtitle: c.location,
+      subtitle: c.location || "College",
       url: `/colleges/${c.slug}`,
       icon: "college" as const,
       imageUrl: c.imageUrl,
+      slug: c.slug,
+      tags: c.tags,
+      courses: c.courses,
+      location: c.location,
+      state: c.state,
     })),
     ...dbExams.map(e => ({
       id: `e_${e.id}`,
       title: e.name,
-      subtitle: "Entrance Exam",
+      subtitle: e.fullName || "Entrance Exam",
       url: `/exams/${e.slug}`,
       icon: "exam" as const,
       imageUrl: e.logoUrl,
+      slug: e.slug,
+      fullName: e.fullName,
     }))
-  ]
+  ] as MobileSearchItem[]
 }
 
 export function NavbarMobileSearch({ 
@@ -46,23 +70,31 @@ export function NavbarMobileSearch({
   const allSearchItems = useMobileSearchData()
   const [mobileActiveIndex, setMobileActiveIndex] = useState(-1)
 
-  const mobileFilteredColleges = mobileQuery.trim() === ""
-    ? allSearchItems.filter(i => i.icon === "college").slice(0, 4)
-    : allSearchItems.filter(item =>
-      item.icon === "college" &&
-      (item.title.toLowerCase().includes(mobileQuery.toLowerCase()) ||
-        item.subtitle.toLowerCase().includes(mobileQuery.toLowerCase()))
-    ).slice(0, 4)
+  const collegeItems = allSearchItems.filter(i => i.icon === "college")
+  const examItems = allSearchItems.filter(i => i.icon === "exam")
 
-  const mobileFilteredExams = mobileQuery.trim() === ""
-    ? allSearchItems.filter(i => i.icon === "exam").slice(0, 3)
-    : allSearchItems.filter(item =>
-      item.icon === "exam" &&
-      (item.title.toLowerCase().includes(mobileQuery.toLowerCase()) ||
-        item.subtitle.toLowerCase().includes(mobileQuery.toLowerCase()))
-    ).slice(0, 3)
+  const rankedColleges = mobileQuery.trim() === ""
+    ? collegeItems.slice(0, 4).map(item => ({ item, score: 1, matchedBy: "title_exact" as const, matchedHighlight: undefined as string | undefined }))
+    : searchAndRank(collegeItems, mobileQuery, 5)
+
+  const rankedExams = mobileQuery.trim() === ""
+    ? examItems.slice(0, 3).map(item => ({ item, score: 1, matchedBy: "title_exact" as const, matchedHighlight: undefined as string | undefined }))
+    : searchAndRank(examItems, mobileQuery, 3)
+
+  const mobileFilteredColleges: MobileSearchItem[] = rankedColleges.map(r => ({
+    ...r.item,
+    matchedHighlight: r.matchedHighlight,
+    matchedBy: r.matchedBy
+  }))
+
+  const mobileFilteredExams: MobileSearchItem[] = rankedExams.map(r => ({
+    ...r.item,
+    matchedHighlight: r.matchedHighlight,
+    matchedBy: r.matchedBy
+  }))
 
   const mobileFilteredItems = [...mobileFilteredColleges, ...mobileFilteredExams]
+
 
   const handleSelect = (url: string) => {
     onClose()
@@ -114,8 +146,13 @@ export function NavbarMobileSearch({
                         <div className="font-sora font-semibold text-d2c-navy truncate text-sm">
                           {item.title}
                         </div>
-                        <div className="text-xs text-gray-400 truncate">
-                          {item.subtitle}
+                        <div className="text-xs text-gray-400 truncate flex items-center gap-1.5">
+                          <span className="truncate">{item.location || item.subtitle}</span>
+                          {item.matchedHighlight && (item.matchedBy === 'acronym' || item.matchedBy === 'alias' || item.matchedBy === 'slug') && (
+                            <span className="ml-auto shrink-0 text-[10px] font-bold px-1.5 py-0.5 rounded bg-d2c-royal/10 text-d2c-royal">
+                              {item.matchedHighlight}
+                            </span>
+                          )}
                         </div>
                       </div>
                     </button>
@@ -156,8 +193,13 @@ export function NavbarMobileSearch({
                         <div className="font-sora font-semibold text-d2c-navy truncate text-sm">
                           {item.title}
                         </div>
-                        <div className="text-xs text-gray-400 truncate">
-                          {item.subtitle}
+                        <div className="text-xs text-gray-400 truncate flex items-center gap-1.5">
+                          <span className="truncate">{item.fullName || item.subtitle}</span>
+                          {item.matchedHighlight && (item.matchedBy === 'acronym' || item.matchedBy === 'alias') && (
+                            <span className="ml-auto shrink-0 text-[10px] font-bold px-1.5 py-0.5 rounded bg-emerald-100 text-emerald-700">
+                              {item.matchedHighlight}
+                            </span>
+                          )}
                         </div>
                       </div>
                     </button>

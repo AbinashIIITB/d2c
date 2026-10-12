@@ -2,7 +2,7 @@ import { Suspense } from "react"
 import { Metadata } from "next"
 import Link from "next/link"
 import { Building2, GraduationCap, MapPin } from "lucide-react"
-import { supabaseAdmin } from "@/lib/supabase"
+import { getAllColleges } from "@/lib/data-service"
 import { CollegesGrid } from "./CollegesGrid"
 import { HeroBackground } from "@/components/ui/HeroBackground"
 
@@ -13,15 +13,11 @@ export const metadata: Metadata = {
   alternates: { canonical: "https://direct2campus.com/colleges" },
 }
 
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+
 export default async function CollegesPage() {
-  const { data: rawColleges } = await supabaseAdmin.from('colleges').select('*').order('name');
-  
-  const colleges = (rawColleges || []).map(c => ({
-    ...c,
-    imageUrl: c.image_url,
-    logoUrl: c.logo_url,
-    coverUrl: c.cover_url,
-  }));
+  const colleges = await getAllColleges();
 
   return (
     <div className="pb-16 bg-d2c-white min-h-screen">

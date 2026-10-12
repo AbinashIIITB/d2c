@@ -1,6 +1,5 @@
 import Link from 'next/link';
-import { LogOut, Home, GraduationCap, FileText, Settings, Database, BarChart3, ImageIcon } from 'lucide-react';
-import { redirect } from 'next/navigation';
+import { LogOut, Home, GraduationCap, FileText, Settings, Globe, ImageIcon } from 'lucide-react';
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
   return (
@@ -23,7 +22,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             <FileText className="w-5 h-5 text-d2c-success" /> Manage Exams
           </Link>
           <Link href="/admin/analytics" className="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-white/10 transition-colors">
-            <BarChart3 className="w-5 h-5 text-purple-400" /> Analytics & SEO
+            <Globe className="w-5 h-5 text-purple-400" /> SEO & GEO Analytics
           </Link>
           <Link href="/admin/assets" className="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-white/10 transition-colors">
             <ImageIcon className="w-5 h-5 text-pink-400" /> Asset Manager

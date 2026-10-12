@@ -1,39 +1,83 @@
 import { NextResponse } from "next/server";
-import { supabaseAdmin } from "@/lib/supabase";
+import { getAllColleges, saveCollege, deleteCollege } from "@/lib/data-service";
+import { revalidatePath } from "next/cache";
+
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
 
 export async function GET() {
   try {
-    const { data: colleges, error } = await supabaseAdmin
-      .from('colleges')
-      .select('*')
-      .order('name');
-
-    if (error) throw error;
-    
-    // Map snake_case back to camelCase for the frontend if needed
-    const mapped = colleges.map(c => ({
-      ...c,
-      imageUrl: c.image_url,
-      logoUrl: c.logo_url,
-      coverUrl: c.cover_url,
-      coursesDetails: c.courses_details,
-      feesDetails: c.fees_details,
-      keyDates: c.key_dates,
-      whyChoose: c.why_choose,
-      galleryImages: c.gallery_images,
-      whyChooseAkashTalks: c.why_choose_akash_talks,
-      neetCutoffs: c.neet_cutoffs,
-      mqFees: c.mq_fees,
-      hostelFees: c.hostel_fees,
-      miscFees: c.misc_fees,
-      securityDeposit: c.security_deposit,
-      coursesSeats: c.courses_seats,
-      facultyDepartments: c.faculty_departments,
-      admissionProcess: c.admission_process
-    }));
-
-    return NextResponse.json(mapped);
+    const colleges = await getAllColleges();
+    return NextResponse.json(colleges);
   } catch (error: any) {
     return NextResponse.json({ error: error.message }, { status: 500 });
+  }
+}
+
+export async function POST(req: Request) {
+  try {
+    const body = await req.json();
+    const saved = await saveCollege(body);
+
+    revalidatePath('/colleges');
+    revalidatePath('/admin/colleges');
+    if (saved.slug) revalidatePath(`/colleges/${saved.slug}`);
+    revalidatePath('/');
+
+    return NextResponse.json({ success: true, college: saved }, { status: 201 });
+  } catch (error: any) {
+    return NextResponse.json({ success: false, error: error.message }, { status: 500 });
+  }
+}
+
+export async function PUT(req: Request) {
+  try {
+    const body = await req.json();
+    const saved = await saveCollege(body);
+
+    revalidatePath('/colleges');
+    revalidatePath('/admin/colleges');
+    if (saved.slug) revalidatePath(`/colleges/${saved.slug}`);
+    if (saved.id) revalidatePath(`/admin/colleges/${saved.id}`);
+    revalidatePath('/');
+
+    return NextResponse.json({ success: true, college: saved });
+  } catch (error: any) {
+    console.error("API update college error:", error);
+    return NextResponse.json({ success: false, error: error.message }, { status: 500 });
+  }
+}
+
+export async function PATCH(req: Request) {
+  return PUT(req);
+}
+
+export async function DELETE(req: Request) {
+  try {
+    const { searchParams } = new URL(req.url);
+    let id = searchParams.get('id');
+
+    if (!id) {
+      try {
+        const body = await req.json();
+        id = body.id;
+      } catch {
+        // no json body
+      }
+    }
+
+    if (!id) {
+      return NextResponse.json({ error: "Missing college id to delete" }, { status: 400 });
+    }
+
+    await deleteCollege(id);
+
+    revalidatePath('/colleges');
+    revalidatePath('/admin/colleges');
+    revalidatePath('/');
+
+    return NextResponse.json({ success: true, message: `College ${id} deleted` });
+  } catch (error: any) {
+    return NextResponse.json({ success: false, error: error.message }, { status: 500 });
   }
 }

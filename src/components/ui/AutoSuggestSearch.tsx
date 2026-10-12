@@ -4,16 +4,13 @@ import { useState, useRef, useEffect } from "react"
 import { Search, Building2, BookOpen } from "lucide-react"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
+import { SearchItem, searchAndRank } from "@/lib/search"
 
 type SearchMode = "all" | "colleges" | "exams"
 
-interface SearchItem {
-  id: string
-  title: string
-  subtitle: string
-  url: string
-  icon: "college" | "exam"
-  imageUrl?: string
+interface AutoSuggestItem extends SearchItem {
+  matchedHighlight?: string
+  matchedBy?: string
 }
 
 interface AutoSuggestSearchProps {
@@ -70,10 +67,15 @@ export function AutoSuggestSearch({
     dbColleges.forEach(c => allItems.push({
       id: `c_${c.id}`,
       title: c.name,
-      subtitle: c.location,
+      subtitle: c.location || "College",
       url: `/colleges/${c.slug}`,
       icon: "college",
-      imageUrl: c.imageUrl
+      imageUrl: c.imageUrl,
+      slug: c.slug,
+      tags: c.tags,
+      courses: c.courses,
+      location: c.location,
+      state: c.state
     }))
   }
   
@@ -81,29 +83,38 @@ export function AutoSuggestSearch({
     dbExams.forEach(e => allItems.push({
       id: `e_${e.id}`,
       title: e.name,
-      subtitle: "Entrance Exam",
+      subtitle: e.fullName || "Entrance Exam",
       url: `/exams/${e.slug}`,
       icon: "exam",
-      imageUrl: e.logoUrl
+      imageUrl: e.logoUrl,
+      slug: e.slug,
+      fullName: e.fullName
     }))
   }
 
-  // Filter items based on query
-  const filteredColleges = query.trim() === "" 
-    ? allItems.filter(i => i.icon === "college").slice(0, 4) 
-    : allItems.filter(item => 
-        item.icon === "college" &&
-        (item.title.toLowerCase().includes(query.toLowerCase()) || 
-        item.subtitle.toLowerCase().includes(query.toLowerCase()))
-      ).slice(0, 4);
+  // Filter and rank items based on query
+  const collegeCandidates = allItems.filter(i => i.icon === "college")
+  const examCandidates = allItems.filter(i => i.icon === "exam")
 
-  const filteredExams = query.trim() === "" 
-    ? allItems.filter(i => i.icon === "exam").slice(0, 4) 
-    : allItems.filter(item => 
-        item.icon === "exam" &&
-        (item.title.toLowerCase().includes(query.toLowerCase()) || 
-        item.subtitle.toLowerCase().includes(query.toLowerCase()))
-      ).slice(0, 4);
+  const rankedColleges = query.trim() === ""
+    ? collegeCandidates.slice(0, 4).map(item => ({ item, score: 1, matchedBy: "title_exact" as const, matchedHighlight: undefined as string | undefined }))
+    : searchAndRank(collegeCandidates, query, 5);
+
+  const rankedExams = query.trim() === ""
+    ? examCandidates.slice(0, 4).map(item => ({ item, score: 1, matchedBy: "title_exact" as const, matchedHighlight: undefined as string | undefined }))
+    : searchAndRank(examCandidates, query, 3);
+
+  const filteredColleges: AutoSuggestItem[] = rankedColleges.map(r => ({
+    ...r.item,
+    matchedHighlight: r.matchedHighlight,
+    matchedBy: r.matchedBy
+  }));
+
+  const filteredExams: AutoSuggestItem[] = rankedExams.map(r => ({
+    ...r.item,
+    matchedHighlight: r.matchedHighlight,
+    matchedBy: r.matchedBy
+  }));
 
   const filteredItems = [...filteredColleges, ...filteredExams];
   const showDropdown = isOpen && filteredItems.length > 0;
@@ -186,9 +197,14 @@ export function AutoSuggestSearch({
                             <div className="font-semibold text-d2c-navy truncate text-sm">
                               {item.title}
                             </div>
-                            <div className="text-xs text-d2c-muted truncate flex items-center gap-1">
-                              <Building2 className="w-3 h-3" />
-                              {item.subtitle}
+                            <div className="text-xs text-d2c-muted truncate flex items-center gap-1.5">
+                              <Building2 className="w-3 h-3 shrink-0" />
+                              <span className="truncate">{item.location || item.subtitle}</span>
+                              {item.matchedHighlight && (item.matchedBy === 'acronym' || item.matchedBy === 'alias' || item.matchedBy === 'slug') && (
+                                <span className="ml-auto shrink-0 text-[10px] font-bold px-1.5 py-0.5 rounded bg-d2c-royal/10 text-d2c-royal border border-d2c-royal/20">
+                                  {item.matchedHighlight}
+                                </span>
+                              )}
                             </div>
                           </div>
                         </Link>
@@ -228,9 +244,14 @@ export function AutoSuggestSearch({
                             <div className="font-semibold text-d2c-navy truncate text-sm">
                               {item.title}
                             </div>
-                            <div className="text-xs text-d2c-muted truncate flex items-center gap-1">
-                              <BookOpen className="w-3 h-3" />
-                              {item.subtitle}
+                            <div className="text-xs text-d2c-muted truncate flex items-center gap-1.5">
+                              <BookOpen className="w-3 h-3 shrink-0" />
+                              <span className="truncate">{item.fullName || item.subtitle}</span>
+                              {item.matchedHighlight && (item.matchedBy === 'acronym' || item.matchedBy === 'alias') && (
+                                <span className="ml-auto shrink-0 text-[10px] font-bold px-1.5 py-0.5 rounded bg-emerald-100 text-emerald-700 border border-emerald-200">
+                                  {item.matchedHighlight}
+                                </span>
+                              )}
                             </div>
                           </div>
                         </Link>
