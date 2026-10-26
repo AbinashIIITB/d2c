@@ -1,13 +1,12 @@
 import { MetadataRoute } from "next"
-
-import { supabaseAdmin } from "@/lib/supabase"
+import { getAllColleges, getAllExams } from "@/lib/data-service"
 import blogPosts from "@/data/blog.json"
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = "https://direct2campus.com"
   
-  const { data: colleges } = await supabaseAdmin.from('colleges').select('slug');
-  const { data: exams } = await supabaseAdmin.from('exams').select('slug');
+  const colleges = await getAllColleges();
+  const exams = await getAllExams();
 
   // Standard static routes
   const staticRoutes = [

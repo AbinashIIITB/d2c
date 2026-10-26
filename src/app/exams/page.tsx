@@ -1,6 +1,6 @@
 import { Metadata } from "next"
 import { ExamsList } from "./ExamsList"
-import { supabaseAdmin } from "@/lib/supabase"
+import { getAllExams } from "@/lib/data-service"
 import { HeroBackground } from "@/components/ui/HeroBackground"
 import { BookOpen, GraduationCap, FileText, Clock } from "lucide-react"
 
@@ -11,19 +11,11 @@ export const metadata: Metadata = {
   alternates: { canonical: "https://direct2campus.com/exams" },
 }
 
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+
 export default async function ExamsPage() {
-  const { data: rawExams } = await supabaseAdmin.from('exams').select('*').order('name');
-  
-  const exams = (rawExams || []).map(e => ({
-    ...e,
-    fullName: e.full_name,
-    logoUrl: e.logo_url,
-    applicationLink: e.application_link,
-    aboutExam: e.about_exam,
-    importantDates: e.important_dates,
-    applicationProcess: e.application_process,
-    examPattern: e.exam_pattern,
-  }));
+  const exams = await getAllExams();
 
   return (
     <div className="pb-16 bg-d2c-white min-h-screen">

@@ -19,6 +19,10 @@ const nextConfig: NextConfig = {
 
   // Strict-mode for catching issues early
   reactStrictMode: true,
+
+  turbopack: {
+    root: process.cwd(),
+  },
 };
 
 export default nextConfig;

@@ -61,10 +61,10 @@ export default async function BlogPostPage({ params }: { params: Params }) {
           <div className="bg-white p-8 rounded-3xl border border-gray-100 shadow-sm">
             <h2 className="text-2xl font-sora font-bold text-d2c-navy mb-4">Introduction</h2>
             <p className="mb-6 leading-relaxed">
-              This is standard placeholder content replicating a rich text structure retrieved from a CMS. In production, this data block will be parsed from the Next.js API integrated with Prisma's <code>BlogPost</code> model configured earlier.
+              This is standard placeholder content replicating a rich text structure retrieved from a CMS. In production, this data block will be parsed from the Next.js API integrated with Prisma&apos;s <code>BlogPost</code> model configured earlier.
             </p>
             <p className="mb-6 leading-relaxed">
-              Direct2Campus aims to scale this system such that 'Editors' (RBAC roles) can push these articles from the Admin dashboard directly into the Postgres DB.
+              Direct2Campus aims to scale this system such that &apos;Editors&apos; (RBAC roles) can push these articles from the Admin dashboard directly into the Postgres DB.
             </p>
           </div>
         </article>

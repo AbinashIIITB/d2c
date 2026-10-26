@@ -27,7 +27,7 @@ import {
   Globe,
   Zap
 } from "lucide-react"
-import { supabaseAdmin } from "@/lib/supabase"
+import { getAllColleges, getCollegeByIdOrSlug } from "@/lib/data-service"
 import { AnimatedPatternBg } from "@/components/ui/AnimatedPatternBg"
 import { ScrollSpyTOC, FloatingMobileTOC } from "@/components/ui/ScrollSpyTOC"
 import { CollegeHero } from "@/components/colleges/CollegeHero"
@@ -39,8 +39,11 @@ import { Button } from "@/components/ui/button"
 
 type Params = Promise<{ slug: string }>
 
+export const revalidate = 0;
+export const dynamicParams = true;
+
 export async function generateStaticParams() {
-  const { data: colleges } = await supabaseAdmin.from('colleges').select('slug');
+  const colleges = await getAllColleges();
   return (colleges || []).map((college) => ({
     slug: college.slug,
   }))
@@ -48,11 +51,7 @@ export async function generateStaticParams() {
 
 export async function generateMetadata({ params }: { params: Params }): Promise<Metadata> {
   const { slug } = await params
-  const { data: college } = await supabaseAdmin
-    .from('colleges')
-    .select('name, description, about, type, location, tags, image_url')
-    .eq('slug', slug)
-    .single();
+  const college = await getCollegeByIdOrSlug(slug);
   
   if (!college) {
     return { title: "College Not Found" }
@@ -75,7 +74,7 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
       title: `${college.name} – Direct Admission | Direct2Campus`,
       description: college.about || college.description,
       url: `https://direct2campus.com/colleges/${slug}`,
-      images: college.image_url ? [{ url: college.image_url, alt: college.name }] : [],
+      images: college.imageUrl || college.image_url ? [{ url: college.imageUrl || college.image_url, alt: college.name }] : [],
     },
   }
 }
@@ -93,29 +92,11 @@ const sections = [
 
 export default async function CollegeDetailPage({ params }: { params: Params }) {
   const { slug } = await params
-  const { data: rawCollege } = await supabaseAdmin
-    .from('colleges')
-    .select('*')
-    .eq('slug', slug)
-    .single();
+  const college = await getCollegeByIdOrSlug(slug);
 
-  if (!rawCollege) {
+  if (!college) {
     notFound()
   }
-
-  // Map snake_case to camelCase
-  const college = {
-    ...rawCollege,
-    imageUrl: rawCollege.image_url,
-    logoUrl: rawCollege.logo_url,
-    coverUrl: rawCollege.cover_url,
-    coursesDetails: rawCollege.courses_details,
-    feesDetails: rawCollege.fees_details,
-    keyDates: rawCollege.key_dates,
-    whyChoose: rawCollege.why_choose,
-    galleryImages: rawCollege.gallery_images,
-    whyChooseAkashTalks: rawCollege.why_choose_akash_talks,
-  };
 
   return (
     <div className="pb-6 lg:pb-12 min-h-screen bg-[#faf8ff]">
