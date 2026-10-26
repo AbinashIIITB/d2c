@@ -23,6 +23,18 @@ export async function verifySession(token: string) {
   }
 }
 
+export async function checkAdminAuth() {
+  try {
+    const { cookies } = await import('next/headers');
+    const cookieStore = await cookies();
+    const token = cookieStore.get('admin_token')?.value;
+    if (!token) return null;
+    return await verifySession(token);
+  } catch {
+    return null;
+  }
+}
+
 export const ADMIN_CREDENTIALS = {
   admin: {
     username: 'admin',

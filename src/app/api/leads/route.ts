@@ -21,6 +21,9 @@ export async function POST(req: Request) {
         minute: "2-digit", 
         hour12: true
       }).replace(/\//g, '-').replace(',', '').toUpperCase(),
+      action: "create",
+      status: "New",
+      notes: ""
     };
 
     const webhookUrl = process.env.GOOGLE_SHEETS_WEBHOOK_URL;

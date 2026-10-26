@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Sora, DM_Sans, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
+import Script from "next/script";
 
 import { ConditionalLayout } from "@/components/layout/ConditionalLayout";
 
@@ -135,6 +136,28 @@ export default function RootLayout({
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
+        {process.env.NEXT_PUBLIC_GA_ID && (
+          <>
+            <Script
+              strategy="afterInteractive"
+              src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GA_ID}`}
+            />
+            <Script
+              id="google-analytics"
+              strategy="afterInteractive"
+              dangerouslySetInnerHTML={{
+                __html: `
+                  window.dataLayer = window.dataLayer || [];
+                  function gtag(){dataLayer.push(arguments);}
+                  gtag('js', new Date());
+                  gtag('config', '${process.env.NEXT_PUBLIC_GA_ID}', {
+                    page_path: window.location.pathname,
+                  });
+                `,
+              }}
+            />
+          </>
+        )}
       </head>
       <body className="min-h-full flex flex-col font-dm-sans bg-d2c-white text-d2c-text selection:bg-d2c-royal/30 selection:text-d2c-navy-dark">
         <ConditionalLayout>
