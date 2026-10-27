@@ -11,7 +11,8 @@ import {
   Shield, 
   ArrowLeft,
   Plus,
-  Trash2
+  Trash2,
+  Sparkles
 } from 'lucide-react';
 import Link from 'next/link';
 import { ImageUploader } from './ImageUploader';
@@ -21,6 +22,7 @@ import { RichTextArea } from './RichTextArea';
 import { SlugInput } from './SlugInput';
 import { SectionCard } from './SectionCard';
 import { AdminFormSaveBar } from './AdminFormSaveBar';
+import { SeoSuiteEditor } from './SeoSuiteEditor';
 
 interface ExamEditFormProps {
   initialData?: any;
@@ -34,6 +36,7 @@ const TABS = [
   { id: 'dates-process', label: 'Timeline & Process', icon: Calendar },
   { id: 'eligibility', label: 'Eligibility & Documents', icon: Shield },
   { id: 'faqs', label: 'FAQs & Counselling', icon: HelpCircle },
+  { id: 'seo-suite', label: 'SEO & AEO Suite', icon: Sparkles },
 ];
 
 export function ExamEditForm({ initialData = {}, isNew = false }: ExamEditFormProps) {
@@ -67,7 +70,8 @@ export function ExamEditForm({ initialData = {}, isNew = false }: ExamEditFormPr
       subjects: ['Physics', 'Chemistry', 'Mathematics']
     },
     counselling: initialData.counselling || '',
-    faqs: initialData.faqs || []
+    faqs: initialData.faqs || [],
+    seo: initialData.seo || {}
   });
 
   const [saving, setSaving] = useState(false);
@@ -488,6 +492,18 @@ export function ExamEditForm({ initialData = {}, isNew = false }: ExamEditFormPr
             )}
           </SectionCard>
         </div>
+      )}
+
+      {/* Tab: SEO & AEO Suite */}
+      {activeTab === 'seo-suite' && (
+        <SeoSuiteEditor
+          value={formData.seo}
+          onChange={(newSeo) => updateField('seo', newSeo)}
+          pageName={formData.name}
+          pageSlug={formData.slug}
+          prefix="exams"
+          defaultDescription={formData.description || formData.overview || formData.introduction}
+        />
       )}
 
       {/* Save Bar */}

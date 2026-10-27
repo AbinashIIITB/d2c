@@ -2,7 +2,7 @@
 import { notFound } from "next/navigation"
 import { Metadata } from "next"
 import Link from "next/link"
-import { ArrowLeft, BookOpen, Calendar, HelpCircle, AlertCircle, CheckCircle2, FileText, Info } from "lucide-react"
+import { ArrowLeft, BookOpen, Calendar, HelpCircle, AlertCircle, CheckCircle2, FileText, Info, Link2, ChevronRight } from "lucide-react"
 import { getAllExams, getExamByIdOrSlug } from "@/lib/data-service"
 import { AnimatedPatternBg } from "@/components/ui/AnimatedPatternBg"
 import { ExamApplyButton } from "@/components/ui/ExamApplyButton"
@@ -17,24 +17,33 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
   if (!exam) {
     return { title: "Exam Not Found" }
   }
+
+  const seo = exam.seo || exam.exam_pattern?.seo || (exam as any).examPattern?.seo || {};
+  const pageTitle = seo.seoTitle?.trim() || `${exam.name} – Admission & Pattern Guide 2027`;
+  const metaDesc = seo.metaDescription?.trim() || `${(exam.aboutExam || exam.about_exam || exam.description || '').slice(0, 155)}…`;
+  const canonical = seo.canonicalUrl?.trim() || `https://direct2campus.com/exams/${slug}`;
+  const keywords = [
+    ...(seo.primaryKeyword ? [seo.primaryKeyword] : []),
+    ...(Array.isArray(seo.secondaryKeywords) ? seo.secondaryKeywords : []),
+    exam.name, 
+    `${exam.name} exam`, 
+    `${exam.name} pattern`, 
+    `${exam.name} eligibility`, 
+    `${exam.name} cutoff`,
+    ...((exam as any).tags || [])
+  ];
+  const logoAlt = seo.images?.logoAlt || `${exam.name} Logo`;
   
   return {
-    title: `${exam.name} – Admission & Pattern Guide 2027`,
-    description: `${(exam.aboutExam || exam.about_exam || '').slice(0, 155)}…`,
-    keywords: [
-      exam.name, 
-      `${exam.name} exam`, 
-      `${exam.name} pattern`, 
-      `${exam.name} eligibility`, 
-      `${exam.name} cutoff`,
-      ...((exam as any).tags || [])
-    ],
-    alternates: { canonical: `https://direct2campus.com/exams/${slug}` },
+    title: pageTitle,
+    description: metaDesc,
+    keywords,
+    alternates: { canonical },
     openGraph: {
-      title: `${exam.name} Guide | Direct2Campus`,
-      description: exam.aboutExam || exam.about_exam,
-      url: `https://direct2campus.com/exams/${slug}`,
-      images: exam.logoUrl || exam.logo_url ? [{ url: exam.logoUrl || exam.logo_url, alt: exam.name }] : [],
+      title: pageTitle,
+      description: metaDesc,
+      url: canonical,
+      images: exam.logoUrl || exam.logo_url ? [{ url: exam.logoUrl || exam.logo_url, alt: logoAlt }] : [],
     },
   }
 }
@@ -171,6 +180,88 @@ export default async function ExamDetailPage({ params }: { params: Params }) {
                   ))}
                 </ul>
               </section>
+
+              {/* ────────────── FAQs & AEO Schema Section ────────────── */}
+              {(() => {
+                const seo = exam.seo || exam.exam_pattern?.seo || (exam as any).examPattern?.seo || {};
+                const faqsList = [
+                  ...(exam.faqs || []),
+                  ...((seo.aeoFaqs || []).map((af: any) => ({ question: af.question, answer: af.answer })))
+                ];
+
+                const faqSchema = faqsList.length > 0 ? {
+                  "@context": "https://schema.org",
+                  "@type": "FAQPage",
+                  "mainEntity": faqsList.map((f: any) => ({
+                    "@type": "Question",
+                    "name": f.question,
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": f.answer
+                    }
+                  }))
+                } : null;
+
+                return (
+                  <>
+                    {faqSchema && (
+                      <script
+                        type="application/ld+json"
+                        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
+                      />
+                    )}
+
+                    {faqsList.length > 0 && (
+                      <section className="bg-white rounded-3xl p-10 shadow-sm border border-gray-100">
+                        <h2 className="text-2xl font-sora font-bold text-d2c-navy mb-6 flex items-center gap-3">
+                          <HelpCircle className="w-6 h-6 text-d2c-royal" /> Frequently Asked Questions
+                        </h2>
+                        <div className="space-y-4">
+                          {faqsList.map((faq, idx) => (
+                            <div key={idx} className="p-5 rounded-2xl bg-gray-50/60 border border-gray-100">
+                              <h3 className="font-bold text-d2c-navy mb-2 flex items-start gap-2.5">
+                                <span className="text-d2c-royal font-sora font-bold">Q.</span>
+                                <span>{faq.question}</span>
+                              </h3>
+                              <p className="text-sm text-d2c-muted leading-relaxed pl-6">
+                                {faq.answer}
+                              </p>
+                            </div>
+                          ))}
+                        </div>
+                      </section>
+                    )}
+
+                    {/* ────────────── Recommended Internal Linking ────────────── */}
+                    {seo.internalLinks && seo.internalLinks.length > 0 && (
+                      <section className="bg-white rounded-3xl p-10 shadow-sm border border-gray-100">
+                        <h2 className="text-2xl font-sora font-bold text-d2c-navy mb-6 flex items-center gap-3">
+                          <Link2 className="w-6 h-6 text-d2c-royal" /> Recommended Direct2Campus Guides
+                        </h2>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                          {seo.internalLinks.map((link: any, idx: number) => (
+                            <Link
+                              key={idx}
+                              href={link.targetUrl}
+                              className="p-4 rounded-2xl bg-gray-50/60 hover:bg-d2c-royal/5 border border-gray-100 hover:border-d2c-royal/20 transition-all group flex items-start justify-between gap-3"
+                            >
+                              <div>
+                                <div className="text-xs font-bold text-d2c-navy group-hover:text-d2c-royal transition-colors">
+                                  {link.anchorText}
+                                </div>
+                                {link.context && (
+                                  <div className="text-[11px] text-gray-500 mt-0.5">{link.context}</div>
+                                )}
+                              </div>
+                              <ChevronRight className="w-4 h-4 text-gray-400 group-hover:text-d2c-royal group-hover:translate-x-0.5 transition-all shrink-0 mt-0.5" />
+                            </Link>
+                          ))}
+                        </div>
+                      </section>
+                    )}
+                  </>
+                );
+              })()}
             </div>
 
             {/* Right: Sidebar */}
@@ -195,29 +286,38 @@ export default async function ExamDetailPage({ params }: { params: Params }) {
               </div>
 
               {/* Support Card */}
-              <div className="bg-gradient-to-br from-white to-d2c-ice/30 rounded-3xl p-8 shadow-sm border border-d2c-royal/10 flex flex-col text-center">
-                <div className="w-16 h-16 bg-white rounded-2xl flex items-center justify-center shadow-lg shadow-d2c-navy/5 mx-auto mb-6">
-                  <AlertCircle className="w-8 h-8 text-d2c-royal" />
-                </div>
-                <h2 className="text-2xl font-sora font-bold text-d2c-navy mb-4">Need Admission Help?</h2>
-                <p className="text-sm text-d2c-muted mb-8 leading-relaxed">
-                  Management quota and direct admission options are available in top institutes accepting this exam. Get end-to-end counseling support from Akash Talks.
-                </p>
-                <div className="space-y-3">
-                  <ApplyButton 
-                    className="block w-full bg-d2c-navy hover:bg-d2c-royal text-white py-4 rounded-xl font-bold transition-colors shadow-lg shadow-d2c-navy/20"
-                    context={`Exam Counseling: ${exam.name}`}
-                  >
-                    Get Free Counseling
-                  </ApplyButton>
-                  <a 
-                    href="tel:+916200325137"
-                    className="block w-full bg-white border border-gray-200 text-d2c-navy py-4 rounded-xl font-bold transition-colors hover:bg-gray-50"
-                  >
-                    Call Counselor
-                  </a>
-                </div>
-              </div>
+              {(() => {
+                const seo = exam.seo || exam.exam_pattern?.seo || (exam as any).examPattern?.seo || {};
+                const ctaHeadline = seo.cta?.headline || "Need Admission Help?";
+                const ctaSubtext = seo.cta?.subtext || "Management quota and direct admission options are available in top institutes accepting this exam. Get end-to-end counseling support from Akash Talks.";
+                const ctaButtonText = seo.cta?.buttonText || "Get Free Counseling";
+
+                return (
+                  <div className="bg-gradient-to-br from-white to-d2c-ice/30 rounded-3xl p-8 shadow-sm border border-d2c-royal/10 flex flex-col text-center">
+                    <div className="w-16 h-16 bg-white rounded-2xl flex items-center justify-center shadow-lg shadow-d2c-navy/5 mx-auto mb-6">
+                      <AlertCircle className="w-8 h-8 text-d2c-royal" />
+                    </div>
+                    <h2 className="text-2xl font-sora font-bold text-d2c-navy mb-4">{ctaHeadline}</h2>
+                    <p className="text-sm text-d2c-muted mb-8 leading-relaxed">
+                      {ctaSubtext}
+                    </p>
+                    <div className="space-y-3">
+                      <ApplyButton 
+                        className="block w-full bg-d2c-navy hover:bg-d2c-royal text-white py-4 rounded-xl font-bold transition-colors shadow-lg shadow-d2c-navy/20"
+                        context={`Exam Counseling: ${exam.name}`}
+                      >
+                        {ctaButtonText}
+                      </ApplyButton>
+                      <a 
+                        href="tel:+916200325137"
+                        className="block w-full bg-white border border-gray-200 text-d2c-navy py-4 rounded-xl font-bold transition-colors hover:bg-gray-50"
+                      >
+                        Call Counselor
+                      </a>
+                    </div>
+                  </div>
+                );
+              })()}
             </div>
           </div>
         </div>

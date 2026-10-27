@@ -1,4 +1,6 @@
 export function mapCollegeToDb(c: any) {
+  const seoData = c.seo || (c.contact && c.contact.seo) || {};
+
   return {
     ...(c.id ? { id: String(c.id) } : {}),
     slug: String(c.slug || '').trim().toLowerCase().replace(/[^a-z0-9-]/g, '-').replace(/-+/g, '-'),
@@ -30,7 +32,10 @@ export function mapCollegeToDb(c: any) {
     why_choose: Array.isArray(c.whyChoose ?? c.why_choose) ? (c.whyChoose ?? c.why_choose) : [],
     alumni: c.alumni || { description: '', companies: [], achievements: [] },
     compare: c.compare || [],
-    contact: c.contact || {},
+    contact: {
+      ...(c.contact || {}),
+      seo: seoData
+    },
     gallery_images: c.galleryImages || c.gallery_images || [],
     why_choose_akash_talks: c.whyChooseAkashTalks || c.why_choose_akash_talks || [],
     neet_cutoffs: c.neetCutoffs || c.neet_cutoffs || [],
@@ -68,6 +73,7 @@ export function mapDbToCollege(raw: any) {
     whyChoose: raw.why_choose || [],
     alumni: raw.alumni || { description: '', companies: [] },
     contact: raw.contact || {},
+    seo: raw.contact?.seo || raw.seo || {},
     galleryImages: raw.gallery_images || [],
     whyChooseAkashTalks: raw.why_choose_akash_talks || [],
     neetCutoffs: raw.neet_cutoffs || [],
@@ -84,6 +90,8 @@ export function mapDbToCollege(raw: any) {
 }
 
 export function mapExamToDb(e: any) {
+  const seoData = e.seo || (e.examPattern && e.examPattern.seo) || (e.exam_pattern && e.exam_pattern.seo) || {};
+
   return {
     ...(e.id ? { id: String(e.id) } : {}),
     slug: String(e.slug || '').trim().toLowerCase().replace(/[^a-z0-9-]/g, '-').replace(/-+/g, '-'),
@@ -100,12 +108,15 @@ export function mapExamToDb(e: any) {
     application_process: e.applicationProcess || e.application_process || [],
     documents: Array.isArray(e.documents) ? e.documents : [],
     eligibility: Array.isArray(e.eligibility) ? e.eligibility : [],
-    exam_pattern: e.examPattern || e.exam_pattern || {
-      mode: '',
-      duration: '',
-      totalMarks: '',
-      markingScheme: '',
-      subjects: []
+    exam_pattern: {
+      ...(e.examPattern || e.exam_pattern || {
+        mode: '',
+        duration: '',
+        totalMarks: '',
+        markingScheme: '',
+        subjects: []
+      }),
+      seo: seoData
     },
     counselling: e.counselling || '',
     faqs: e.faqs || [],
@@ -132,6 +143,7 @@ export function mapDbToExam(raw: any) {
       markingScheme: '',
       subjects: []
     },
+    seo: raw.exam_pattern?.seo || raw.seo || {},
     faqs: raw.faqs || []
   };
 }

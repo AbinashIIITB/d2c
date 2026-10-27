@@ -13,7 +13,8 @@ import {
   Globe,
   Plus,
   Trash2,
-  ArrowLeft
+  ArrowLeft,
+  Sparkles
 } from 'lucide-react';
 import Link from 'next/link';
 import { ImageUploader } from './ImageUploader';
@@ -23,6 +24,7 @@ import { RichTextArea } from './RichTextArea';
 import { SlugInput } from './SlugInput';
 import { SectionCard } from './SectionCard';
 import { AdminFormSaveBar } from './AdminFormSaveBar';
+import { SeoSuiteEditor } from './SeoSuiteEditor';
 
 interface CollegeEditFormProps {
   initialData?: any;
@@ -38,6 +40,7 @@ const TABS = [
   { id: 'admissions', label: 'Admissions & Dates', icon: ClipboardList },
   { id: 'more', label: 'Scholarships, Alumni & FAQs', icon: Award },
   { id: 'contact', label: 'Contact Details', icon: Globe },
+  { id: 'seo-suite', label: 'SEO & AEO Suite', icon: Sparkles },
 ];
 
 export function CollegeEditForm({ initialData = {}, isNew = false }: CollegeEditFormProps) {
@@ -95,7 +98,8 @@ export function CollegeEditForm({ initialData = {}, isNew = false }: CollegeEdit
       website: '',
       address: '',
       whatsapp: ''
-    }
+    },
+    seo: initialData.seo || {}
   });
 
   const [saving, setSaving] = useState(false);
@@ -1032,6 +1036,18 @@ export function CollegeEditForm({ initialData = {}, isNew = false }: CollegeEdit
             </div>
           </SectionCard>
         </div>
+      )}
+
+      {/* Tab: SEO & AEO Suite */}
+      {activeTab === 'seo-suite' && (
+        <SeoSuiteEditor
+          value={formData.seo}
+          onChange={(newSeo) => updateField('seo', newSeo)}
+          pageName={formData.name}
+          pageSlug={formData.slug}
+          prefix="colleges"
+          defaultDescription={formData.description || formData.about}
+        />
       )}
 
       {/* Save Bar */}

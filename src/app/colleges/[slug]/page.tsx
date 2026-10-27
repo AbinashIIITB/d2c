@@ -25,7 +25,8 @@ import {
   BarChart3,
   FileText,
   Globe,
-  Zap
+  Zap,
+  Link2
 } from "lucide-react"
 import { getAllColleges, getCollegeByIdOrSlug } from "@/lib/data-service"
 import { AnimatedPatternBg } from "@/components/ui/AnimatedPatternBg"
@@ -56,25 +57,34 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
   if (!college) {
     return { title: "College Not Found" }
   }
+
+  const seo = college.seo || college.contact?.seo || {};
+  const pageTitle = seo.seoTitle?.trim() || `${college.name} – Direct Admission, Fees & Placement`;
+  const metaDesc = seo.metaDescription?.trim() || `${(college.about || college.description || '').slice(0, 155)}…`;
+  const canonical = seo.canonicalUrl?.trim() || `https://direct2campus.com/colleges/${slug}`;
+  const keywords = [
+    ...(seo.primaryKeyword ? [seo.primaryKeyword] : []),
+    ...(Array.isArray(seo.secondaryKeywords) ? seo.secondaryKeywords : []),
+    college.name, 
+    `${college.name} admission`, 
+    `${college.name} fees`, 
+    `${college.name} placement`, 
+    college.type, 
+    college.location,
+    ...(college.tags || [])
+  ];
+  const heroAlt = seo.images?.heroAlt || `${college.name} Campus Direct Admission`;
   
   return {
-    title: `${college.name} – Direct Admission, Fees & Placement`,
-    description: `${(college.about || college.description || '').slice(0, 155)}…`,
-    keywords: [
-      college.name, 
-      `${college.name} admission`, 
-      `${college.name} fees`, 
-      `${college.name} placement`, 
-      college.type, 
-      college.location,
-      ...(college.tags || [])
-    ],
-    alternates: { canonical: `https://direct2campus.com/colleges/${slug}` },
+    title: pageTitle,
+    description: metaDesc,
+    keywords,
+    alternates: { canonical },
     openGraph: {
-      title: `${college.name} – Direct Admission | Direct2Campus`,
-      description: college.about || college.description,
-      url: `https://direct2campus.com/colleges/${slug}`,
-      images: college.imageUrl || college.image_url ? [{ url: college.imageUrl || college.image_url, alt: college.name }] : [],
+      title: pageTitle,
+      description: metaDesc,
+      url: canonical,
+      images: college.imageUrl || college.image_url ? [{ url: college.imageUrl || college.image_url, alt: heroAlt }] : [],
     },
   }
 }
@@ -437,53 +447,117 @@ export default async function CollegeDetailPage({ params }: { params: Params }) 
             </section>
 
             {/* ────────────── FAQs ────────────── */}
-            <section id="faqs" className="scroll-mt-28">
-              <div className="bg-white rounded-[1.25rem] p-8 md:p-10 shadow-[0_1px_3px_rgba(0,0,0,0.04)] relative overflow-hidden">
-                <div className="absolute top-0 right-0 w-40 h-40 bg-[#f6c804]/[0.04] rounded-bl-full pointer-events-none" />
-                <div className="flex items-center gap-3.5 mb-8 relative z-10">
-                  <div className="p-3 rounded-xl bg-gray-500/[0.08]">
-                    <HelpCircle className="w-6 h-6 text-gray-600" />
-                  </div>
-                  <h2 className="text-2xl font-sora font-bold text-[#131b2e] tracking-[-0.01em]">Frequently Asked Questions</h2>
-                </div>
-                <div className="space-y-4 relative z-10">
-                  {college.faqs?.map((faq, idx) => (
-                    <div key={idx} className="p-6 rounded-xl bg-[#faf8ff] hover:bg-[#f2f3ff] transition-colors duration-300">
-                      <h3 className="font-bold text-[#131b2e] mb-3 flex items-start gap-3">
-                        <span className="text-[#f6c804] text-2xl leading-none font-sora">Q</span>
-                        <span className="pt-1">{faq.question}</span>
-                      </h3>
-                      <p className="text-[#45464d] text-sm leading-relaxed pl-9">
-                        {faq.answer}
-                      </p>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </section>
+            {(() => {
+              const seo = college.seo || college.contact?.seo || {};
+              const faqsList = [
+                ...(college.faqs || []),
+                ...((seo.aeoFaqs || []).map((af: any) => ({ question: af.question, answer: af.answer, isAeo: true })))
+              ];
+              const faqSchema = faqsList.length > 0 ? {
+                "@context": "https://schema.org",
+                "@type": "FAQPage",
+                "mainEntity": faqsList.map((f: any) => ({
+                  "@type": "Question",
+                  "name": f.question,
+                  "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": f.answer
+                  }
+                }))
+              } : null;
 
-            {/* ── Help CTA Block ── */}
-            <div className="bg-[#0B1120] rounded-[1.25rem] p-8 md:p-10 relative overflow-hidden">
-              <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(59,76,192,0.15),transparent_60%)]" />
-              <div className="relative z-10 flex flex-col md:flex-row items-center gap-6">
-                <div className="flex-1">
-                  <h3 className="text-xl font-sora font-bold text-white mb-2">Need Help with Admission?</h3>
-                  <p className="text-white/50 text-sm">Our expert counselors are ready to guide you through the entire admission process for {college.name}.</p>
-                </div>
-                <div className="flex gap-3 shrink-0">
-                  <Button asChild className="bg-[#f6c804] hover:bg-[#e5b703] text-[#0B1120] font-bold h-12 px-6 rounded-xl shadow-[0_8px_24px_-4px_rgba(246,200,4,0.3)]">
-                    <Link href="tel:+916200325137">
-                      <PhoneCall className="w-5 h-5 mr-2" /> Talk to Expert
-                    </Link>
-                  </Button>
-                  <Button variant="outline" asChild className="bg-white/[0.04] border-white/[0.08] text-white hover:bg-white/[0.08] h-12 px-6 rounded-xl">
-                    <Link href="https://wa.me/916200325137" target="_blank">
-                      <MessageSquare className="w-5 h-5 mr-2" /> WhatsApp
-                    </Link>
-                  </Button>
-                </div>
-              </div>
-            </div>
+              const ctaHeadline = seo.cta?.headline || "Need Help with Admission?";
+              const ctaSubtext = seo.cta?.subtext || `Our expert counselors are ready to guide you through the entire admission process for ${college.name}.`;
+              const ctaButtonText = seo.cta?.buttonText || "Talk to Expert";
+
+              return (
+                <>
+                  {faqSchema && (
+                    <script
+                      type="application/ld+json"
+                      dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
+                    />
+                  )}
+
+                  <section id="faqs" className="scroll-mt-28">
+                    <div className="bg-white rounded-[1.25rem] p-8 md:p-10 shadow-[0_1px_3px_rgba(0,0,0,0.04)] relative overflow-hidden">
+                      <div className="absolute top-0 right-0 w-40 h-40 bg-[#f6c804]/[0.04] rounded-bl-full pointer-events-none" />
+                      <div className="flex items-center gap-3.5 mb-8 relative z-10">
+                        <div className="p-3 rounded-xl bg-gray-500/[0.08]">
+                          <HelpCircle className="w-6 h-6 text-gray-600" />
+                        </div>
+                        <h2 className="text-2xl font-sora font-bold text-[#131b2e] tracking-[-0.01em]">Frequently Asked Questions</h2>
+                      </div>
+                      <div className="space-y-4 relative z-10">
+                        {faqsList.map((faq, idx) => (
+                          <div key={idx} className="p-6 rounded-xl bg-[#faf8ff] hover:bg-[#f2f3ff] transition-colors duration-300">
+                            <h3 className="font-bold text-[#131b2e] mb-3 flex items-start gap-3">
+                              <span className="text-[#f6c804] text-2xl leading-none font-sora">Q</span>
+                              <span className="pt-1">{faq.question}</span>
+                            </h3>
+                            <p className="text-[#45464d] text-sm leading-relaxed pl-9">
+                              {faq.answer}
+                            </p>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </section>
+
+                  {/* ────────────── Recommended Internal Linking ────────────── */}
+                  {seo.internalLinks && seo.internalLinks.length > 0 && (
+                    <div className="bg-white rounded-[1.25rem] p-6 md:p-8 shadow-[0_1px_3px_rgba(0,0,0,0.04)] border border-gray-100">
+                      <div className="flex items-center gap-2 mb-4">
+                        <Link2 className="w-5 h-5 text-d2c-royal" />
+                        <h3 className="text-lg font-sora font-bold text-d2c-navy">Recommended Direct2Campus Guides</h3>
+                      </div>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                        {seo.internalLinks.map((link: any, idx: number) => (
+                          <Link
+                            key={idx}
+                            href={link.targetUrl}
+                            className="p-3.5 rounded-xl bg-gray-50 hover:bg-d2c-royal/5 border border-gray-100 hover:border-d2c-royal/20 transition-all group flex items-start justify-between gap-3"
+                          >
+                            <div>
+                              <div className="text-xs font-bold text-d2c-navy group-hover:text-d2c-royal transition-colors">
+                                {link.anchorText}
+                              </div>
+                              {link.context && (
+                                <div className="text-[11px] text-gray-500 mt-0.5">{link.context}</div>
+                              )}
+                            </div>
+                            <ChevronRight className="w-4 h-4 text-gray-400 group-hover:text-d2c-royal group-hover:translate-x-0.5 transition-all shrink-0 mt-0.5" />
+                          </Link>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
+                  {/* ── Help CTA Block ── */}
+                  <div className="bg-[#0B1120] rounded-[1.25rem] p-8 md:p-10 relative overflow-hidden">
+                    <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(59,76,192,0.15),transparent_60%)]" />
+                    <div className="relative z-10 flex flex-col md:flex-row items-center gap-6">
+                      <div className="flex-1">
+                        <h3 className="text-xl font-sora font-bold text-white mb-2">{ctaHeadline}</h3>
+                        <p className="text-white/50 text-sm">{ctaSubtext}</p>
+                      </div>
+                      <div className="flex gap-3 shrink-0">
+                        <Button asChild className="bg-[#f6c804] hover:bg-[#e5b703] text-[#0B1120] font-bold h-12 px-6 rounded-xl shadow-[0_8px_24px_-4px_rgba(246,200,4,0.3)]">
+                          <Link href="tel:+916200325137">
+                            <PhoneCall className="w-5 h-5 mr-2" /> {ctaButtonText}
+                          </Link>
+                        </Button>
+                        <Button variant="outline" asChild className="bg-white/[0.04] border-white/[0.08] text-white hover:bg-white/[0.08] h-12 px-6 rounded-xl">
+                          <Link href="https://wa.me/916200325137" target="_blank">
+                            <MessageSquare className="w-5 h-5 mr-2" /> WhatsApp
+                          </Link>
+                        </Button>
+                      </div>
+                    </div>
+                  </div>
+                </>
+              );
+            })()}
           </div>
 
           {/* ── Sidebar ── */}

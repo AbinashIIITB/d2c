@@ -111,6 +111,7 @@ export function mapCollegeToCamelCase(c: any): any {
     coursesSeats: c.courses_seats ?? c.coursesSeats,
     facultyDepartments: c.faculty_departments ?? c.facultyDepartments,
     admissionProcess: c.admission_process ?? c.admissionProcess,
+    seo: c.contact?.seo || c.seo || {},
   };
 }
 
@@ -142,6 +143,13 @@ export function mapCollegeToSnakeCase(body: Record<string, any>): Record<string,
     result[targetKey] = value;
   }
 
+  if (body.seo) {
+    result.contact = {
+      ...(result.contact || {}),
+      seo: body.seo
+    };
+  }
+
   if (result.description && !result.about) {
     result.about = result.description;
   } else if (result.about && !result.description) {
@@ -162,6 +170,7 @@ export function mapExamToCamelCase(e: any): any {
     importantDates: e.important_dates ?? e.importantDates,
     applicationProcess: e.application_process ?? e.applicationProcess,
     examPattern: e.exam_pattern ?? e.examPattern,
+    seo: e.exam_pattern?.seo ?? e.examPattern?.seo ?? e.seo ?? {},
   };
 }
 
@@ -182,6 +191,13 @@ export function mapExamToSnakeCase(body: Record<string, any>): Record<string, an
     if (key === 'tags') continue; // exams table does not have tags in Supabase schema
     const targetKey = keyMap[key] || key;
     result[targetKey] = value;
+  }
+
+  if (body.seo) {
+    result.exam_pattern = {
+      ...(result.exam_pattern || {}),
+      seo: body.seo
+    };
   }
 
   return result;
