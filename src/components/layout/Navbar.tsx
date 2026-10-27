@@ -18,8 +18,8 @@ const NAV_LINKS = [
     ],
   },
   { label: "Exams", href: "/exams" },
+  { label: "Blogs", href: "/blog" },
   { label: "Contact Us", href: "/contact" },
-  { label: "About", href: "/about" },
 ]
 
 import { AutoSuggestSearch } from "@/components/ui/AutoSuggestSearch"

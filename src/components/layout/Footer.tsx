@@ -43,6 +43,7 @@ export function Footer() {
               <li><Link href="/about" className="hover:text-white hover:translate-x-1 transition-all flex items-center gap-2"><span className="text-d2c-royal text-[10px]">▶</span> About Us</Link></li>
               <li><Link href="/colleges" className="hover:text-white hover:translate-x-1 transition-all flex items-center gap-2"><span className="text-d2c-royal text-[10px]">▶</span> Partner Colleges</Link></li>
               <li><Link href="/exams" className="hover:text-white hover:translate-x-1 transition-all flex items-center gap-2"><span className="text-d2c-royal text-[10px]">▶</span> Exam Guides</Link></li>
+              <li><Link href="/blog" className="hover:text-white hover:translate-x-1 transition-all flex items-center gap-2"><span className="text-d2c-royal text-[10px]">▶</span> Blogs & Insights</Link></li>
               <li><Link href="/mba" className="hover:text-white hover:translate-x-1 transition-all flex items-center gap-2"><span className="text-d2c-royal text-[10px]">▶</span> MBA Admissions</Link></li>
               <li><Link href="/contact" className="hover:text-white hover:translate-x-1 transition-all flex items-center gap-2"><span className="text-d2c-royal text-[10px]">▶</span> Contact Us</Link></li>
             </ul>

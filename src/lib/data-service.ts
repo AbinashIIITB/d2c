@@ -1,6 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 import { colleges as staticColleges, exams as staticExams, College, Exam } from './data';
+import staticBlogs from '@/data/blog.json';
 import { supabaseAdmin, isSupabaseConfigured } from './supabase';
 import { sortCollegesWithIEMFirst } from './iem-priority';
 
@@ -13,6 +14,7 @@ const TMP_STORE_FILE = path.join('/tmp', 'd2c-local-cms-data.json');
 interface LocalCmsData {
   colleges: any[];
   exams: any[];
+  blogs?: any[];
   updatedAt: string;
 }
 
@@ -33,6 +35,9 @@ function initLocalStore(): LocalCmsData {
       const content = fs.readFileSync(TMP_STORE_FILE, 'utf-8');
       const parsed = JSON.parse(content);
       if (Array.isArray(parsed.colleges) && Array.isArray(parsed.exams)) {
+        if (!Array.isArray(parsed.blogs)) {
+          parsed.blogs = [...staticBlogs];
+        }
         globalThis.__d2c_cms_store__ = parsed;
         return parsed;
       }
@@ -47,6 +52,9 @@ function initLocalStore(): LocalCmsData {
       const content = fs.readFileSync(LOCAL_STORE_FILE, 'utf-8');
       const parsed = JSON.parse(content);
       if (Array.isArray(parsed.colleges) && Array.isArray(parsed.exams)) {
+        if (!Array.isArray(parsed.blogs)) {
+          parsed.blogs = [...staticBlogs];
+        }
         globalThis.__d2c_cms_store__ = parsed;
         return parsed;
       }
@@ -59,6 +67,7 @@ function initLocalStore(): LocalCmsData {
   const initialData: LocalCmsData = {
     colleges: [...staticColleges],
     exams: [...staticExams],
+    blogs: [...staticBlogs],
     updatedAt: new Date().toISOString()
   };
 
@@ -418,6 +427,129 @@ export async function deleteExam(id: string): Promise<boolean> {
   store.exams = store.exams.filter(e => e.id !== id && e.slug !== id);
   if (store.exams.length !== initialLength) {
     persistLocalStore(store);
+  }
+  return true;
+}
+
+// ----------------------------------------------------------------------
+// Blogs CRUD Methods
+// ----------------------------------------------------------------------
+
+export async function getAllBlogs(): Promise<any[]> {
+  if (isSupabaseConfigured) {
+    try {
+      const { data, error } = await supabaseAdmin
+        .from('blogs')
+        .select('*')
+        .order('date', { ascending: false });
+      if (!error && data && data.length > 0) {
+        return data;
+      }
+    } catch {
+      // Supabase table may not exist yet, safely fallback
+    }
+  }
+
+  const store = initLocalStore();
+  return store.blogs || [];
+}
+
+export async function getBlogByIdOrSlug(identifier: string): Promise<any | null> {
+  if (isSupabaseConfigured) {
+    try {
+      const { data, error } = await supabaseAdmin
+        .from('blogs')
+        .select('*')
+        .or(`id.eq.${identifier},slug.eq.${identifier}`)
+        .maybeSingle();
+      if (!error && data) {
+        return data;
+      }
+    } catch {
+      // Fallback to local store
+    }
+  }
+
+  const store = initLocalStore();
+  const found = (store.blogs || []).find(b => String(b.id) === String(identifier) || b.slug === identifier);
+  return found || null;
+}
+
+export async function saveBlog(data: any): Promise<any> {
+  const blogId = data.id ? String(data.id) : `blog_${Date.now()}`;
+  const slug = String(data.slug || data.title || '').trim().toLowerCase().replace(/[^a-z0-9-]/g, '-').replace(/-+/g, '-');
+  
+  const payload = {
+    ...data,
+    id: blogId,
+    slug,
+    title: String(data.title || '').trim(),
+    excerpt: data.excerpt || '',
+    content: data.content || '',
+    category: data.category || 'Admission Guide',
+    author: data.author || 'Akash Talks Team',
+    date: data.date || new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }),
+    readTime: data.readTime || '5 min read',
+    imageUrl: data.imageUrl || data.image_url || 'https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&q=80&w=800',
+    tags: Array.isArray(data.tags) ? data.tags : [],
+    published: data.published ?? true,
+    seoTitle: data.seoTitle || data.title,
+    metaDescription: data.metaDescription || data.excerpt,
+    updatedAt: new Date().toISOString()
+  };
+
+  if (isSupabaseConfigured) {
+    try {
+      const { data: saved, error } = await supabaseAdmin
+        .from('blogs')
+        .upsert(payload, { onConflict: 'id' })
+        .select()
+        .single();
+      if (!error && saved) {
+        const store = initLocalStore();
+        if (!store.blogs) store.blogs = [];
+        const idx = store.blogs.findIndex(b => String(b.id) === String(blogId) || b.slug === slug);
+        if (idx >= 0) {
+          store.blogs[idx] = saved;
+        } else {
+          store.blogs.unshift(saved);
+        }
+        persistLocalStore(store);
+        return saved;
+      }
+    } catch (err) {
+      console.warn("Supabase upsert blog error, saving to local store:", err);
+    }
+  }
+
+  const store = initLocalStore();
+  if (!store.blogs) store.blogs = [];
+  const idx = store.blogs.findIndex(b => String(b.id) === String(blogId) || b.slug === slug);
+  if (idx >= 0) {
+    store.blogs[idx] = payload;
+  } else {
+    store.blogs.unshift(payload);
+  }
+  persistLocalStore(store);
+  return payload;
+}
+
+export async function deleteBlog(id: string): Promise<boolean> {
+  if (isSupabaseConfigured) {
+    try {
+      await supabaseAdmin.from('blogs').delete().eq('id', id);
+    } catch (err) {
+      console.warn("Supabase delete blog error:", err);
+    }
+  }
+
+  const store = initLocalStore();
+  if (store.blogs) {
+    const initialLength = store.blogs.length;
+    store.blogs = store.blogs.filter(b => String(b.id) !== String(id) && b.slug !== id);
+    if (store.blogs.length !== initialLength) {
+      persistLocalStore(store);
+    }
   }
   return true;
 }

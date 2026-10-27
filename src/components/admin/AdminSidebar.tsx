@@ -13,13 +13,15 @@ import {
   ExternalLink,
   LogOut,
   Layers,
-  Sparkles
+  Sparkles,
+  Newspaper
 } from 'lucide-react';
 
 const NAV_ITEMS = [
   { href: '/admin', label: 'Dashboard', icon: Home, exact: true },
   { href: '/admin/colleges', label: 'Manage Colleges', icon: GraduationCap },
   { href: '/admin/exams', label: 'Manage Exams', icon: FileText },
+  { href: '/admin/blogs', label: 'Manage Blogs', icon: Newspaper },
   { href: '/admin/seo', label: 'Page SEO Studio', icon: Sparkles },
   { href: '/admin/leads', label: 'Student Leads', icon: Users },
   { href: '/admin/analytics', label: 'Analytics & SEO', icon: BarChart3 },

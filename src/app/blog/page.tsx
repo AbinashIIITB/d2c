@@ -1,58 +1,89 @@
+import { Suspense } from "react"
 import { Metadata } from "next"
-import Link from "next/link"
-import { Calendar, User } from "lucide-react"
-import blogPosts from "@/data/blog.json"
+import { Newspaper, BookOpen, Users, Award } from "lucide-react"
+import { getAllBlogs } from "@/lib/data-service"
+import { BlogsList } from "./BlogsList"
+import { HeroBackground } from "@/components/ui/HeroBackground"
 
 export const metadata: Metadata = {
-  title: "Blog & Admission Insights",
-  description: "Expert tips, guides & latest updates on college admissions, entrance exams, and career counseling. Stay ahead with Direct2Campus insights.",
-  keywords: ["college admission tips", "entrance exam guide", "career counseling blog", "admission updates India"],
+  title: "Blogs & Admission Insights 2027 – Direct2Campus",
+  description: "Expert guides on college admissions, entrance exams, management quota procedures, and career counseling. Stay ahead with Direct2Campus insights.",
+  keywords: ["college admission blog", "management quota guide", "entrance exam tips", "engineering admissions Kolkata", "career counseling blog"],
   alternates: { canonical: "https://direct2campus.com/blog" },
 }
 
-export default function BlogListingPage() {
-  return (
-    <div className="pt-24 pb-20 bg-d2c-white min-h-screen">
-      <div className="content-boundary">
-        <div className="text-center mb-16">
-          <h1 className="text-4xl md:text-5xl font-sora font-bold text-d2c-navy mb-6">Latest Updates & Guides</h1>
-          <p className="text-lg text-d2c-muted max-w-2xl mx-auto">
-            Stay informed with our expert insights on entrance exams, admission hacks, and college reviews.
-          </p>
-        </div>
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {blogPosts.map(post => (
-            <Link 
-              key={post.id} 
-              href={`/blog/${post.slug}`}
-              className="group bg-white rounded-3xl overflow-hidden border border-gray-100 shadow-sm hover:shadow-xl hover:shadow-d2c-royal/10 hover:-translate-y-1 transition-all duration-300 flex flex-col"
-            >
-              <div className="relative h-56 overflow-hidden">
-                <img 
-                  src={post.imageUrl} 
-                  alt={post.title} 
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                />
+export default async function BlogListingPage() {
+  const blogs = await getAllBlogs();
+
+  return (
+    <div className="pb-16 bg-d2c-white min-h-screen">
+      {/* Hero-style header matching /colleges and /exams */}
+      <section className="relative isolate flex flex-col items-center justify-center min-[1025px]:justify-start max-[340px]:min-h-[756px] min-h-[605px] min-[1025px]:min-h-[800px] text-d2c-white pt-12 pb-12 sm:pt-6 min-[1025px]:pt-48 lg:pt-36 overflow-hidden -mb-24 sm:-mb-36 lg:-mb-40">
+        {/* Split Background Engine */}
+        <div className="absolute inset-0 bottom-24 sm:bottom-36 lg:bottom-40 bg-d2c-navy z-0 border-b-4 border-d2c-royal" />
+
+        <HeroBackground bottomOffsetClass="bottom-24 sm:bottom-36 lg:bottom-40" />
+
+        <div className="content-boundary relative z-10 text-center">
+          <div className="inline-flex items-center gap-2 px-3 py-1.5 min-[1025px]:px-4 min-[1025px]:py-2 bg-white/10 backdrop-blur-sm border border-white/20 mb-8 sm:mb-4 min-[1025px]:mb-12 lg:mb-10 rounded-lg">
+            <Newspaper className="w-4 h-4 text-d2c-sky" />
+            <span className="text-sm font-medium tracking-wide text-white">Articles & Admission Insights</span>
+          </div>
+
+          <h1 className="text-2xl sm:text-4xl min-[1025px]:text-6xl lg:text-7xl font-sora font-bold tracking-tight mb-6 sm:mb-4 min-[1025px]:mb-10 lg:mb-8 text-balance leading-[1.1] text-white">
+            Admission & Career{" "}
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-d2c-sky to-d2c-ice">
+              Insights
+            </span>
+          </h1>
+
+          <p className="text-base min-[1025px]:text-xl text-d2c-ice/80 max-w-2xl mx-auto mb-6 leading-relaxed font-medium">
+            Stay informed with verified guidance on entrance exams, quota eligibility, college cutoffs, and counseling blueprints.
+          </p>
+
+          {/* Stats bar */}
+          <div className="flex flex-wrap justify-center gap-5 min-[1025px]:gap-14 pt-5 min-[1025px]:pt-12 border-t border-white/10 max-w-3xl mx-auto">
+            <div className="flex items-center gap-3 text-d2c-ice">
+              <div className="p-2 bg-white/5 rounded-lg border border-white/10">
+                <BookOpen className="w-5 h-5 text-d2c-sky" />
               </div>
-              <div className="p-8 flex-1 flex flex-col">
-                <div className="flex items-center gap-4 text-xs font-semibold text-d2c-muted mb-4 uppercase tracking-wider">
-                  <span className="flex items-center gap-1"><Calendar className="w-3 h-3" /> {post.date}</span>
-                  <span className="flex items-center gap-1"><User className="w-3 h-3" /> {post.author}</span>
-                </div>
-                <h2 className="text-xl font-sora font-bold text-d2c-navy mb-3 line-clamp-2 group-hover:text-d2c-royal transition-colors leading-tight">
-                  {post.title}
-                </h2>
-                <p className="text-d2c-muted line-clamp-3 leading-relaxed mb-6 flex-1">
-                  {post.excerpt}
-                </p>
-                <div className="text-d2c-royal font-bold text-sm tracking-wide">
-                  Read Article →
-                </div>
+              <div className="text-left">
+                <div className="text-base min-[1025px]:text-xl font-bold font-sora text-white">{blogs.length}+</div>
+                <div className="text-[10px] min-[1025px]:text-xs text-white/50 font-medium uppercase tracking-wider">Guides Published</div>
               </div>
-            </Link>
-          ))}
+            </div>
+
+            <div className="flex items-center gap-3 text-d2c-ice">
+              <div className="p-2 bg-white/5 rounded-lg border border-white/10">
+                <Users className="w-5 h-5 text-d2c-gold" />
+              </div>
+              <div className="text-left">
+                <div className="text-base min-[1025px]:text-xl font-bold font-sora text-white">15,000+</div>
+                <div className="text-[10px] min-[1025px]:text-xs text-white/50 font-medium uppercase tracking-wider">Students Guided</div>
+              </div>
+            </div>
+
+            <div className="flex items-center gap-3 text-d2c-ice">
+              <div className="p-2 bg-white/5 rounded-lg border border-white/10">
+                <Award className="w-5 h-5 text-d2c-success" />
+              </div>
+              <div className="text-left">
+                <div className="text-base min-[1025px]:text-xl font-bold font-sora text-white">100%</div>
+                <div className="text-[10px] min-[1025px]:text-xs text-white/50 font-medium uppercase tracking-wider">Verified Insights</div>
+              </div>
+            </div>
+          </div>
         </div>
+      </section>
+
+      {/* Main Listing Grid */}
+      <div className="content-boundary py-12 relative z-20">
+        <Suspense fallback={<div className="text-center py-24 text-d2c-muted">Loading articles...</div>}>
+          <BlogsList initialBlogs={blogs as any} />
+        </Suspense>
       </div>
     </div>
   )
