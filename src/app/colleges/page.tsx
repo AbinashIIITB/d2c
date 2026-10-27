@@ -78,7 +78,7 @@ export default async function CollegesPage() {
       </section>
 
       <div className="content-boundary py-12 relative z-20">
-        <Suspense fallback={<div className="text-center py-24 text-d2c-muted">Loading colleges...</div>}>
+        <Suspense fallback={<CollegesGridSkeleton count={9} />}>
           <CollegesGrid initialColleges={colleges as any} />
         </Suspense>
       </div>
