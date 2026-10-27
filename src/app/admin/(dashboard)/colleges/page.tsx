@@ -1,5 +1,6 @@
 import { supabaseAdmin } from "@/lib/supabase";
 import { CollegesTable } from "@/components/admin/CollegesTable";
+import { sortCollegesWithIEMFirst } from "@/lib/iem-priority";
 
 export const dynamic = 'force-dynamic';
 
@@ -17,5 +18,5 @@ export default async function AdminColleges() {
     );
   }
 
-  return <CollegesTable colleges={colleges || []} />;
+  return <CollegesTable colleges={sortCollegesWithIEMFirst(colleges || [])} />;
 }

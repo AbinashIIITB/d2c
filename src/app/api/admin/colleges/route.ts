@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import { supabaseAdmin } from '@/lib/supabase';
 import { checkAdminAuth } from '@/lib/auth';
 import { mapCollegeToDb, mapDbToCollege } from '@/lib/admin-mappers';
+import { sortCollegesWithIEMFirst } from '@/lib/iem-priority';
 import { revalidatePath } from 'next/cache';
 
 export async function GET() {
@@ -18,7 +19,7 @@ export async function GET() {
 
     if (error) throw error;
 
-    return NextResponse.json(colleges || []);
+    return NextResponse.json(sortCollegesWithIEMFirst(colleges || []));
   } catch (error: any) {
     return NextResponse.json({ error: error.message }, { status: 500 });
   }

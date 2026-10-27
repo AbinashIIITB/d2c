@@ -5,6 +5,7 @@ import Link from "next/link"
 import { motion, useInView } from "framer-motion"
 import { MapPin, ChevronRight, Star, ArrowUpRight } from "lucide-react"
 import { CollegeCard } from "@/components/ui/CollegeCard"
+import { sortCollegesWithIEMFirst } from "@/lib/iem-priority"
 
 export function FeaturedColleges() {
   const ref = useRef(null)
@@ -12,7 +13,10 @@ export function FeaturedColleges() {
   const [colleges, setColleges] = useState<any[]>([])
 
   useEffect(() => {
-    fetch("/api/colleges").then(res => res.json()).then(data => setColleges(data || []));
+    fetch("/api/colleges")
+      .then(res => res.json())
+      .then(data => setColleges(sortCollegesWithIEMFirst(data || [])))
+      .catch(() => setColleges([]));
   }, []);
 
   const featuredColleges = colleges.slice(0, 6)

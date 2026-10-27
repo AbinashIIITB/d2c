@@ -4,6 +4,7 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { Plus, Edit2, Search, ExternalLink, GraduationCap, Building2 } from 'lucide-react';
 import { DeleteCollegeButton } from './DeleteCollegeButton';
+import { sortCollegesWithIEMFirst } from '@/lib/iem-priority';
 
 interface CollegeRow {
   id: string;
@@ -19,7 +20,7 @@ export function CollegesTable({ colleges }: { colleges: CollegeRow[] }) {
   const [search, setSearch] = useState('');
   const [filterType, setFilterType] = useState('ALL');
 
-  const filtered = colleges.filter((c) => {
+  const filtered = sortCollegesWithIEMFirst(colleges.filter((c) => {
     const matchesSearch = 
       c.name.toLowerCase().includes(search.toLowerCase()) ||
       c.location?.toLowerCase().includes(search.toLowerCase()) ||
@@ -27,7 +28,7 @@ export function CollegesTable({ colleges }: { colleges: CollegeRow[] }) {
 
     const matchesType = filterType === 'ALL' || c.type === filterType;
     return matchesSearch && matchesType;
-  });
+  }));
 
   return (
     <div className="space-y-6">

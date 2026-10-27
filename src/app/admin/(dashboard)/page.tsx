@@ -1,6 +1,7 @@
 import { supabaseAdmin } from "@/lib/supabase";
 import { Users, GraduationCap, FileText, Database, Plus, Edit2, ExternalLink, ArrowRight } from "lucide-react";
 import Link from "next/link";
+import { sortCollegesWithIEMFirst } from "@/lib/iem-priority";
 
 export const dynamic = 'force-dynamic';
 
@@ -8,11 +9,13 @@ export default async function AdminDashboard() {
   const { count: collegeCount } = await supabaseAdmin.from('colleges').select('*', { count: 'exact', head: true });
   const { count: examCount } = await supabaseAdmin.from('exams').select('*', { count: 'exact', head: true });
 
-  const { data: recentColleges } = await supabaseAdmin
+  const { data: rawRecentColleges } = await supabaseAdmin
     .from('colleges')
     .select('id, name, slug, location, type, updated_at')
     .order('updated_at', { ascending: false })
     .limit(5);
+
+  const recentColleges = sortCollegesWithIEMFirst(rawRecentColleges || []);
 
   const { data: recentExams } = await supabaseAdmin
     .from('exams')

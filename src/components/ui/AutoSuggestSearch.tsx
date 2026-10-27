@@ -5,6 +5,7 @@ import { Search, Building2, BookOpen } from "lucide-react"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { SearchItem, searchAndRank } from "@/lib/search"
+import { sortCollegesWithIEMFirst } from "@/lib/iem-priority"
 
 type SearchMode = "all" | "colleges" | "exams"
 
@@ -104,11 +105,13 @@ export function AutoSuggestSearch({
     ? examCandidates.slice(0, 4).map(item => ({ item, score: 1, matchedBy: "title_exact" as const, matchedHighlight: undefined as string | undefined }))
     : searchAndRank(examCandidates, query, 3);
 
-  const filteredColleges: AutoSuggestItem[] = rankedColleges.map(r => ({
-    ...r.item,
-    matchedHighlight: r.matchedHighlight,
-    matchedBy: r.matchedBy
-  }));
+  const filteredColleges: AutoSuggestItem[] = sortCollegesWithIEMFirst(
+    rankedColleges.map(r => ({
+      ...r.item,
+      matchedHighlight: r.matchedHighlight,
+      matchedBy: r.matchedBy
+    }))
+  );
 
   const filteredExams: AutoSuggestItem[] = rankedExams.map(r => ({
     ...r.item,

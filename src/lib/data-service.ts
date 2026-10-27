@@ -2,6 +2,9 @@ import fs from 'fs';
 import path from 'path';
 import { colleges as staticColleges, exams as staticExams, College, Exam } from './data';
 import { supabaseAdmin, isSupabaseConfigured } from './supabase';
+import { sortCollegesWithIEMFirst } from './iem-priority';
+
+export { sortCollegesWithIEMFirst } from './iem-priority';
 
 // Persistent local file paths for storing admin edits when Supabase is not connected
 const LOCAL_STORE_FILE = path.join(process.cwd(), 'src', 'data', 'local-cms-data.json');
@@ -215,7 +218,7 @@ export async function getAllColleges(): Promise<any[]> {
         .select('*')
         .order('name');
       if (!error && data && data.length > 0) {
-        return data.map(mapCollegeToCamelCase);
+        return sortCollegesWithIEMFirst(data.map(mapCollegeToCamelCase));
       }
     } catch (err) {
       console.warn("Supabase query failed, falling back to local cms store:", err);
@@ -223,7 +226,7 @@ export async function getAllColleges(): Promise<any[]> {
   }
 
   const store = initLocalStore();
-  return store.colleges.map(mapCollegeToCamelCase);
+  return sortCollegesWithIEMFirst(store.colleges.map(mapCollegeToCamelCase));
 }
 
 export async function getCollegeByIdOrSlug(identifier: string): Promise<any | null> {

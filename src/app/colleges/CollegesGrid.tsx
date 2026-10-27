@@ -9,6 +9,7 @@ import { CollegeCard } from "@/components/ui/CollegeCard"
 import { AutoSuggestSearch } from "@/components/ui/AutoSuggestSearch"
 import { College } from "@/lib/data"
 import { filterColleges } from "@/lib/search"
+import { sortCollegesWithIEMFirst } from "@/lib/iem-priority"
 
 // Map URL param values to filter values
 const TYPE_TO_DEPT: Record<string, string> = {
@@ -81,7 +82,7 @@ export function CollegesGrid({ initialColleges }: { initialColleges: College[] }
 
   const searchMatchedColleges = filterColleges(initialColleges, search)
 
-  const filteredColleges = searchMatchedColleges.filter((col) => {
+  const filteredColleges = sortCollegesWithIEMFirst(searchMatchedColleges.filter((col) => {
     // 1. Department filter
     let matchesDept = true
     if (selectedDept !== "All Colleges") {
@@ -102,7 +103,7 @@ export function CollegesGrid({ initialColleges }: { initialColleges: College[] }
     }
 
     return matchesDept && matchesState
-  })
+  }))
 
   return (
     <div ref={gridRef} id="colleges-list">

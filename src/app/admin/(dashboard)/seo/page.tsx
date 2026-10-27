@@ -21,6 +21,7 @@ import {
   Eye
 } from 'lucide-react';
 import { PageSeoData } from '@/components/admin/SeoSuiteEditor';
+import { sortCollegesWithIEMFirst } from '@/lib/iem-priority';
 
 interface LandingPageItem {
   id: string;
@@ -48,7 +49,8 @@ export default function PageSeoStudio() {
         fetch('/api/admin/exams').then((r) => r.json()).catch(() => ({ exams: [] }))
       ]);
 
-      const collegeItems: LandingPageItem[] = (collegesRes.colleges || []).map((c: any) => ({
+      const rawColleges = Array.isArray(collegesRes) ? collegesRes : (collegesRes.colleges || []);
+      const collegeItems: LandingPageItem[] = sortCollegesWithIEMFirst(rawColleges.map((c: any) => ({
         id: String(c.id),
         name: c.name,
         slug: c.slug,
@@ -57,9 +59,10 @@ export default function PageSeoStudio() {
         publicUrl: `/colleges/${c.slug}`,
         seo: c.seo || c.contact?.seo || {},
         updatedAt: c.updated_at || c.updatedAt
-      }));
+      })));
 
-      const examItems: LandingPageItem[] = (examsRes.exams || []).map((e: any) => ({
+      const rawExams = Array.isArray(examsRes) ? examsRes : (examsRes.exams || []);
+      const examItems: LandingPageItem[] = rawExams.map((e: any) => ({
         id: String(e.id),
         name: e.name,
         slug: e.slug,
@@ -93,7 +96,7 @@ export default function PageSeoStudio() {
     return score;
   };
 
-  const filteredItems = items.filter((item) => {
+  const filteredItems = sortCollegesWithIEMFirst(items.filter((item) => {
     if (typeFilter !== 'all' && item.type !== typeFilter) return false;
     
     const health = getSeoHealth(item.seo);
@@ -109,7 +112,7 @@ export default function PageSeoStudio() {
       return matchName || matchSlug || matchKeyword || matchTitle;
     }
     return true;
-  });
+  }));
 
   const totalPages = items.length;
   const configuredPages = items.filter((i) => getSeoHealth(i.seo) >= 40).length;
