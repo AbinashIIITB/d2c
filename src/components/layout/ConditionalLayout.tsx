@@ -5,6 +5,7 @@ import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { MobileBottomNav } from "@/components/layout/MobileBottomNav";
 import { FloatingActions } from "@/components/layout/FloatingActions";
+import { PageTransitionProvider } from "@/components/layout/PageTransitionProvider";
 
 export function ConditionalLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
@@ -15,12 +16,13 @@ export function ConditionalLayout({ children }: { children: React.ReactNode }) {
   }
 
   return (
-    <>
+    <PageTransitionProvider>
       <Navbar />
       <main className="flex-1">{children}</main>
       <Footer />
       <MobileBottomNav />
       <FloatingActions />
-    </>
+    </PageTransitionProvider>
   );
 }
+

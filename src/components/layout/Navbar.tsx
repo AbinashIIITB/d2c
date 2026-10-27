@@ -273,6 +273,7 @@ export function Navbar() {
               >
                 <Link
                   href={link.href}
+                  prefetch={true}
                   className={`
                     flex items-center gap-1 px-4 py-2 rounded-lg font-medium text-sm transition-all duration-200
                     ${pathname === link.href
@@ -310,6 +311,7 @@ export function Navbar() {
                             <Link
                               key={drop.label}
                               href={drop.href}
+                              prefetch={true}
                               className="block px-4 py-2.5 text-sm text-gray-700 hover:bg-d2c-ice hover:text-d2c-royal transition-colors"
                             >
                               {drop.label}

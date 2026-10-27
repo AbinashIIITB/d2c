@@ -216,10 +216,35 @@ export function mapExamToSnakeCase(body: Record<string, any>): Record<string, an
 }
 
 // ----------------------------------------------------------------------
+// High-Performance In-Memory Cache (Sub-millisecond responses for visitors)
+// ----------------------------------------------------------------------
+interface CacheEntry<T> {
+  data: T;
+  timestamp: number;
+}
+
+let collegesCache: CacheEntry<any[]> | null = null;
+let examsCache: CacheEntry<any[]> | null = null;
+let blogsCache: CacheEntry<any[]> | null = null;
+const CMS_CACHE_TTL = 60 * 1000; // 60 seconds TTL
+
+export function clearCmsMemoryCache() {
+  collegesCache = null;
+  examsCache = null;
+  blogsCache = null;
+}
+
+// ----------------------------------------------------------------------
 // High-Level Data Service Methods (Automatic Supabase + Local Fallback)
 // ----------------------------------------------------------------------
 
 export async function getAllColleges(): Promise<any[]> {
+  const now = Date.now();
+  if (collegesCache && now - collegesCache.timestamp < CMS_CACHE_TTL) {
+    return collegesCache.data;
+  }
+
+  let result: any[] = [];
   if (isSupabaseConfigured) {
     try {
       const { data, error } = await supabaseAdmin
@@ -227,18 +252,29 @@ export async function getAllColleges(): Promise<any[]> {
         .select('*')
         .order('name');
       if (!error && data && data.length > 0) {
-        return sortCollegesWithIEMFirst(data.map(mapCollegeToCamelCase));
+        result = sortCollegesWithIEMFirst(data.map(mapCollegeToCamelCase));
       }
     } catch (err) {
       console.warn("Supabase query failed, falling back to local cms store:", err);
     }
   }
 
-  const store = initLocalStore();
-  return sortCollegesWithIEMFirst(store.colleges.map(mapCollegeToCamelCase));
+  if (result.length === 0) {
+    const store = initLocalStore();
+    result = sortCollegesWithIEMFirst(store.colleges.map(mapCollegeToCamelCase));
+  }
+
+  collegesCache = { data: result, timestamp: now };
+  return result;
 }
 
 export async function getCollegeByIdOrSlug(identifier: string): Promise<any | null> {
+  // 1. Fast in-memory lookup if available
+  if (collegesCache && Date.now() - collegesCache.timestamp < CMS_CACHE_TTL) {
+    const cached = collegesCache.data.find(c => c.id === identifier || c.slug === identifier);
+    if (cached) return cached;
+  }
+
   if (isSupabaseConfigured) {
     try {
       const { data, error } = await supabaseAdmin
@@ -261,6 +297,7 @@ export async function getCollegeByIdOrSlug(identifier: string): Promise<any | nu
 }
 
 export async function saveCollege(data: any): Promise<any> {
+  collegesCache = null; // Invalidate cache immediately on edit
   const snakeData = mapCollegeToSnakeCase(data);
   const collegeId = snakeData.id || snakeData.slug || `college_${Date.now()}`;
   snakeData.id = collegeId;
@@ -307,6 +344,7 @@ export async function saveCollege(data: any): Promise<any> {
 }
 
 export async function deleteCollege(id: string): Promise<boolean> {
+  collegesCache = null; // Invalidate cache immediately on delete
   if (isSupabaseConfigured) {
     try {
       await supabaseAdmin.from('colleges').delete().eq('id', id);
@@ -329,6 +367,12 @@ export async function deleteCollege(id: string): Promise<boolean> {
 // ----------------------------------------------------------------------
 
 export async function getAllExams(): Promise<any[]> {
+  const now = Date.now();
+  if (examsCache && now - examsCache.timestamp < CMS_CACHE_TTL) {
+    return examsCache.data;
+  }
+
+  let result: any[] = [];
   if (isSupabaseConfigured) {
     try {
       const { data, error } = await supabaseAdmin
@@ -336,18 +380,28 @@ export async function getAllExams(): Promise<any[]> {
         .select('*')
         .order('name');
       if (!error && data && data.length > 0) {
-        return data.map(mapExamToCamelCase);
+        result = data.map(mapExamToCamelCase);
       }
     } catch (err) {
       console.warn("Supabase query failed, falling back to local cms store:", err);
     }
   }
 
-  const store = initLocalStore();
-  return store.exams.map(mapExamToCamelCase);
+  if (result.length === 0) {
+    const store = initLocalStore();
+    result = store.exams.map(mapExamToCamelCase);
+  }
+
+  examsCache = { data: result, timestamp: now };
+  return result;
 }
 
 export async function getExamByIdOrSlug(identifier: string): Promise<any | null> {
+  if (examsCache && Date.now() - examsCache.timestamp < CMS_CACHE_TTL) {
+    const cached = examsCache.data.find(e => e.id === identifier || e.slug === identifier);
+    if (cached) return cached;
+  }
+
   if (isSupabaseConfigured) {
     try {
       const { data, error } = await supabaseAdmin
@@ -370,6 +424,7 @@ export async function getExamByIdOrSlug(identifier: string): Promise<any | null>
 }
 
 export async function saveExam(data: any): Promise<any> {
+  examsCache = null; // Invalidate cache immediately on edit
   const snakeData = mapExamToSnakeCase(data);
   const examId = snakeData.id || snakeData.slug || `exam_${Date.now()}`;
   snakeData.id = examId;
@@ -414,6 +469,7 @@ export async function saveExam(data: any): Promise<any> {
 }
 
 export async function deleteExam(id: string): Promise<boolean> {
+  examsCache = null; // Invalidate cache immediately on delete
   if (isSupabaseConfigured) {
     try {
       await supabaseAdmin.from('exams').delete().eq('id', id);
@@ -436,6 +492,12 @@ export async function deleteExam(id: string): Promise<boolean> {
 // ----------------------------------------------------------------------
 
 export async function getAllBlogs(): Promise<any[]> {
+  const now = Date.now();
+  if (blogsCache && now - blogsCache.timestamp < CMS_CACHE_TTL) {
+    return blogsCache.data;
+  }
+
+  let result: any[] = [];
   if (isSupabaseConfigured) {
     try {
       const { data, error } = await supabaseAdmin
@@ -443,18 +505,28 @@ export async function getAllBlogs(): Promise<any[]> {
         .select('*')
         .order('date', { ascending: false });
       if (!error && data && data.length > 0) {
-        return data;
+        result = data;
       }
     } catch {
       // Supabase table may not exist yet, safely fallback
     }
   }
 
-  const store = initLocalStore();
-  return store.blogs || [];
+  if (result.length === 0) {
+    const store = initLocalStore();
+    result = store.blogs || [];
+  }
+
+  blogsCache = { data: result, timestamp: now };
+  return result;
 }
 
 export async function getBlogByIdOrSlug(identifier: string): Promise<any | null> {
+  if (blogsCache && Date.now() - blogsCache.timestamp < CMS_CACHE_TTL) {
+    const cached = blogsCache.data.find(b => String(b.id) === String(identifier) || b.slug === identifier);
+    if (cached) return cached;
+  }
+
   if (isSupabaseConfigured) {
     try {
       const { data, error } = await supabaseAdmin
@@ -476,6 +548,7 @@ export async function getBlogByIdOrSlug(identifier: string): Promise<any | null>
 }
 
 export async function saveBlog(data: any): Promise<any> {
+  blogsCache = null; // Invalidate cache immediately on edit
   const blogId = data.id ? String(data.id) : `blog_${Date.now()}`;
   const slug = String(data.slug || data.title || '').trim().toLowerCase().replace(/[^a-z0-9-]/g, '-').replace(/-+/g, '-');
   
@@ -535,6 +608,7 @@ export async function saveBlog(data: any): Promise<any> {
 }
 
 export async function deleteBlog(id: string): Promise<boolean> {
+  blogsCache = null; // Invalidate cache immediately on delete
   if (isSupabaseConfigured) {
     try {
       await supabaseAdmin.from('blogs').delete().eq('id', id);
@@ -553,3 +627,4 @@ export async function deleteBlog(id: string): Promise<boolean> {
   }
   return true;
 }
+

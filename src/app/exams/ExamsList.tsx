@@ -55,7 +55,8 @@ export function ExamsList({ initialExams }: { initialExams: Exam[] }) {
                 >
                   <Link 
                     href={`/exams/${exam.slug}`}
-                    className="group relative block bg-white border border-gray-100 overflow-hidden transition-all duration-500 hover:shadow-[0_20px_60px_-15px_rgba(27,31,94,0.12)] hover:-translate-y-1 h-full"
+                    prefetch={true}
+                    className="group relative block bg-white border border-gray-100 overflow-hidden rounded-2xl transition-all duration-500 hover:shadow-2xl hover:-translate-y-1.5 h-full card-ring"
                   >
                     {/* Top accent gradient bar */}
                     <div className={`h-1.5 w-full bg-gradient-to-r ${accent.from} ${accent.to}`} />

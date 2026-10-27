@@ -110,10 +110,10 @@ export function BlogsList({ initialBlogs }: { initialBlogs: BlogItem[] }) {
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, scale: 0.95 }}
                   transition={{ duration: 0.3, delay: idx * 0.05 }}
-                  className="group bg-white rounded-3xl overflow-hidden border border-gray-100 shadow-[0_4px_20px_rgba(0,0,0,0.03)] hover:shadow-[0_20px_60px_-15px_rgba(27,31,94,0.12)] hover:-translate-y-1.5 transition-all duration-300 flex flex-col h-full"
+                  className="group bg-white rounded-2xl overflow-hidden border border-gray-100 shadow-sm hover:shadow-2xl hover:-translate-y-1.5 transition-all duration-500 flex flex-col h-full card-ring"
                 >
                   {/* Cover Image */}
-                  <Link href={`/blog/${blog.slug}`} className="block relative h-56 overflow-hidden bg-gray-100">
+                  <Link href={`/blog/${blog.slug}`} prefetch={true} className="block relative h-56 overflow-hidden bg-gray-100">
                     <img
                       src={blog.imageUrl || "https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&q=80&w=800"}
                       alt={blog.title}

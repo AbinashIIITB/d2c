@@ -19,7 +19,7 @@ export default async function BlogListingPage() {
   const blogs = await getAllBlogs();
 
   return (
-    <div className="pb-16 bg-d2c-white min-h-screen">
+    <div className="pb-16 bg-d2c-white min-h-screen page-fade-in">
       {/* Hero-style header matching /colleges and /exams */}
       <section className="relative isolate flex flex-col items-center justify-center min-[1025px]:justify-start max-[340px]:min-h-[756px] min-h-[605px] min-[1025px]:min-h-[800px] text-d2c-white pt-12 pb-12 sm:pt-6 min-[1025px]:pt-48 lg:pt-36 overflow-hidden -mb-24 sm:-mb-36 lg:-mb-40">
         {/* Split Background Engine */}

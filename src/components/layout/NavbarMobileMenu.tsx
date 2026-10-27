@@ -34,6 +34,7 @@ export function NavbarMobileMenu({ isOpen, navLinks }: NavbarMobileMenuProps) {
                 <div key={link.label}>
                   <Link
                     href={link.href}
+                    prefetch={true}
                     className={`block px-4 py-3 rounded-lg font-sora font-semibold text-base transition-colors ${
                       pathname === link.href
                         ? "bg-d2c-ice text-d2c-royal"
@@ -48,6 +49,7 @@ export function NavbarMobileMenu({ isOpen, navLinks }: NavbarMobileMenuProps) {
                         <Link
                           key={drop.label}
                           href={drop.href}
+                          prefetch={true}
                           className="text-gray-500 py-2 text-sm font-medium hover:text-d2c-royal transition-colors"
                         >
                           {drop.label}
