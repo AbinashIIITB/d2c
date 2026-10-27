@@ -1,7 +1,8 @@
 'use client';
 
 import { useState } from 'react';
-import { AlertTriangle, Trash2, X, Loader2 } from 'lucide-react';
+import { AlertTriangle, Trash2, X } from 'lucide-react';
+import { CircleLoader } from './CircleLoader';
 
 interface ConfirmDeleteModalProps {
   isOpen: boolean;
@@ -80,11 +81,12 @@ export function ConfirmDeleteModal({
             type="button"
             onClick={handleConfirm}
             disabled={loading}
-            className="px-5 py-2.5 rounded-xl bg-red-600 hover:bg-red-700 text-white font-bold text-xs transition-colors flex items-center gap-1.5 shadow-md shadow-red-600/20 disabled:opacity-50"
+            className="px-5 py-2.5 rounded-xl bg-red-600 hover:bg-red-700 text-white font-bold text-xs transition-colors flex items-center gap-2 shadow-md shadow-red-600/20 disabled:opacity-50"
           >
             {loading ? (
               <>
-                <Loader2 className="w-4 h-4 animate-spin" /> Deleting...
+                <CircleLoader size="xs" color="white" />
+                <span>Deleting...</span>
               </>
             ) : (
               <>

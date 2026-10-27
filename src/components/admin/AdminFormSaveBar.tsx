@@ -1,7 +1,8 @@
 'use client';
 
-import { Save, Loader2, RotateCcw, ExternalLink, CheckCircle } from 'lucide-react';
+import { Save, RotateCcw, ExternalLink, CheckCircle } from 'lucide-react';
 import Link from 'next/link';
+import { CircleLoader } from './CircleLoader';
 
 interface AdminFormSaveBarProps {
   saving: boolean;
@@ -75,7 +76,8 @@ export function AdminFormSaveBar({
           >
             {saving ? (
               <>
-                <Loader2 className="w-4 h-4 animate-spin" /> Saving...
+                <CircleLoader size="xs" color="white" />
+                <span>Saving Changes...</span>
               </>
             ) : (
               <>

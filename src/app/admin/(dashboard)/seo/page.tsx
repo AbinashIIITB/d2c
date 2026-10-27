@@ -22,6 +22,7 @@ import {
 } from 'lucide-react';
 import { PageSeoData } from '@/components/admin/SeoSuiteEditor';
 import { sortCollegesWithIEMFirst } from '@/lib/iem-priority';
+import { CircleLoader } from '@/components/admin/CircleLoader';
 
 interface LandingPageItem {
   id: string;
@@ -261,9 +262,13 @@ export default function PageSeoStudio() {
 
       {/* Pages Table */}
       {loading ? (
-        <div className="bg-white rounded-2xl border border-gray-100 p-12 text-center">
-          <RefreshCw className="w-8 h-8 text-d2c-royal animate-spin mx-auto mb-3" />
-          <p className="text-sm font-semibold text-d2c-navy">Loading Landing Pages & SEO Index...</p>
+        <div className="bg-white rounded-2xl border border-gray-100 p-16 text-center">
+          <CircleLoader
+            size="lg"
+            color="royal"
+            text="Loading Landing Pages & SEO Index..."
+            subtext="Analyzing college and entrance exam metadata..."
+          />
         </div>
       ) : filteredItems.length === 0 ? (
         <div className="bg-white rounded-2xl border border-gray-100 p-12 text-center">

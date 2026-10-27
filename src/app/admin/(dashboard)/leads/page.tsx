@@ -22,6 +22,7 @@ import {
   Calendar,
   Clock
 } from 'lucide-react';
+import { CircleLoader } from '@/components/admin/CircleLoader';
 
 interface Lead {
   rowIndex?: number;
@@ -294,7 +295,11 @@ export default function LeadsPage() {
             className="bg-white hover:bg-gray-50 text-d2c-navy border border-gray-200 px-3.5 py-2 rounded-xl font-bold text-xs transition-colors flex items-center gap-1.5 shadow-sm disabled:opacity-50"
             title="Fetch latest rows from Google Sheets immediately"
           >
-            <RefreshCw className={`w-3.5 h-3.5 ${refreshing ? 'animate-spin text-d2c-royal' : ''}`} />
+            {refreshing ? (
+              <CircleLoader size="xs" color="royal" />
+            ) : (
+              <RefreshCw className="w-3.5 h-3.5 text-d2c-royal" />
+            )}
             Sync Now
           </button>
 
@@ -475,7 +480,16 @@ export default function LeadsPage() {
       </div>
 
       {/* Leads Table with Direct 2-Way Sync Editing */}
-      <div className="bg-white rounded-2xl shadow-sm border border-gray-150 overflow-hidden">
+      <div className="relative bg-white rounded-2xl shadow-sm border border-gray-150 overflow-hidden">
+        {refreshing && (
+          <CircleLoader
+            overlay
+            size="md"
+            color="royal"
+            text="Syncing live leads with Google Sheets..."
+            subtext="Connecting to live spreadsheet..."
+          />
+        )}
         <div className="overflow-x-auto">
           <table className="w-full text-left border-collapse">
             <thead>
@@ -492,9 +506,13 @@ export default function LeadsPage() {
             <tbody className="divide-y divide-gray-100 text-sm">
               {loading ? (
                 <tr>
-                  <td colSpan={7} className="px-6 py-16 text-center text-gray-400 text-xs">
-                    <RefreshCw className="w-6 h-6 animate-spin text-d2c-royal mx-auto mb-2" />
-                    Fetching live student leads from Google Sheets...
+                  <td colSpan={7} className="px-6 py-20 text-center">
+                    <CircleLoader
+                      size="lg"
+                      color="royal"
+                      text="Fetching live student leads from Google Sheets..."
+                      subtext="Reading live responses from connected sheet..."
+                    />
                   </td>
                 </tr>
               ) : filtered.length === 0 ? (
@@ -587,8 +605,9 @@ export default function LeadsPage() {
                             ))}
                           </select>
                           {isUpdating && (
-                            <span className="text-[10px] text-emerald-600 block mt-0.5 font-medium animate-pulse">
-                              Syncing to sheet...
+                            <span className="flex items-center gap-1.5 text-[10px] text-emerald-600 mt-1 font-semibold">
+                              <CircleLoader size="xs" color="emerald" />
+                              <span>Syncing to sheet...</span>
                             </span>
                           )}
                         </div>
