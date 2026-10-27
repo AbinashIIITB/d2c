@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from 'react';
-import { useRouter } from 'next/navigation';
 import { Lock } from 'lucide-react';
 
 export default function AdminLogin() {
@@ -9,7 +8,6 @@ export default function AdminLogin() {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
-  const router = useRouter();
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -28,19 +26,13 @@ export default function AdminLogin() {
         window.location.href = '/admin';
       } else {
         const data = await res.json();
-        setError(data.message || 'Login failed');
+        setError(data.message || 'Invalid credentials');
       }
     } catch (err) {
-      setError('Something went wrong');
+      setError('Something went wrong. Please try again.');
     } finally {
       setLoading(false);
     }
-  };
-
-  const fillCredentials = (user: string, pass: string) => {
-    setUsername(user);
-    setPassword(pass);
-    setError('');
   };
 
   return (
@@ -62,7 +54,7 @@ export default function AdminLogin() {
               required
               value={username}
               onChange={e => setUsername(e.target.value)}
-              placeholder="e.g. admin"
+              placeholder="Username"
               className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-d2c-royal focus:ring-2 focus:ring-d2c-royal/20 outline-none text-d2c-navy"
             />
           </div>
@@ -85,30 +77,9 @@ export default function AdminLogin() {
             disabled={loading}
             className="w-full bg-d2c-royal hover:bg-d2c-navy text-white font-bold py-3 rounded-xl transition-colors disabled:opacity-50 shadow-md"
           >
-            {loading ? 'Authenticating...' : 'Sign In to Dashboard'}
+            {loading ? 'Authenticating...' : 'Sign In'}
           </button>
         </form>
-
-        {/* Quick Access Helper */}
-        <div className="mt-6 pt-6 border-t border-gray-100">
-          <p className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-2 text-center">Quick Demo Credentials</p>
-          <div className="grid grid-cols-2 gap-2 text-xs">
-            <button
-              type="button"
-              onClick={() => fillCredentials('admin', 'securepassword123')}
-              className="py-2 px-2.5 rounded-lg border border-gray-200 hover:border-d2c-royal hover:bg-blue-50 text-d2c-navy font-semibold text-center transition-all"
-            >
-              Super Admin
-            </button>
-            <button
-              type="button"
-              onClick={() => fillCredentials('editor', 'editorpassword123')}
-              className="py-2 px-2.5 rounded-lg border border-gray-200 hover:border-d2c-royal hover:bg-blue-50 text-d2c-navy font-semibold text-center transition-all"
-            >
-              Editor
-            </button>
-          </div>
-        </div>
       </div>
     </div>
   );
