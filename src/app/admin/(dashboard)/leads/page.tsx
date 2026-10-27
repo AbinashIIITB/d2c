@@ -18,7 +18,9 @@ import {
   Copy,
   Check,
   Radio,
-  FileSpreadsheet
+  FileSpreadsheet,
+  Calendar,
+  Clock
 } from 'lucide-react';
 
 interface Lead {
@@ -33,6 +35,24 @@ interface Lead {
   status?: string;
   notes?: string;
   created_at?: string;
+  submittedAt?: string;
+}
+
+function parseTimestampParts(ts?: string): { date: string; time: string } {
+  if (!ts || ts === 'Recent' || ts === 'Just now') {
+    return { date: ts || 'Recent', time: 'Live sync' };
+  }
+  // If comma separated: "27 Oct 2026, 11:35 PM"
+  if (ts.includes(',')) {
+    const parts = ts.split(',');
+    return { date: parts[0].trim(), time: parts.slice(1).join(',').trim() };
+  }
+  // If space separated with AM/PM e.g. "27-10-2026 11:35 PM"
+  const m = ts.match(/^(.+?)\s+(\d{1,2}:\d{2}(?::\d{2})?\s*(?:AM|PM|am|pm)?)$/);
+  if (m) {
+    return { date: m[1].trim(), time: m[2].trim() };
+  }
+  return { date: ts, time: '' };
 }
 
 const STATUS_OPTIONS = [
@@ -200,7 +220,9 @@ export default function LeadsPage() {
       (lead.phone || '').toLowerCase().includes(q) ||
       (lead.email || '').toLowerCase().includes(q) ||
       (lead.interestedCollege || '').toLowerCase().includes(q) ||
-      (lead.notes || '').toLowerCase().includes(q);
+      (lead.notes || '').toLowerCase().includes(q) ||
+      (lead.created_at || '').toLowerCase().includes(q) ||
+      (lead.submittedAt || '').toLowerCase().includes(q);
 
     const matchesType = filterType === 'ALL' || lead.leadType === filterType;
     const matchesStatus = filterStatus === 'ALL' || lead.status === filterStatus;
@@ -219,7 +241,7 @@ export default function LeadsPage() {
       `"${l.leadType || 'Inquiry'}"`,
       `"${l.status || 'New'}"`,
       `"${(l.notes || '').replace(/"/g, '""')}"`,
-      `"${l.created_at || ''}"`
+      `"${l.created_at || l.submittedAt || ''}"`
     ]);
 
     const csvContent = 'data:text/csv;charset=utf-8,' + [headers.join(','), ...rows.map(e => e.join(','))].join('\n');
@@ -459,6 +481,7 @@ export default function LeadsPage() {
             <thead>
               <tr className="bg-gray-50/70 border-b border-gray-150 text-[11px] font-bold text-gray-500 uppercase tracking-wider">
                 <th className="px-5 py-4">Student</th>
+                <th className="px-5 py-4">Submitted At (Sheet)</th>
                 <th className="px-5 py-4">Target College / Context</th>
                 <th className="px-5 py-4">Category</th>
                 <th className="px-5 py-4">Status (Syncs to Sheet)</th>
@@ -469,14 +492,14 @@ export default function LeadsPage() {
             <tbody className="divide-y divide-gray-100 text-sm">
               {loading ? (
                 <tr>
-                  <td colSpan={6} className="px-6 py-16 text-center text-gray-400 text-xs">
+                  <td colSpan={7} className="px-6 py-16 text-center text-gray-400 text-xs">
                     <RefreshCw className="w-6 h-6 animate-spin text-d2c-royal mx-auto mb-2" />
                     Fetching live student leads from Google Sheets...
                   </td>
                 </tr>
               ) : filtered.length === 0 ? (
                 <tr>
-                  <td colSpan={6} className="px-6 py-16 text-center space-y-3">
+                  <td colSpan={7} className="px-6 py-16 text-center space-y-3">
                     <div className="w-12 h-12 bg-gray-100 text-gray-400 rounded-2xl flex items-center justify-center mx-auto">
                       <FileSpreadsheet className="w-6 h-6 text-emerald-600" />
                     </div>
@@ -506,12 +529,30 @@ export default function LeadsPage() {
                         <div className="font-bold text-d2c-navy leading-snug">
                           {lead.name || 'Anonymous Student'}
                         </div>
-                        <div className="text-xs text-gray-400 mt-0.5">
+                        <div className="text-xs text-gray-500 mt-0.5 font-medium">
                           {lead.phone || lead.email || 'No phone'}
                         </div>
-                        <div className="text-[10px] text-gray-400 font-mono mt-0.5">
-                          {lead.created_at || 'Recent'}
-                        </div>
+                      </td>
+
+                      {/* Submitted At / Timestamp from Sheet */}
+                      <td className="px-5 py-4 whitespace-nowrap">
+                        {(() => {
+                          const timeInfo = parseTimestampParts(lead.created_at || lead.submittedAt);
+                          return (
+                            <div>
+                              <div className="flex items-center gap-1.5 text-xs font-bold text-d2c-navy">
+                                <Calendar className="w-3.5 h-3.5 text-d2c-royal shrink-0" />
+                                <span>{timeInfo.date}</span>
+                              </div>
+                              {timeInfo.time && (
+                                <div className="flex items-center gap-1 text-[11px] text-gray-500 mt-1 font-mono">
+                                  <Clock className="w-3 h-3 text-emerald-600 shrink-0" />
+                                  <span>{timeInfo.time}</span>
+                                </div>
+                              )}
+                            </div>
+                          );
+                        })()}
                       </td>
 
                       {/* Interested College */}

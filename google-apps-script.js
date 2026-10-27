@@ -60,10 +60,19 @@ function doGet(e) {
       
       // Only include non-empty rows
       if (name || phone) {
+        var rawTimestamp = row[1];
+        var formattedTimestamp = "";
+        if (rawTimestamp instanceof Date) {
+          formattedTimestamp = Utilities.formatDate(rawTimestamp, "Asia/Kolkata", "dd MMM yyyy, hh:mm a");
+        } else if (rawTimestamp) {
+          formattedTimestamp = String(rawTimestamp).trim();
+        }
+
         leads.push({
           rowIndex: i + 1, // 1-based sheet row number for updates
           id: row[0] || ("LEAD-" + (i + 1)),
-          created_at: row[1] || "",
+          created_at: formattedTimestamp || "Recent",
+          submittedAt: formattedTimestamp || "Recent",
           leadType: row[2] || "Direct Inquiry",
           name: name,
           phone: phone,

@@ -10,6 +10,83 @@ export interface ParsedLead {
   status?: string;
   notes?: string;
   created_at?: string;
+  submittedAt?: string;
+}
+
+/**
+ * Format any incoming Google Sheets timestamp/date into a clean, human-readable format
+ * (e.g., "27 Oct 2026, 11:35 PM")
+ */
+export function formatLeadTimestamp(raw?: any): string {
+  if (!raw) return 'Recent';
+  const str = String(raw).trim();
+  if (!str || str.toLowerCase() === 'undefined' || str.toLowerCase() === 'null') return 'Recent';
+
+  // 1. Google Visualization API format: Date(2026,9,27,23,35,8) - month is 0-indexed
+  const gvizMatch = str.match(/Date\((\d+),(\d+),(\d+)(?:,(\d+),(\d+)(?:,(\d+))?)?\)/);
+  if (gvizMatch) {
+    const [, y, m, d, hh = '0', mm = '0'] = gvizMatch;
+    const date = new Date(Number(y), Number(m), Number(d), Number(hh), Number(mm));
+    if (!isNaN(date.getTime())) {
+      return formatDatePretty(date);
+    }
+  }
+
+  // 2. Day-Month-Year format e.g. 27-10-2026 or 27/10/2026 with optional time
+  const dmyMatch = str.match(/^(\d{1,2})[-/](\d{1,2})[-/](\d{4})(?:\s+(\d{1,2}):(\d{2})(?::\d{2})?\s*(AM|PM|am|pm)?)?$/i);
+  if (dmyMatch) {
+    const [, d, m, y, hh, mm, ampm] = dmyMatch;
+    let hour = hh ? parseInt(hh, 10) : 0;
+    const min = mm ? parseInt(mm, 10) : 0;
+    if (ampm) {
+      if (ampm.toUpperCase() === 'PM' && hour < 12) hour += 12;
+      if (ampm.toUpperCase() === 'AM' && hour === 12) hour = 0;
+    }
+    const date = new Date(Number(y), Number(m) - 1, Number(d), hour, min);
+    if (!isNaN(date.getTime())) {
+      return formatDatePretty(date);
+    }
+  }
+
+  // 3. Year-Month-Day format e.g. 2026-10-27
+  const ymdMatch = str.match(/^(\d{4})[-/](\d{1,2})[-/](\d{1,2})(?:\s+(\d{1,2}):(\d{2})(?::\d{2})?\s*(AM|PM|am|pm)?)?$/i);
+  if (ymdMatch) {
+    const [, y, m, d, hh, mm, ampm] = ymdMatch;
+    let hour = hh ? parseInt(hh, 10) : 0;
+    const min = mm ? parseInt(mm, 10) : 0;
+    if (ampm) {
+      if (ampm.toUpperCase() === 'PM' && hour < 12) hour += 12;
+      if (ampm.toUpperCase() === 'AM' && hour === 12) hour = 0;
+    }
+    const date = new Date(Number(y), Number(m) - 1, Number(d), hour, min);
+    if (!isNaN(date.getTime())) {
+      return formatDatePretty(date);
+    }
+  }
+
+  // 4. Standard Date parsing (ISO strings, Date.toString(), etc.)
+  const parsed = new Date(str);
+  if (!isNaN(parsed.getTime()) && parsed.getFullYear() > 2000) {
+    return formatDatePretty(parsed);
+  }
+
+  return str;
+}
+
+function formatDatePretty(d: Date): string {
+  try {
+    return d.toLocaleString('en-IN', {
+      timeZone: 'Asia/Kolkata',
+      day: '2-digit',
+      month: 'short',
+      year: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit',
+      hour12: true
+    });
+  } catch {
+    return d.toLocaleDateString();
+  }
 }
 
 export function extractSheetId(input: string): string {
@@ -48,19 +125,25 @@ export async function fetchFromAppsScript(webhookUrl: string): Promise<ParsedLea
           const data = JSON.parse(text);
           const list = Array.isArray(data) ? data : (data.leads || data.data || []);
           if (Array.isArray(list) && list.length > 0) {
-            return list.map((item: any, idx: number) => ({
-              rowIndex: item.rowIndex || (idx + 2),
-              id: String(item.id || `lead-${idx + 1}`),
-              name: item.name || item.studentName || 'Student',
-              phone: String(item.phone || item.mobile || ''),
-              email: item.email || '',
-              interestedCollege: item.interestedCollege || item.college || '',
-              leadType: item.leadType || item.type || 'Direct Admission',
-              message: item.message || '',
-              status: item.status || 'New',
-              notes: item.notes || '',
-              created_at: item.submittedAt || item.date || item.created_at || 'Recent'
-            }));
+            return list.map((item: any, idx: number) => {
+              const formattedTime = formatLeadTimestamp(
+                item.submittedAt || item.date || item.created_at || item.timestamp || item.time || item['Submitted At'] || item['Timestamp']
+              );
+              return {
+                rowIndex: item.rowIndex || (idx + 2),
+                id: String(item.id || `lead-${idx + 1}`),
+                name: item.name || item.studentName || 'Student',
+                phone: String(item.phone || item.mobile || ''),
+                email: item.email || '',
+                interestedCollege: item.interestedCollege || item.college || '',
+                leadType: item.leadType || item.type || 'Direct Admission',
+                message: item.message || '',
+                status: item.status || 'New',
+                notes: item.notes || '',
+                created_at: formattedTime,
+                submittedAt: formattedTime
+              };
+            });
           }
         } catch (e) {
           console.warn('Apps Script returned non-JSON text');
@@ -178,7 +261,20 @@ export async function fetchFromGoogleSheet(sheetIdOrUrl: string): Promise<Parsed
             const message = findField(raw, ['message', 'notes', 'query']);
             const status = findField(raw, ['status', 'state']) || 'New';
             const notes = findField(raw, ['counselornotes', 'counselor notes', 'admin notes', 'note', 'remarks']) || '';
-            const created_at = findField(raw, ['submittedat', 'date', 'timestamp', 'time', 'submitted at', 'created at']);
+            const rawCreatedAt = findField(raw, [
+              'submittedat', 
+              'date', 
+              'timestamp', 
+              'time', 
+              'submitted at', 
+              'created at', 
+              'created_at',
+              'submissiondate',
+              'submission date',
+              'submissiontime'
+            ]) || Object.values(raw)[1]; // Column 2 in default sheets is Submitted At / Timestamp
+
+            const formattedTime = formatLeadTimestamp(rawCreatedAt);
 
             return {
               rowIndex: idx + 2, // 1-based index (row 1 is header)
@@ -191,7 +287,8 @@ export async function fetchFromGoogleSheet(sheetIdOrUrl: string): Promise<Parsed
               message,
               status,
               notes,
-              created_at: created_at || 'Recent'
+              created_at: formattedTime,
+              submittedAt: formattedTime
             };
           })
           .filter((l: ParsedLead) => l.name || l.phone);
@@ -246,6 +343,18 @@ function parseCsvToLeads(csvText: string): ParsedLead[] {
     const phone = findField(raw, ['phone', 'mobile', 'contact']) || values[4] || values[2] || '';
 
     if (name || phone) {
+      const rawCreatedAt = findField(raw, [
+        'submittedat', 
+        'date', 
+        'timestamp', 
+        'submitted at', 
+        'created at', 
+        'time', 
+        'submission date'
+      ]) || values[1];
+
+      const formattedTime = formatLeadTimestamp(rawCreatedAt);
+
       leads.push({
         rowIndex: i + 1,
         id: findField(raw, ['id']) || `L-${i + 1}`,
@@ -257,7 +366,8 @@ function parseCsvToLeads(csvText: string): ParsedLead[] {
         message: findField(raw, ['message', 'query']),
         status: findField(raw, ['status']) || 'New',
         notes: findField(raw, ['counselornotes', 'notes']) || '',
-        created_at: findField(raw, ['submittedat', 'date', 'timestamp']) || 'Recent'
+        created_at: formattedTime,
+        submittedAt: formattedTime
       });
     }
   }
