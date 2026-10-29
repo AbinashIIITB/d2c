@@ -32,6 +32,7 @@ const STOP_WORDS = new Set([
 // Curated college aliases & popular abbreviations
 const KNOWN_COLLEGE_ALIASES: Record<string, string[]> = {
   // IEM Salt Lake
+  "iem-saltlake": ["IEM", "IEM Salt Lake", "IEM Kolkata", "Institute of Engineering and Management", "UEM"],
   "iem-salt-lake": ["IEM", "IEM Salt Lake", "IEM Kolkata", "Institute of Engineering and Management", "UEM"],
   "institute-of-engineering-management": ["IEM", "IEM Kolkata", "IEM Salt Lake"],
   // Heritage

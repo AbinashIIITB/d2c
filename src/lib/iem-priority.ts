@@ -12,7 +12,9 @@ export function isIEMCollege(item: any): boolean {
 
   return (
     id === '1' ||
+    id === 'iem-saltlake' ||
     id === 'iem-salt-lake' ||
+    slug === 'iem-saltlake' ||
     slug === 'iem-salt-lake' ||
     slug.startsWith('iem') ||
     slug.includes('-iem') ||

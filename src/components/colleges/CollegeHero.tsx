@@ -6,6 +6,9 @@ import { ApplyNowButton } from "@/components/ui/ApplyNowButton"
 
 // We expect a robust college object matching the schema from data.ts
 export function CollegeHero({ college }: { college: any }) {
+  const seo = college.seo || college.contact?.seo || {};
+  const heroH1 = seo.h1Title || college.h1 || college.name;
+
   return (
     <div className="relative overflow-hidden bg-[#0B1120]">
       {/* Dark overlays and border */}
@@ -55,10 +58,15 @@ export function CollegeHero({ college }: { college: any }) {
               </span>
             </div>
 
-            {/* College Name — Display size */}
-            <h1 className="text-3xl sm:text-4xl md:text-[3.25rem] font-sora font-bold text-white leading-[1.1] tracking-[-0.02em] mb-5">
-              {college.name}
+            {/* College Name / H1 — Display size */}
+            <h1 className="text-3xl sm:text-4xl md:text-[3.25rem] font-sora font-bold text-white leading-[1.1] tracking-[-0.02em] mb-4">
+              {heroH1}
             </h1>
+            {heroH1 !== college.name && (
+              <p className="text-white/70 text-base md:text-lg font-medium mb-5">
+                {college.name}
+              </p>
+            )}
 
             {/* Location */}
             <div className="flex items-center gap-2.5 text-[#60A5FA] mb-8">

@@ -23,6 +23,16 @@ const nextConfig: NextConfig = {
   turbopack: {
     root: process.cwd(),
   },
+
+  async redirects() {
+    return [
+      {
+        source: '/colleges/iem-salt-lake',
+        destination: '/colleges/iem-saltlake',
+        permanent: true,
+      },
+    ];
+  },
 };
 
 export default nextConfig;

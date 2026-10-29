@@ -150,7 +150,7 @@ export type MedicalCollege = College;
 export const colleges: College[] = [
     {
         id: "1",
-        slug: "iem-salt-lake",
+        slug: "iem-saltlake",
         name: "Institute of Engineering & Management (Salt Lake)",
         location: "Salt Lake, Kolkata",
         state: "West Bengal",
@@ -252,12 +252,80 @@ export const colleges: College[] = [
             { parameter: "Total Fees (4 Years)", thisCollege: "₹8.5 Lakhs", competitor1: "₹9 Lakhs", competitor2: "₹7 Lakhs" }
         ],
         faqs: [
-            { question: "Is IEM Kolkata a good college?", answer: "Yes, IEM is one of the top private engineering colleges in West Bengal with NAAC 'A' grade accreditation, strong placements (95%+), and a legacy of 35+ years." },
-            { question: "What is the fee structure of IEM?", answer: "The total B.Tech fee at IEM is approximately ₹8.4 - 8.65 Lakhs for 4 years, excluding hostel and mess charges." },
-            { question: "What is the WBJEE cutoff for IEM CSE?", answer: "The WBJEE cutoff for CSE at IEM typically ranges from Rank 3287 to 6398 depending on the year and category." },
-            { question: "Does IEM have hostels?", answer: "Yes, IEM has separate hostels for boys and girls with modern facilities. Hostel fees are around ₹70,000 - 90,000 per year." },
-            { question: "What companies visit IEM for placements?", answer: "Top recruiters include Amazon, Microsoft, TCS, Cognizant, Wipro, Infosys, Capgemini, Accenture, Zoho, and many more." }, { question: "Does the college provide internship support?", answer: "Yes, the college has a dedicated placement cell that assists students in securing summer internships and industrial training." }, { question: "Is there a dedicated placement cell?", answer: "Yes, the Training and Placement Cell works year-round to bring top companies for recruitment and trains students in soft skills." }, { question: "Are there hostel facilities available?", answer: "Yes, separate hostel facilities are available for boys and girls with all necessary amenities and security." }
+            {
+                question: "What is the admission process for IEM Kolkata in 2026?",
+                answer: "The admission process for IEM Kolkata depends on the course and the applicable admission rules. Students should check the current eligibility criteria, entrance examination requirements and counselling procedure before applying. For official information about IEMJEE 2026, visit the IEM official website."
+            },
+            {
+                question: "What is the fee structure of IEM Kolkata for B.Tech?",
+                answer: "The total B.Tech fees at IEM Kolkata depend on the course, admission route and applicable fee schedule. Students should confirm the latest tuition fees, admission charges and other applicable expenses with the institute before taking admission. Hostel fees, where applicable, should be checked separately."
+            },
+            {
+                question: "What are the eligibility criteria for B.Tech admission at IEM Kolkata?",
+                answer: "Eligibility requirements depend on the engineering programme and the applicable admission route. Students should review the current academic requirements, compulsory subjects, entrance examination criteria and counselling rules before applying. Refer to the official IEM admissions website for current details."
+            },
+            {
+                question: "Is direct admission available at IEM Kolkata?",
+                answer: "Admission to IEM Kolkata is subject to the institute's applicable admission rules and eligibility requirements. Students should contact the official admission office to understand the permitted admission routes and available seats. Admission cannot be guaranteed without meeting the required criteria."
+            },
+            {
+                question: "What is the WBJEE cutoff for CSE at IEM Kolkata?",
+                answer: "The WBJEE cutoff for Computer Science and Engineering (CSE) at IEM Kolkata can vary each year depending on the candidate's category, counselling round, seat availability and applicable admission route. Students should check the official counselling results and previous-year opening and closing ranks for a realistic estimate."
+            },
+            {
+                question: "What is the average placement package for CSE at IEM Kolkata?",
+                answer: "Placement packages vary by academic year, course, employer and individual performance. Students researching IEM Kolkata placements should review the latest official placement report and distinguish CSE-specific figures from institute-wide statistics. Contact the institute for the latest verified average package and placement data."
+            },
+            {
+                question: "Which university is IEM Kolkata affiliated with?",
+                answer: "The Institute of Engineering & Management (IEM), Kolkata, is associated with the University of Engineering & Management (UEM), Kolkata, according to the institute's official information. Students should check the current programme-specific affiliation and degree-awarding details before admission."
+            },
+            {
+                question: "Does IEM Kolkata provide hostel facilities?",
+                answer: "Yes, IEM lists separate hostel facilities for male and female students. Availability, accommodation arrangements, facilities and fees should be confirmed directly with the institute, as these details may vary."
+            },
+            {
+                question: "Which companies recruit students from IEM Kolkata?",
+                answer: "Recruitment opportunities vary by year, programme and employer requirements. IEM has reported recruiters from different sectors, including IT, consulting, finance and other industries. Students should review the latest placement report for the companies that participated in the relevant academic year's recruitment process."
+            },
+            {
+                question: "Where is the IEM Salt Lake campus located?",
+                answer: "The IEM Salt Lake admission office is located at Ashram Building, GN-34/2, Sector V, Salt Lake Electronics Complex, Kolkata – 700091, West Bengal. Students should confirm the exact campus or department location before visiting."
+            }
         ],
+        seo: {
+            seoTitle: "IEM Kolkata: Admission, Fees & Placements | Direct2Campus",
+            metaDescription: "Explore IEM Kolkata admission, B.Tech courses, fees, eligibility, placements and the application process. Get expert admission guidance from Direct2Campus.",
+            h1Title: "IEM Kolkata Admission, Courses, Fees and Placements",
+            primaryKeyword: "IEM Kolkata",
+            secondaryKeywords: [
+                "IEM Kolkata admission",
+                "IEM Kolkata fees",
+                "IEM Kolkata placements",
+                "IEM Kolkata admission process",
+                "IEM Kolkata course fee structure",
+                "IEM Kolkata B.Tech fees",
+                "IEM Salt Lake campus"
+            ],
+            canonicalUrl: "https://direct2campus.com/colleges/iem-saltlake",
+            headingStructure: [
+                { level: "h2", text: "IEM Kolkata Admission Process" },
+                { level: "h2", text: "IEM Kolkata Courses and Fee Structure" },
+                { level: "h2", text: "IEM Kolkata B.Tech Fees and Eligibility" },
+                { level: "h2", text: "IEM Kolkata Placements and Average Package" },
+                { level: "h2", text: "IEM Salt Lake Campus and Location" },
+                { level: "h2", text: "Frequently Asked Questions About IEM Kolkata" }
+            ],
+            sectionHeadings: {
+                admissions: "IEM Kolkata Admission Process",
+                coursesFees: "IEM Kolkata Courses and Fee Structure",
+                coursesFeesSubtitle: "IEM Kolkata Admission Fees and Course Fee Structure",
+                btechFeesEligibility: "IEM Kolkata B.Tech Fees and Eligibility",
+                placements: "IEM Kolkata Placements and Average Package",
+                overview: "IEM Salt Lake Campus and Location",
+                faqs: "Frequently Asked Questions About IEM Kolkata"
+            }
+        },
         galleryImages: [
             { url: "https://placehold.co/800x600/1e293b/fff?text=Campus+View", alt: "Campus View" },
             { url: "https://placehold.co/800x600/1e293b/fff?text=Library", alt: "Library" },
