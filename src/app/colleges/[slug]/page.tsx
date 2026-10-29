@@ -138,18 +138,45 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
     college.location,
     ...(college.tags || [])
   ];
-  const heroAlt = seo.images?.heroAlt || `${college.name} Campus Direct Admission`;
-  
+  const imageUrl = college.imageUrl || college.image_url || "/images/colleges/default-college.jpg";
+
   return {
     title: pageTitle,
     description: metaDesc,
     keywords,
     alternates: { canonical },
+    robots: {
+      index: true,
+      follow: true,
+      googleBot: {
+        index: true,
+        follow: true,
+        "max-video-preview": -1,
+        "max-image-preview": "large",
+        "max-snippet": -1,
+      },
+    },
     openGraph: {
       title: pageTitle,
       description: metaDesc,
       url: canonical,
-      images: college.imageUrl || college.image_url ? [{ url: college.imageUrl || college.image_url, alt: heroAlt }] : [],
+      siteName: "Direct2Campus",
+      locale: "en_IN",
+      type: "website",
+      images: [
+        {
+          url: imageUrl,
+          width: 1200,
+          height: 630,
+          alt: heroAlt,
+        },
+      ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: pageTitle,
+      description: metaDesc,
+      images: [imageUrl],
     },
   }
 }
@@ -695,12 +722,62 @@ export default async function CollegeDetailPage({ params }: { params: Params }) 
       }))
     } : null;
 
+    const collegeUrl = `https://direct2campus.com/colleges/${college.slug || slug}`;
+    const breadcrumbSchema = {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://direct2campus.com"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Colleges",
+          "item": "https://direct2campus.com/colleges"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": college.name,
+          "item": collegeUrl
+        }
+      ]
+    };
+
+    const orgSchema = {
+      "@context": "https://schema.org",
+      "@type": "EducationalOrganization",
+      "name": college.name,
+      "url": collegeUrl,
+      "logo": college.logoUrl || college.logo_url,
+      "image": college.imageUrl || college.image_url,
+      "description": `Comprehensive details, admission process, courses, fees, and placements for ${college.name}.`,
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": college.location,
+        "addressRegion": college.state,
+        "addressCountry": "IN"
+      }
+    };
+
     const ctaHeadline = seo.cta?.headline || "Need Help with Admission?";
     const ctaSubtext = seo.cta?.subtext || `Our expert counselors are ready to guide you through the entire admission process for ${college.name}.`;
     const ctaButtonText = seo.cta?.buttonText || "Talk to Expert";
 
     return (
       <>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(orgSchema) }}
+        />
         {faqSchema && (
           <script
             type="application/ld+json"

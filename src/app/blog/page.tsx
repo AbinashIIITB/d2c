@@ -10,6 +10,32 @@ export const metadata: Metadata = {
   description: "Expert guides on college admissions, entrance exams, management quota procedures, and career counseling. Stay ahead with Direct2Campus insights.",
   keywords: ["college admission blog", "management quota guide", "entrance exam tips", "engineering admissions Kolkata", "career counseling blog"],
   alternates: { canonical: "https://direct2campus.com/blog" },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
+  },
+  openGraph: {
+    title: "Blogs & Admission Insights 2027 – Direct2Campus",
+    description: "Expert guides on college admissions, entrance exams, management quota procedures, and career counseling.",
+    url: "https://direct2campus.com/blog",
+    siteName: "Direct2Campus",
+    locale: "en_IN",
+    type: "website",
+    images: [{ url: "/logo-footer.png", width: 1200, height: 630, alt: "Direct2Campus Blog" }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Blogs & Admission Insights 2027 – Direct2Campus",
+    description: "Expert guides on college admissions, entrance exams, and management quota procedures.",
+    images: ["/logo-footer.png"],
+  },
 }
 
 export const dynamic = 'force-dynamic';
@@ -18,8 +44,26 @@ export const revalidate = 0;
 export default async function BlogListingPage() {
   const blogs = await getAllBlogs();
 
+  const blogListSchema = {
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    "name": "Direct2Campus Admission Insights & Guides",
+    "description": "Expert guides on college admissions, entrance exams, management quota procedures, and career counseling.",
+    "url": "https://direct2campus.com/blog",
+    "hasPart": (blogs || []).map((b: any) => ({
+      "@type": "BlogPosting",
+      "headline": b.title,
+      "url": `https://direct2campus.com/blog/${b.slug}`,
+      "datePublished": b.date
+    }))
+  };
+
   return (
     <div className="pb-16 bg-d2c-white min-h-screen page-fade-in">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(blogListSchema) }}
+      />
       {/* Hero-style header matching /colleges and /exams */}
       <section className="relative isolate flex flex-col items-center justify-center min-[1025px]:justify-start max-[340px]:min-h-[756px] min-h-[605px] min-[1025px]:min-h-[800px] text-d2c-white pt-12 pb-12 sm:pt-6 min-[1025px]:pt-48 lg:pt-36 overflow-hidden -mb-24 sm:-mb-36 lg:-mb-40">
         {/* Split Background Engine */}

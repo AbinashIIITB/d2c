@@ -33,17 +33,45 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
     ...((exam as any).tags || [])
   ];
   const logoAlt = seo.images?.logoAlt || `${exam.name} Logo`;
+  const logoUrl = exam.logoUrl || exam.logo_url || "/logo-footer.png";
   
   return {
     title: pageTitle,
     description: metaDesc,
     keywords,
     alternates: { canonical },
+    robots: {
+      index: true,
+      follow: true,
+      googleBot: {
+        index: true,
+        follow: true,
+        "max-video-preview": -1,
+        "max-image-preview": "large",
+        "max-snippet": -1,
+      },
+    },
     openGraph: {
       title: pageTitle,
       description: metaDesc,
       url: canonical,
-      images: exam.logoUrl || exam.logo_url ? [{ url: exam.logoUrl || exam.logo_url, alt: logoAlt }] : [],
+      siteName: "Direct2Campus",
+      locale: "en_IN",
+      type: "website",
+      images: [
+        {
+          url: logoUrl,
+          width: 800,
+          height: 600,
+          alt: logoAlt,
+        },
+      ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: pageTitle,
+      description: metaDesc,
+      images: [logoUrl],
     },
   }
 }
@@ -66,8 +94,58 @@ export default async function ExamDetailPage({ params }: { params: Params }) {
     notFound()
   }
 
+  const examUrl = `https://direct2campus.com/exams/${slug}`;
+  const breadcrumbSchema = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Home",
+        "item": "https://direct2campus.com"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "Entrance Exams",
+        "item": "https://direct2campus.com/exams"
+      },
+      {
+        "@type": "ListItem",
+        "position": 3,
+        "name": exam.name,
+        "item": examUrl
+      }
+    ]
+  };
+
+  const faqs = exam.faqs || [];
+  const faqSchema = faqs.length > 0 ? {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": faqs.map((f: any) => ({
+      "@type": "Question",
+      "name": f.question,
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": f.answer
+      }
+    }))
+  } : null;
+
   return (
     <div className="pb-20 bg-d2c-white min-h-screen">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+      />
+      {faqSchema && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
+        />
+      )}
       {/* Hero Section */}
       <div className="bg-d2c-navy pt-32 pb-32 px-4 shadow-xl border-b-4 border-d2c-royal relative overflow-hidden">
         <AnimatedPatternBg opacity={0.1} speed={160} />

@@ -40,19 +40,59 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
     return { title: "Article Not Found" }
   }
 
-  const pageTitle = blog.seoTitle || `${blog.title} | Direct2Campus Blog`;
-  const metaDesc = blog.metaDescription || blog.excerpt;
+  const pageTitle = blog.seoTitle || `${blog.title} | Direct2Campus`;
+  const metaDesc = blog.metaDescription || blog.excerpt || `Read ${blog.title} on Direct2Campus for latest admission insights, cutoffs, and guidance.`;
   const canonical = `https://direct2campus.com/blog/${slug}`;
+  const imageUrl = blog.imageUrl || blog.image_url || "/images/blog/default.jpg";
+  const authorName = blog.author || "Direct2Campus Editorial Team";
 
   return {
     title: pageTitle,
     description: metaDesc,
+    keywords: [
+      ...(Array.isArray(blog.tags) ? blog.tags : []),
+      blog.category || "Admission Guide",
+      "college admissions",
+      "engineering admission",
+      "Direct2Campus"
+    ],
+    authors: [{ name: authorName, url: "https://direct2campus.com" }],
     alternates: { canonical },
+    robots: {
+      index: blog.published !== false,
+      follow: true,
+      googleBot: {
+        index: blog.published !== false,
+        follow: true,
+        "max-video-preview": -1,
+        "max-image-preview": "large",
+        "max-snippet": -1,
+      },
+    },
     openGraph: {
+      type: "article",
       title: pageTitle,
       description: metaDesc,
       url: canonical,
-      images: blog.imageUrl ? [{ url: blog.imageUrl, alt: blog.title }] : [],
+      siteName: "Direct2Campus",
+      locale: "en_IN",
+      publishedTime: blog.date,
+      authors: [authorName],
+      tags: blog.tags || [],
+      images: [
+        {
+          url: imageUrl,
+          width: 1200,
+          height: 630,
+          alt: blog.title,
+        },
+      ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: pageTitle,
+      description: metaDesc,
+      images: [imageUrl],
     },
   }
 }
@@ -67,6 +107,63 @@ export default async function BlogPostPage({ params }: { params: Params }) {
   if (!blog) {
     notFound()
   }
+
+  const canonical = `https://direct2campus.com/blog/${slug}`;
+  const imageUrl = blog.imageUrl || blog.image_url || "https://direct2campus.com/logo-footer.png";
+  const authorName = blog.author || "Direct2Campus Editorial Team";
+
+  const breadcrumbSchema = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Home",
+        "item": "https://direct2campus.com"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "Blog",
+        "item": "https://direct2campus.com/blog"
+      },
+      {
+        "@type": "ListItem",
+        "position": 3,
+        "name": blog.title,
+        "item": canonical
+      }
+    ]
+  };
+
+  const articleSchema = {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "headline": blog.title,
+    "description": blog.metaDescription || blog.excerpt || blog.title,
+    "image": imageUrl,
+    "datePublished": blog.date,
+    "dateModified": blog.updatedAt || blog.date,
+    "author": {
+      "@type": "Organization",
+      "name": authorName,
+      "url": "https://direct2campus.com"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "Direct2Campus",
+      "url": "https://direct2campus.com",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://direct2campus.com/logo-footer.png"
+      }
+    },
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id": canonical
+    }
+  };
 
   const otherBlogs = (allBlogs || []).filter(b => b.slug !== slug).slice(0, 3);
 
@@ -168,6 +265,14 @@ export default async function BlogPostPage({ params }: { params: Params }) {
 
   return (
     <div className="pb-24 bg-d2c-white min-h-screen font-dm-sans">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }}
+      />
       {/* Hero Header */}
       <div className="bg-d2c-navy pt-32 pb-24 px-4 shadow-xl border-b-4 border-d2c-royal relative overflow-hidden">
         <AnimatedPatternBg opacity={0.1} speed={160} />
