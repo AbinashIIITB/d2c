@@ -5,7 +5,7 @@
       "title": "Direct2Campus – Your Shortcut to the Right Campus",
       "description": "India's most trusted educational consultancy. Get direct admission guidance for B.Tech, MBBS, MBA & BDS. Compare 150+ partner colleges and secure your seat with expert counselling.",
       "announcement": {
-        "enabled": true,
+        "enabled": false,
         "badge": "ADMISSIONS 2026-27",
         "message": "Direct Admission Counseling Open for Top B.Tech, MBBS & MBA Colleges across India.",
         "link": "/colleges",

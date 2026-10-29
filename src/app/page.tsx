@@ -7,7 +7,6 @@ import { FeaturedColleges } from "@/components/home/FeaturedColleges"
 import { MidPageContact } from "@/components/home/MidPageContact"
 import { TestimonialsSection } from "@/components/home/TestimonialsSection"
 import { CTASection } from "@/components/home/CTASection"
-import { AnnouncementTicker } from "@/components/home/AnnouncementTicker"
 import { WelcomeLeadModal } from "@/components/home/WelcomeLeadModal"
 import { getPageData } from "@/lib/page-service"
 
@@ -29,9 +28,6 @@ export default async function Home() {
 
   return (
     <main className="flex min-h-screen flex-col">
-      {/* Top Announcement Bar (Configurable from Admin) */}
-      <AnnouncementTicker announcement={homeData?.announcement} />
-
       {/* Main Home Sections */}
       <HeroSection heroData={homeData?.hero} statsData={homeData?.stats} />
       <TrustFeatures />
