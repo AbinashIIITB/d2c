@@ -49,6 +49,7 @@ export function CollegeEditForm({ initialData = {}, isNew = false }: CollegeEdit
   const [formData, setFormData] = useState<any>({
     id: initialData.id || '',
     name: initialData.name || '',
+    h1: initialData.h1 || initialData.seo?.h1Title || '',
     slug: initialData.slug || '',
     location: initialData.location || '',
     state: initialData.state || '',

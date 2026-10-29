@@ -104,11 +104,29 @@ function persistLocalStore(data: LocalCmsData) {
 // ----------------------------------------------------------------------
 export function mapCollegeToCamelCase(c: any): any {
   if (!c) return c;
+  const isIem = isIEMCollege(c);
+  const defaultH1 = isIem
+    ? "IEM Kolkata Admission, Courses, Fees and Placements"
+    : `${c.name} Admission, Courses, Fees and Placements`;
+
+  const rawImage = c.imageUrl || c.image_url;
+  const fallbackImage = rawImage && rawImage.trim().length > 0
+    ? rawImage
+    : (isIem
+        ? "/images/colleges/iem-saltlake.jpg"
+        : c.slug
+        ? `/images/colleges/${c.slug}.jpg`
+        : "/images/colleges/iem-saltlake.jpg");
+
+  const resolvedH1 = c.seo?.h1Title || c.contact?.seo?.h1Title || c.h1 || defaultH1;
+
   return {
     ...c,
-    imageUrl: c.image_url ?? c.imageUrl,
-    logoUrl: c.logo_url ?? c.logoUrl,
-    coverUrl: c.cover_url ?? c.coverUrl,
+    imageUrl: fallbackImage,
+    image_url: fallbackImage,
+    logoUrl: c.logo_url ?? c.logoUrl ?? "/footer-logo.jpg",
+    coverUrl: c.cover_url ?? c.coverUrl ?? fallbackImage,
+    h1: resolvedH1,
     coursesDetails: c.courses_details ?? c.coursesDetails,
     feesDetails: c.fees_details ?? c.feesDetails,
     keyDates: c.key_dates ?? c.keyDates,
@@ -123,7 +141,10 @@ export function mapCollegeToCamelCase(c: any): any {
     coursesSeats: c.courses_seats ?? c.coursesSeats,
     facultyDepartments: c.faculty_departments ?? c.facultyDepartments,
     admissionProcess: c.admission_process ?? c.admissionProcess,
-    seo: c.contact?.seo || c.seo || {},
+    seo: {
+      ...(c.contact?.seo || c.seo || {}),
+      h1Title: resolvedH1,
+    },
   };
 }
 

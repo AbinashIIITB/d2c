@@ -52,40 +52,63 @@ export function mapCollegeToDb(c: any) {
   };
 }
 
+import { isIEMCollege } from './iem-priority';
+
 export function mapDbToCollege(raw: any) {
   if (!raw) return null;
+  const isIem = isIEMCollege(raw);
+  const defaultH1 = isIem
+    ? "IEM Kolkata Admission, Courses, Fees and Placements"
+    : `${raw.name} Admission, Courses, Fees and Placements`;
+
+  const rawImage = raw.image_url || raw.imageUrl;
+  const fallbackImage = rawImage && rawImage.trim().length > 0
+    ? rawImage
+    : (isIem
+        ? "/images/colleges/iem-saltlake.jpg"
+        : raw.slug
+        ? `/images/colleges/${raw.slug}.jpg`
+        : "/images/colleges/iem-saltlake.jpg");
+
+  const resolvedH1 = raw.seo?.h1Title || raw.contact?.seo?.h1Title || raw.h1 || defaultH1;
+
   return {
     ...raw,
     courses: Array.isArray(raw.courses) ? raw.courses : [],
     tags: Array.isArray(raw.tags) ? raw.tags : [],
     highlights: Array.isArray(raw.highlights) ? raw.highlights : [],
     infrastructure: Array.isArray(raw.infrastructure) ? raw.infrastructure : [],
-    imageUrl: raw.image_url || '',
-    logoUrl: raw.logo_url || '',
-    coverUrl: raw.cover_url || '',
-    coursesDetails: raw.courses_details || [],
-    feesDetails: raw.fees_details || [],
+    imageUrl: fallbackImage,
+    image_url: fallbackImage,
+    logoUrl: raw.logo_url || raw.logoUrl || '/footer-logo.jpg',
+    coverUrl: raw.cover_url || raw.coverUrl || fallbackImage,
+    h1: resolvedH1,
+    coursesDetails: raw.courses_details || raw.coursesDetails || [],
+    feesDetails: raw.fees_details || raw.feesDetails || [],
     placements: raw.placements || { stats: [], highlights: [], topRecruiters: [] },
     admissions: raw.admissions || { process: [], eligibility: [], documents: [] },
     scholarships: raw.scholarships || [],
     faqs: raw.faqs || [],
-    keyDates: raw.key_dates || [],
-    whyChoose: raw.why_choose || [],
+    keyDates: raw.key_dates || raw.keyDates || [],
+    whyChoose: raw.why_choose || raw.whyChoose || [],
     alumni: raw.alumni || { description: '', companies: [] },
     contact: raw.contact || {},
-    seo: raw.contact?.seo || raw.seo || {},
-    galleryImages: raw.gallery_images || [],
-    whyChooseAkashTalks: raw.why_choose_akash_talks || [],
-    neetCutoffs: raw.neet_cutoffs || [],
-    mqFees: raw.mq_fees || {},
-    hostelFees: raw.hostel_fees || [],
-    miscFees: raw.misc_fees || [],
-    securityDeposit: raw.security_deposit || '',
-    coursesSeats: raw.courses_seats || [],
+    seo: {
+      ...(raw.contact?.seo || raw.seo || {}),
+      h1Title: resolvedH1,
+    },
+    galleryImages: raw.gallery_images || raw.galleryImages || [],
+    whyChooseAkashTalks: raw.why_choose_akash_talks || raw.whyChooseAkashTalks || [],
+    neetCutoffs: raw.neet_cutoffs || raw.neetCutoffs || [],
+    mqFees: raw.mq_fees || raw.mqFees || {},
+    hostelFees: raw.hostel_fees || raw.hostelFees || [],
+    miscFees: raw.misc_fees || raw.miscFees || [],
+    securityDeposit: raw.security_deposit || raw.securityDeposit || '',
+    coursesSeats: raw.courses_seats || raw.coursesSeats || [],
     hospital: raw.hospital || {},
     internship: raw.internship || {},
-    facultyDepartments: raw.faculty_departments || [],
-    admissionProcess: raw.admission_process || []
+    facultyDepartments: raw.faculty_departments || raw.facultyDepartments || [],
+    admissionProcess: raw.admission_process || raw.admissionProcess || []
   };
 }
 

@@ -33,13 +33,18 @@ import {
   Trash2,
   Calendar,
   Layers,
-  PhoneCall
+  PhoneCall,
+  ChevronRight,
+  Star,
+  MessageSquare
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { TypographyToolbar } from "./TypographyToolbar";
 import { ImagePickerModal } from "./ImagePickerModal";
 import { AddSectionModal } from "./AddSectionModal";
 import { CollegeEditForm } from "../CollegeEditForm";
+import { isIEMCollege } from "@/lib/iem-priority";
+import { AnimatedPatternBg } from "@/components/ui/AnimatedPatternBg";
 
 interface VisualCollegeEditorProps {
   initialData: any;
@@ -418,132 +423,315 @@ export function VisualCollegeEditor({ initialData, isNew = false }: VisualColleg
       <div className="flex justify-center transition-all duration-300">
         <div className={`${canvasWidthClass} bg-white rounded-3xl shadow-xl overflow-hidden border border-slate-200/80 transition-all duration-300`}>
 
-          {/* 1. HERO PREVIEW SECTION */}
-          <div className="relative bg-[#0B1120] text-white pt-10 pb-12 px-6 md:px-10 overflow-hidden border-b border-slate-200">
-            {/* Background Image / Overlay */}
-            <div className="absolute inset-0 z-0 opacity-20 bg-cover bg-center" style={{ backgroundImage: `url(${collegeData.imageUrl || collegeData.image_url || '/images/colleges/iem-saltlake.jpg'})` }} />
-            <div className="absolute inset-0 bg-gradient-to-t from-[#0B1120] via-[#0B1120]/80 to-transparent z-0" />
+          {/* ═══════════════════════════════════════════
+              1. HERO PREVIEW SECTION — Exact replica of CollegeHero
+          ═══════════════════════════════════════════ */}
+          {(() => {
+            const isIem = isIEMCollege(collegeData);
+            const defaultH1 = isIem
+              ? "IEM Kolkata Admission, Courses, Fees and Placements"
+              : `${collegeData.name || "College"} Admission, Courses, Fees and Placements`;
 
-            <div className="relative z-10">
-              <div className="flex flex-wrap items-center justify-between gap-4 mb-4">
-                <div className="flex items-center gap-2">
-                  <span className="text-[10px] font-bold uppercase tracking-widest text-d2c-gold px-2.5 py-1 rounded-full bg-d2c-gold/10 border border-d2c-gold/20">
-                    Official College Profile
-                  </span>
-                  <button
-                    onClick={() => {
-                      setImagePicker({
-                        isOpen: true,
-                        title: "Change Hero Background Banner",
-                        currentUrl: collegeData.imageUrl || collegeData.image_url || "",
-                        onSelect: (url) => updateField("imageUrl", url)
-                      });
-                    }}
-                    className="flex items-center gap-1.5 text-xs bg-white/10 hover:bg-white/20 text-white px-2.5 py-1 rounded-lg transition-colors border border-white/10"
-                  >
-                    <ImageIcon className="w-3 h-3 text-d2c-gold" />
-                    Change Cover Image
-                  </button>
-                </div>
+            const heroH1 = collegeData.seo?.h1Title || collegeData.h1 || collegeData.seo?.heroH1 || defaultH1;
 
-                <div className="flex items-center gap-2 text-xs text-white/70">
-                  <MapPin className="w-3.5 h-3.5 text-d2c-gold" />
-                  <input
-                    type="text"
-                    value={collegeData.location || ""}
-                    onChange={(e) => updateField("location", e.target.value)}
-                    placeholder="Location, State"
-                    className="bg-transparent hover:bg-white/10 focus:bg-white/20 px-2 py-0.5 rounded text-white border-b border-transparent focus:border-d2c-gold outline-none text-xs"
-                  />
+            const displayHeroImage =
+              collegeData.imageUrl ||
+              collegeData.image_url ||
+              collegeData.logoUrl ||
+              (isIem
+                ? "/images/colleges/iem-saltlake.jpg"
+                : collegeData.slug
+                ? `/images/colleges/${collegeData.slug}.jpg`
+                : "/images/colleges/iem-saltlake.jpg");
+
+            return (
+              <div className="relative overflow-hidden bg-[#0B1120] text-white border-b border-white/[0.12]">
+                {/* Dark overlays, gradients, and pattern matching actual public CollegeHero design */}
+                <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_50%_at_50%_-20%,rgba(59,76,192,0.25),transparent)] pointer-events-none" />
+                <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom_right,rgba(96,165,250,0.06),transparent_50%)] pointer-events-none" />
+                <div className="absolute bottom-0 left-0 right-0 border-b border-white/[0.12] shadow-[0_4px_12px_rgba(0,0,0,0.1)] pointer-events-none" />
+                <AnimatedPatternBg opacity={0.02} speed={200} />
+
+                <div className="relative z-10 px-6 md:px-10 pt-10 pb-8">
+                  {/* Breadcrumbs Row */}
+                  <nav className="flex items-center gap-2 text-xs md:text-sm mb-6 text-white/40">
+                    <span>Home</span>
+                    <ChevronRight className="w-3.5 h-3.5 text-white/20" />
+                    <span>Colleges</span>
+                    <ChevronRight className="w-3.5 h-3.5 text-white/20" />
+                    <span className="text-[#f6c804]/80 font-medium truncate max-w-[200px] md:max-w-none">
+                      {collegeData.name}
+                    </span>
+                  </nav>
+
+                  {/* Hero Content Two-Column Flex Layout matching actual CollegeHero */}
+                  <div className="flex flex-col lg:flex-row gap-8 lg:gap-10 items-start">
+                    
+                    {/* ── Left Column: Glassmorphic College Image Card ── */}
+                    <div className="relative group shrink-0 w-full lg:w-auto">
+                      <div className="absolute -inset-1 bg-gradient-to-br from-[#3B4CC0]/40 to-[#f6c804]/20 rounded-3xl blur-lg opacity-70 group-hover:opacity-100 transition-opacity duration-500" />
+                      <div className="relative w-full aspect-video lg:aspect-auto lg:h-64 lg:w-96 bg-white/[0.08] backdrop-blur-2xl rounded-2xl p-2 border border-white/[0.15] shadow-[0_24px_48px_-12px_rgba(0,0,0,0.4)] overflow-hidden">
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                        <img
+                          src={displayHeroImage}
+                          alt={`${collegeData.name} Visual`}
+                          className="w-full h-full object-cover rounded-xl"
+                        />
+
+                        {/* Change College Photo Button */}
+                        <button
+                          onClick={() => {
+                            setImagePicker({
+                              isOpen: true,
+                              title: "Change College Hero Image",
+                              currentUrl: displayHeroImage,
+                              onSelect: (url) => {
+                                updateField("imageUrl", url);
+                                updateField("image_url", url);
+                              }
+                            });
+                          }}
+                          className="absolute bottom-3 right-3 bg-[#0B1120]/90 hover:bg-[#0B1120] text-white text-xs font-semibold px-3 py-1.5 rounded-xl border border-white/20 shadow-xl flex items-center gap-1.5 backdrop-blur-md transition-all hover:scale-105"
+                          title="Click to select or upload a new college photo"
+                        >
+                          <ImageIcon className="w-3.5 h-3.5 text-[#f6c804]" />
+                          Change Photo
+                        </button>
+                      </div>
+                    </div>
+
+                    {/* ── Right Column: Badges, H1, Name, Location & Actions ── */}
+                    <div className="flex-1 min-w-0 space-y-4">
+                      {/* Badges Row */}
+                      <div className="flex flex-wrap items-center gap-2.5">
+                        {/* Institute Type */}
+                        <div className="inline-flex items-center gap-1.5 px-3 py-1 bg-white/[0.06] backdrop-blur-sm text-white/90 rounded-lg text-[11px] font-bold tracking-[0.08em] uppercase border border-white/[0.08]">
+                          <Shield className="w-3 h-3 text-[#60A5FA]" />
+                          <input
+                            type="text"
+                            value={collegeData.type || "Private"}
+                            onChange={(e) => updateField("type", e.target.value)}
+                            className="bg-transparent outline-none w-20 uppercase font-bold text-white text-[11px]"
+                            title="Institute Type"
+                          />
+                        </div>
+
+                        {/* Established Year */}
+                        <div className="inline-flex items-center gap-1.5 px-3 py-1 bg-[#f6c804]/[0.08] backdrop-blur-sm text-[#f6c804] rounded-lg text-[11px] font-bold tracking-[0.08em] uppercase border border-[#f6c804]/[0.15]">
+                          <Sparkles className="w-3 h-3" />
+                          <span>EST.</span>
+                          <input
+                            type="text"
+                            value={collegeData.established || "1989"}
+                            onChange={(e) => updateField("established", e.target.value)}
+                            className="bg-transparent outline-none w-14 font-bold text-[#f6c804] text-[11px]"
+                            title="Established Year"
+                          />
+                        </div>
+
+                        {/* Rating & Reviews */}
+                        <div className="inline-flex items-center gap-1.5 px-3 py-1 bg-white/[0.06] backdrop-blur-sm text-white/90 rounded-lg text-[11px] font-bold tracking-[0.08em] uppercase border border-white/[0.08]">
+                          <Star className="w-3 h-3 fill-[#f6c804] text-[#f6c804]" />
+                          <input
+                            type="number"
+                            step="0.1"
+                            min="1"
+                            max="5"
+                            value={collegeData.rating ?? 4.5}
+                            onChange={(e) => updateField("rating", parseFloat(e.target.value))}
+                            className="bg-transparent outline-none w-10 font-bold text-white text-[11px]"
+                            title="Rating"
+                          />
+                          <span className="text-white/60">
+                            ({collegeData.reviews || "1,850"} Reviews)
+                          </span>
+                        </div>
+                      </div>
+
+                      {/* Main Page Heading (H1) — Editable */}
+                      <div className="group relative">
+                        <div className="flex items-center justify-between mb-1">
+                          <span className="text-[10px] uppercase tracking-wider text-[#f6c804] font-bold flex items-center gap-1">
+                            Main Page Heading (H1) • Click to edit
+                          </span>
+                          <button
+                            type="button"
+                            onClick={() => {
+                              const resetH1 = isIem
+                                ? "IEM Kolkata Admission, Courses, Fees and Placements"
+                                : `${collegeData.name} Admission, Courses, Fees and Placements`;
+                              setCollegeData((prev: any) => ({
+                                ...prev,
+                                h1: resetH1,
+                                seo: { ...(prev.seo || {}), h1Title: resetH1, heroH1: resetH1 }
+                              }));
+                            }}
+                            className="text-[10px] text-white/40 hover:text-[#f6c804] transition-colors"
+                            title="Reset to standard template"
+                          >
+                            Reset to Template
+                          </button>
+                        </div>
+                        <textarea
+                          rows={2}
+                          value={heroH1}
+                          onChange={(e) => {
+                            const val = e.target.value;
+                            setCollegeData((prev: any) => ({
+                              ...prev,
+                              h1: val,
+                              seo: {
+                                ...(prev.seo || {}),
+                                h1Title: val,
+                                heroH1: val
+                              }
+                            }));
+                          }}
+                          onFocus={() => {
+                            setSelectedElement({
+                              id: "h1",
+                              label: "H1 Main Heading",
+                              styles: { fontSize: "text-3xl", fontWeight: "font-bold", color: "#ffffff" }
+                            });
+                          }}
+                          className="w-full text-2xl sm:text-3xl md:text-[2.5rem] font-sora font-bold text-white leading-[1.15] tracking-[-0.02em] bg-transparent hover:bg-white/5 focus:bg-white/10 p-2 rounded-xl border border-transparent hover:border-white/20 focus:border-[#f6c804] outline-none transition-all resize-none"
+                          placeholder="e.g. IEM Kolkata Admission, Courses, Fees and Placements"
+                        />
+                      </div>
+
+                      {/* College Official Sub-name */}
+                      <div>
+                        <input
+                          type="text"
+                          value={collegeData.name || ""}
+                          onChange={(e) => updateField("name", e.target.value)}
+                          className="w-full text-base md:text-lg font-medium text-white/70 bg-transparent hover:bg-white/5 focus:bg-white/10 px-2 py-0.5 rounded-lg border border-transparent hover:border-white/20 focus:border-[#f6c804] outline-none"
+                          placeholder="Official College Name"
+                        />
+                      </div>
+
+                      {/* Location Row */}
+                      <div className="flex items-center gap-2 text-[#60A5FA]">
+                        <MapPin className="w-4 h-4 shrink-0" />
+                        <input
+                          type="text"
+                          value={collegeData.location || ""}
+                          onChange={(e) => updateField("location", e.target.value)}
+                          placeholder="Campus Location"
+                          className="bg-transparent hover:bg-white/10 focus:bg-white/20 px-2 py-0.5 rounded text-[#60A5FA] font-medium outline-none text-sm md:text-base w-48"
+                        />
+                        <span className="text-white/40">,</span>
+                        <input
+                          type="text"
+                          value={collegeData.state || ""}
+                          onChange={(e) => updateField("state", e.target.value)}
+                          placeholder="State"
+                          className="bg-transparent hover:bg-white/10 focus:bg-white/20 px-2 py-0.5 rounded text-[#60A5FA] font-medium outline-none text-sm md:text-base w-32"
+                        />
+                      </div>
+
+                      {/* Action Buttons Mockup matching live site */}
+                      <div className="flex flex-wrap items-center gap-3 pt-2">
+                        <button
+                          type="button"
+                          className="bg-gradient-to-r from-[#f6c804] to-[#e5b703] text-[#0B1120] font-bold text-sm h-11 px-6 rounded-xl shadow-[0_8px_20px_-4px_rgba(246,200,4,0.4)] cursor-default"
+                        >
+                          Apply Now 2026
+                        </button>
+                        <button
+                          type="button"
+                          className="bg-white/[0.04] border border-white/[0.1] text-white hover:bg-white/[0.08] text-sm font-semibold h-11 px-6 rounded-xl backdrop-blur-sm cursor-default flex items-center gap-2"
+                        >
+                          <MessageSquare className="w-4 h-4 text-emerald-400" />
+                          WhatsApp Us
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* ── Stats Dashboard Bar matching live CollegeHero ── */}
+                  <div className="mt-8 pt-6 border-t border-white/[0.08]">
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-px bg-white/[0.06] rounded-2xl overflow-hidden border border-white/[0.08] backdrop-blur-xl">
+                      {/* Stat 1: Highest Package */}
+                      <div className="flex flex-col items-center justify-center py-5 px-3 bg-[#0B1120]/70 text-center">
+                        <input
+                          type="text"
+                          value={collegeData.placements?.stats?.[0]?.value || "₹32 LPA"}
+                          onChange={(e) => {
+                            const stats = [...(collegeData.placements?.stats || [])];
+                            if (!stats[0]) stats[0] = { label: "Highest Package", value: "" };
+                            stats[0].value = e.target.value;
+                            updateField("placements", { ...(collegeData.placements || {}), stats });
+                          }}
+                          className="w-full text-center text-xl md:text-2xl font-bold font-sora text-[#f6c804] bg-transparent outline-none"
+                        />
+                        <input
+                          type="text"
+                          value={collegeData.placements?.stats?.[0]?.label || "Highest Package"}
+                          onChange={(e) => {
+                            const stats = [...(collegeData.placements?.stats || [])];
+                            if (!stats[0]) stats[0] = { label: "", value: "" };
+                            stats[0].label = e.target.value;
+                            updateField("placements", { ...(collegeData.placements || {}), stats });
+                          }}
+                          className="w-full text-center text-[10px] font-bold uppercase tracking-[0.1em] text-white/50 bg-transparent outline-none mt-1"
+                        />
+                      </div>
+
+                      {/* Stat 2: Average Package */}
+                      <div className="flex flex-col items-center justify-center py-5 px-3 bg-[#0B1120]/70 text-center">
+                        <input
+                          type="text"
+                          value={collegeData.placements?.stats?.[1]?.value || "₹6.5 LPA"}
+                          onChange={(e) => {
+                            const stats = [...(collegeData.placements?.stats || [])];
+                            if (!stats[1]) stats[1] = { label: "Average Package", value: "" };
+                            stats[1].value = e.target.value;
+                            updateField("placements", { ...(collegeData.placements || {}), stats });
+                          }}
+                          className="w-full text-center text-xl md:text-2xl font-bold font-sora text-[#22c55e] bg-transparent outline-none"
+                        />
+                        <input
+                          type="text"
+                          value={collegeData.placements?.stats?.[1]?.label || "Average Package"}
+                          onChange={(e) => {
+                            const stats = [...(collegeData.placements?.stats || [])];
+                            if (!stats[1]) stats[1] = { label: "", value: "" };
+                            stats[1].label = e.target.value;
+                            updateField("placements", { ...(collegeData.placements || {}), stats });
+                          }}
+                          className="w-full text-center text-[10px] font-bold uppercase tracking-[0.1em] text-white/50 bg-transparent outline-none mt-1"
+                        />
+                      </div>
+
+                      {/* Stat 3: Programs / Courses */}
+                      <div className="flex flex-col items-center justify-center py-5 px-3 bg-[#0B1120]/70 text-center">
+                        <p className="text-xl md:text-2xl font-bold font-sora text-white">
+                          {collegeData.courses?.length || 9}+
+                        </p>
+                        <p className="text-[10px] font-bold uppercase tracking-[0.1em] text-white/50 mt-1">
+                          Academic Programs
+                        </p>
+                      </div>
+
+                      {/* Stat 4: Starting Fee */}
+                      <div className="flex flex-col items-center justify-center py-5 px-3 bg-[#0B1120]/70 text-center">
+                        <input
+                          type="text"
+                          value={collegeData.fees || "₹7.65L Total"}
+                          onChange={(e) => updateField("fees", e.target.value)}
+                          className="w-full text-center text-xl md:text-2xl font-bold font-sora text-[#60A5FA] bg-transparent outline-none"
+                        />
+                        <span className="text-[10px] font-bold uppercase tracking-[0.1em] text-white/50 mt-1 block">
+                          Starting Fees
+                        </span>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
-
-              {/* Main H1 - Editable */}
-              <div className="mb-3 group relative">
-                <label className="text-[10px] uppercase tracking-wider text-d2c-ice/60 font-semibold flex items-center gap-1 mb-1">
-                  Main Page Heading (H1)
-                  <span className="text-d2c-gold font-normal">Click to edit</span>
-                </label>
-                <input
-                  type="text"
-                  value={collegeData.seo?.heroH1 || collegeData.name || ""}
-                  onChange={(e) => {
-                    const val = e.target.value;
-                    setCollegeData((prev: any) => ({
-                      ...prev,
-                      seo: { ...(prev.seo || {}), heroH1: val }
-                    }));
-                  }}
-                  onFocus={() => {
-                    setSelectedElement({
-                      id: "h1",
-                      label: "H1 Main Heading",
-                      styles: { fontSize: "text-3xl", fontWeight: "font-bold", color: "#ffffff" }
-                    });
-                  }}
-                  className="w-full text-2xl md:text-3xl font-sora font-extrabold text-white bg-transparent hover:bg-white/5 focus:bg-white/10 px-3 py-1.5 rounded-xl border border-transparent hover:border-white/20 focus:border-d2c-gold outline-none transition-all"
-                  placeholder="e.g. IEM Kolkata Admission, Courses, Fees and Placements"
-                />
-              </div>
-
-              {/* College Official Sub-name */}
-              <div className="mb-4">
-                <input
-                  type="text"
-                  value={collegeData.name || ""}
-                  onChange={(e) => updateField("name", e.target.value)}
-                  className="w-full text-sm md:text-base font-semibold text-d2c-gold bg-transparent hover:bg-white/5 focus:bg-white/10 px-3 py-1 rounded-lg border border-transparent hover:border-white/20 focus:border-d2c-gold outline-none"
-                  placeholder="Official College Name"
-                />
-              </div>
-
-              {/* Quick Info Grid */}
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-3 pt-3 border-t border-white/10 text-xs">
-                <div className="p-2.5 rounded-xl bg-white/5 border border-white/10">
-                  <span className="text-[10px] text-white/50 block uppercase">Established</span>
-                  <input
-                    type="text"
-                    value={collegeData.established || ""}
-                    onChange={(e) => updateField("established", e.target.value)}
-                    placeholder="e.g. 1989"
-                    className="w-full bg-transparent font-bold text-white outline-none focus:border-b focus:border-d2c-gold"
-                  />
-                </div>
-                <div className="p-2.5 rounded-xl bg-white/5 border border-white/10">
-                  <span className="text-[10px] text-white/50 block uppercase">Ownership</span>
-                  <input
-                    type="text"
-                    value={collegeData.type || "Private"}
-                    onChange={(e) => updateField("type", e.target.value)}
-                    placeholder="Private / Autonomous"
-                    className="w-full bg-transparent font-bold text-white outline-none focus:border-b focus:border-d2c-gold"
-                  />
-                </div>
-                <div className="p-2.5 rounded-xl bg-white/5 border border-white/10">
-                  <span className="text-[10px] text-white/50 block uppercase">Average Fees</span>
-                  <input
-                    type="text"
-                    value={collegeData.fees || ""}
-                    onChange={(e) => updateField("fees", e.target.value)}
-                    placeholder="e.g. ₹1.5L - ₹6.5L"
-                    className="w-full bg-transparent font-bold text-d2c-gold outline-none focus:border-b focus:border-d2c-gold"
-                  />
-                </div>
-                <div className="p-2.5 rounded-xl bg-white/5 border border-white/10">
-                  <span className="text-[10px] text-white/50 block uppercase">Rating</span>
-                  <input
-                    type="number"
-                    step="0.1"
-                    min="1"
-                    max="5"
-                    value={collegeData.rating ?? 4.5}
-                    onChange={(e) => updateField("rating", parseFloat(e.target.value))}
-                    className="w-full bg-transparent font-bold text-white outline-none focus:border-b focus:border-d2c-gold"
-                  />
-                </div>
-              </div>
-            </div>
-          </div>
+            );
+          })()}
 
           {/* 2. ORDERED SECTIONS CONTAINER */}
           <div className="p-6 md:p-8 space-y-10">

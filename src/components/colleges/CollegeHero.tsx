@@ -4,10 +4,26 @@ import { Button } from "@/components/ui/button"
 import { AnimatedPatternBg } from "@/components/ui/AnimatedPatternBg"
 import { ApplyNowButton } from "@/components/ui/ApplyNowButton"
 
+import { isIEMCollege } from "@/lib/iem-priority"
+
 // We expect a robust college object matching the schema from data.ts
 export function CollegeHero({ college }: { college: any }) {
   const seo = college.seo || college.contact?.seo || {};
-  const heroH1 = seo.h1Title || college.h1 || college.name;
+  const isIem = isIEMCollege(college);
+  const defaultH1 = isIem
+    ? "IEM Kolkata Admission, Courses, Fees and Placements"
+    : `${college.name} Admission, Courses, Fees and Placements`;
+  const heroH1 = seo.h1Title || college.h1 || defaultH1;
+
+  const displayImage =
+    college.imageUrl ||
+    college.logoUrl ||
+    college.image_url ||
+    (isIem
+      ? "/images/colleges/iem-saltlake.jpg"
+      : college.slug
+      ? `/images/colleges/${college.slug}.jpg`
+      : "/images/colleges/iem-saltlake.jpg");
 
   return (
     <div className="relative overflow-hidden bg-[#0B1120]">
@@ -31,12 +47,12 @@ export function CollegeHero({ college }: { college: any }) {
         <div className="flex flex-col lg:flex-row gap-8 lg:gap-12 items-start">
           
           {/* Image — Glassmorphic container */}
-          {(college.imageUrl || college.logoUrl) && (
+          {displayImage && (
             <div className="relative group shrink-0 mt-2 w-full lg:w-auto">
               <div className="absolute -inset-1 bg-gradient-to-br from-[#3B4CC0]/40 to-[#f6c804]/20 rounded-3xl blur-lg opacity-60 group-hover:opacity-100 transition-opacity duration-500" />
               <div className="relative w-full aspect-video lg:aspect-auto lg:h-64 lg:w-96 bg-white/[0.08] backdrop-blur-2xl rounded-2xl p-2 border border-white/[0.12] shadow-[0_24px_48px_-12px_rgba(0,0,0,0.3)] overflow-hidden">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={college.imageUrl || college.logoUrl} alt={`${college.name} Visual`} className="w-full h-full object-cover rounded-xl" />
+                <img src={displayImage} alt={`${college.name} Visual`} className="w-full h-full object-cover rounded-xl" />
               </div>
             </div>
           )}
