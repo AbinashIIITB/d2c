@@ -74,6 +74,8 @@ export interface College {
     };
     galleryImages?: { url: string; alt: string }[];
     whyChooseAkashTalks?: string[];
+    seo?: any;
+    sectionHeadings?: any;
 
     // Medical Specific Fields (Optional)
     neetCutoffs?: {

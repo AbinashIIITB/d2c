@@ -43,6 +43,7 @@ type Params = Promise<{ slug: string }>
 export const revalidate = 0;
 export const dynamicParams = true;
 
+// Default IEM FAQs fallback
 const IEM_DEFAULT_FAQS = [
   {
     question: "What is the admission process for IEM Kolkata in 2026?",
@@ -91,8 +92,6 @@ export async function generateStaticParams() {
   const slugs = new Set<string>();
   (colleges || []).forEach((c) => {
     if (c.slug) slugs.add(c.slug);
-    if (c.slug === 'iem-saltlake') slugs.add('iem-salt-lake');
-    if (c.slug === 'iem-salt-lake') slugs.add('iem-saltlake');
   });
   return Array.from(slugs).map((slug) => ({ slug }));
 }
@@ -108,28 +107,33 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
   const isIem = isIEMCollege(college);
   const seo = college.seo || college.contact?.seo || {};
 
-  const defaultIemTitle = "IEM Kolkata: Admission, Fees & Placements | Direct2Campus";
-  const defaultIemDesc = "Explore IEM Kolkata admission, B.Tech courses, fees, eligibility, placements and the application process. Get expert admission guidance from Direct2Campus.";
-  const defaultIemCanonical = "https://direct2campus.com/colleges/iem-saltlake";
+  const primaryDegree = college.courses?.[0] || 'Degree';
+  const defaultTitle = isIem 
+    ? "IEM Kolkata: Admission, Fees & Placements | Direct2Campus"
+    : `${college.name}: Admission, Fees & Placements | Direct2Campus`;
+    
+  const defaultDesc = isIem
+    ? "Explore IEM Kolkata admission, B.Tech courses, fees, eligibility, placements and the application process. Get expert admission guidance from Direct2Campus."
+    : `Explore ${college.name} admission, ${primaryDegree} courses, fees, eligibility, placements and the application process. Get expert admission guidance from Direct2Campus.`;
+    
+  const defaultCanonical = `https://direct2campus.com/colleges/${college.slug || slug}`;
 
-  const pageTitle = seo.seoTitle?.trim() || (isIem ? defaultIemTitle : `${college.name} – Direct Admission, Fees & Placement`);
-  const metaDesc = seo.metaDescription?.trim() || (isIem ? defaultIemDesc : `${(college.about || college.description || '').slice(0, 155)}…`);
-  const canonical = seo.canonicalUrl?.trim() || (isIem ? defaultIemCanonical : `https://direct2campus.com/colleges/${slug}`);
+  const pageTitle = seo.seoTitle?.trim() || defaultTitle;
+  const metaDesc = seo.metaDescription?.trim() || defaultDesc;
+  const canonical = seo.canonicalUrl?.trim() || defaultCanonical;
+  
   const keywords = [
     ...(seo.primaryKeyword ? [seo.primaryKeyword] : []),
-    ...(Array.isArray(seo.secondaryKeywords) ? seo.secondaryKeywords : (isIem ? [
-      "IEM Kolkata admission",
-      "IEM Kolkata fees",
-      "IEM Kolkata placements",
-      "IEM Kolkata admission process",
-      "IEM Kolkata course fee structure",
-      "IEM Kolkata B.Tech fees",
-      "IEM Salt Lake campus"
-    ] : [])),
+    ...(Array.isArray(seo.secondaryKeywords) ? seo.secondaryKeywords : [
+      `${college.name} admission`, 
+      `${college.name} fees`, 
+      `${college.name} placement`, 
+      `${college.name} admission process`,
+      `${college.name} courses fee structure`,
+      `${college.name} ${primaryDegree} fees`,
+      `${college.name} campus`
+    ]),
     college.name, 
-    `${college.name} admission`, 
-    `${college.name} fees`, 
-    `${college.name} placement`, 
     college.type, 
     college.location,
     ...(college.tags || [])
@@ -161,32 +165,24 @@ export default async function CollegeDetailPage({ params }: { params: Params }) 
   const isIem = isIEMCollege(college);
   const seo = college.seo || college.contact?.seo || {};
   const sectionHeadings = college.sectionHeadings || seo.sectionHeadings || {};
+  const primaryCourse = college.courses?.[0] || 'B.Tech';
 
-  // Exact SEO-specified H2 Headings
-  const hAdmissions = sectionHeadings.admissions || (isIem ? "IEM Kolkata Admission Process" : "Admission Process");
-  const hCoursesFees = sectionHeadings.coursesFees || (isIem ? "IEM Kolkata Courses and Fee Structure" : "Courses & Fee Structure");
-  const hCoursesFeesSubtitle = sectionHeadings.coursesFeesSubtitle || (isIem ? "IEM Kolkata Admission Fees and Course Fee Structure" : "Complete breakdown for all programs");
-  const hBtechFeesEligibility = sectionHeadings.btechFeesEligibility || (isIem ? "IEM Kolkata B.Tech Fees and Eligibility" : `${college.name} B.Tech Fees and Eligibility`);
-  const hPlacements = sectionHeadings.placements || (isIem ? "IEM Kolkata Placements and Average Package" : "Placement & Career Records");
-  const hOverview = sectionHeadings.overview || (isIem ? "IEM Salt Lake Campus and Location" : "College Overview");
-  const hFaqs = sectionHeadings.faqs || (isIem ? "Frequently Asked Questions About IEM Kolkata" : "Frequently Asked Questions");
+  // Universal SEO-Optimized Template Headings for ALL colleges
+  const hAdmissions = sectionHeadings.admissions || `${college.name} Admission Process`;
+  const hCoursesFees = sectionHeadings.coursesFees || `${college.name} Courses and Fee Structure`;
+  const hCoursesFeesSubtitle = sectionHeadings.coursesFeesSubtitle || `${college.name} Admission Fees and Course Fee Structure`;
+  const hCourseFeesEligibility = sectionHeadings.btechFeesEligibility || `${college.name} ${primaryCourse} Fees and Eligibility`;
+  const hPlacements = sectionHeadings.placements || `${college.name} Placements and Average Package`;
+  const hOverview = sectionHeadings.overview || `${college.name} Campus and Location`;
+  const hFaqs = sectionHeadings.faqs || `Frequently Asked Questions About ${college.name}`;
 
-  // Sidebar and Mobile TOC configuration
-  const sections = isIem ? [
+  // Uniform Table of Contents structure for ALL colleges
+  const sections = [
     { id: "admissions", label: "Admission Process", iconName: "ClipboardList" },
     { id: "courses-fees", label: "Courses & Fees", iconName: "DollarSign" },
-    { id: "btech-fees", label: "B.Tech Fees & Eligibility", iconName: "Shield" },
+    { id: "btech-fees", label: `${primaryCourse} Fees & Eligibility`, iconName: "Shield" },
     { id: "placements", label: "Placements & Packages", iconName: "TrendingUp" },
     { id: "overview", label: "Campus & Location", iconName: "Building2" },
-    { id: "infrastructure", label: "Infrastructure", iconName: "Globe" },
-    { id: "scholarships", label: "Scholarships", iconName: "Award" },
-    { id: "alumni", label: "Alumni", iconName: "Users" },
-    { id: "faqs", label: "FAQs", iconName: "HelpCircle" },
-  ] : [
-    { id: "overview", label: "Overview", iconName: "Building2" },
-    { id: "courses-fees", label: "Courses & Fees", iconName: "DollarSign" },
-    { id: "placements", label: "Placements", iconName: "TrendingUp" },
-    { id: "admissions", label: "Admissions", iconName: "ClipboardList" },
     { id: "infrastructure", label: "Infrastructure", iconName: "Globe" },
     { id: "scholarships", label: "Scholarships", iconName: "Award" },
     { id: "alumni", label: "Alumni", iconName: "Users" },
@@ -197,72 +193,7 @@ export default async function CollegeDetailPage({ params }: { params: Params }) 
      RENDER SECTION HELPERS
   ───────────────────────────────────────────────────────────── */
 
-  // 1. Overview / Campus & Location
-  const renderOverview = () => (
-    <section id="overview" className="scroll-mt-28">
-      <div className="bg-white rounded-[1.25rem] p-8 md:p-10 shadow-[0_1px_3px_rgba(0,0,0,0.04)]">
-        <div className="flex items-center gap-3.5 mb-8">
-          <div className="p-3 rounded-xl bg-[#3B4CC0]/[0.08]">
-            <Building2 className="w-6 h-6 text-[#3B4CC0]" />
-          </div>
-          <div>
-            <h2 className="text-2xl font-sora font-bold text-[#131b2e] tracking-[-0.01em]">
-              {hOverview}
-            </h2>
-            {isIem && (
-              <p className="text-sm text-[#76777d] mt-0.5">Ashram Building, Sector V, Salt Lake Electronics Complex, Kolkata</p>
-            )}
-          </div>
-        </div>
-        
-        <p className="text-[#45464d] leading-[1.8] text-[1.05rem] whitespace-pre-line">
-          {college.about || college.description}
-        </p>
-
-        {/* Campus Location Card for IEM */}
-        {isIem && (
-          <div className="mt-8 p-6 rounded-2xl bg-gradient-to-br from-[#f2f3ff] to-[#faf8ff] border border-[#3B4CC0]/15 flex flex-col md:flex-row items-start md:items-center justify-between gap-5">
-            <div className="flex items-start gap-4">
-              <div className="w-12 h-12 rounded-xl bg-[#3B4CC0] flex items-center justify-center shrink-0 shadow-[0_4px_12px_rgba(59,76,192,0.25)]">
-                <MapPin className="w-6 h-6 text-white" />
-              </div>
-              <div>
-                <span className="text-[10px] font-bold text-[#3B4CC0] uppercase tracking-wider bg-[#3B4CC0]/10 px-2.5 py-0.5 rounded-md inline-block mb-1">
-                  Official Campus & Admission Office
-                </span>
-                <p className="font-bold text-[#131b2e] text-base leading-snug">
-                  Ashram Building, GN-34/2, Sector V, Salt Lake Electronics Complex
-                </p>
-                <p className="text-xs text-[#76777d] mt-1">
-                  Kolkata – 700091, West Bengal, India
-                </p>
-              </div>
-            </div>
-            <Button asChild variant="outline" className="shrink-0 bg-white border-[#3B4CC0]/20 text-[#3B4CC0] hover:bg-[#3B4CC0] hover:text-white transition-all">
-              <Link href="https://maps.google.com/?q=IEM+Ashram+Building+Salt+Lake+Kolkata" target="_blank" rel="noopener noreferrer">
-                <MapPin className="w-4 h-4 mr-2" /> View on Map
-              </Link>
-            </Button>
-          </div>
-        )}
-        
-        {college.highlights && college.highlights.length > 0 && (
-          <div className="mt-10 grid grid-cols-1 md:grid-cols-2 gap-4">
-            {college.highlights.map((highlight: string, idx: number) => (
-              <div key={idx} className="flex items-start gap-3.5 p-5 rounded-xl bg-[#f2f3ff] transition-colors duration-300 hover:bg-[#e2e7ff] group">
-                <div className="p-1.5 rounded-lg bg-[#22c55e]/10 mt-0.5">
-                  <CheckCircle2 className="w-4 h-4 text-[#22c55e]" />
-                </div>
-                <span className="text-[#131b2e] font-semibold text-sm leading-relaxed">{highlight}</span>
-              </div>
-            ))}
-          </div>
-        )}
-      </div>
-    </section>
-  );
-
-  // 2. Admissions Process
+  // 1. Admission Process Section
   const renderAdmissions = () => (
     <section id="admissions" className="scroll-mt-28">
       <div className="bg-white rounded-[1.25rem] p-8 md:p-10 shadow-[0_1px_3px_rgba(0,0,0,0.04)]">
@@ -278,66 +209,73 @@ export default async function CollegeDetailPage({ params }: { params: Params }) 
           </div>
         </div>
 
-        {college.admissions && (
+        {college.admissions ? (
           <div className="space-y-10">
             {/* Eligibility */}
-            <div>
-              <h3 className="text-sm font-bold text-[#45464d] uppercase tracking-[0.08em] mb-5 flex items-center gap-2">
-                <Shield className="w-4 h-4 text-[#3B4CC0]" /> Eligibility Criteria
-              </h3>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                {college.admissions.eligibility.map((item: string, idx: number) => (
-                  <div key={idx} className="flex items-start gap-3 p-4 rounded-xl bg-[#f2f3ff] transition-colors hover:bg-[#dae2fd]">
-                    <CheckCircle2 className="w-5 h-5 text-[#3B4CC0] shrink-0 mt-0.5" />
-                    <span className="text-sm font-medium text-[#131b2e]">{item}</span>
-                  </div>
-                ))}
+            {college.admissions.eligibility && (
+              <div>
+                <h3 className="text-sm font-bold text-[#45464d] uppercase tracking-[0.08em] mb-5 flex items-center gap-2">
+                  <Shield className="w-4 h-4 text-[#3B4CC0]" /> Eligibility Criteria
+                </h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                  {college.admissions.eligibility.map((item: string, idx: number) => (
+                    <div key={idx} className="flex items-start gap-3 p-4 rounded-xl bg-[#f2f3ff] transition-colors hover:bg-[#dae2fd]">
+                      <CheckCircle2 className="w-5 h-5 text-[#3B4CC0] shrink-0 mt-0.5" />
+                      <span className="text-sm font-medium text-[#131b2e]">{item}</span>
+                    </div>
+                  ))}
+                </div>
               </div>
-            </div>
+            )}
 
             {/* Step-by-Step — Vertical Timeline */}
-            <div className="bg-[#faf8ff] rounded-2xl p-8">
-              <h3 className="text-sm font-bold text-[#45464d] uppercase tracking-[0.08em] mb-6">How to Apply</h3>
-              <div className="space-y-0">
-                {college.admissions.process.map((step: string, idx: number) => (
-                  <div key={idx} className="flex gap-5 relative">
-                    {/* Timeline Line */}
-                    {idx < college.admissions!.process.length - 1 && (
-                      <div className="absolute left-[18px] top-10 bottom-0 w-px bg-gradient-to-b from-[#f6c804]/40 to-[#f6c804]/10" />
-                    )}
-                    {/* Step Number */}
-                    <div className="relative z-10 h-9 w-9 rounded-full bg-gradient-to-br from-[#f6c804] to-[#e5b703] flex items-center justify-center shrink-0 shadow-[0_4px_12px_-2px_rgba(246,200,4,0.4)]">
-                      <span className="text-sm font-bold text-[#0B1120]">{idx + 1}</span>
+            {college.admissions.process && (
+              <div className="bg-[#faf8ff] rounded-2xl p-8">
+                <h3 className="text-sm font-bold text-[#45464d] uppercase tracking-[0.08em] mb-6">How to Apply</h3>
+                <div className="space-y-0">
+                  {college.admissions.process.map((step: string, idx: number) => (
+                    <div key={idx} className="flex gap-5 relative">
+                      {idx < college.admissions!.process.length - 1 && (
+                        <div className="absolute left-[18px] top-10 bottom-0 w-px bg-gradient-to-b from-[#f6c804]/40 to-[#f6c804]/10" />
+                      )}
+                      <div className="relative z-10 h-9 w-9 rounded-full bg-gradient-to-br from-[#f6c804] to-[#e5b703] flex items-center justify-center shrink-0 shadow-[0_4px_12px_-2px_rgba(246,200,4,0.4)]">
+                        <span className="text-sm font-bold text-[#0B1120]">{idx + 1}</span>
+                      </div>
+                      <div className="pb-8 last:pb-0 pt-1.5">
+                        <p className="text-sm font-semibold text-[#131b2e] leading-relaxed">{step}</p>
+                      </div>
                     </div>
-                    {/* Step Content */}
-                    <div className="pb-8 last:pb-0 pt-1.5">
-                      <p className="text-sm font-semibold text-[#131b2e] leading-relaxed">{step}</p>
-                    </div>
-                  </div>
-                ))}
+                  ))}
+                </div>
               </div>
-            </div>
+            )}
 
             {/* Required Documents */}
-            <div>
-              <h3 className="text-sm font-bold text-[#45464d] uppercase tracking-[0.08em] mb-5 flex items-center gap-2">
-                <FileText className="w-4 h-4 text-[#45464d]" /> Required Documents
-              </h3>
-              <div className="flex flex-wrap gap-2.5">
-                {college.admissions.documents.map((doc: string, idx: number) => (
-                  <span key={idx} className="px-4 py-2 bg-[#eaedff] text-[#3f465c] font-semibold text-sm rounded-lg hover:bg-[#dae2fd] transition-colors duration-200">
-                    {doc}
-                  </span>
-                ))}
+            {college.admissions.documents && (
+              <div>
+                <h3 className="text-sm font-bold text-[#45464d] uppercase tracking-[0.08em] mb-5 flex items-center gap-2">
+                  <FileText className="w-4 h-4 text-[#45464d]" /> Required Documents
+                </h3>
+                <div className="flex flex-wrap gap-2.5">
+                  {college.admissions.documents.map((doc: string, idx: number) => (
+                    <span key={idx} className="px-4 py-2 bg-[#eaedff] text-[#3f465c] font-semibold text-sm rounded-lg hover:bg-[#dae2fd] transition-colors duration-200">
+                      {doc}
+                    </span>
+                  ))}
+                </div>
               </div>
-            </div>
+            )}
+          </div>
+        ) : (
+          <div className="p-6 rounded-xl bg-[#faf8ff] text-sm text-[#45464d] leading-relaxed">
+            Admissions for {college.name} are conducted through verified counseling quotas and entrance exams. Contact Direct2Campus advisors for direct seat allotment and cutoff guidance.
           </div>
         )}
       </div>
     </section>
   );
 
-  // 3. Courses and Fee Structure
+  // 2. Courses and Fee Structure
   const renderCoursesFees = () => (
     <section id="courses-fees" className="scroll-mt-28">
       <div className="bg-white rounded-[1.25rem] p-8 md:p-10 shadow-[0_1px_3px_rgba(0,0,0,0.04)]">
@@ -370,7 +308,7 @@ export default async function CollegeDetailPage({ params }: { params: Params }) 
                   </tr>
                 </thead>
                 <tbody>
-                  {category.items.map((item: any, i: number) => (
+                  {category.items?.map((item: any, i: number) => (
                     <tr key={i} className={`transition-colors duration-200 hover:bg-[#f2f3ff]/60 ${i % 2 === 0 ? 'bg-white' : 'bg-[#faf8ff]'}`}>
                       <td className="px-6 py-4 text-[#131b2e] font-medium">{item.label}</td>
                       <td className="px-6 py-4 text-[#131b2e] font-bold text-right tabular-nums">{item.value}</td>
@@ -387,7 +325,7 @@ export default async function CollegeDetailPage({ params }: { params: Params }) 
           </div>
         ))}
 
-        {college.coursesDetails && (
+        {college.coursesDetails && college.coursesDetails.length > 0 && (
           <div className="mt-10">
             <h3 className="text-lg font-bold text-[#131b2e] mb-5 flex items-center gap-3">
               <span className="w-1 h-6 rounded-full bg-[#3B4CC0]" />
@@ -412,7 +350,7 @@ export default async function CollegeDetailPage({ params }: { params: Params }) 
     </section>
   );
 
-  // 4. B.Tech Fees & Eligibility Section
+  // 3. Degree Fees & Eligibility Section
   const renderBTechFeesEligibility = () => (
     <section id="btech-fees" className="scroll-mt-28">
       <div className="bg-white rounded-[1.25rem] p-8 md:p-10 shadow-[0_1px_3px_rgba(0,0,0,0.04)]">
@@ -422,7 +360,7 @@ export default async function CollegeDetailPage({ params }: { params: Params }) 
           </div>
           <div>
             <h2 className="text-2xl font-sora font-bold text-[#131b2e] tracking-[-0.01em]">
-              {hBtechFeesEligibility}
+              {hCourseFeesEligibility}
             </h2>
             <p className="text-sm text-[#76777d] mt-0.5">Comprehensive fee schedule, branch cutoffs, and eligibility guidelines</p>
           </div>
@@ -431,59 +369,59 @@ export default async function CollegeDetailPage({ params }: { params: Params }) 
         {/* Quick Highlights Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 mb-8">
           <div className="p-5 rounded-xl bg-[#f2f3ff] border border-[#3B4CC0]/10">
-            <span className="text-[11px] font-bold uppercase tracking-wider text-[#76777d]">Total B.Tech (4 Yrs)</span>
-            <p className="text-xl font-bold font-sora text-[#3B4CC0] mt-1">{college.fees || "₹7.65 - 8.70 Lakhs"}</p>
-            <span className="text-xs text-[#76777d] mt-1 block">Tuition across 8 semesters</span>
+            <span className="text-[11px] font-bold uppercase tracking-wider text-[#76777d]">Total Course Fees</span>
+            <p className="text-xl font-bold font-sora text-[#3B4CC0] mt-1">{college.fees || "Contact for fees"}</p>
+            <span className="text-xs text-[#76777d] mt-1 block">Tuition fee package</span>
           </div>
           <div className="p-5 rounded-xl bg-[#f2f3ff] border border-[#3B4CC0]/10">
-            <span className="text-[11px] font-bold uppercase tracking-wider text-[#76777d]">1st Year Fees</span>
-            <p className="text-xl font-bold font-sora text-[#131b2e] mt-1">₹2.0 - 2.5 Lakhs</p>
-            <span className="text-xs text-[#76777d] mt-1 block">At time of admission</span>
+            <span className="text-[11px] font-bold uppercase tracking-wider text-[#76777d]">Course Duration</span>
+            <p className="text-xl font-bold font-sora text-[#131b2e] mt-1">3 - 4 Years</p>
+            <span className="text-xs text-[#76777d] mt-1 block">Full-time programs</span>
           </div>
           <div className="p-5 rounded-xl bg-[#f2f3ff] border border-[#3B4CC0]/10">
-            <span className="text-[11px] font-bold uppercase tracking-wider text-[#76777d]">Hostel (Annual)</span>
-            <p className="text-xl font-bold font-sora text-[#131b2e] mt-1">₹70,000 - 90,000</p>
+            <span className="text-[11px] font-bold uppercase tracking-wider text-[#76777d]">Hostel Facility</span>
+            <p className="text-xl font-bold font-sora text-[#131b2e] mt-1">Available</p>
             <span className="text-xs text-[#76777d] mt-1 block">Separate Boys & Girls</span>
           </div>
           <div className="p-5 rounded-xl bg-[#f2f3ff] border border-[#3B4CC0]/10">
-            <span className="text-[11px] font-bold uppercase tracking-wider text-[#76777d]">Mess Charges</span>
-            <p className="text-xl font-bold font-sora text-[#131b2e] mt-1">₹48,000 - 55,000</p>
-            <span className="text-xs text-[#76777d] mt-1 block">Annual dining charges</span>
+            <span className="text-[11px] font-bold uppercase tracking-wider text-[#76777d]">Institute Rating</span>
+            <p className="text-xl font-bold font-sora text-[#131b2e] mt-1">{college.rating || 4.5} ★</p>
+            <span className="text-xs text-[#76777d] mt-1 block">{college.reviews || 200}+ verified reviews</span>
           </div>
         </div>
 
-        {/* B.Tech Eligibility Breakdown */}
+        {/* Eligibility Breakdown */}
         <div className="mb-8">
           <h3 className="text-base font-bold text-[#131b2e] mb-4 flex items-center gap-2">
-            <CheckCircle2 className="w-5 h-5 text-[#22c55e]" /> Mandatory B.Tech Eligibility Criteria
+            <CheckCircle2 className="w-5 h-5 text-[#22c55e]" /> Mandatory Eligibility Criteria
           </h3>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-3.5">
             <div className="p-4 rounded-xl bg-[#faf8ff] border border-gray-100 flex items-start gap-3">
               <span className="w-2 h-2 rounded-full bg-[#3B4CC0] mt-2 shrink-0" />
               <div>
                 <p className="text-sm font-bold text-[#131b2e]">Academic Qualification</p>
-                <p className="text-xs text-[#45464d] mt-0.5">Passed 10+2 Higher Secondary examination with Physics, Mathematics, and Chemistry / Computer Science from a recognized council or board.</p>
+                <p className="text-xs text-[#45464d] mt-0.5">Passed 10+2 Higher Secondary examination or equivalent from a recognized board or council with relevant stream subjects.</p>
               </div>
             </div>
             <div className="p-4 rounded-xl bg-[#faf8ff] border border-gray-100 flex items-start gap-3">
               <span className="w-2 h-2 rounded-full bg-[#3B4CC0] mt-2 shrink-0" />
               <div>
-                <p className="text-sm font-bold text-[#131b2e]">Minimum Marks</p>
-                <p className="text-xs text-[#45464d] mt-0.5">Minimum 60% aggregate marks in PCM (55% for reserved category candidates) with pass marks in individual subjects including English.</p>
+                <p className="text-sm font-bold text-[#131b2e]">Minimum Marks Requirement</p>
+                <p className="text-xs text-[#45464d] mt-0.5">Minimum 50% - 60% aggregate marks in core subjects (5% relaxation typically applicable for reserved categories).</p>
               </div>
             </div>
             <div className="p-4 rounded-xl bg-[#faf8ff] border border-gray-100 flex items-start gap-3">
               <span className="w-2 h-2 rounded-full bg-[#3B4CC0] mt-2 shrink-0" />
               <div>
                 <p className="text-sm font-bold text-[#131b2e]">Entrance Exams Accepted</p>
-                <p className="text-xs text-[#45464d] mt-0.5">Valid WBJEE rank (primary state counseling), JEE Main score, or institute IEMJEE examination score.</p>
+                <p className="text-xs text-[#45464d] mt-0.5">State entrance examination ranks, national tests (JEE / NEET / CAT / MAT), or institute-level entrance tests.</p>
               </div>
             </div>
             <div className="p-4 rounded-xl bg-[#faf8ff] border border-gray-100 flex items-start gap-3">
               <span className="w-2 h-2 rounded-full bg-[#3B4CC0] mt-2 shrink-0" />
               <div>
-                <p className="text-sm font-bold text-[#131b2e]">Age Requirement</p>
-                <p className="text-xs text-[#45464d] mt-0.5">Candidate must be at least 17 years old as of December 31st of the admission year. No upper age ceiling.</p>
+                <p className="text-sm font-bold text-[#131b2e]">Age & Domicile</p>
+                <p className="text-xs text-[#45464d] mt-0.5">Completed 17 years of age as of admission year. State quota benefits subject to domicile criteria.</p>
               </div>
             </div>
           </div>
@@ -493,7 +431,7 @@ export default async function CollegeDetailPage({ params }: { params: Params }) 
         {college.cutoffs && college.cutoffs.length > 0 && (
           <div>
             <h3 className="text-base font-bold text-[#131b2e] mb-4 flex items-center gap-2">
-              <Sparkles className="w-4 h-4 text-[#f6c804]" /> Expected B.Tech Cutoff Ranks
+              <Sparkles className="w-4 h-4 text-[#f6c804]" /> Expected Cutoff Ranks
             </h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {college.cutoffs.map((co: any, i: number) => (
@@ -519,7 +457,7 @@ export default async function CollegeDetailPage({ params }: { params: Params }) 
     </section>
   );
 
-  // 5. Placements
+  // 4. Placements and Packages
   const renderPlacements = () => (
     <section id="placements" className="scroll-mt-28">
       {college.placements && (
@@ -541,21 +479,23 @@ export default async function CollegeDetailPage({ params }: { params: Params }) 
                 </div>
               </div>
 
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-10">
-                {college.placements.stats.map((stat: any, idx: number) => (
-                  <div key={idx} className="relative group">
-                    <div className="absolute -inset-px rounded-2xl bg-gradient-to-br from-white/[0.08] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                    <div className="relative p-6 rounded-2xl bg-white/[0.04] backdrop-blur-sm text-center border border-white/[0.04] hover:border-white/[0.08] transition-all duration-300">
-                      <p className="text-3xl md:text-4xl font-bold font-sora tracking-tight text-[#f6c804] mb-2">
-                        {stat.value}
-                      </p>
-                      <p className="text-[11px] font-bold uppercase tracking-[0.1em] text-white/40">
-                        {stat.label}
-                      </p>
+              {college.placements.stats && (
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-10">
+                  {college.placements.stats.map((stat: any, idx: number) => (
+                    <div key={idx} className="relative group">
+                      <div className="absolute -inset-px rounded-2xl bg-gradient-to-br from-white/[0.08] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                      <div className="relative p-6 rounded-2xl bg-white/[0.04] backdrop-blur-sm text-center border border-white/[0.04] hover:border-white/[0.08] transition-all duration-300">
+                        <p className="text-3xl md:text-4xl font-bold font-sora tracking-tight text-[#f6c804] mb-2">
+                          {stat.value}
+                        </p>
+                        <p className="text-[11px] font-bold uppercase tracking-[0.1em] text-white/40">
+                          {stat.label}
+                        </p>
+                      </div>
                     </div>
-                  </div>
-                ))}
-              </div>
+                  ))}
+                </div>
+              )}
 
               {college.placements.highlights && (
                 <div className="mb-10">
@@ -594,6 +534,73 @@ export default async function CollegeDetailPage({ params }: { params: Params }) 
           </div>
         </div>
       )}
+    </section>
+  );
+
+  // 5. Campus and Location / Overview
+  const renderOverview = () => (
+    <section id="overview" className="scroll-mt-28">
+      <div className="bg-white rounded-[1.25rem] p-8 md:p-10 shadow-[0_1px_3px_rgba(0,0,0,0.04)]">
+        <div className="flex items-center gap-3.5 mb-8">
+          <div className="p-3 rounded-xl bg-[#3B4CC0]/[0.08]">
+            <Building2 className="w-6 h-6 text-[#3B4CC0]" />
+          </div>
+          <div>
+            <h2 className="text-2xl font-sora font-bold text-[#131b2e] tracking-[-0.01em]">
+              {hOverview}
+            </h2>
+            <p className="text-sm text-[#76777d] mt-0.5">{college.location}, {college.state}</p>
+          </div>
+        </div>
+        
+        <p className="text-[#45464d] leading-[1.8] text-[1.05rem] whitespace-pre-line">
+          {college.about || college.description}
+        </p>
+
+        {/* Official Campus & Location Card */}
+        <div className="mt-8 p-6 rounded-2xl bg-gradient-to-br from-[#f2f3ff] to-[#faf8ff] border border-[#3B4CC0]/15 flex flex-col md:flex-row items-start md:items-center justify-between gap-5">
+          <div className="flex items-start gap-4">
+            <div className="w-12 h-12 rounded-xl bg-[#3B4CC0] flex items-center justify-center shrink-0 shadow-[0_4px_12px_rgba(59,76,192,0.25)]">
+              <MapPin className="w-6 h-6 text-white" />
+            </div>
+            <div>
+              <span className="text-[10px] font-bold text-[#3B4CC0] uppercase tracking-wider bg-[#3B4CC0]/10 px-2.5 py-0.5 rounded-md inline-block mb-1">
+                Official Campus & Admission Location
+              </span>
+              <p className="font-bold text-[#131b2e] text-base leading-snug">
+                {isIem 
+                  ? "Ashram Building, GN-34/2, Sector V, Salt Lake Electronics Complex"
+                  : `${college.name} Main Campus, ${college.location}`}
+              </p>
+              <p className="text-xs text-[#76777d] mt-1">
+                {college.location}, {college.state}, India
+              </p>
+            </div>
+          </div>
+          <Button asChild variant="outline" className="shrink-0 bg-white border-[#3B4CC0]/20 text-[#3B4CC0] hover:bg-[#3B4CC0] hover:text-white transition-all">
+            <Link 
+              href={`https://maps.google.com/?q=${encodeURIComponent(`${college.name} ${college.location}`)}`} 
+              target="_blank" 
+              rel="noopener noreferrer"
+            >
+              <MapPin className="w-4 h-4 mr-2" /> View on Map
+            </Link>
+          </Button>
+        </div>
+        
+        {college.highlights && college.highlights.length > 0 && (
+          <div className="mt-10 grid grid-cols-1 md:grid-cols-2 gap-4">
+            {college.highlights.map((highlight: string, idx: number) => (
+              <div key={idx} className="flex items-start gap-3.5 p-5 rounded-xl bg-[#f2f3ff] transition-colors duration-300 hover:bg-[#e2e7ff] group">
+                <div className="p-1.5 rounded-lg bg-[#22c55e]/10 mt-0.5">
+                  <CheckCircle2 className="w-4 h-4 text-[#22c55e]" />
+                </div>
+                <span className="text-[#131b2e] font-semibold text-sm leading-relaxed">{highlight}</span>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
     </section>
   );
 
@@ -688,11 +695,32 @@ export default async function CollegeDetailPage({ params }: { params: Params }) 
 
   // 9. FAQs + Schema + CTA
   const renderFaqs = () => {
-    const rawFaqs = (college.faqs && college.faqs.length > 0) ? college.faqs : (isIem ? IEM_DEFAULT_FAQS : []);
+    const rawFaqs = (college.faqs && college.faqs.length > 0) 
+      ? college.faqs 
+      : (isIem ? IEM_DEFAULT_FAQS : [
+          {
+            question: `What is the admission procedure for ${college.name}?`,
+            answer: `Admission to ${college.name} is conducted through entrance examination scores, centralized counseling, and permitted quota rules. Contact Direct2Campus for step-by-step guidance and document verification.`
+          },
+          {
+            question: `What is the fee structure at ${college.name}?`,
+            answer: `The tuition fee structure at ${college.name} is approximately ${college.fees || 'competitive based on specialization'}. Hostel and mess charges are separate where applicable.`
+          },
+          {
+            question: `Does ${college.name} provide campus placement support?`,
+            answer: `Yes, ${college.name} has a proactive training and placement cell that connects graduating students with top corporate recruiters and industry partners.`
+          },
+          {
+            question: `Where is ${college.name} located?`,
+            answer: `${college.name} is situated in ${college.location}, ${college.state}. Students should verify the exact campus location and department before visiting.`
+          }
+        ]);
+
     const faqsList = [
       ...rawFaqs,
       ...((seo.aeoFaqs || []).map((af: any) => ({ question: af.question, answer: af.answer, isAeo: true })))
     ];
+
     const faqSchema = faqsList.length > 0 ? {
       "@context": "https://schema.org",
       "@type": "FAQPage",
@@ -810,45 +838,22 @@ export default async function CollegeDetailPage({ params }: { params: Params }) 
       <CollegeHero college={college} />
 
       {/* ═══════════════════════════════════════════
-          MAIN CONTENT — Tonal Layered Layout
+          MAIN CONTENT — High-Converting Unified Flow
       ═══════════════════════════════════════════ */}
       <div className="content-boundary mt-8">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10">
           
-          {/* ── Main Content Column ── */}
+          {/* ── Main Content Column (Universal SEO order for all colleges) ── */}
           <div className="lg:col-span-8 flex flex-col gap-10">
-            {isIem ? (
-              // IEM Structured Order matching requested H2 hierarchy:
-              // 1. Admission Process
-              // 2. Courses and Fee Structure
-              // 3. B.Tech Fees and Eligibility
-              // 4. Placements and Average Package
-              // 5. Campus and Location
-              // 6. Infrastructure, Scholarships, Alumni, FAQs
-              <>
-                {renderAdmissions()}
-                {renderCoursesFees()}
-                {renderBTechFeesEligibility()}
-                {renderPlacements()}
-                {renderOverview()}
-                {renderInfrastructure()}
-                {renderScholarships()}
-                {renderAlumni()}
-                {renderFaqs()}
-              </>
-            ) : (
-              // Standard layout order for other colleges
-              <>
-                {renderOverview()}
-                {renderCoursesFees()}
-                {renderPlacements()}
-                {renderAdmissions()}
-                {renderInfrastructure()}
-                {renderScholarships()}
-                {renderAlumni()}
-                {renderFaqs()}
-              </>
-            )}
+            {renderAdmissions()}
+            {renderCoursesFees()}
+            {renderBTechFeesEligibility()}
+            {renderPlacements()}
+            {renderOverview()}
+            {renderInfrastructure()}
+            {renderScholarships()}
+            {renderAlumni()}
+            {renderFaqs()}
           </div>
 
           {/* ── Sidebar ── */}

@@ -1,16 +1,26 @@
 import { Metadata } from "next"
 import Image from "next/image"
 import { HeroBackground } from "@/components/ui/HeroBackground"
-import { Shield, Award, Users, Clock } from "lucide-react"
+import { Shield, Award, Users, Clock, CheckCircle2 } from "lucide-react"
+import { getPageData } from "@/lib/page-service"
 
-export const metadata: Metadata = {
-  title: "About Us – India's Trusted Education Partner",
-  description: "Learn about Direct2Campus — India's trusted education bridge with 12,000+ successful admissions, 150+ partner institutions & 10+ years of proven excellence. Transparent, secure admissions guidance.",
-  keywords: ["about Direct2Campus", "education consultancy India", "trusted admission partner", "management quota admissions"],
-  alternates: { canonical: "https://direct2campus.com/about" },
+export const revalidate = 0;
+
+export async function generateMetadata(): Promise<Metadata> {
+  const aboutData = await getPageData("about");
+  return {
+    title: aboutData?.title || "About Us – India's Trusted Education Partner",
+    description:
+      aboutData?.description ||
+      "Learn about Direct2Campus — India's trusted education bridge with 12,000+ successful admissions, 150+ partner institutions & 10+ years of proven excellence.",
+    keywords: ["about Direct2Campus", "education consultancy India", "trusted admission partner", "management quota admissions"],
+    alternates: { canonical: "https://direct2campus.com/about" },
+  };
 }
 
-export default function AboutPage() {
+export default async function AboutPage() {
+  const aboutData = await getPageData("about");
+
   return (
     <div className="pb-20 bg-d2c-white min-h-screen">
       {/* Hero-style header matching homepage */}
@@ -23,7 +33,9 @@ export default function AboutPage() {
         <div className="content-boundary relative z-10 text-center">
           <div className="inline-flex items-center gap-2 px-3 py-1.5 min-[1025px]:px-4 min-[1025px]:py-2 bg-white/10 backdrop-blur-sm border border-white/20 mb-8 sm:mb-4 min-[1025px]:mb-12 lg:mb-10 rounded-lg">
             <Shield className="w-4 h-4 text-d2c-sky" />
-            <span className="text-sm font-medium tracking-wide text-white">India&apos;s Trusted Education Partner</span>
+            <span className="text-sm font-medium tracking-wide text-white">
+              {aboutData?.badge || "India's Trusted Education Partner"}
+            </span>
           </div>
           <h1 className="text-2xl sm:text-4xl min-[1025px]:text-6xl lg:text-7xl font-sora font-bold tracking-tight mb-6 sm:mb-4 min-[1025px]:mb-10 lg:mb-8 text-balance leading-[1.1] text-white">
             About{" "}
@@ -32,98 +44,64 @@ export default function AboutPage() {
             </span>
           </h1>
           <p className="text-base min-[1025px]:text-xl text-d2c-ice/80 max-w-2xl mx-auto mb-6 min-[1025px]:block lg:mb-12 leading-relaxed font-medium">
-            Bridging the gap between aspiring students and premium educational institutions across India since 2012.
+            {aboutData?.subheading || "Bridging the gap between aspiring students and premium educational institutions across India since 2012."}
           </p>
 
           {/* Stats bar */}
           <div className="flex flex-wrap justify-center gap-5 min-[1025px]:gap-10 pt-5 min-[1025px]:pt-12 lg:gap-14 lg:pt-10 border-t border-white/10 max-w-4xl mx-auto">
-            <div className="flex items-center gap-3 text-d2c-ice">
-              <div className="p-2 bg-white/5 rounded-lg border border-white/10"><Users className="w-5 h-5 text-d2c-sky" /></div>
-              <div className="text-left">
-                <div className="text-base min-[1025px]:text-xl font-bold font-sora text-white">12,000+</div>
-                <div className="text-[10px] min-[1025px]:text-xs text-white/50 font-medium uppercase tracking-wider">Students Placed</div>
+            {aboutData?.stats?.map((stat: any, idx: number) => (
+              <div key={idx} className="flex items-center gap-3 text-d2c-ice">
+                <div className="p-2 bg-white/5 rounded-lg border border-white/10">
+                  {idx === 0 && <Users className="w-5 h-5 text-d2c-sky" />}
+                  {idx === 1 && <Award className="w-5 h-5 text-d2c-gold" />}
+                  {idx === 2 && <Clock className="w-5 h-5 text-d2c-success" />}
+                  {idx > 2 && <CheckCircle2 className="w-5 h-5 text-[#22c55e]" />}
+                </div>
+                <div className="text-left">
+                  <div className="text-base min-[1025px]:text-xl font-bold font-sora text-white">{stat.value}</div>
+                  <div className="text-[10px] min-[1025px]:text-xs text-white/50 font-medium uppercase tracking-wider">{stat.label}</div>
+                </div>
               </div>
-            </div>
-            <div className="flex items-center gap-3 text-d2c-ice">
-              <div className="p-2 bg-white/5 rounded-lg border border-white/10"><Award className="w-5 h-5 text-d2c-gold" /></div>
-              <div className="text-left">
-                <div className="text-base min-[1025px]:text-xl font-bold font-sora text-white">150+</div>
-                <div className="text-[10px] min-[1025px]:text-xs text-white/50 font-medium uppercase tracking-wider">Partner Institutions</div>
-              </div>
-            </div>
-            <div className="flex items-center gap-3 text-d2c-ice">
-              <div className="p-2 bg-white/5 rounded-lg border border-white/10"><Clock className="w-5 h-5 text-d2c-success" /></div>
-              <div className="text-left">
-                <div className="text-base min-[1025px]:text-xl font-bold font-sora text-white">10+ Years</div>
-                <div className="text-[10px] min-[1025px]:text-xs text-white/50 font-medium uppercase tracking-wider">Of Excellence</div>
-              </div>
-            </div>
+            )) || (
+              <>
+                <div className="flex items-center gap-3 text-d2c-ice">
+                  <div className="p-2 bg-white/5 rounded-lg border border-white/10"><Users className="w-5 h-5 text-d2c-sky" /></div>
+                  <div className="text-left">
+                    <div className="text-base min-[1025px]:text-xl font-bold font-sora text-white">12,000+</div>
+                    <div className="text-[10px] min-[1025px]:text-xs text-white/50 font-medium uppercase tracking-wider">Students Placed</div>
+                  </div>
+                </div>
+                <div className="flex items-center gap-3 text-d2c-ice">
+                  <div className="p-2 bg-white/5 rounded-lg border border-white/10"><Award className="w-5 h-5 text-d2c-gold" /></div>
+                  <div className="text-left">
+                    <div className="text-base min-[1025px]:text-xl font-bold font-sora text-white">150+</div>
+                    <div className="text-[10px] min-[1025px]:text-xs text-white/50 font-medium uppercase tracking-wider">Partner Institutions</div>
+                  </div>
+                </div>
+              </>
+            )}
           </div>
         </div>
       </section>
 
-      <div className="content-boundary py-16 relative z-20">
-        
-        {/* Logo Placement in contents */}
-        <div className="mb-16">
-          <div className="bg-d2c-navy rounded-2xl p-8 sm:p-12 flex items-center justify-center border border-white/10 shadow-xl relative overflow-hidden group">
-            <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent pointer-events-none" />
-            <div className="relative w-full max-w-lg h-20 sm:h-28 transition-transform duration-500 group-hover:scale-105">
-              <Image
-                src="/logo-footer.png"
-                alt="Direct2Campus"
-                fill
-                className="object-contain object-center"
-              />
-            </div>
+      {/* Main Content */}
+      <section className="content-boundary mt-32 sm:mt-48 lg:mt-52">
+        <div className="max-w-4xl mx-auto bg-white rounded-3xl p-8 sm:p-12 shadow-sm border border-gray-100">
+          <h2 className="text-2xl sm:text-3xl font-sora font-bold text-d2c-navy mb-6">
+            {aboutData?.heading || "Bridging Dreams to Reality"}
+          </h2>
+          <div className="space-y-4 text-gray-600 leading-relaxed text-base sm:text-lg">
+            <p>
+              {aboutData?.storyParagraph1 ||
+                "Direct2Campus was founded with a singular mission: to eliminate confusion, non-transparency, and bureaucratic delays in higher education admissions across India. Whether you are aiming for prestigious private engineering institutes, medical seats, or premier business schools, our vetted network of 150+ colleges provides legitimate, direct counseling routes."}
+            </p>
+            <p>
+              {aboutData?.storyParagraph2 ||
+                "From document verification to fee negotiations and scholarship allocation, our team of seasoned advisors stands beside you every step of the way."}
+            </p>
           </div>
         </div>
-
-        <div className="prose prose-lg max-w-none text-d2c-text">
-          <img src="https://images.unsplash.com/photo-1541339907198-e08756dedf3f?auto=format&fit=crop&q=80&w=1200" alt="Campus Building" className="w-full h-[400px] object-cover mb-12 shadow-md" />
-          
-          <h2 className="text-2xl font-sora font-bold text-d2c-navy mb-4">Our Mission</h2>
-          <p className="mb-8 leading-relaxed">
-            At Direct2Campus, we believe that extreme competition should not be the sole barrier to high-quality education. Our mission is to provide transparent, secure, and officially recognized management quota admissions guidance to students who missed the extremely narrow marks margins in entrance exams.
-          </p>
-
-          <h2 className="text-2xl font-sora font-bold text-d2c-navy mb-4">Why Trust Us?</h2>
-          <div className="grid md:grid-cols-2 gap-8 mb-12 not-prose">
-            <div className="bg-white p-6 border border-gray-100 shadow-sm hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300">
-              <div className="text-3xl font-sora font-bold text-d2c-royal mb-2">12,000+</div>
-              <p className="text-d2c-muted">Successful Admissions Facilitated</p>
-            </div>
-            <div className="bg-white p-6 border border-gray-100 shadow-sm hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300">
-              <div className="text-3xl font-sora font-bold text-d2c-royal mb-2">150+</div>
-              <p className="text-d2c-muted">Partner Institutions & Universities</p>
-            </div>
-            <div className="bg-white p-6 border border-gray-100 shadow-sm hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300">
-              <div className="text-3xl font-sora font-bold text-d2c-royal mb-2">10 Years</div>
-              <p className="text-d2c-muted">Of Proven Excellence and Trust</p>
-            </div>
-            <div className="bg-white p-6 border border-gray-100 shadow-sm hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300">
-              <div className="text-3xl font-sora font-bold text-d2c-royal mb-2">100%</div>
-              <p className="text-d2c-muted">Transparent & Secure Process</p>
-            </div>
-          </div>
-
-          <h2 className="text-2xl font-sora font-bold text-d2c-navy mb-4">The D2C Guarantee</h2>
-          <p className="mb-4 leading-relaxed">
-            Unlike fly-by-night agents, Direct2Campus operates as an authorized consulting body. We verify candidate profiles against official institutional eligibility criteria, ensuring that any admission secured through us is legitimate, permanent, and recognized by the respective governing bodies like UGC, AICTE, or NMC.
-          </p>
-          <ul className="space-y-3 mb-8">
-            <li className="flex gap-3">
-              <span className="text-d2c-success font-bold">✓</span> No hidden donation charges.
-            </li>
-            <li className="flex gap-3">
-              <span className="text-d2c-success font-bold">✓</span> Direct fee payments to the college accounts only.
-            </li>
-            <li className="flex gap-3">
-              <span className="text-d2c-success font-bold">✓</span> End-to-end documentation assistance and physical presence during admission rounds.
-            </li>
-          </ul>
-        </div>
-      </div>
+      </section>
     </div>
-  )
+  );
 }

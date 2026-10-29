@@ -1,24 +1,36 @@
 import { supabaseAdmin } from "@/lib/supabase";
 import { notFound } from "next/navigation";
-import { CollegeEditForm } from "@/components/admin/CollegeEditForm";
+import { VisualCollegeEditor } from "@/components/admin/visual-editor/VisualCollegeEditor";
 import { mapDbToCollege } from "@/lib/admin-mappers";
+import { getCollegeByIdOrSlug } from "@/lib/data-service";
 
 type Params = Promise<{ id: string }>;
 
 export default async function EditCollegePage({ params }: { params: Params }) {
   const { id } = await params;
 
+  let collegeData: any = null;
+
   const { data: college, error } = await supabaseAdmin
     .from('colleges')
     .select('*')
     .eq('id', id)
-    .single();
+    .maybeSingle();
 
-  if (error || !college) {
+  if (college) {
+    collegeData = mapDbToCollege(college);
+  } else {
+    // Fallback to local data service
+    const local = await getCollegeByIdOrSlug(id);
+    if (local) {
+      collegeData = local;
+    }
+  }
+
+  if (!collegeData) {
     notFound();
   }
 
-  const mappedCollege = mapDbToCollege(college);
-
-  return <CollegeEditForm initialData={mappedCollege} isNew={false} />;
+  return <VisualCollegeEditor initialData={collegeData} isNew={false} />;
 }
+

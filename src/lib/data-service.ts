@@ -3,9 +3,9 @@ import path from 'path';
 import { colleges as staticColleges, exams as staticExams, College, Exam } from './data';
 import staticBlogs from '@/data/blog.json';
 import { supabaseAdmin, isSupabaseConfigured } from './supabase';
-import { sortCollegesWithIEMFirst } from './iem-priority';
+import { sortCollegesWithIEMFirst, isIEMCollege } from './iem-priority';
 
-export { sortCollegesWithIEMFirst } from './iem-priority';
+export { sortCollegesWithIEMFirst, isIEMCollege } from './iem-priority';
 
 // Persistent local file paths for storing admin edits when Supabase is not connected
 const LOCAL_STORE_FILE = path.join(process.cwd(), 'src', 'data', 'local-cms-data.json');

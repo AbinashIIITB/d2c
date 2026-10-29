@@ -14,7 +14,8 @@ import {
   LogOut,
   Layers,
   Sparkles,
-  Newspaper
+  Newspaper,
+  Globe
 } from 'lucide-react';
 
 const NAV_ITEMS = [
@@ -22,6 +23,7 @@ const NAV_ITEMS = [
   { href: '/admin/colleges', label: 'Manage Colleges', icon: GraduationCap },
   { href: '/admin/exams', label: 'Manage Exams', icon: FileText },
   { href: '/admin/blogs', label: 'Manage Blogs', icon: Newspaper },
+  { href: '/admin/pages', label: 'Website Pages', icon: Globe },
   { href: '/admin/seo', label: 'Page SEO Studio', icon: Sparkles },
   { href: '/admin/leads', label: 'Student Leads', icon: Users },
   { href: '/admin/analytics', label: 'Analytics & SEO', icon: BarChart3 },

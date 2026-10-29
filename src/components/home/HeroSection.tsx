@@ -11,16 +11,17 @@ import { HeroBackground } from "@/components/ui/HeroBackground";
 import { CallbackModal } from "@/components/layout/CallbackModal";
 const TEXTS = ["B.Tech", "MBA", "Medical"];
 
-export function HeroSection() {
+export function HeroSection({ heroData, statsData }: { heroData?: any; statsData?: any[] } = {}) {
+  const dynamicTexts = heroData?.rotatingWords || TEXTS;
   const [textIndex, setTextIndex] = useState(0);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setTextIndex((prev) => (prev + 1) % TEXTS.length);
+      setTextIndex((prev) => (prev + 1) % dynamicTexts.length);
     }, 2500);
     return () => clearInterval(interval);
-  }, []);
+  }, [dynamicTexts.length]);
 
   return (
     <section className="relative flex flex-col items-center justify-center max-[370px]:min-h-[774px] min-h-[704px] lg:min-h-[850px] text-d2c-white pt-20 pb-20 md:pt-20 lg:pt-40 md:pb-20 overflow-hidden pointer-events-none -mb-24 sm:-mb-36 lg:-mb-40">

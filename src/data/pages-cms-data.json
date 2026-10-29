@@ -1,0 +1,101 @@
+{
+  "pages": {
+    "home": {
+      "slug": "home",
+      "title": "Direct2Campus – Your Shortcut to the Right Campus",
+      "description": "India's most trusted educational consultancy. Get direct admission guidance for B.Tech, MBBS, MBA & BDS. Compare 150+ partner colleges and secure your seat with expert counselling.",
+      "announcement": {
+        "enabled": true,
+        "badge": "ADMISSIONS 2026-27",
+        "message": "Direct Admission Counseling Open for Top B.Tech, MBBS & MBA Colleges across India.",
+        "link": "/colleges",
+        "linkText": "Explore Colleges"
+      },
+      "banners": [
+        {
+          "id": 1,
+          "image": "/images/banners/heritage_enhanced.png",
+          "title": "Heritage Institute of Medical Sciences",
+          "subtitle": "Premier Medical Institution in Varanasi — High-definition Campus View",
+          "link": "/colleges",
+          "badge": "Top Medical"
+        },
+        {
+          "id": 2,
+          "image": "/images/banners/jis_enhanced.png",
+          "title": "JIS College of Engineering Campus",
+          "subtitle": "Direct2Campus Partner Institution with AI & Robotics Research Centers",
+          "link": "/colleges",
+          "badge": "Autonomous"
+        },
+        {
+          "id": 3,
+          "image": "/images/banners/ncr_enhanced.png",
+          "title": "NCR Institute of Medical Sciences",
+          "subtitle": "Leading Medical Healthcare & Education Complex in Meerut",
+          "link": "/colleges",
+          "badge": "NMC Approved"
+        }
+      ],
+      "welcomeLeadModal": {
+        "enabled": false,
+        "title": "Get 1-on-1 Direct Admission Guidance",
+        "subtitle": "Speak directly with senior academic counselors to check eligibility, fee structure, and seat availability.",
+        "badge": "SESSION 2026-27",
+        "offerText": "⚡ Verified Partner Seats | Transparent Process | 100% Genuine Guidance",
+        "buttonText": "Request Free Counseling Call",
+        "courseOptions": [
+          "B.Tech Computer Science & Engineering",
+          "B.Tech (Other Branches)",
+          "MBBS / BDS Medical",
+          "MBA / PGDM Management",
+          "BCA / MCA Computer Applications",
+          "BBA / Law / Pharmacy"
+        ],
+        "autoOpenDelaySeconds": 3
+      },
+      "hero": {
+        "badge": "Trusted by 12,000+ Students",
+        "titlePrefix": "Your Shortcut to the",
+        "titleHighlight": "Right Campus",
+        "description": "India's most trusted educational consultancy. Get direct admission guidance for B.Tech, MBBS, MBA & BDS. Compare 150+ partner colleges and secure your seat with expert counselling.",
+        "rotatingWords": ["B.Tech", "MBA", "Medical", "BCA", "MCA"]
+      },
+      "stats": [
+        { "label": "Students Placed", "value": "12,000+" },
+        { "label": "Partner Institutions", "value": "150+" },
+        { "label": "Years Experience", "value": "10+ Years" },
+        { "label": "Admission Success", "value": "100%" }
+      ]
+    },
+    "about": {
+      "slug": "about",
+      "title": "About Us – India's Trusted Education Partner",
+      "description": "Learn about Direct2Campus — India's trusted education bridge with 12,000+ successful admissions, 150+ partner institutions & 10+ years of proven excellence.",
+      "badge": "India's Trusted Education Partner",
+      "heading": "Bridging Dreams to Reality",
+      "subheading": "Direct2Campus has spent over a decade shaping academic journeys for ambitious students nationwide.",
+      "storyParagraph1": "Direct2Campus was founded with a singular mission: to eliminate confusion, non-transparency, and bureaucratic delays in higher education admissions across India. Whether you are aiming for prestigious private engineering institutes, medical seats, or premier business schools, our vetted network of 150+ colleges provides legitimate, direct counseling routes.",
+      "storyParagraph2": "From document verification to fee negotiations and scholarship allocation, our team of seasoned advisors stands beside you every step of the way.",
+      "stats": [
+        { "label": "Students Placed", "value": "12,000+" },
+        { "label": "Partner Institutions", "value": "150+" },
+        { "label": "Years Of Excellence", "value": "10+ Years" },
+        { "label": "Verified College Network", "value": "Pan-India" }
+      ]
+    },
+    "contact": {
+      "slug": "contact",
+      "title": "Contact Us – 24/7 Expert Admission Support",
+      "description": "Have questions about admission, WBJEE cutoffs, or fee structures? Get in touch with our team for 24/7 expert counseling.",
+      "badge": "24/7 Expert Support",
+      "heading": "Get In Touch",
+      "subheading": "Have questions about admission cutoffs, fee structures, or campus selection? Our advisors are ready to help.",
+      "phone": "+91 62003 25137",
+      "email": "info@direct2campus.com",
+      "address": "Ashram Building, GN-34/2, Sector V, Salt Lake Electronics Complex, Kolkata – 700091",
+      "whatsapp": "916200325137",
+      "workingHours": "Monday to Saturday: 9:00 AM – 7:30 PM (IST)"
+    }
+  }
+}

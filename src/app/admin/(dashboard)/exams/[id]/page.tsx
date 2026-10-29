@@ -1,24 +1,35 @@
 import { supabaseAdmin } from "@/lib/supabase";
 import { notFound } from "next/navigation";
-import { ExamEditForm } from "@/components/admin/ExamEditForm";
+import { VisualExamEditor } from "@/components/admin/visual-editor/VisualExamEditor";
 import { mapDbToExam } from "@/lib/admin-mappers";
+import { getExamByIdOrSlug } from "@/lib/data-service";
 
 type Params = Promise<{ id: string }>;
 
 export default async function EditExamPage({ params }: { params: Params }) {
   const { id } = await params;
 
+  let examData: any = null;
+
   const { data: exam, error } = await supabaseAdmin
     .from('exams')
     .select('*')
     .eq('id', id)
-    .single();
+    .maybeSingle();
 
-  if (error || !exam) {
+  if (exam) {
+    examData = mapDbToExam(exam);
+  } else {
+    const local = await getExamByIdOrSlug(id);
+    if (local) {
+      examData = local;
+    }
+  }
+
+  if (!examData) {
     notFound();
   }
 
-  const mappedExam = mapDbToExam(exam);
-
-  return <ExamEditForm initialData={mappedExam} isNew={false} />;
+  return <VisualExamEditor initialData={examData} isNew={false} />;
 }
+
