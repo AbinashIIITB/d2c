@@ -704,10 +704,14 @@ export default async function CollegeDetailPage({ params }: { params: Params }) 
           }
         ]);
 
-    const faqsList = [
-      ...rawFaqs,
-      ...((seo.aeoFaqs || []).map((af: any) => ({ question: af.question, answer: af.answer, isAeo: true })))
-    ];
+    const seenQuestions = new Set<string>();
+    const combinedFaqs = [...(seo.aeoFaqs || []), ...rawFaqs];
+    const faqsList = combinedFaqs.filter((f: any) => {
+      const q = (f.question || '').trim().toLowerCase();
+      if (!q || seenQuestions.has(q)) return false;
+      seenQuestions.add(q);
+      return true;
+    });
 
     const faqSchema = faqsList.length > 0 ? {
       "@context": "https://schema.org",
