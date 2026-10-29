@@ -197,16 +197,11 @@ export default async function CollegeDetailPage({ params }: { params: Params }) 
   const renderAdmissions = () => (
     <section id="admissions" className="scroll-mt-28">
       <div className="bg-white rounded-[1.25rem] p-8 md:p-10 shadow-[0_1px_3px_rgba(0,0,0,0.04)]">
-        <div className="flex items-center gap-3.5 mb-8">
-          <div className="p-3 rounded-xl bg-purple-500/[0.08]">
-            <ClipboardList className="w-6 h-6 text-purple-600" />
-          </div>
-          <div>
-            <h2 className="text-2xl font-sora font-bold text-[#131b2e] tracking-[-0.01em]">
-              {hAdmissions}
-            </h2>
-            <p className="text-sm text-[#76777d] mt-0.5">Step-by-step guidance for 2026-27 admission session</p>
-          </div>
+        <div className="mb-8">
+          <h2 className="text-2xl font-sora font-bold text-[#131b2e] tracking-[-0.01em]">
+            {hAdmissions}
+          </h2>
+          <p className="text-sm text-[#76777d] mt-0.5">Step-by-step guidance for 2026-27 admission session</p>
         </div>
 
         {college.admissions ? (
@@ -214,8 +209,8 @@ export default async function CollegeDetailPage({ params }: { params: Params }) 
             {/* Eligibility */}
             {college.admissions.eligibility && (
               <div>
-                <h3 className="text-sm font-bold text-[#45464d] uppercase tracking-[0.08em] mb-5 flex items-center gap-2">
-                  <Shield className="w-4 h-4 text-[#3B4CC0]" /> Eligibility Criteria
+                <h3 className="text-sm font-bold text-[#45464d] uppercase tracking-[0.08em] mb-5">
+                  Eligibility Criteria
                 </h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                   {college.admissions.eligibility.map((item: string, idx: number) => (
@@ -253,8 +248,8 @@ export default async function CollegeDetailPage({ params }: { params: Params }) 
             {/* Required Documents */}
             {college.admissions.documents && (
               <div>
-                <h3 className="text-sm font-bold text-[#45464d] uppercase tracking-[0.08em] mb-5 flex items-center gap-2">
-                  <FileText className="w-4 h-4 text-[#45464d]" /> Required Documents
+                <h3 className="text-sm font-bold text-[#45464d] uppercase tracking-[0.08em] mb-5">
+                  Required Documents
                 </h3>
                 <div className="flex flex-wrap gap-2.5">
                   {college.admissions.documents.map((doc: string, idx: number) => (
@@ -279,18 +274,13 @@ export default async function CollegeDetailPage({ params }: { params: Params }) 
   const renderCoursesFees = () => (
     <section id="courses-fees" className="scroll-mt-28">
       <div className="bg-white rounded-[1.25rem] p-8 md:p-10 shadow-[0_1px_3px_rgba(0,0,0,0.04)]">
-        <div className="flex items-center gap-3.5 mb-8">
-          <div className="p-3 rounded-xl bg-[#f6c804]/[0.1]">
-            <DollarSign className="w-6 h-6 text-[#b8960a]" />
-          </div>
-          <div>
-            <h2 className="text-2xl font-sora font-bold text-[#131b2e] tracking-[-0.01em]">
-              {hCoursesFees}
-            </h2>
-            <p className="text-sm text-[#76777d] mt-0.5">
-              {hCoursesFeesSubtitle}
-            </p>
-          </div>
+        <div className="mb-8">
+          <h2 className="text-2xl font-sora font-bold text-[#131b2e] tracking-[-0.01em]">
+            {hCoursesFees}
+          </h2>
+          <p className="text-sm text-[#76777d] mt-0.5">
+            {hCoursesFeesSubtitle}
+          </p>
         </div>
         
         {college.feesDetails && college.feesDetails.map((category: any, idx: number) => (
@@ -354,16 +344,11 @@ export default async function CollegeDetailPage({ params }: { params: Params }) 
   const renderBTechFeesEligibility = () => (
     <section id="btech-fees" className="scroll-mt-28">
       <div className="bg-white rounded-[1.25rem] p-8 md:p-10 shadow-[0_1px_3px_rgba(0,0,0,0.04)]">
-        <div className="flex items-center gap-3.5 mb-8">
-          <div className="p-3 rounded-xl bg-[#3B4CC0]/[0.08]">
-            <Shield className="w-6 h-6 text-[#3B4CC0]" />
-          </div>
-          <div>
-            <h2 className="text-2xl font-sora font-bold text-[#131b2e] tracking-[-0.01em]">
-              {hCourseFeesEligibility}
-            </h2>
-            <p className="text-sm text-[#76777d] mt-0.5">Comprehensive fee schedule, branch cutoffs, and eligibility guidelines</p>
-          </div>
+        <div className="mb-8">
+          <h2 className="text-2xl font-sora font-bold text-[#131b2e] tracking-[-0.01em]">
+            {hCourseFeesEligibility}
+          </h2>
+          <p className="text-sm text-[#76777d] mt-0.5">Comprehensive fee schedule, branch cutoffs, and eligibility guidelines</p>
         </div>
 
         {/* Quick Highlights Grid */}
@@ -392,8 +377,8 @@ export default async function CollegeDetailPage({ params }: { params: Params }) 
 
         {/* Eligibility Breakdown */}
         <div className="mb-8">
-          <h3 className="text-base font-bold text-[#131b2e] mb-4 flex items-center gap-2">
-            <CheckCircle2 className="w-5 h-5 text-[#22c55e]" /> Mandatory Eligibility Criteria
+          <h3 className="text-base font-bold text-[#131b2e] mb-4">
+            Mandatory Eligibility Criteria
           </h3>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-3.5">
             <div className="p-4 rounded-xl bg-[#faf8ff] border border-gray-100 flex items-start gap-3">
@@ -430,8 +415,8 @@ export default async function CollegeDetailPage({ params }: { params: Params }) 
         {/* Expected Cutoff ranks table */}
         {college.cutoffs && college.cutoffs.length > 0 && (
           <div>
-            <h3 className="text-base font-bold text-[#131b2e] mb-4 flex items-center gap-2">
-              <Sparkles className="w-4 h-4 text-[#f6c804]" /> Expected Cutoff Ranks
+            <h3 className="text-base font-bold text-[#131b2e] mb-4">
+              Expected Cutoff Ranks
             </h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {college.cutoffs.map((co: any, i: number) => (
@@ -467,16 +452,11 @@ export default async function CollegeDetailPage({ params }: { params: Params }) 
             <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom_right,rgba(246,200,4,0.05),transparent_50%)]" />
             
             <div className="relative z-10">
-              <div className="flex items-center gap-3.5 mb-8">
-                <div className="p-3 rounded-xl bg-[#22c55e]/10">
-                  <TrendingUp className="w-6 h-6 text-[#22c55e]" />
-                </div>
-                <div>
-                  <h2 className="text-2xl font-sora font-bold text-white tracking-[-0.01em]">
-                    {hPlacements}
-                  </h2>
-                  <p className="text-sm text-white/50 mt-0.5">Top recruiters, salary packages, and career statistics</p>
-                </div>
+              <div className="mb-8">
+                <h2 className="text-2xl font-sora font-bold text-white tracking-[-0.01em]">
+                  {hPlacements}
+                </h2>
+                <p className="text-sm text-white/50 mt-0.5">Top recruiters, salary packages, and career statistics</p>
               </div>
 
               {college.placements.stats && (
@@ -541,16 +521,11 @@ export default async function CollegeDetailPage({ params }: { params: Params }) 
   const renderOverview = () => (
     <section id="overview" className="scroll-mt-28">
       <div className="bg-white rounded-[1.25rem] p-8 md:p-10 shadow-[0_1px_3px_rgba(0,0,0,0.04)]">
-        <div className="flex items-center gap-3.5 mb-8">
-          <div className="p-3 rounded-xl bg-[#3B4CC0]/[0.08]">
-            <Building2 className="w-6 h-6 text-[#3B4CC0]" />
-          </div>
-          <div>
-            <h2 className="text-2xl font-sora font-bold text-[#131b2e] tracking-[-0.01em]">
-              {hOverview}
-            </h2>
-            <p className="text-sm text-[#76777d] mt-0.5">{college.location}, {college.state}</p>
-          </div>
+        <div className="mb-8">
+          <h2 className="text-2xl font-sora font-bold text-[#131b2e] tracking-[-0.01em]">
+            {hOverview}
+          </h2>
+          <p className="text-sm text-[#76777d] mt-0.5">{college.location}, {college.state}</p>
         </div>
         
         <p className="text-[#45464d] leading-[1.8] text-[1.05rem] whitespace-pre-line">
@@ -559,23 +534,18 @@ export default async function CollegeDetailPage({ params }: { params: Params }) 
 
         {/* Official Campus & Location Card */}
         <div className="mt-8 p-6 rounded-2xl bg-gradient-to-br from-[#f2f3ff] to-[#faf8ff] border border-[#3B4CC0]/15 flex flex-col md:flex-row items-start md:items-center justify-between gap-5">
-          <div className="flex items-start gap-4">
-            <div className="w-12 h-12 rounded-xl bg-[#3B4CC0] flex items-center justify-center shrink-0 shadow-[0_4px_12px_rgba(59,76,192,0.25)]">
-              <MapPin className="w-6 h-6 text-white" />
-            </div>
-            <div>
-              <span className="text-[10px] font-bold text-[#3B4CC0] uppercase tracking-wider bg-[#3B4CC0]/10 px-2.5 py-0.5 rounded-md inline-block mb-1">
-                Official Campus & Admission Location
-              </span>
-              <p className="font-bold text-[#131b2e] text-base leading-snug">
-                {isIem 
-                  ? "Ashram Building, GN-34/2, Sector V, Salt Lake Electronics Complex"
-                  : `${college.name} Main Campus, ${college.location}`}
-              </p>
-              <p className="text-xs text-[#76777d] mt-1">
-                {college.location}, {college.state}, India
-              </p>
-            </div>
+          <div>
+            <span className="text-[10px] font-bold text-[#3B4CC0] uppercase tracking-wider bg-[#3B4CC0]/10 px-2.5 py-0.5 rounded-md inline-block mb-1.5">
+              Official Campus & Admission Location
+            </span>
+            <p className="font-bold text-[#131b2e] text-base leading-snug">
+              {isIem 
+                ? "Ashram Building, GN-34/2, Sector V, Salt Lake Electronics Complex"
+                : `${college.name} Main Campus, ${college.location}`}
+            </p>
+            <p className="text-xs text-[#76777d] mt-1">
+              {college.location}, {college.state}, India
+            </p>
           </div>
           <Button asChild variant="outline" className="shrink-0 bg-white border-[#3B4CC0]/20 text-[#3B4CC0] hover:bg-[#3B4CC0] hover:text-white transition-all">
             <Link 
@@ -608,10 +578,7 @@ export default async function CollegeDetailPage({ params }: { params: Params }) 
   const renderInfrastructure = () => (
     <section id="infrastructure" className="scroll-mt-28">
       <div className="bg-white rounded-[1.25rem] p-8 md:p-10 shadow-[0_1px_3px_rgba(0,0,0,0.04)]">
-        <div className="flex items-center gap-3.5 mb-8">
-          <div className="p-3 rounded-xl bg-orange-500/[0.08]">
-            <Globe className="w-6 h-6 text-orange-600" />
-          </div>
+        <div className="mb-8">
           <h2 className="text-2xl font-sora font-bold text-[#131b2e] tracking-[-0.01em]">Facilities & Infrastructure</h2>
         </div>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
@@ -632,10 +599,7 @@ export default async function CollegeDetailPage({ params }: { params: Params }) 
   const renderScholarships = () => (
     <section id="scholarships" className="scroll-mt-28">
       <div className="bg-white rounded-[1.25rem] p-8 md:p-10 shadow-[0_1px_3px_rgba(0,0,0,0.04)]">
-        <div className="flex items-center gap-3.5 mb-8">
-          <div className="p-3 rounded-xl bg-indigo-500/[0.08]">
-            <Award className="w-6 h-6 text-indigo-600" />
-          </div>
+        <div className="mb-8">
           <h2 className="text-2xl font-sora font-bold text-[#131b2e] tracking-[-0.01em]">Scholarships & Financial Aid</h2>
         </div>
         {college.scholarships?.map((cat: any, idx: number) => (
@@ -662,10 +626,7 @@ export default async function CollegeDetailPage({ params }: { params: Params }) 
     <section id="alumni" className="scroll-mt-28">
       <div className="bg-white rounded-[1.25rem] p-8 md:p-10 shadow-[0_1px_3px_rgba(0,0,0,0.04)] relative overflow-hidden">
         <div className="absolute top-0 right-0 -mr-20 -mt-20 w-60 h-60 bg-[#3B4CC0]/[0.03] rounded-full blur-3xl pointer-events-none" />
-        <div className="flex items-center gap-3.5 mb-8 relative z-10">
-          <div className="p-3 rounded-xl bg-sky-500/[0.08]">
-            <Users className="w-6 h-6 text-sky-600" />
-          </div>
+        <div className="mb-8 relative z-10">
           <h2 className="text-2xl font-sora font-bold text-[#131b2e] tracking-[-0.01em]">Alumni Network</h2>
         </div>
         {college.alumni && (
@@ -750,10 +711,7 @@ export default async function CollegeDetailPage({ params }: { params: Params }) 
         <section id="faqs" className="scroll-mt-28">
           <div className="bg-white rounded-[1.25rem] p-8 md:p-10 shadow-[0_1px_3px_rgba(0,0,0,0.04)] relative overflow-hidden">
             <div className="absolute top-0 right-0 w-40 h-40 bg-[#f6c804]/[0.04] rounded-bl-full pointer-events-none" />
-            <div className="flex items-center gap-3.5 mb-8 relative z-10">
-              <div className="p-3 rounded-xl bg-gray-500/[0.08]">
-                <HelpCircle className="w-6 h-6 text-gray-600" />
-              </div>
+            <div className="mb-8 relative z-10">
               <h2 className="text-2xl font-sora font-bold text-[#131b2e] tracking-[-0.01em]">
                 {hFaqs}
               </h2>

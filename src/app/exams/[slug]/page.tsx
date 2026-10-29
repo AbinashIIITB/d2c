@@ -128,8 +128,8 @@ export default async function ExamDetailPage({ params }: { params: Params }) {
             <div className="lg:col-span-2 flex flex-col gap-10">
               {/* Introduction */}
               <section className="bg-white rounded-3xl p-10 shadow-sm border border-gray-100">
-                <h2 className="text-2xl font-sora font-bold text-d2c-navy mb-6 flex items-center gap-3">
-                  <Info className="w-6 h-6 text-d2c-sky" /> About the Exam
+                <h2 className="text-2xl font-sora font-bold text-d2c-navy mb-6">
+                  About the Exam
                 </h2>
                 <div className="prose prose-slate max-w-none text-d2c-muted leading-relaxed">
                   <p className="mb-6">{exam.introduction}</p>
@@ -140,8 +140,8 @@ export default async function ExamDetailPage({ params }: { params: Params }) {
               {/* Exam Pattern */}
               {exam.examPattern && (
                 <section className="bg-white rounded-3xl p-10 shadow-sm border border-gray-100">
-                  <h2 className="text-2xl font-sora font-bold text-d2c-navy mb-6 flex items-center gap-3">
-                    <FileText className="w-6 h-6 text-d2c-royal" /> Question Paper Pattern
+                  <h2 className="text-2xl font-sora font-bold text-d2c-navy mb-6">
+                    Question Paper Pattern
                   </h2>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-8">
                     <div className="bg-d2c-ice/30 p-6 rounded-2xl border border-d2c-royal/5">
@@ -168,8 +168,8 @@ export default async function ExamDetailPage({ params }: { params: Params }) {
 
               {/* Eligibility */}
               <section className="bg-white rounded-3xl p-10 shadow-sm border border-gray-100">
-                <h2 className="text-2xl font-sora font-bold text-d2c-navy mb-6 flex items-center gap-3">
-                  <CheckCircle2 className="w-6 h-6 text-d2c-success" /> Eligibility Criteria
+                <h2 className="text-2xl font-sora font-bold text-d2c-navy mb-6">
+                  Eligibility Criteria
                 </h2>
                 <ul className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   {exam.eligibility.map((item, idx) => (
@@ -213,8 +213,8 @@ export default async function ExamDetailPage({ params }: { params: Params }) {
 
                     {faqsList.length > 0 && (
                       <section className="bg-white rounded-3xl p-10 shadow-sm border border-gray-100">
-                        <h2 className="text-2xl font-sora font-bold text-d2c-navy mb-6 flex items-center gap-3">
-                          <HelpCircle className="w-6 h-6 text-d2c-royal" /> Frequently Asked Questions
+                        <h2 className="text-2xl font-sora font-bold text-d2c-navy mb-6">
+                          Frequently Asked Questions
                         </h2>
                         <div className="space-y-4">
                           {faqsList.map((faq, idx) => (
@@ -235,8 +235,8 @@ export default async function ExamDetailPage({ params }: { params: Params }) {
                     {/* ────────────── Recommended Internal Linking ────────────── */}
                     {seo.internalLinks && seo.internalLinks.length > 0 && (
                       <section className="bg-white rounded-3xl p-10 shadow-sm border border-gray-100">
-                        <h2 className="text-2xl font-sora font-bold text-d2c-navy mb-6 flex items-center gap-3">
-                          <Link2 className="w-6 h-6 text-d2c-royal" /> Recommended Direct2Campus Guides
+                        <h2 className="text-2xl font-sora font-bold text-d2c-navy mb-6">
+                          Recommended Direct2Campus Guides
                         </h2>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                           {seo.internalLinks.map((link: any, idx: number) => (

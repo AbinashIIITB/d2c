@@ -624,11 +624,8 @@ export function VisualCollegeEditor({ initialData, isNew = false }: VisualColleg
                     {renderSectionControls("Admission Process Section")}
 
                     {/* H2 Heading */}
-                    <div className="flex items-center gap-3 mb-6">
-                      <div className="p-2.5 rounded-xl bg-purple-500/10 text-purple-600">
-                        <ClipboardList className="w-5 h-5" />
-                      </div>
-                      <div className="flex-1">
+                    <div className="mb-6">
+                      <div>
                         <input
                           type="text"
                           value={headings.admissions || `${collegeData.name} Admission Process`}
@@ -746,11 +743,8 @@ export function VisualCollegeEditor({ initialData, isNew = false }: VisualColleg
                     {renderSectionControls("Courses & Fee Structure Section")}
 
                     {/* H2 Heading */}
-                    <div className="flex items-center gap-3 mb-6">
-                      <div className="p-2.5 rounded-xl bg-emerald-500/10 text-emerald-600">
-                        <DollarSign className="w-5 h-5" />
-                      </div>
-                      <div className="flex-1">
+                    <div className="mb-6">
+                      <div>
                         <input
                           type="text"
                           value={headings.coursesFees || `${collegeData.name} Courses and Fee Structure`}
@@ -852,11 +846,8 @@ export function VisualCollegeEditor({ initialData, isNew = false }: VisualColleg
                     {renderSectionControls("Placements & Average Package Section")}
 
                     {/* H2 Heading */}
-                    <div className="flex items-center gap-3 mb-6">
-                      <div className="p-2.5 rounded-xl bg-amber-500/10 text-amber-600">
-                        <TrendingUp className="w-5 h-5" />
-                      </div>
-                      <div className="flex-1">
+                    <div className="mb-6">
+                      <div>
                         <input
                           type="text"
                           value={headings.placements || `${collegeData.name} Placements and Average Package`}
@@ -952,11 +943,8 @@ export function VisualCollegeEditor({ initialData, isNew = false }: VisualColleg
                     {renderSectionControls("Campus & Location Section")}
 
                     {/* H2 Heading */}
-                    <div className="flex items-center gap-3 mb-6">
-                      <div className="p-2.5 rounded-xl bg-blue-500/10 text-blue-600">
-                        <Building2 className="w-5 h-5" />
-                      </div>
-                      <div className="flex-1">
+                    <div className="mb-6">
+                      <div>
                         <input
                           type="text"
                           value={headings.overview || `${collegeData.name} Campus and Location`}
@@ -1007,11 +995,8 @@ export function VisualCollegeEditor({ initialData, isNew = false }: VisualColleg
                     {renderSectionControls("Frequently Asked Questions Section")}
 
                     {/* H2 Heading */}
-                    <div className="flex items-center gap-3 mb-6">
-                      <div className="p-2.5 rounded-xl bg-purple-500/10 text-purple-600">
-                        <HelpCircle className="w-5 h-5" />
-                      </div>
-                      <div className="flex-1">
+                    <div className="mb-6">
+                      <div>
                         <input
                           type="text"
                           value={headings.faqs || `Frequently Asked Questions About ${collegeData.name}`}
