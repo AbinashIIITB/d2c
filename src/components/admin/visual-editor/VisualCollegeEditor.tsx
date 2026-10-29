@@ -43,6 +43,7 @@ import { TypographyToolbar } from "./TypographyToolbar";
 import { ImagePickerModal } from "./ImagePickerModal";
 import { AddSectionModal } from "./AddSectionModal";
 import { CollegeEditForm } from "../CollegeEditForm";
+import { ResponsiveCanvasWrapper } from "./ResponsiveCanvasWrapper";
 import { isIEMCollege } from "@/lib/iem-priority";
 import { AnimatedPatternBg } from "@/components/ui/AnimatedPatternBg";
 
@@ -419,9 +420,9 @@ export function VisualCollegeEditor({ initialData, isNew = false }: VisualColleg
         </div>
       )}
 
-      {/* Main Canvas Container */}
-      <div className="flex justify-center transition-all duration-300">
-        <div className={`${canvasWidthClass} bg-white rounded-3xl shadow-xl overflow-hidden border border-slate-200/80 transition-all duration-300`}>
+      {/* Main Canvas Container with Real Viewport Support */}
+      <ResponsiveCanvasWrapper deviceMode={deviceMode} desktopMaxWidthClass="w-full max-w-6xl">
+        <div className="w-full bg-white rounded-3xl shadow-xl overflow-hidden border border-slate-200/80 transition-all duration-300">
 
           {/* ═══════════════════════════════════════════
               1. HERO PREVIEW SECTION — Exact replica of CollegeHero
@@ -1320,7 +1321,7 @@ export function VisualCollegeEditor({ initialData, isNew = false }: VisualColleg
           </div>
 
         </div>
-      </div>
+      </ResponsiveCanvasWrapper>
 
       {/* Modals */}
       <ImagePickerModal

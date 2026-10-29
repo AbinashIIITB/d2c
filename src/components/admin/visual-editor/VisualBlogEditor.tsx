@@ -28,6 +28,7 @@ import { TypographyToolbar } from "./TypographyToolbar";
 import { ImagePickerModal } from "./ImagePickerModal";
 import { AddSectionModal } from "./AddSectionModal";
 import { BlogEditForm } from "../BlogEditForm";
+import { ResponsiveCanvasWrapper } from "./ResponsiveCanvasWrapper";
 
 interface VisualBlogEditorProps {
   initialData: any;
@@ -278,9 +279,9 @@ export function VisualBlogEditor({ initialData, isNew = false }: VisualBlogEdito
         </div>
       )}
 
-      {/* Main Canvas */}
-      <div className="flex justify-center transition-all duration-300">
-        <div className={`${canvasWidthClass} bg-white rounded-3xl shadow-xl overflow-hidden border border-slate-200/80`}>
+      {/* Main Canvas with Real Viewport Support */}
+      <ResponsiveCanvasWrapper deviceMode={deviceMode} desktopMaxWidthClass="w-full max-w-4xl">
+        <div className="w-full bg-white rounded-3xl shadow-xl overflow-hidden border border-slate-200/80">
           
           {/* Article Header */}
           <div className="p-8 md:p-12 border-b border-gray-100 space-y-4">
@@ -440,7 +441,7 @@ export function VisualBlogEditor({ initialData, isNew = false }: VisualBlogEdito
           </div>
 
         </div>
-      </div>
+      </ResponsiveCanvasWrapper>
 
       <ImagePickerModal
         isOpen={imagePicker.isOpen}

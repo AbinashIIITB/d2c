@@ -31,6 +31,7 @@ import { TypographyToolbar } from "./TypographyToolbar";
 import { ImagePickerModal } from "./ImagePickerModal";
 import { AddSectionModal } from "./AddSectionModal";
 import { ExamEditForm } from "../ExamEditForm";
+import { ResponsiveCanvasWrapper } from "./ResponsiveCanvasWrapper";
 
 interface VisualExamEditorProps {
   initialData: any;
@@ -319,9 +320,9 @@ export function VisualExamEditor({ initialData, isNew = false }: VisualExamEdito
         </div>
       )}
 
-      {/* Canvas */}
-      <div className="flex justify-center transition-all duration-300">
-        <div className={`${canvasWidthClass} bg-white rounded-3xl shadow-xl overflow-hidden border border-slate-200/80`}>
+      {/* Canvas with Real Viewport Support */}
+      <ResponsiveCanvasWrapper deviceMode={deviceMode} desktopMaxWidthClass="w-full max-w-5xl">
+        <div className="w-full bg-white rounded-3xl shadow-xl overflow-hidden border border-slate-200/80">
           
           {/* Hero Banner */}
           <div className="bg-[#0B1120] text-white p-8 md:p-10 border-b border-white/10">
@@ -601,7 +602,7 @@ export function VisualExamEditor({ initialData, isNew = false }: VisualExamEdito
           </div>
 
         </div>
-      </div>
+      </ResponsiveCanvasWrapper>
 
       <ImagePickerModal
         isOpen={imagePicker.isOpen}

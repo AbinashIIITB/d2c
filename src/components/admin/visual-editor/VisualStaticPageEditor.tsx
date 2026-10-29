@@ -35,6 +35,7 @@ import { TypographyToolbar } from "./TypographyToolbar";
 import { ImagePickerModal } from "./ImagePickerModal";
 import { AddSectionModal } from "./AddSectionModal";
 import { BannerSection } from "@/components/home/BannerSection";
+import { ResponsiveCanvasWrapper } from "./ResponsiveCanvasWrapper";
 
 interface VisualStaticPageEditorProps {
   slug: string;
@@ -236,9 +237,9 @@ export function VisualStaticPageEditor({ slug, initialData }: VisualStaticPageEd
         </div>
       )}
 
-      {/* Main Canvas */}
-      <div className="flex justify-center transition-all duration-300">
-        <div className={`${canvasWidthClass} bg-white rounded-3xl shadow-xl overflow-hidden border border-slate-200/80 relative`}>
+      {/* Main Canvas with Real Viewport Support */}
+      <ResponsiveCanvasWrapper deviceMode={deviceMode} desktopMaxWidthClass="w-full max-w-5xl">
+        <div className="w-full bg-white rounded-3xl shadow-xl overflow-hidden border border-slate-200/80 relative">
 
           {/* ══════════════════════════════════════════════════════════════
               HOME PAGE EDITING EXPERIENCE
@@ -837,7 +838,7 @@ export function VisualStaticPageEditor({ slug, initialData }: VisualStaticPageEd
           )}
 
         </div>
-      </div>
+      </ResponsiveCanvasWrapper>
 
       <ImagePickerModal
         isOpen={imagePicker.isOpen}
