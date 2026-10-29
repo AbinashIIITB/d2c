@@ -197,7 +197,7 @@ export default async function BlogPostPage({ params }: { params: Params }) {
                 <div className="w-8 h-8 rounded-full bg-d2c-royal flex items-center justify-center font-bold text-white">
                   <User className="w-4 h-4" />
                 </div>
-                <span className="font-semibold text-white">{blog.author || "Akash Talks Team"}</span>
+                <span className="font-semibold text-white">{blog.author || "Direct2Campus Editorial Team"}</span>
               </div>
 
               {blog.date && (
@@ -272,11 +272,11 @@ export default async function BlogPostPage({ params }: { params: Params }) {
             {/* Author Attribution Card */}
             <div className="bg-white rounded-3xl p-8 shadow-sm border border-gray-100 flex items-center gap-5">
               <div className="w-16 h-16 rounded-2xl bg-d2c-royal text-white flex items-center justify-center font-bold font-sora text-2xl shrink-0 shadow-md shadow-d2c-royal/20">
-                {(blog.author || "A")[0]}
+                {(blog.author || "D")[0]}
               </div>
               <div>
                 <div className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-1">Written By</div>
-                <div className="text-base font-sora font-bold text-d2c-navy">{blog.author || "Akash Talks Editorial Team"}</div>
+                <div className="text-base font-sora font-bold text-d2c-navy">{blog.author || "Direct2Campus Editorial Team"}</div>
                 <p className="text-xs text-gray-500 mt-1 leading-relaxed">
                   Verified educational counselor and admission specialist providing research-backed guidance on Indian higher education.
                 </p>
@@ -293,7 +293,7 @@ export default async function BlogPostPage({ params }: { params: Params }) {
               </div>
               <h3 className="text-xl font-sora font-bold text-d2c-navy mb-3">Need Admission Guidance?</h3>
               <p className="text-xs md:text-sm text-d2c-muted mb-6 leading-relaxed">
-                Connect with our senior counselors at Akash Talks to explore management quota, cutoff ranks, and direct seat availability in top colleges.
+                Connect with our senior counselors at Direct2Campus to explore management quota, cutoff ranks, and direct seat availability in top colleges.
               </p>
               
               <div className="space-y-3">

@@ -119,7 +119,7 @@ export function TestimonialsSection() {
                 <div className="text-center px-8 relative z-10">
                   <Quote className="w-12 h-12 text-white/30 mx-auto mb-4" />
                   <p className="text-white text-xl md:text-2xl lg:text-3xl font-sora font-bold max-w-3xl leading-snug relative z-10">
-                    &ldquo;{FEATURED.message.replace("Akash Talks", "Direct2Campus")}&rdquo;
+                    &ldquo;{FEATURED.message}&rdquo;
                   </p>
                   <div className="flex gap-1 justify-center mt-4">
                     {[...Array(5)].map((_, i) => (
@@ -205,7 +205,7 @@ export function TestimonialsSection() {
                           ))}
                         </div>
                         <p className="text-d2c-navy text-lg leading-relaxed italic mb-6">
-                          &ldquo;{testimonial.message.replace("Akash Talks", "Direct2Campus")}&rdquo;
+                          &ldquo;{testimonial.message}&rdquo;
                         </p>
                         <div className="flex items-center gap-3">
                           <div className="w-10 h-10 rounded-full overflow-hidden bg-d2c-ice border-2 border-d2c-royal/20">

@@ -558,7 +558,7 @@ export function CollegeEditForm({ initialData = {}, isNew = false }: CollegeEdit
               />
 
               <JsonArrayEditor
-                label="Why Choose Akash Talks / Direct2Campus"
+                label="Why Choose Direct2Campus"
                 value={formData.whyChooseAkashTalks}
                 onChange={(items) => updateField('whyChooseAkashTalks', items)}
                 placeholder="e.g. Direct management quota seat booking support"

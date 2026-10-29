@@ -289,7 +289,7 @@ export default async function ExamDetailPage({ params }: { params: Params }) {
               {(() => {
                 const seo = exam.seo || exam.exam_pattern?.seo || (exam as any).examPattern?.seo || {};
                 const ctaHeadline = seo.cta?.headline || "Need Admission Help?";
-                const ctaSubtext = seo.cta?.subtext || "Management quota and direct admission options are available in top institutes accepting this exam. Get end-to-end counseling support from Akash Talks.";
+                const ctaSubtext = seo.cta?.subtext || "Management quota and direct admission options are available in top institutes accepting this exam. Get end-to-end counseling support from Direct2Campus.";
                 const ctaButtonText = seo.cta?.buttonText || "Get Free Counseling";
 
                 return (

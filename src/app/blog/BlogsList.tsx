@@ -165,7 +165,7 @@ export function BlogsList({ initialBlogs }: { initialBlogs: BlogItem[] }) {
                           <User className="w-3.5 h-3.5 text-d2c-royal" />
                         </div>
                         <span className="text-xs font-semibold text-gray-700 truncate max-w-[130px]">
-                          {blog.author || "Akash Talks Team"}
+                          {blog.author || "Direct2Campus Editorial Team"}
                         </span>
                       </div>
 

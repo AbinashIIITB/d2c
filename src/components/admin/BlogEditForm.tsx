@@ -47,11 +47,11 @@ export function BlogEditForm({ initialData = {}, isNew = false }: BlogEditFormPr
     category: initialData.category || 'Admission Guide',
     excerpt: initialData.excerpt || '',
     content: initialData.content || '',
-    author: initialData.author || 'Akash Talks Team',
+    author: initialData.author || 'Direct2Campus Editorial Team',
     date: initialData.date || new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }),
     readTime: initialData.readTime || '5 min read',
     imageUrl: initialData.imageUrl || initialData.image_url || 'https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&q=80&w=1200',
-    tags: initialData.tags || ['Admission Guidance', 'Direct Admission', 'Akash Talks'],
+    tags: initialData.tags || ['Admission Guidance', 'Direct Admission', 'Direct2Campus'],
     published: initialData.published ?? true,
     seoTitle: initialData.seoTitle || '',
     metaDescription: initialData.metaDescription || ''
@@ -194,7 +194,7 @@ export function BlogEditForm({ initialData = {}, isNew = false }: BlogEditFormPr
                   type="text"
                   value={formData.author}
                   onChange={(e) => updateField('author', e.target.value)}
-                  placeholder="e.g. Akash Talks Editorial Team"
+                  placeholder="e.g. Direct2Campus Editorial Team"
                   className="w-full pl-10 pr-4 py-3 text-sm rounded-xl border border-gray-200 focus:border-d2c-royal outline-none"
                 />
               </div>

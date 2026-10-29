@@ -338,7 +338,7 @@ export function VisualBlogEditor({ initialData, isNew = false }: VisualBlogEdito
               <div>
                 <input
                   type="text"
-                  value={blogData.author || "Akash Talks Team"}
+                  value={blogData.author || "Direct2Campus Editorial Team"}
                   onChange={(e) => updateField("author", e.target.value)}
                   className="font-bold text-gray-800 bg-transparent outline-none block"
                 />

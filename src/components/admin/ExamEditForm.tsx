@@ -436,7 +436,7 @@ export function ExamEditForm({ initialData = {}, isNew = false }: ExamEditFormPr
               value={formData.counselling}
               rows={4}
               onChange={(val) => updateField('counselling', val)}
-              placeholder="Details about JoSAA / CSAB counselling, state level quotas, and Akash Talks management seat assistance..."
+              placeholder="Details about JoSAA / CSAB counselling, state level quotas, and Direct2Campus management seat assistance..."
             />
           </SectionCard>
 

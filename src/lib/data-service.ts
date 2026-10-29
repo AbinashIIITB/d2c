@@ -598,7 +598,7 @@ export async function saveBlog(data: any): Promise<any> {
     excerpt: data.excerpt || '',
     content: data.content || '',
     category: data.category || 'Admission Guide',
-    author: data.author || 'Akash Talks Team',
+    author: data.author || 'Direct2Campus Editorial Team',
     date: data.date || new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }),
     readTime: data.readTime || '5 min read',
     imageUrl: data.imageUrl || data.image_url || 'https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&q=80&w=800',

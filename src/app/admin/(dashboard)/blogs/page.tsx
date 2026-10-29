@@ -190,7 +190,7 @@ export default function AdminBlogsPage() {
                     </td>
 
                     <td className="py-4 px-4">
-                      <div className="font-medium text-gray-700">{post.author || 'Akash Talks Team'}</div>
+                      <div className="font-medium text-gray-700">{post.author || 'Direct2Campus Editorial Team'}</div>
                       <div className="text-[11px] text-gray-400 mt-0.5">{post.date}</div>
                     </td>
 
