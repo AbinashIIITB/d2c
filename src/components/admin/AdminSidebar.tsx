@@ -24,6 +24,7 @@ const NAV_ITEMS = [
   { href: '/admin/exams', label: 'Manage Exams', icon: FileText },
   { href: '/admin/blogs', label: 'Manage Blogs', icon: Newspaper },
   { href: '/admin/pages', label: 'Website Pages', icon: Globe },
+  { href: '/admin/pages/home', label: 'Announcement & Banners', icon: Layers },
   { href: '/admin/seo', label: 'Page SEO Studio', icon: Sparkles },
   { href: '/admin/leads', label: 'Student Leads', icon: Users },
   { href: '/admin/analytics', label: 'Analytics & SEO', icon: BarChart3 },

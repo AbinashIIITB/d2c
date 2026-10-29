@@ -23,8 +23,17 @@ const defaultSlides: BannerItem[] = [
 
 const AUTO_INTERVAL = 5000;
 
-export function BannerSection({ banners }: { banners?: BannerItem[] }) {
-  const slides = (banners && banners.length > 0) ? banners : defaultSlides;
+export function BannerSection({
+  banners,
+  enabled = true,
+}: {
+  banners?: BannerItem[];
+  enabled?: boolean;
+}) {
+  if (enabled === false) return null;
+  const slides = banners !== undefined ? banners : defaultSlides;
+  if (!slides || slides.length === 0) return null;
+
   const [currentIndex, setCurrentIndex] = useState(0);
   const [progress, setProgress] = useState(0);
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);

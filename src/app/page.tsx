@@ -31,7 +31,10 @@ export default async function Home() {
       {/* Main Home Sections */}
       <HeroSection heroData={homeData?.hero} statsData={homeData?.stats} />
       <TrustFeatures />
-      <BannerSection banners={homeData?.banners} />
+      <BannerSection
+        banners={homeData?.banners}
+        enabled={homeData?.bannerSection?.enabled ?? true}
+      />
       <AdmissionProcedure3D />
       <FeaturedColleges />
       <MidPageContact />

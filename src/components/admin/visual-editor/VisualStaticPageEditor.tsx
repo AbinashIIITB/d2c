@@ -34,6 +34,7 @@ import { Button } from "@/components/ui/button";
 import { TypographyToolbar } from "./TypographyToolbar";
 import { ImagePickerModal } from "./ImagePickerModal";
 import { AddSectionModal } from "./AddSectionModal";
+import { BannerSection } from "@/components/home/BannerSection";
 
 interface VisualStaticPageEditorProps {
   slug: string;
@@ -245,51 +246,7 @@ export function VisualStaticPageEditor({ slug, initialData }: VisualStaticPageEd
           {slug === "home" && (
             <div className="space-y-8">
               
-              {/* 1. TOP ANNOUNCEMENT TICKER EDITING BAR */}
-              <div className="bg-[#0B1120] text-white p-4 border-b border-white/10">
-                <div className="flex items-center justify-between gap-4 mb-2">
-                  <div className="flex items-center gap-2">
-                    <Megaphone className="w-4 h-4 text-d2c-gold" />
-                    <span className="text-xs font-bold uppercase tracking-wider text-d2c-gold">
-                      Top Announcement Bar / Ticker
-                    </span>
-                  </div>
-                  <label className="flex items-center gap-2 cursor-pointer text-xs">
-                    <span className="text-white/70">Show on Site:</span>
-                    <input
-                      type="checkbox"
-                      checked={pageData.announcement?.enabled ?? true}
-                      onChange={(e) => updateField("announcement", { ...pageData.announcement, enabled: e.target.checked })}
-                      className="w-4 h-4 accent-d2c-royal rounded"
-                    />
-                  </label>
-                </div>
-
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-2 text-xs">
-                  <div>
-                    <span className="text-[10px] text-white/50 block">Badge Text</span>
-                    <input
-                      type="text"
-                      value={pageData.announcement?.badge || ""}
-                      onChange={(e) => updateField("announcement", { ...pageData.announcement, badge: e.target.value })}
-                      className="w-full bg-white/10 p-1.5 rounded-lg border border-white/10 text-d2c-gold font-bold outline-none"
-                      placeholder="ADMISSIONS 2026-27"
-                    />
-                  </div>
-                  <div className="md:col-span-2">
-                    <span className="text-[10px] text-white/50 block">Announcement Message</span>
-                    <input
-                      type="text"
-                      value={pageData.announcement?.message || ""}
-                      onChange={(e) => updateField("announcement", { ...pageData.announcement, message: e.target.value })}
-                      className="w-full bg-white/10 p-1.5 rounded-lg border border-white/10 text-white outline-none"
-                      placeholder="Direct Admission Counseling Open for Top Colleges..."
-                    />
-                  </div>
-                </div>
-              </div>
-
-              {/* 2. WELCOME LEAD FORM CONTROL CARD */}
+              {/* 1. WELCOME LEAD FORM CONTROL CARD */}
               <div className="mx-6 p-6 rounded-2xl bg-gradient-to-r from-blue-900/10 via-amber-500/10 to-blue-900/10 border-2 border-d2c-royal/30 shadow-md">
                 <div className="flex flex-wrap items-center justify-between gap-4 pb-4 border-b border-gray-200">
                   <div className="flex items-center gap-3">
@@ -448,127 +405,220 @@ export function VisualStaticPageEditor({ slug, initialData }: VisualStaticPageEd
                 </div>
               </div>
 
-              {/* 4. ANNOUNCEMENT BANNERS SLIDER / CAROUSEL MANAGEMENT */}
-              <div className="p-6 mx-6 bg-white rounded-2xl border border-gray-200 space-y-4">
-                <div className="flex items-center justify-between pb-3 border-b border-gray-100">
-                  <div className="flex items-center gap-2">
-                    <ImageIcon className="w-4 h-4 text-d2c-royal" />
-                    <h3 className="text-sm font-bold text-gray-900 font-sora">
-                      Announcement Banners Section (Interactive Slider)
-                    </h3>
+              {/* 3. ANNOUNCEMENT / BANNERS / ADS SLIDER MANAGEMENT */}
+              <div className="mx-6 space-y-4">
+                <div className="flex flex-wrap items-center justify-between gap-3 p-4 bg-white rounded-2xl border border-gray-200 shadow-sm">
+                  <div className="flex items-center gap-3">
+                    <div className="p-2.5 rounded-xl bg-d2c-royal text-white">
+                      <ImageIcon className="w-5 h-5" />
+                    </div>
+                    <div>
+                      <h3 className="text-sm font-bold text-gray-900 font-sora">
+                        Announcement / Banners / Ads Section (Campus Carousel)
+                      </h3>
+                      <p className="text-xs text-gray-500">
+                        High-definition college banners & partner institution ads with tags, titles, and links
+                      </p>
+                    </div>
                   </div>
-                  <Button
-                    size="sm"
-                    onClick={() => {
-                      const newId = Date.now();
-                      const updated = [
-                        ...(pageData.banners || []),
-                        {
-                          id: newId,
-                          image: "/images/colleges/iem-saltlake.jpg",
-                          title: "New Featured College Banner",
-                          subtitle: "Direct Admission & Counseling Window Active",
-                          link: "/colleges",
-                          badge: "Featured 2026"
-                        }
-                      ];
-                      updateField("banners", updated);
-                    }}
-                    className="bg-d2c-royal hover:bg-blue-700 text-white text-xs gap-1.5 h-8"
-                  >
-                    <Plus className="w-3.5 h-3.5" />
-                    Add Banner Slide
-                  </Button>
+
+                  <div className="flex items-center gap-3 bg-slate-50 px-3.5 py-1.5 rounded-xl border border-gray-200">
+                    <span className={`text-xs font-bold ${pageData.bannerSection?.enabled !== false ? "text-emerald-600" : "text-gray-400"}`}>
+                      {pageData.bannerSection?.enabled !== false ? "Section: Visible on Site" : "Section: Hidden"}
+                    </span>
+                    <input
+                      type="checkbox"
+                      checked={pageData.bannerSection?.enabled ?? true}
+                      onChange={(e) => updateField("bannerSection", {
+                        ...(pageData.bannerSection || {}),
+                        enabled: e.target.checked
+                      })}
+                      className="w-4 h-4 accent-emerald-600 rounded cursor-pointer"
+                    />
+                  </div>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                  {(pageData.banners || []).map((banner: any, idx: number) => (
-                    <div key={banner.id || idx} className="rounded-2xl border border-gray-200 overflow-hidden bg-gray-50 flex flex-col">
-                      <div className="relative aspect-[16/9] w-full bg-gray-300">
-                        <img src={banner.image} alt={banner.title} className="w-full h-full object-cover" />
-                        <button
-                          onClick={() => {
-                            setImagePicker({
-                              isOpen: true,
-                              title: `Change Banner #${idx + 1} Image`,
-                              currentUrl: banner.image,
-                              onSelect: (url) => {
-                                const updated = [...(pageData.banners || [])];
-                                updated[idx] = { ...updated[idx], image: url };
-                                updateField("banners", updated);
-                              }
-                            });
-                          }}
-                          className="absolute bottom-2 right-2 bg-black/70 hover:bg-black text-white text-[10px] px-2 py-1 rounded-lg flex items-center gap-1 shadow"
-                        >
-                          <ImageIcon className="w-3 h-3 text-d2c-gold" />
-                          Change Image
-                        </button>
-                      </div>
+                {/* Live Interactive Carousel Preview */}
+                <div className="rounded-2xl border border-gray-200 bg-white p-4 shadow-sm overflow-hidden">
+                  <div className="flex items-center justify-between mb-3 pb-2 border-b border-gray-100">
+                    <span className="text-xs font-bold text-gray-700 uppercase tracking-wider flex items-center gap-2">
+                      <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+                      Live Carousel Preview
+                    </span>
+                    <span className="text-[11px] text-gray-400">
+                      Auto-rotates every 5s • Interactive controls
+                    </span>
+                  </div>
+                  {pageData.bannerSection?.enabled === false ? (
+                    <div className="p-8 text-center text-xs text-gray-400 bg-slate-50 rounded-xl border border-dashed border-gray-200">
+                      This section is currently toggled OFF and will not show on the public homepage.
+                    </div>
+                  ) : (
+                    <BannerSection banners={pageData.banners} />
+                  )}
+                </div>
 
-                      <div className="p-3 space-y-2 flex-1 flex flex-col justify-between text-xs">
-                        <div className="space-y-1.5">
-                          <input
-                            type="text"
-                            value={banner.badge || ""}
-                            onChange={(e) => {
-                              const updated = [...(pageData.banners || [])];
-                              updated[idx] = { ...updated[idx], badge: e.target.value };
-                              updateField("banners", updated);
-                            }}
-                            className="text-[10px] font-bold text-d2c-royal uppercase bg-transparent outline-none w-full"
-                            placeholder="Badge (e.g. Top Medical)"
-                          />
-                          <input
-                            type="text"
-                            value={banner.title || ""}
-                            onChange={(e) => {
-                              const updated = [...(pageData.banners || [])];
-                              updated[idx] = { ...updated[idx], title: e.target.value };
-                              updateField("banners", updated);
-                            }}
-                            className="font-bold text-gray-900 bg-transparent outline-none w-full"
-                            placeholder="Banner Title"
-                          />
-                          <textarea
-                            rows={2}
-                            value={banner.subtitle || ""}
-                            onChange={(e) => {
-                              const updated = [...(pageData.banners || [])];
-                              updated[idx] = { ...updated[idx], subtitle: e.target.value };
-                              updateField("banners", updated);
-                            }}
-                            className="text-gray-600 bg-white p-1.5 rounded border border-gray-200 outline-none w-full"
-                            placeholder="Banner Subtitle description..."
-                          />
-                        </div>
+                {/* Banner Controls & Slide Editor */}
+                <div className="p-6 bg-white rounded-2xl border border-gray-200 space-y-4 shadow-sm">
+                  <div className="flex items-center justify-between pb-3 border-b border-gray-100">
+                    <div className="flex items-center gap-2">
+                      <ImageIcon className="w-4 h-4 text-d2c-royal" />
+                      <h3 className="text-sm font-bold text-gray-900 font-sora">
+                        Manage Banners & Ads Slides ({pageData.banners?.length || 0} active)
+                      </h3>
+                    </div>
+                    <Button
+                      size="sm"
+                      onClick={() => {
+                        const newId = Date.now();
+                        const updated = [
+                          ...(pageData.banners || []),
+                          {
+                            id: newId,
+                            image: "/images/colleges/iem-saltlake.jpg",
+                            title: "New Featured College Banner",
+                            subtitle: "Direct Admission & Counseling Window Active",
+                            link: "/colleges",
+                            badge: "Featured 2026"
+                          }
+                        ];
+                        updateField("banners", updated);
+                      }}
+                      className="bg-d2c-royal hover:bg-blue-700 text-white text-xs gap-1.5 h-8 font-semibold shadow-sm"
+                    >
+                      <Plus className="w-3.5 h-3.5" />
+                      Add Banner Slide
+                    </Button>
+                  </div>
 
-                        <div className="flex items-center justify-between pt-2 border-t border-gray-200 mt-2">
-                          <input
-                            type="text"
-                            value={banner.link || ""}
-                            onChange={(e) => {
-                              const updated = [...(pageData.banners || [])];
-                              updated[idx] = { ...updated[idx], link: e.target.value };
-                              updateField("banners", updated);
-                            }}
-                            className="text-[10px] text-gray-500 bg-transparent outline-none w-32 truncate"
-                            placeholder="Link: /colleges"
-                          />
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    {(pageData.banners || []).map((banner: any, idx: number) => (
+                      <div key={banner.id || idx} className="rounded-2xl border border-gray-200 overflow-hidden bg-gray-50 flex flex-col shadow-sm">
+                        <div className="relative aspect-[16/9] w-full bg-gray-300">
+                          <img src={banner.image} alt={banner.title} className="w-full h-full object-cover" />
                           <button
                             onClick={() => {
-                              const updated = (pageData.banners || []).filter((_: any, i: number) => i !== idx);
-                              updateField("banners", updated);
+                              setImagePicker({
+                                isOpen: true,
+                                title: `Change Banner #${idx + 1} Image`,
+                                currentUrl: banner.image,
+                                onSelect: (url) => {
+                                  const updated = [...(pageData.banners || [])];
+                                  updated[idx] = { ...updated[idx], image: url };
+                                  updateField("banners", updated);
+                                }
+                              });
                             }}
-                            className="p-1 text-red-500 hover:text-red-700"
-                            title="Delete Banner"
+                            className="absolute bottom-2 right-2 bg-black/70 hover:bg-black text-white text-[10px] px-2 py-1 rounded-lg flex items-center gap-1 shadow backdrop-blur-sm"
                           >
-                            <Trash2 className="w-3.5 h-3.5" />
+                            <ImageIcon className="w-3 h-3 text-d2c-gold" />
+                            Change Image
                           </button>
                         </div>
+
+                        <div className="p-3.5 space-y-2.5 flex-1 flex flex-col justify-between text-xs">
+                          <div className="space-y-1.5">
+                            <div>
+                              <label className="text-[9px] font-bold text-gray-400 uppercase block">Badge Tag</label>
+                              <input
+                                type="text"
+                                value={banner.badge || ""}
+                                onChange={(e) => {
+                                  const updated = [...(pageData.banners || [])];
+                                  updated[idx] = { ...updated[idx], badge: e.target.value };
+                                  updateField("banners", updated);
+                                }}
+                                className="text-[10px] font-bold text-d2c-royal uppercase bg-white px-2 py-1 rounded border border-gray-200 outline-none w-full"
+                                placeholder="e.g. TOP MEDICAL"
+                              />
+                            </div>
+                            <div>
+                              <label className="text-[9px] font-bold text-gray-400 uppercase block">Slide Title</label>
+                              <input
+                                type="text"
+                                value={banner.title || ""}
+                                onChange={(e) => {
+                                  const updated = [...(pageData.banners || [])];
+                                  updated[idx] = { ...updated[idx], title: e.target.value };
+                                  updateField("banners", updated);
+                                }}
+                                className="font-bold text-gray-900 bg-white px-2 py-1 rounded border border-gray-200 outline-none w-full"
+                                placeholder="Banner Title"
+                              />
+                            </div>
+                            <div>
+                              <label className="text-[9px] font-bold text-gray-400 uppercase block">Subtitle</label>
+                              <textarea
+                                rows={2}
+                                value={banner.subtitle || ""}
+                                onChange={(e) => {
+                                  const updated = [...(pageData.banners || [])];
+                                  updated[idx] = { ...updated[idx], subtitle: e.target.value };
+                                  updateField("banners", updated);
+                                }}
+                                className="text-gray-600 bg-white px-2 py-1 rounded border border-gray-200 outline-none w-full text-xs"
+                                placeholder="Subtitle description..."
+                              />
+                            </div>
+                          </div>
+
+                          <div className="flex items-center justify-between pt-2 border-t border-gray-200 mt-2">
+                            <input
+                              type="text"
+                              value={banner.link || ""}
+                              onChange={(e) => {
+                                const updated = [...(pageData.banners || [])];
+                                updated[idx] = { ...updated[idx], link: e.target.value };
+                                updateField("banners", updated);
+                              }}
+                              className="text-[10px] text-gray-500 bg-white px-2 py-1 rounded border border-gray-200 outline-none w-28 truncate"
+                              placeholder="/colleges"
+                            />
+                            <div className="flex items-center gap-1">
+                              <button
+                                disabled={idx === 0}
+                                onClick={() => {
+                                  const list = [...(pageData.banners || [])];
+                                  const temp = list[idx - 1];
+                                  list[idx - 1] = list[idx];
+                                  list[idx] = temp;
+                                  updateField("banners", list);
+                                }}
+                                className="p-1 rounded text-gray-500 hover:text-gray-900 hover:bg-gray-200 disabled:opacity-20"
+                                title="Move Slide Left"
+                              >
+                                <MoveUp className="w-3.5 h-3.5" />
+                              </button>
+                              <button
+                                disabled={idx === (pageData.banners || []).length - 1}
+                                onClick={() => {
+                                  const list = [...(pageData.banners || [])];
+                                  const temp = list[idx + 1];
+                                  list[idx + 1] = list[idx];
+                                  list[idx] = temp;
+                                  updateField("banners", list);
+                                }}
+                                className="p-1 rounded text-gray-500 hover:text-gray-900 hover:bg-gray-200 disabled:opacity-20"
+                                title="Move Slide Right"
+                              >
+                                <MoveDown className="w-3.5 h-3.5" />
+                              </button>
+                              <button
+                                onClick={() => {
+                                  const updated = (pageData.banners || []).filter((_: any, i: number) => i !== idx);
+                                  updateField("banners", updated);
+                                }}
+                                className="p-1 text-red-500 hover:text-red-700"
+                                title="Delete Banner"
+                              >
+                                <Trash2 className="w-3.5 h-3.5" />
+                              </button>
+                            </div>
+                          </div>
+                        </div>
                       </div>
-                    </div>
-                  ))}
+                    ))}
+                  </div>
                 </div>
               </div>
 
