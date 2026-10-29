@@ -222,7 +222,7 @@ export default function PageSeoStudio() {
   };
 
   return (
-    <div className="max-w-7xl mx-auto pb-20 font-dm-sans">
+    <div className="w-full max-w-7xl mx-auto pb-20 font-dm-sans min-w-0">
       {/* Page Header */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
         <div>
@@ -243,7 +243,7 @@ export default function PageSeoStudio() {
         <button
           onClick={loadData}
           disabled={loading}
-          className="flex items-center gap-2 px-4 py-2.5 bg-white border border-gray-200 hover:bg-gray-50 text-d2c-navy rounded-xl text-xs font-bold transition-colors shadow-sm self-start"
+          className="flex items-center gap-2 px-4 py-2.5 bg-white border border-gray-200 hover:bg-gray-50 text-d2c-navy rounded-xl text-xs font-bold transition-colors shadow-sm self-start shrink-0"
         >
           <RefreshCw className={`w-3.5 h-3.5 ${loading ? 'animate-spin' : ''}`} />
           Refresh Suite
@@ -251,7 +251,7 @@ export default function PageSeoStudio() {
       </div>
 
       {/* KPI Cards */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 mb-8">
         <div className="bg-white rounded-2xl p-5 border border-gray-100 shadow-sm">
           <div className="flex items-center justify-between mb-2">
             <span className="text-xs font-bold text-gray-500 uppercase tracking-wider">Total Pages</span>
@@ -292,8 +292,8 @@ export default function PageSeoStudio() {
       </div>
 
       {/* Filter and Search Bar */}
-      <div className="bg-white p-4 rounded-2xl border border-gray-100 shadow-sm mb-6 flex flex-col md:flex-row items-center justify-between gap-4">
-        <div className="relative flex-1 w-full">
+      <div className="bg-white p-4 rounded-2xl border border-gray-100 shadow-sm mb-6 flex flex-col xl:flex-row items-stretch xl:items-center justify-between gap-4">
+        <div className="relative flex-1 min-w-[260px]">
           <Search className="w-4 h-4 text-gray-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
           <input
             type="text"
@@ -304,11 +304,11 @@ export default function PageSeoStudio() {
           />
         </div>
 
-        <div className="flex items-center gap-2 w-full md:w-auto overflow-x-auto pb-1 md:pb-0">
-          <div className="flex items-center bg-gray-100 p-1 rounded-xl">
+        <div className="flex flex-wrap items-center gap-2.5">
+          <div className="flex flex-wrap items-center bg-gray-100 p-1 rounded-xl">
             <button
               onClick={() => setTypeFilter('all')}
-              className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all ${
+              className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all shrink-0 ${
                 typeFilter === 'all' ? 'bg-white text-d2c-navy shadow-sm' : 'text-gray-500 hover:text-d2c-navy'
               }`}
             >
@@ -316,7 +316,7 @@ export default function PageSeoStudio() {
             </button>
             <button
               onClick={() => setTypeFilter('college')}
-              className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all flex items-center gap-1 ${
+              className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all flex items-center gap-1 shrink-0 ${
                 typeFilter === 'college' ? 'bg-white text-d2c-navy shadow-sm' : 'text-gray-500 hover:text-d2c-navy'
               }`}
             >
@@ -324,7 +324,7 @@ export default function PageSeoStudio() {
             </button>
             <button
               onClick={() => setTypeFilter('exam')}
-              className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all flex items-center gap-1 ${
+              className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all flex items-center gap-1 shrink-0 ${
                 typeFilter === 'exam' ? 'bg-white text-d2c-navy shadow-sm' : 'text-gray-500 hover:text-d2c-navy'
               }`}
             >
@@ -332,7 +332,7 @@ export default function PageSeoStudio() {
             </button>
             <button
               onClick={() => setTypeFilter('blog')}
-              className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all flex items-center gap-1 ${
+              className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all flex items-center gap-1 shrink-0 ${
                 typeFilter === 'blog' ? 'bg-white text-d2c-navy shadow-sm' : 'text-gray-500 hover:text-d2c-navy'
               }`}
             >
@@ -340,7 +340,7 @@ export default function PageSeoStudio() {
             </button>
             <button
               onClick={() => setTypeFilter('page')}
-              className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all flex items-center gap-1 ${
+              className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all flex items-center gap-1 shrink-0 ${
                 typeFilter === 'page' ? 'bg-white text-d2c-navy shadow-sm' : 'text-gray-500 hover:text-d2c-navy'
               }`}
             >
@@ -351,7 +351,7 @@ export default function PageSeoStudio() {
           <div className="flex items-center bg-gray-100 p-1 rounded-xl">
             <button
               onClick={() => setStatusFilter('all')}
-              className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all ${
+              className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all shrink-0 ${
                 statusFilter === 'all' ? 'bg-white text-d2c-navy shadow-sm' : 'text-gray-500 hover:text-d2c-navy'
               }`}
             >
@@ -359,7 +359,7 @@ export default function PageSeoStudio() {
             </button>
             <button
               onClick={() => setStatusFilter('configured')}
-              className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all ${
+              className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all shrink-0 ${
                 statusFilter === 'configured' ? 'bg-white text-emerald-700 shadow-sm' : 'text-gray-500 hover:text-d2c-navy'
               }`}
             >
@@ -367,7 +367,7 @@ export default function PageSeoStudio() {
             </button>
             <button
               onClick={() => setStatusFilter('pending')}
-              className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all ${
+              className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all shrink-0 ${
                 statusFilter === 'pending' ? 'bg-white text-amber-700 shadow-sm' : 'text-gray-500 hover:text-d2c-navy'
               }`}
             >
@@ -393,17 +393,19 @@ export default function PageSeoStudio() {
         </div>
       ) : (
         <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
-          <div className="overflow-x-auto">
-            <table className="w-full text-left text-xs">
-              <thead className="bg-gray-50/70 border-b border-gray-200/80 text-gray-500 uppercase tracking-wider font-semibold">
+          <div className="overflow-x-auto relative">
+            <table className="w-full text-left text-xs min-w-[860px]">
+              <thead className="bg-gray-50/80 border-b border-gray-200/80 text-gray-500 uppercase tracking-wider font-semibold whitespace-nowrap">
                 <tr>
-                  <th className="py-3.5 px-4">Page / Landing</th>
-                  <th className="py-3.5 px-4">Category</th>
-                  <th className="py-3.5 px-4">Primary Target Keyword</th>
-                  <th className="py-3.5 px-4">SEO Title & Meta Snippet</th>
-                  <th className="py-3.5 px-4">AEO / Schema</th>
-                  <th className="py-3.5 px-4">Health</th>
-                  <th className="py-3.5 px-4 text-right">Actions</th>
+                  <th className="py-3 px-4 min-w-[200px]">Page / Landing</th>
+                  <th className="py-3 px-3 min-w-[90px]">Category</th>
+                  <th className="py-3 px-3 min-w-[130px]">Primary Target Keyword</th>
+                  <th className="py-3 px-3 min-w-[200px]">SEO Title & Meta Snippet</th>
+                  <th className="py-3 px-3 text-center min-w-[90px]">AEO / Schema</th>
+                  <th className="py-3 px-3 text-center min-w-[90px]">Health</th>
+                  <th className="py-3 px-4 text-right min-w-[140px] sticky right-0 bg-gray-50/95 backdrop-blur-sm shadow-[-6px_0_10px_-2px_rgba(0,0,0,0.06)] z-10">
+                    Actions
+                  </th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-100">
@@ -414,17 +416,24 @@ export default function PageSeoStudio() {
                   const faqsCount = item.seo?.aeoFaqs?.length || item.rawItem?.faqs?.length || 0;
 
                   return (
-                    <tr key={`${item.type}-${item.id}`} className="hover:bg-gray-50/50 transition-colors">
+                    <tr key={`${item.type}-${item.id}`} className="hover:bg-blue-50/30 transition-colors group">
                       <td className="py-3.5 px-4">
-                        <div className="font-bold text-d2c-navy max-w-xs truncate">{item.name}</div>
-                        <div className="text-[11px] text-gray-400 font-mono flex items-center gap-1 mt-0.5">
+                        <button
+                          type="button"
+                          onClick={() => openEditor(item)}
+                          className="text-left font-bold text-d2c-navy hover:text-d2c-royal transition-colors max-w-xs truncate block"
+                          title={`Edit SEO for ${item.name}`}
+                        >
+                          {item.name}
+                        </button>
+                        <div className="text-[11px] text-gray-400 font-mono flex items-center gap-1 mt-0.5 truncate">
                           {item.publicUrl}
                         </div>
                       </td>
 
-                      <td className="py-3.5 px-4">
+                      <td className="py-3.5 px-3">
                         <span
-                          className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider ${
+                          className={`inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider ${
                             item.type === 'college'
                               ? 'bg-blue-50 text-d2c-royal'
                               : item.type === 'exam'
@@ -442,9 +451,9 @@ export default function PageSeoStudio() {
                         </span>
                       </td>
 
-                      <td className="py-3.5 px-4">
+                      <td className="py-3.5 px-3">
                         {item.seo?.primaryKeyword ? (
-                          <span className="inline-block px-2.5 py-1 rounded-lg bg-emerald-50 text-emerald-800 font-medium text-[11px] border border-emerald-200/50">
+                          <span className="inline-block px-2 py-0.5 rounded-md bg-emerald-50 text-emerald-800 font-medium text-[11px] border border-emerald-200/50 truncate max-w-[140px]" title={item.seo.primaryKeyword}>
                             {item.seo.primaryKeyword}
                           </span>
                         ) : (
@@ -452,31 +461,31 @@ export default function PageSeoStudio() {
                         )}
                       </td>
 
-                      <td className="py-3.5 px-4">
+                      <td className="py-3.5 px-3">
                         <div className="space-y-1">
-                          <div className="flex items-center gap-2">
-                            <span className="text-[10px] uppercase font-bold text-gray-400 w-10">Title:</span>
-                            <span className="text-gray-700 font-medium truncate max-w-[200px]" title={item.seo?.seoTitle || item.name}>
+                          <div className="flex items-center gap-1.5">
+                            <span className="text-[10px] uppercase font-bold text-gray-400 w-9 shrink-0">Title:</span>
+                            <span className="text-gray-700 font-medium truncate max-w-[160px]" title={item.seo?.seoTitle || item.name}>
                               {item.seo?.seoTitle || item.name}
                             </span>
-                            <span className={`text-[10px] font-mono px-1 rounded ${
+                            <span className={`text-[9px] font-mono px-1 rounded shrink-0 ${
                               titleLen >= 45 && titleLen <= 65 ? 'bg-emerald-100 text-emerald-800' : 'bg-amber-100 text-amber-800'
                             }`}>
                               {titleLen}c
                             </span>
                           </div>
 
-                          <div className="flex items-center gap-2">
-                            <span className="text-[10px] uppercase font-bold text-gray-400 w-10">Meta:</span>
+                          <div className="flex items-center gap-1.5">
+                            <span className="text-[10px] uppercase font-bold text-gray-400 w-9 shrink-0">Meta:</span>
                             {item.seo?.metaDescription ? (
-                              <span className="text-gray-500 truncate max-w-[200px]" title={item.seo.metaDescription}>
+                              <span className="text-gray-500 truncate max-w-[160px]" title={item.seo.metaDescription}>
                                 {item.seo.metaDescription}
                               </span>
                             ) : (
                               <span className="text-amber-500 italic text-[11px]">Missing</span>
                             )}
                             {item.seo?.metaDescription && (
-                              <span className={`text-[10px] font-mono px-1 rounded ${
+                              <span className={`text-[9px] font-mono px-1 rounded shrink-0 ${
                                 descLen >= 120 && descLen <= 160 ? 'bg-emerald-100 text-emerald-800' : 'bg-amber-100 text-amber-800'
                               }`}>
                                 {descLen}c
@@ -486,9 +495,9 @@ export default function PageSeoStudio() {
                         </div>
                       </td>
 
-                      <td className="py-3.5 px-4">
+                      <td className="py-3.5 px-3 text-center">
                         {faqsCount > 0 ? (
-                          <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-indigo-50 text-indigo-700 font-semibold text-[11px]">
+                          <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-indigo-50 text-indigo-700 font-semibold text-[11px]">
                             <Sparkles className="w-3 h-3 text-indigo-500" />
                             {faqsCount} FAQs
                           </span>
@@ -497,8 +506,8 @@ export default function PageSeoStudio() {
                         )}
                       </td>
 
-                      <td className="py-3.5 px-4">
-                        <div className="w-24">
+                      <td className="py-3.5 px-3 text-center">
+                        <div className="inline-block w-20">
                           <div className="flex items-center justify-between text-[11px] mb-1">
                             <span className="font-bold text-gray-600">{health}%</span>
                             <span className={`text-[10px] font-bold ${
@@ -518,7 +527,7 @@ export default function PageSeoStudio() {
                         </div>
                       </td>
 
-                      <td className="py-3.5 px-4 text-right">
+                      <td className="py-3.5 px-4 text-right sticky right-0 bg-white group-hover:bg-[#f6f9fe] transition-colors shadow-[-6px_0_10px_-2px_rgba(0,0,0,0.06)] z-10">
                         <div className="flex items-center justify-end gap-1.5">
                           <Link
                             href={item.publicUrl}
@@ -531,8 +540,10 @@ export default function PageSeoStudio() {
                           </Link>
 
                           <button
+                            type="button"
+                            id={`edit-seo-${item.slug}`}
                             onClick={() => openEditor(item)}
-                            className="flex items-center gap-1.5 px-3 py-1.5 bg-d2c-royal hover:bg-d2c-navy text-white rounded-lg text-xs font-bold transition-all shadow-sm"
+                            className="flex items-center gap-1.5 px-3 py-1.5 bg-d2c-royal hover:bg-d2c-navy text-white rounded-lg text-xs font-bold transition-all shadow-sm shrink-0"
                           >
                             <Edit3 className="w-3.5 h-3.5" />
                             <span>Edit SEO Form</span>

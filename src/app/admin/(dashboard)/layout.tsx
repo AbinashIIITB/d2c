@@ -4,11 +4,13 @@ import { AdminLoadingProvider } from '@/components/admin/AdminLoadingProvider';
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
   return (
     <AdminLoadingProvider>
-      <div className="min-h-screen bg-[#faf8ff] flex font-dm-sans">
+      <div className="min-h-screen bg-[#faf8ff] font-dm-sans">
         <AdminSidebar />
-        <main className="flex-1 ml-64 p-8 min-h-screen">
-          {children}
-        </main>
+        <div className="pl-64 min-h-screen flex flex-col">
+          <main className="flex-1 min-w-0 p-6 md:p-8">
+            {children}
+          </main>
+        </div>
       </div>
     </AdminLoadingProvider>
   );
