@@ -14,12 +14,13 @@ export async function GET() {
 
     const { data: colleges, error } = await supabaseAdmin
       .from('colleges')
-      .select('id, name, slug, location, state, type, rating, logo_url, image_url, updated_at')
+      .select('*')
       .order('name');
 
     if (error) throw error;
 
-    return NextResponse.json(sortCollegesWithIEMFirst(colleges || []));
+    const mapped = (colleges || []).map(mapDbToCollege);
+    return NextResponse.json(sortCollegesWithIEMFirst(mapped));
   } catch (error: any) {
     return NextResponse.json({ error: error.message }, { status: 500 });
   }

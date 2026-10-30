@@ -69,11 +69,20 @@ export async function PUT(req: Request, { params }: RouteContext) {
 
     if (error) throw error;
 
+    // Keep local store in sync
+    try {
+      const { saveCollege } = await import('@/lib/data-service');
+      await saveCollege({ ...body, id });
+    } catch (localErr) {
+      console.warn('Could not sync college to local store:', localErr);
+    }
+
     // Revalidate paths
     revalidatePath('/colleges');
     revalidatePath(`/colleges/${dbPayload.slug}`);
     revalidatePath(`/admin/colleges/${id}`);
     revalidatePath('/admin/colleges');
+    revalidatePath('/admin/seo');
 
     return NextResponse.json({
       success: true,

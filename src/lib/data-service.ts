@@ -141,9 +141,11 @@ export function mapCollegeToCamelCase(c: any): any {
     coursesSeats: c.courses_seats ?? c.coursesSeats,
     facultyDepartments: c.faculty_departments ?? c.facultyDepartments,
     admissionProcess: c.admission_process ?? c.admissionProcess,
+    sectionHeadings: c.sectionHeadings || c.contact?.seo?.sectionHeadings || c.seo?.sectionHeadings || {},
     seo: {
       ...(c.contact?.seo || c.seo || {}),
       h1Title: resolvedH1,
+      sectionHeadings: c.sectionHeadings || c.contact?.seo?.sectionHeadings || c.seo?.sectionHeadings || {},
     },
   };
 }
@@ -176,10 +178,15 @@ export function mapCollegeToSnakeCase(body: Record<string, any>): Record<string,
     result[targetKey] = value;
   }
 
-  if (body.seo) {
+  if (body.seo || body.sectionHeadings || body.h1Title || body.h1) {
     result.contact = {
       ...(result.contact || {}),
-      seo: body.seo
+      seo: {
+        ...(result.contact?.seo || body.seo || {}),
+        ...(body.sectionHeadings ? { sectionHeadings: body.sectionHeadings } : {}),
+        ...(body.h1Title ? { h1Title: body.h1Title } : {}),
+        ...(body.h1 ? { h1Title: body.h1 } : {}),
+      }
     };
   }
 

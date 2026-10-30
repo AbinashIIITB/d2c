@@ -1,5 +1,11 @@
 export function mapCollegeToDb(c: any) {
-  const seoData = c.seo || (c.contact && c.contact.seo) || {};
+  const rawSeo = c.seo || (c.contact && c.contact.seo) || {};
+  const seoData = {
+    ...rawSeo,
+    ...(c.sectionHeadings ? { sectionHeadings: c.sectionHeadings } : {}),
+    ...(c.h1Title ? { h1Title: c.h1Title } : {}),
+    ...(c.h1 ? { h1Title: c.h1 } : {}),
+  };
 
   return {
     ...(c.id ? { id: String(c.id) } : {}),
@@ -93,9 +99,11 @@ export function mapDbToCollege(raw: any) {
     whyChoose: raw.why_choose || raw.whyChoose || [],
     alumni: raw.alumni || { description: '', companies: [] },
     contact: raw.contact || {},
+    sectionHeadings: raw.sectionHeadings || raw.contact?.seo?.sectionHeadings || raw.seo?.sectionHeadings || {},
     seo: {
       ...(raw.contact?.seo || raw.seo || {}),
       h1Title: resolvedH1,
+      sectionHeadings: raw.sectionHeadings || raw.contact?.seo?.sectionHeadings || raw.seo?.sectionHeadings || {},
     },
     galleryImages: raw.gallery_images || raw.galleryImages || [],
     whyChooseAkashTalks: raw.why_choose_akash_talks || raw.whyChooseAkashTalks || [],

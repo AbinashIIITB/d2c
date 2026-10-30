@@ -65,21 +65,47 @@ function SeoModalEditorContent({
 }) {
   const [formData, setFormData] = useState<any>(() => {
     if (item.type === 'college') {
-      const seo = item.seoData || {};
+      const seo = item.seoData || item.rawItem?.seo || item.rawItem?.contact?.seo || {};
+      const collegeName = item.name;
+      const primaryCourse = item.rawItem?.courses?.[0] || 'B.Tech';
+      const defaultH1 = item.rawItem?.h1 || `${collegeName} Admission, Courses, Fees and Placements`;
+      const defaultTitle = `${collegeName}: Admission, Fees & Placements | Direct2Campus`;
+      const defaultDesc = `Explore ${collegeName} admission, ${primaryCourse} courses, fees, eligibility, placements and the application process. Get expert admission guidance from Direct2Campus.`;
+      const defaultHeadings = {
+        admissions: `${collegeName} Admission Process`,
+        coursesFees: `${collegeName} Courses and Fee Structure`,
+        coursesFeesSubtitle: `${collegeName} Admission Fees and Course Fee Structure`,
+        btechFeesEligibility: `${collegeName} ${primaryCourse} Fees and Eligibility`,
+        placements: `${collegeName} Placements and Average Package`,
+        overview: `${collegeName} Campus and Location`,
+        faqs: `Frequently Asked Questions About ${collegeName}`,
+      };
+
       return {
-        seoTitle: seo.seoTitle || '',
-        metaDescription: seo.metaDescription || '',
-        primaryKeyword: seo.primaryKeyword || '',
-        secondaryKeywords: seo.secondaryKeywords || [],
-        canonicalUrl: seo.canonicalUrl || '',
-        h1Title: seo.h1Title || '',
-        sectionHeadings: item.rawItem?.sectionHeadings || seo.sectionHeadings || {},
-        aeoFaqs: seo.aeoFaqs || [],
+        seoTitle: seo.seoTitle || defaultTitle,
+        metaDescription: seo.metaDescription || defaultDesc,
+        primaryKeyword: seo.primaryKeyword || collegeName,
+        secondaryKeywords: (seo.secondaryKeywords && seo.secondaryKeywords.length > 0) ? seo.secondaryKeywords : [
+          `${collegeName} admission`,
+          `${collegeName} fees`,
+          `${collegeName} placements`,
+          `${collegeName} admission process`,
+          `${collegeName} course fee structure`,
+          `${collegeName} ${primaryCourse} fees`,
+          `${collegeName} campus`
+        ],
+        canonicalUrl: seo.canonicalUrl || `https://direct2campus.com/colleges/${item.slug}`,
+        h1Title: seo.h1Title || item.rawItem?.h1 || defaultH1,
+        sectionHeadings: {
+          ...defaultHeadings,
+          ...(item.rawItem?.sectionHeadings || seo.sectionHeadings || {}),
+        },
+        aeoFaqs: (seo.aeoFaqs && seo.aeoFaqs.length > 0) ? seo.aeoFaqs : (item.rawItem?.aeoFaqs || []),
         internalLinks: seo.internalLinks || [],
         cta: seo.cta || {},
         ogImage: seo.images?.ogImage || item.rawItem?.imageUrl || '',
-        ogTitle: seo.ogTitle || '',
-        ogDescription: seo.ogDescription || '',
+        ogTitle: seo.ogTitle || seo.seoTitle || defaultTitle,
+        ogDescription: seo.ogDescription || seo.metaDescription || defaultDesc,
       };
     } else if (item.type === 'exam') {
       const seo = item.seoData || {};
@@ -174,6 +200,8 @@ function SeoModalEditorContent({
       if (item.type === 'college') {
         const payload = {
           ...item.rawItem,
+          h1: formData.h1Title,
+          sectionHeadings: formData.sectionHeadings,
           seo: {
             ...(item.rawItem?.seo || {}),
             seoTitle: formData.seoTitle,
@@ -182,6 +210,7 @@ function SeoModalEditorContent({
             secondaryKeywords: formData.secondaryKeywords,
             canonicalUrl: formData.canonicalUrl,
             h1Title: formData.h1Title,
+            sectionHeadings: formData.sectionHeadings,
             aeoFaqs: formData.aeoFaqs,
             internalLinks: formData.internalLinks,
             cta: formData.cta,
@@ -192,7 +221,6 @@ function SeoModalEditorContent({
               ogImage: formData.ogImage,
             },
           },
-          sectionHeadings: formData.sectionHeadings,
         };
 
         const res = await fetch(`/api/admin/colleges/${item.id}`, {
