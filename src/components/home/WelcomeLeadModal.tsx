@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, Sparkles, PhoneCall, ShieldCheck, CheckCircle2, GraduationCap } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { trackLeadSubmission } from "@/lib/gtag";
 
 interface WelcomeLeadModalProps {
   config?: {
@@ -74,6 +75,12 @@ export function WelcomeLeadModal({ config }: WelcomeLeadModalProps) {
           course: formData.course,
           preferredLocation: formData.location,
         }),
+      });
+
+      trackLeadSubmission({
+        formType: 'Welcome Lead Modal',
+        course: formData.course,
+        preferredLocation: formData.location,
       });
 
       setSubmitted(true);

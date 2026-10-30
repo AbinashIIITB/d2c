@@ -5,6 +5,7 @@ import Image from "next/image";
 import { MapPin, Phone, Mail, Clock, Send } from "lucide-react";
 import { AnimatedPatternBg } from "@/components/ui/AnimatedPatternBg";
 import { HeroBackground } from "@/components/ui/HeroBackground";
+import { trackLeadSubmission } from "@/lib/gtag";
 
 interface ContactClientViewProps {
   contactData: any;
@@ -32,6 +33,10 @@ export function ContactClientView({ contactData }: ContactClientViewProps) {
       });
 
       if (!response.ok) throw new Error("Submission failed");
+
+      trackLeadSubmission({
+        formType: "Contact Us",
+      });
 
       setStatus("success");
       setFormData({ name: "", email: "", phone: "", message: "" });

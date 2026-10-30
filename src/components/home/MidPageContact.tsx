@@ -4,6 +4,7 @@ import { useRef, useState } from "react"
 import { motion, useInView } from "framer-motion"
 import { Send, Phone, MessageCircle } from "lucide-react"
 import Link from "next/link"
+import { trackLeadSubmission } from "@/lib/gtag"
 
 export function MidPageContact() {
   const ref = useRef(null)
@@ -29,6 +30,10 @@ export function MidPageContact() {
       
       if (!response.ok) throw new Error("Submission failed");
       
+      trackLeadSubmission({
+        formType: "Free Counselling",
+      });
+
       setStatus("success")
       setFormData({ name: "", phone: "" })
       setTimeout(() => setStatus("idle"), 5000)

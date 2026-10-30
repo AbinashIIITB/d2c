@@ -4,6 +4,7 @@ import { useState, useEffect } from "react"
 import { createPortal } from "react-dom"
 import { motion, AnimatePresence } from "framer-motion"
 import { X, PhoneCall, MessageCircle, GraduationCap, ChevronDown } from "lucide-react"
+import { trackLeadSubmission } from "@/lib/gtag"
 
 export function ApplyModal({ isOpen, onClose, context = "General" }: { isOpen: boolean, onClose: () => void, context?: string }) {
   const [formData, setFormData] = useState({ name: "", phone: "", email: "", selection: "", course: "" })
@@ -53,6 +54,12 @@ export function ApplyModal({ isOpen, onClose, context = "General" }: { isOpen: b
       
       if (!response.ok) throw new Error("Submission failed");
       
+      trackLeadSubmission({
+        formType: "Apply Now Modal",
+        collegeName: formData.selection || context,
+        course: formData.course,
+      });
+
       setStatus("SUCCESS")
       setTimeout(() => {
         setStatus("IDLE")

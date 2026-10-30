@@ -290,16 +290,20 @@ export async function getAllColleges(): Promise<any[]> {
 }
 
 export async function getCollegeByIdOrSlug(identifier: string): Promise<any | null> {
-  const normId = identifier.toLowerCase().replace(/-/g, '');
+  const normId = identifier.toLowerCase().replace(/[-_\s]/g, '');
   const isIemLookup = normId === 'iemsaltlake' || normId === '1';
+  const hyphenated = identifier.replace(/_/g, '-');
+  const underscored = identifier.replace(/-/g, '_');
 
   // 1. Fast in-memory lookup if available
   if (collegesCache && Date.now() - collegesCache.timestamp < CMS_CACHE_TTL) {
     const cached = collegesCache.data.find(c => 
       c.id === identifier || 
       c.slug === identifier ||
-      (isIemLookup && (c.id === '1' || c.slug === 'iem-saltlake' || c.slug === 'iem-salt-lake')) ||
-      (c.slug && c.slug.toLowerCase().replace(/-/g, '') === normId)
+      c.slug === hyphenated ||
+      c.slug === underscored ||
+      (isIemLookup && (c.id === '1' || c.slug === 'iem-saltlake' || c.slug === 'iem_saltlake' || c.slug === 'iem-salt-lake')) ||
+      (c.slug && c.slug.toLowerCase().replace(/[-_\s]/g, '') === normId)
     );
     if (cached) return cached;
   }
@@ -307,8 +311,8 @@ export async function getCollegeByIdOrSlug(identifier: string): Promise<any | nu
   if (isSupabaseConfigured) {
     try {
       const orFilter = isIemLookup
-        ? `id.eq.${identifier},slug.eq.${identifier},id.eq.1,slug.eq.iem-saltlake,slug.eq.iem-salt-lake`
-        : `id.eq.${identifier},slug.eq.${identifier}`;
+        ? `id.eq.${identifier},slug.eq.${identifier},slug.eq.${hyphenated},slug.eq.${underscored},id.eq.1,slug.eq.iem-saltlake,slug.eq.iem_saltlake,slug.eq.iem-salt-lake`
+        : `id.eq.${identifier},slug.eq.${identifier},slug.eq.${hyphenated},slug.eq.${underscored}`;
 
       const { data, error } = await supabaseAdmin
         .from('colleges')
@@ -328,8 +332,10 @@ export async function getCollegeByIdOrSlug(identifier: string): Promise<any | nu
   const found = store.colleges.find(c => 
     c.id === identifier || 
     c.slug === identifier ||
-    (isIemLookup && (c.id === '1' || c.slug === 'iem-saltlake' || c.slug === 'iem-salt-lake')) ||
-    (c.slug && c.slug.toLowerCase().replace(/-/g, '') === normId)
+    c.slug === hyphenated ||
+    c.slug === underscored ||
+    (isIemLookup && (c.id === '1' || c.slug === 'iem-saltlake' || c.slug === 'iem_saltlake' || c.slug === 'iem-salt-lake')) ||
+    (c.slug && c.slug.toLowerCase().replace(/[-_\s]/g, '') === normId)
   );
   return found ? mapCollegeToCamelCase(found) : null;
 }

@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import { X, PhoneCall, MessageCircle } from "lucide-react"
+import { trackLeadSubmission } from "@/lib/gtag"
 
 export function CallbackModal({ isOpen, onClose, initialPhone = "" }: { isOpen: boolean, onClose: () => void, initialPhone?: string }) {
   const [formData, setFormData] = useState({ name: "", phone: initialPhone, course: "" })
@@ -33,6 +34,11 @@ export function CallbackModal({ isOpen, onClose, initialPhone = "" }: { isOpen: 
       
       if (!response.ok) throw new Error("Submission failed");
       
+      trackLeadSubmission({
+        formType: "Callback Request",
+        course: formData.course,
+      });
+
       setStatus("SUCCESS")
       setTimeout(() => {
         setStatus("IDLE")

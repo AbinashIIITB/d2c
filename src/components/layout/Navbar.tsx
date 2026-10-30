@@ -23,6 +23,7 @@ const NAV_LINKS = [
 ]
 
 import { AutoSuggestSearch } from "@/components/ui/AutoSuggestSearch"
+import { trackApplyClick } from "@/lib/gtag"
 import { NavbarMobileMenu } from "@/components/layout/NavbarMobileMenu"
 import { NavbarMobileSearch } from "@/components/layout/NavbarMobileSearch"
 import { ApplyModal } from "@/components/layout/ApplyModal"
@@ -359,7 +360,10 @@ export function Navbar() {
             </div>
 
             <button
-              onClick={() => setIsApplyModalOpen(true)}
+              onClick={() => {
+                trackApplyClick({ location: "Navbar" });
+                setIsApplyModalOpen(true);
+              }}
               className={`flex items-center shrink-0 gap-2 px-5 py-2 rounded-xl font-semibold text-xs min-[1025px]:text-sm transition-all duration-300 border ${showSolidBg
                   ? "bg-d2c-royal border-d2c-royal text-white hover:bg-d2c-navy hover:border-d2c-navy shadow-md hover:shadow-lg"
                   : "border-white/40 text-white hover:bg-white/10"

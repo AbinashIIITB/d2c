@@ -139,6 +139,7 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
     ...(college.tags || [])
   ];
   const imageUrl = college.imageUrl || college.image_url || "/images/colleges/default-college.jpg";
+  const heroAlt = seo.images?.heroAlt || seo.heroAlt || `${college.name} Campus Direct Admission`;
 
   return {
     title: pageTitle,

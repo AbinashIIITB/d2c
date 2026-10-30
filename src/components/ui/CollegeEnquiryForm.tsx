@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Loader2, CheckCircle } from 'lucide-react';
+import { trackLeadSubmission } from '@/lib/gtag';
 
 interface CollegeEnquiryFormProps {
     collegeName: string;
@@ -48,6 +49,12 @@ export function CollegeEnquiryForm({ collegeName }: CollegeEnquiryFormProps) {
             if (!response.ok) {
                 throw new Error('Failed to submit');
             }
+
+            trackLeadSubmission({
+                formType: 'College Enquiry Form',
+                collegeName: collegeName,
+                course: formData.course,
+            });
 
             setIsSuccess(true);
             setFormData({ fullName: '', phone: '', email: '', course: '' });
