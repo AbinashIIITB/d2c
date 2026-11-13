@@ -20,10 +20,14 @@ export const supabaseAdmin = createClient(supabaseUrl, supabaseServiceKey, {
   },
   global: {
     fetch: (url, options = {}) => {
+      // 4-second timeout to prevent hanging when network/Supabase is unreachable
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 4000);
       return fetch(url, {
         ...options,
+        signal: (options as any).signal || controller.signal,
         cache: 'no-store',
-      });
+      }).finally(() => clearTimeout(timeoutId));
     },
   },
 })

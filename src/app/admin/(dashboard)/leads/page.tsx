@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { 
   Users, 
   Phone, 
@@ -8,19 +8,25 @@ import {
   MessageSquare, 
   Download, 
   Search, 
-  RefreshCw,
-  ExternalLink,
-  Table,
-  CheckCircle2,
-  Trash2,
-  Edit3,
-  Code,
-  Copy,
+  RefreshCw, 
+  ExternalLink, 
+  CheckCircle2, 
+  Trash2, 
+  Edit3, 
+  Code, 
+  FileSpreadsheet, 
+  Calendar, 
+  Clock,
+  GraduationCap,
+  Briefcase,
+  Stethoscope,
+  PhoneCall,
+  Layers,
+  HelpCircle,
+  Eye,
   Check,
   Radio,
-  FileSpreadsheet,
-  Calendar,
-  Clock
+  FileText
 } from 'lucide-react';
 import { CircleLoader } from '@/components/admin/CircleLoader';
 
@@ -30,8 +36,13 @@ interface Lead {
   name: string;
   phone: string;
   email?: string;
+  course?: string;
+  category?: string;
   interestedCollege?: string;
+  college?: string;
+  exam?: string;
   leadType?: string;
+  formType?: string;
   message?: string;
   status?: string;
   notes?: string;
@@ -39,21 +50,28 @@ interface Lead {
   submittedAt?: string;
 }
 
-function parseTimestampParts(ts?: string): { date: string; time: string } {
-  if (!ts || ts === 'Recent' || ts === 'Just now') {
-    return { date: ts || 'Recent', time: 'Live sync' };
+function parseCategory(lead: Lead): string {
+  if (lead.category) return lead.category;
+  const combined = `${lead.course || ''} ${lead.leadType || ''} ${lead.formType || ''} ${lead.message || ''}`.toLowerCase();
+  if (combined.includes('b.tech') || combined.includes('btech') || combined.includes('engineering') || combined.includes('cse') || combined.includes('wbjee')) {
+    return 'B.Tech';
   }
-  // If comma separated: "27 Oct 2026, 11:35 PM"
-  if (ts.includes(',')) {
-    const parts = ts.split(',');
-    return { date: parts[0].trim(), time: parts.slice(1).join(',').trim() };
+  if (combined.includes('mba') || combined.includes('pgdm') || combined.includes('b-school') || combined.includes('cat') || combined.includes('mat')) {
+    return 'MBA';
   }
-  // If space separated with AM/PM e.g. "27-10-2026 11:35 PM"
-  const m = ts.match(/^(.+?)\s+(\d{1,2}:\d{2}(?::\d{2})?\s*(?:AM|PM|am|pm)?)$/);
-  if (m) {
-    return { date: m[1].trim(), time: m[2].trim() };
+  if (combined.includes('mbbs') || combined.includes('bds') || combined.includes('neet') || combined.includes('medical')) {
+    return 'Medical / MBBS';
   }
-  return { date: ts, time: '' };
+  if (combined.includes('callback')) {
+    return 'Callback';
+  }
+  if (combined.includes('college')) {
+    return 'College Query';
+  }
+  if (combined.includes('exam')) {
+    return 'Exam Query';
+  }
+  return 'General Enquiry';
 }
 
 const STATUS_OPTIONS = [
@@ -69,15 +87,16 @@ export default function LeadsPage() {
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const [search, setSearch] = useState('');
-  const [filterType, setFilterType] = useState('ALL');
+  const [selectedCategoryTab, setSelectedCategoryTab] = useState('ALL');
   const [filterStatus, setFilterStatus] = useState('ALL');
-  const [source, setSource] = useState<string>('none');
+  const [autoSync, setAutoSync] = useState(true);
+  const [lastSynced, setLastSynced] = useState<string>('Just now');
   const [sheetInput, setSheetInput] = useState('');
   const [showConfig, setShowConfig] = useState(false);
   const [showScriptModal, setShowScriptModal] = useState(false);
-  const [copied, setCopied] = useState(false);
-  const [autoSync, setAutoSync] = useState(true);
-  const [lastSynced, setLastSynced] = useState<string>('Just now');
+  const [selectedLeadModal, setSelectedLeadModal] = useState<Lead | null>(null);
+
+  // Inline editing
   const [activeEditingNoteId, setActiveEditingNoteId] = useState<string | null>(null);
   const [noteDraft, setNoteDraft] = useState('');
   const [updatingRow, setUpdatingRow] = useState<number | null>(null);
@@ -93,18 +112,16 @@ export default function LeadsPage() {
 
       if (data.leads) {
         setLeads(data.leads);
-        setSource(data.source || 'none');
         setLastSynced(new Date().toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit', second: '2-digit' }));
       }
     } catch (err) {
-      console.error('Failed to sync leads from Google Sheets:', err);
+      console.error('Failed to sync leads:', err);
     } finally {
       setLoading(false);
       if (!silent) setRefreshing(false);
     }
   };
 
-  // Initial load
   useEffect(() => {
     if (typeof window !== 'undefined') {
       const saved = localStorage.getItem('d2c_google_sheet_id');
@@ -113,143 +130,158 @@ export default function LeadsPage() {
     fetchLeads();
   }, []);
 
-  // Live Auto-Sync Polling (Google Sheets -> Admin)
+  // Live Auto-Sync Polling
   useEffect(() => {
     if (!autoSync) return;
     const interval = setInterval(() => {
       fetchLeads(undefined, true);
-    }, 12000); // Poll every 12s for any direct edits in Google Sheets
-
+    }, 15000);
     return () => clearInterval(interval);
   }, [autoSync]);
 
-  // Update lead status (Admin -> Google Sheets)
-  const handleUpdateStatus = async (lead: Lead, newStatus: string) => {
-    if (!lead.rowIndex && !lead.id) return;
-    setUpdatingRow(lead.rowIndex || -1);
-
-    // Optimistic UI update
-    setLeads(prev => prev.map(l => (l.id === lead.id || l.rowIndex === lead.rowIndex) ? { ...l, status: newStatus } : l));
-
+  const handleStatusChange = async (lead: Lead, newStatus: string) => {
+    setUpdatingRow(lead.rowIndex ?? -1);
     try {
       const res = await fetch('/api/admin/leads', {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          rowIndex: lead.rowIndex,
           id: lead.id,
+          rowIndex: lead.rowIndex,
           status: newStatus,
           notes: lead.notes || ''
         })
       });
 
-      if (!res.ok) {
-        console.error('Failed to sync status change to Google Sheets');
+      if (res.ok) {
+        setLeads(prev => prev.map(l => l.id === lead.id ? { ...l, status: newStatus } : l));
       }
     } catch (err) {
-      console.error('Error syncing status change to Google Sheets:', err);
+      console.error('Failed to update lead status:', err);
     } finally {
       setUpdatingRow(null);
     }
   };
 
-  // Save Counselor Note (Admin -> Google Sheets)
-  const handleSaveNote = async (lead: Lead) => {
-    setUpdatingRow(lead.rowIndex || -1);
-    setActiveEditingNoteId(null);
-
-    // Optimistic update
-    setLeads(prev => prev.map(l => (l.id === lead.id || l.rowIndex === lead.rowIndex) ? { ...l, notes: noteDraft } : l));
-
+  const handleSaveNotes = async (lead: Lead) => {
+    setUpdatingRow(lead.rowIndex ?? -1);
     try {
-      await fetch('/api/admin/leads', {
+      const res = await fetch('/api/admin/leads', {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          rowIndex: lead.rowIndex,
           id: lead.id,
+          rowIndex: lead.rowIndex,
           status: lead.status || 'New',
           notes: noteDraft
         })
       });
+
+      if (res.ok) {
+        setLeads(prev => prev.map(l => l.id === lead.id ? { ...l, notes: noteDraft } : l));
+        setActiveEditingNoteId(null);
+      }
     } catch (err) {
-      console.error('Error syncing note to Google Sheets:', err);
+      console.error('Failed to update notes:', err);
     } finally {
       setUpdatingRow(null);
     }
   };
 
-  // Delete lead row (Admin -> Google Sheets)
   const handleDeleteLead = async (lead: Lead) => {
-    if (!confirm(`Delete ${lead.name || 'this lead'} directly from Google Sheets?`)) return;
-
-    setLeads(prev => prev.filter(l => l.id !== lead.id && l.rowIndex !== lead.rowIndex));
+    if (!window.confirm(`Are you sure you want to delete lead submission for ${lead.name || 'this student'}?`)) {
+      return;
+    }
 
     try {
-      await fetch(`/api/admin/leads?rowIndex=${lead.rowIndex || ''}&id=${encodeURIComponent(lead.id || '')}`, {
-        method: 'DELETE'
+      const res = await fetch('/api/admin/leads', {
+        method: 'DELETE',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          id: lead.id,
+          rowIndex: lead.rowIndex
+        })
       });
-    } catch (err) {
-      console.error('Error deleting lead from Google Sheets:', err);
-    }
-  };
 
-  const handleSaveSheet = () => {
-    if (typeof window !== 'undefined') {
-      if (sheetInput.trim()) {
-        localStorage.setItem('d2c_google_sheet_id', sheetInput.trim());
-      } else {
-        localStorage.removeItem('d2c_google_sheet_id');
+      if (res.ok) {
+        setLeads(prev => prev.filter(l => l.id !== lead.id));
+        if (selectedLeadModal?.id === lead.id) setSelectedLeadModal(null);
       }
+    } catch (err) {
+      console.error('Failed to delete lead:', err);
     }
-    fetchLeads(sheetInput.trim());
-    setShowConfig(false);
   };
 
-  const copyScriptCode = () => {
-    const code = `// Paste into Google Sheets > Extensions > Apps Script:
-// Read, Write & Two-Way Sync Script is located in your project root at google-apps-script.js`;
-    navigator.clipboard.writeText(code);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
-  };
+  // Category counts
+  const categoryCounts = useMemo(() => {
+    const counts = {
+      ALL: leads.length,
+      'B.Tech': 0,
+      'MBA': 0,
+      'Medical / MBBS': 0,
+      'College Query': 0,
+      'Callback': 0,
+      'Exam Query': 0,
+      'General Enquiry': 0
+    };
 
-  const filtered = leads.filter((lead) => {
-    const q = search.toLowerCase();
-    const matchesSearch = 
-      (lead.name || '').toLowerCase().includes(q) ||
-      (lead.phone || '').toLowerCase().includes(q) ||
-      (lead.email || '').toLowerCase().includes(q) ||
-      (lead.interestedCollege || '').toLowerCase().includes(q) ||
-      (lead.notes || '').toLowerCase().includes(q) ||
-      (lead.created_at || '').toLowerCase().includes(q) ||
-      (lead.submittedAt || '').toLowerCase().includes(q);
+    leads.forEach(l => {
+      const cat = parseCategory(l);
+      if (counts[cat as keyof typeof counts] !== undefined) {
+        counts[cat as keyof typeof counts]++;
+      } else {
+        counts['General Enquiry']++;
+      }
+    });
 
-    const matchesType = filterType === 'ALL' || lead.leadType === filterType;
-    const matchesStatus = filterStatus === 'ALL' || lead.status === filterStatus;
-    return matchesSearch && matchesType && matchesStatus;
-  });
+    return counts;
+  }, [leads]);
+
+  // Filtered Leads
+  const filtered = useMemo(() => {
+    return leads.filter((lead) => {
+      const cat = parseCategory(lead);
+      const matchesCategory = selectedCategoryTab === 'ALL' || cat === selectedCategoryTab;
+      const matchesStatus = filterStatus === 'ALL' || lead.status === filterStatus;
+
+      const q = search.toLowerCase();
+      const matchesSearch = 
+        !q ||
+        (lead.name || '').toLowerCase().includes(q) ||
+        (lead.phone || '').toLowerCase().includes(q) ||
+        (lead.email || '').toLowerCase().includes(q) ||
+        (lead.course || '').toLowerCase().includes(q) ||
+        (lead.interestedCollege || '').toLowerCase().includes(q) ||
+        (lead.message || '').toLowerCase().includes(q) ||
+        (lead.notes || '').toLowerCase().includes(q);
+
+      return matchesCategory && matchesStatus && matchesSearch;
+    });
+  }, [leads, selectedCategoryTab, filterStatus, search]);
 
   const exportCSV = () => {
     if (filtered.length === 0) return;
-    const headers = ['ID', 'Student Name', 'Phone', 'Email', 'Interested College', 'Inquiry Type', 'Status', 'Counselor Notes', 'Submitted At'];
+    const headers = ['ID', 'Student Name', 'Phone', 'Email', 'Form Category', 'Course', 'Interested College', 'Status', 'Counselor Notes', 'Submitted At', 'Full Message'];
     const rows = filtered.map((l) => [
       `"${l.id || ''}"`,
       `"${l.name || ''}"`,
       `"${l.phone || ''}"`,
       `"${l.email || ''}"`,
-      `"${l.interestedCollege || ''}"`,
-      `"${l.leadType || 'Inquiry'}"`,
+      `"${parseCategory(l)}"`,
+      `"${l.course || ''}"`,
+      `"${l.interestedCollege || l.college || ''}"`,
       `"${l.status || 'New'}"`,
       `"${(l.notes || '').replace(/"/g, '""')}"`,
-      `"${l.created_at || l.submittedAt || ''}"`
+      `"${l.created_at || l.submittedAt || ''}"`,
+      `"${(l.message || '').replace(/"/g, '""')}"`
     ]);
 
     const csvContent = 'data:text/csv;charset=utf-8,' + [headers.join(','), ...rows.map(e => e.join(','))].join('\n');
     const encodedUri = encodeURI(csvContent);
     const link = document.createElement('a');
     link.setAttribute('href', encodedUri);
-    link.setAttribute('download', `d2c-google-sheets-leads-${new Date().toISOString().slice(0, 10)}.csv`);
+    const filenameCategory = selectedCategoryTab === 'ALL' ? 'all-leads' : selectedCategoryTab.toLowerCase().replace(/[^a-z0-9]/g, '-');
+    link.setAttribute('download', `d2c-${filenameCategory}-${new Date().toISOString().slice(0, 10)}.csv`);
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
@@ -261,192 +293,181 @@ export default function LeadsPage() {
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
           <div className="flex items-center gap-3">
-            <h1 className="text-2xl md:text-3xl font-sora font-bold text-d2c-navy">
-              Live Google Sheets Sync
-            </h1>
-            <div className="flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">
-              <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-              2-Way Direct Sync
+            <div className="w-10 h-10 rounded-2xl bg-d2c-royal/10 text-d2c-royal flex items-center justify-center font-bold">
+              <Users className="w-5 h-5" />
+            </div>
+            <div>
+              <h1 className="text-2xl md:text-3xl font-sora font-bold text-d2c-navy">
+                Form Submissions & Student Leads
+              </h1>
+              <p className="text-xs text-gray-500 mt-0.5">
+                Individual listings separated by form type (B.Tech, MBA, Medical, College & Callback inquiries) with 2-way Google Sheets sync
+              </p>
             </div>
           </div>
-          <p className="text-xs text-gray-500 mt-1">
-            Any update made here writes directly to Google Sheets, and edits in Google Sheets automatically reflect here.
-          </p>
         </div>
 
-        {/* Action Buttons */}
-        <div className="flex flex-wrap items-center gap-2.5 self-start md:self-auto">
-          {/* Auto Sync Toggle */}
+        {/* Action Controls */}
+        <div className="flex flex-wrap items-center gap-2 self-start md:self-auto">
           <button
             onClick={() => setAutoSync(!autoSync)}
             className={`px-3 py-2 rounded-xl text-xs font-bold border transition-colors flex items-center gap-1.5 ${
               autoSync ? 'bg-emerald-50 text-emerald-800 border-emerald-200' : 'bg-white text-gray-500 border-gray-200'
             }`}
-            title="Toggle background auto-polling every 12 seconds"
+            title="Auto background sync"
           >
             <Radio className={`w-3.5 h-3.5 ${autoSync ? 'text-emerald-600 animate-pulse' : 'text-gray-400'}`} />
-            Auto-Sync: {autoSync ? 'ON (12s)' : 'PAUSED'}
+            Auto-Sync: {autoSync ? 'ON (15s)' : 'PAUSED'}
           </button>
 
-          {/* Sync Now */}
           <button
             onClick={() => fetchLeads()}
             disabled={refreshing}
             className="bg-white hover:bg-gray-50 text-d2c-navy border border-gray-200 px-3.5 py-2 rounded-xl font-bold text-xs transition-colors flex items-center gap-1.5 shadow-sm disabled:opacity-50"
-            title="Fetch latest rows from Google Sheets immediately"
           >
-            {refreshing ? (
-              <CircleLoader size="xs" color="royal" />
-            ) : (
-              <RefreshCw className="w-3.5 h-3.5 text-d2c-royal" />
-            )}
+            {refreshing ? <CircleLoader size="xs" color="royal" /> : <RefreshCw className="w-3.5 h-3.5 text-d2c-royal" />}
             Sync Now
           </button>
 
-          {/* Connect Google Sheet */}
           <button
             onClick={() => setShowConfig(!showConfig)}
             className="bg-white hover:bg-gray-50 text-d2c-navy border border-gray-200 px-3.5 py-2 rounded-xl font-bold text-xs transition-colors flex items-center gap-1.5 shadow-sm"
           >
             <FileSpreadsheet className="w-3.5 h-3.5 text-emerald-600" />
-            Sheet Link
+            Sheets Setup
           </button>
 
-          {/* Setup Script Guide */}
-          <button
-            onClick={() => setShowScriptModal(true)}
-            className="bg-white hover:bg-gray-50 text-d2c-navy border border-gray-200 px-3.5 py-2 rounded-xl font-bold text-xs transition-colors flex items-center gap-1.5 shadow-sm"
-          >
-            <Code className="w-3.5 h-3.5 text-d2c-royal" />
-            Apps Script Code
-          </button>
-
-          {/* Export CSV */}
           <button
             onClick={exportCSV}
             disabled={filtered.length === 0}
             className="bg-d2c-royal hover:bg-d2c-navy text-white px-4 py-2 rounded-xl font-bold text-xs transition-colors flex items-center gap-2 shadow-md shadow-d2c-royal/20 disabled:opacity-50"
           >
-            <Download className="w-3.5 h-3.5" /> Export
+            <Download className="w-3.5 h-3.5" /> Export {selectedCategoryTab !== 'ALL' ? selectedCategoryTab : ''} CSV
           </button>
         </div>
       </div>
 
-      {/* Sync Status Banner */}
-      <div className="bg-gradient-to-r from-emerald-500/10 via-blue-500/5 to-transparent p-4 rounded-2xl border border-emerald-500/20 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
-        <div className="flex items-center gap-3">
-          <div className="w-9 h-9 rounded-xl bg-emerald-600 text-white flex items-center justify-center font-bold shrink-0">
-            <CheckCircle2 className="w-5 h-5" />
-          </div>
-          <div>
-            <p className="text-xs font-bold text-d2c-navy">
-              Live Connection Active: <span className="text-emerald-700 font-semibold">{leads.length} leads in sync</span>
-            </p>
-            <p className="text-[11px] text-gray-500">
-              Last checked Google Sheets at: <span className="font-mono text-d2c-navy font-bold">{lastSynced}</span>
-            </p>
-          </div>
-        </div>
+      {/* QUICK STATS CARDS: CATEGORIZED LISTINGS */}
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
+        <button
+          type="button"
+          onClick={() => setSelectedCategoryTab('ALL')}
+          className={`p-4 rounded-2xl border text-left transition-all ${
+            selectedCategoryTab === 'ALL'
+              ? 'bg-d2c-navy text-white border-d2c-navy shadow-md ring-2 ring-d2c-royal/20'
+              : 'bg-white text-gray-700 border-gray-200 hover:border-d2c-royal/40'
+          }`}
+        >
+          <div className="text-[11px] font-bold uppercase tracking-wider opacity-70">All Forms</div>
+          <div className="text-2xl font-bold font-sora mt-1">{categoryCounts.ALL}</div>
+          <div className="text-[10px] opacity-60 mt-0.5">Total responses</div>
+        </button>
 
-        {sheetInput && (
-          <a
-            href={sheetInput.startsWith('http') ? sheetInput : `https://docs.google.com/spreadsheets/d/${sheetInput}`}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-xs font-bold text-emerald-700 hover:text-emerald-800 bg-white border border-emerald-200 px-3 py-1.5 rounded-lg flex items-center gap-1.5 self-end sm:self-auto"
-          >
-            Open in Google Sheets <ExternalLink className="w-3.5 h-3.5" />
-          </a>
-        )}
+        <button
+          type="button"
+          onClick={() => setSelectedCategoryTab('B.Tech')}
+          className={`p-4 rounded-2xl border text-left transition-all ${
+            selectedCategoryTab === 'B.Tech'
+              ? 'bg-purple-900 text-white border-purple-900 shadow-md ring-2 ring-purple-500/20'
+              : 'bg-white text-gray-700 border-gray-200 hover:border-purple-300'
+          }`}
+        >
+          <div className="flex items-center justify-between">
+            <span className="text-[11px] font-bold uppercase tracking-wider text-purple-600">B.Tech</span>
+            <GraduationCap className="w-4 h-4 text-purple-600" />
+          </div>
+          <div className="text-2xl font-bold font-sora mt-1 text-purple-900 group-hover:text-purple-700">
+            {categoryCounts['B.Tech']}
+          </div>
+          <div className="text-[10px] text-gray-500 mt-0.5">B.Tech Applications</div>
+        </button>
+
+        <button
+          type="button"
+          onClick={() => setSelectedCategoryTab('MBA')}
+          className={`p-4 rounded-2xl border text-left transition-all ${
+            selectedCategoryTab === 'MBA'
+              ? 'bg-blue-900 text-white border-blue-900 shadow-md ring-2 ring-blue-500/20'
+              : 'bg-white text-gray-700 border-gray-200 hover:border-blue-300'
+          }`}
+        >
+          <div className="flex items-center justify-between">
+            <span className="text-[11px] font-bold uppercase tracking-wider text-blue-600">MBA</span>
+            <Briefcase className="w-4 h-4 text-blue-600" />
+          </div>
+          <div className="text-2xl font-bold font-sora mt-1 text-blue-900">
+            {categoryCounts['MBA']}
+          </div>
+          <div className="text-[10px] text-gray-500 mt-0.5">MBA / PGDM Seats</div>
+        </button>
+
+        <button
+          type="button"
+          onClick={() => setSelectedCategoryTab('Medical / MBBS')}
+          className={`p-4 rounded-2xl border text-left transition-all ${
+            selectedCategoryTab === 'Medical / MBBS'
+              ? 'bg-emerald-900 text-white border-emerald-900 shadow-md ring-2 ring-emerald-500/20'
+              : 'bg-white text-gray-700 border-gray-200 hover:border-emerald-300'
+          }`}
+        >
+          <div className="flex items-center justify-between">
+            <span className="text-[11px] font-bold uppercase tracking-wider text-emerald-600">MBBS</span>
+            <Stethoscope className="w-4 h-4 text-emerald-600" />
+          </div>
+          <div className="text-2xl font-bold font-sora mt-1 text-emerald-900">
+            {categoryCounts['Medical / MBBS']}
+          </div>
+          <div className="text-[10px] text-gray-500 mt-0.5">Medical & NEET</div>
+        </button>
+
+        <button
+          type="button"
+          onClick={() => setSelectedCategoryTab('College Query')}
+          className={`p-4 rounded-2xl border text-left transition-all ${
+            selectedCategoryTab === 'College Query'
+              ? 'bg-amber-900 text-white border-amber-900 shadow-md ring-2 ring-amber-500/20'
+              : 'bg-white text-gray-700 border-gray-200 hover:border-amber-300'
+          }`}
+        >
+          <div className="flex items-center justify-between">
+            <span className="text-[11px] font-bold uppercase tracking-wider text-amber-600">College Forms</span>
+            <Layers className="w-4 h-4 text-amber-600" />
+          </div>
+          <div className="text-2xl font-bold font-sora mt-1 text-amber-900">
+            {categoryCounts['College Query']}
+          </div>
+          <div className="text-[10px] text-gray-500 mt-0.5">Specific College Forms</div>
+        </button>
+
+        <button
+          type="button"
+          onClick={() => setSelectedCategoryTab('Callback')}
+          className={`p-4 rounded-2xl border text-left transition-all ${
+            selectedCategoryTab === 'Callback'
+              ? 'bg-rose-900 text-white border-rose-900 shadow-md ring-2 ring-rose-500/20'
+              : 'bg-white text-gray-700 border-gray-200 hover:border-rose-300'
+          }`}
+        >
+          <div className="flex items-center justify-between">
+            <span className="text-[11px] font-bold uppercase tracking-wider text-rose-600">Callbacks</span>
+            <PhoneCall className="w-4 h-4 text-rose-600" />
+          </div>
+          <div className="text-2xl font-bold font-sora mt-1 text-rose-900">
+            {categoryCounts['Callback']}
+          </div>
+          <div className="text-[10px] text-gray-500 mt-0.5">Urgent Call Requests</div>
+        </button>
       </div>
 
-      {/* Sheet Configuration Form */}
-      {showConfig && (
-        <div className="bg-white rounded-2xl p-6 border-2 border-emerald-500/30 shadow-lg space-y-4 animate-in fade-in duration-150">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-2">
-              <FileSpreadsheet className="w-5 h-5 text-emerald-600" />
-              <h3 className="text-sm font-bold text-d2c-navy">Link Live Google Sheet URL</h3>
-            </div>
-            <button onClick={() => setShowConfig(false)} className="text-xs text-gray-400 hover:text-gray-600">✕ Close</button>
-          </div>
-
-          <p className="text-xs text-gray-500 leading-relaxed">
-            Enter your Google Sheet URL (from your browser address bar) or Sheet ID. Make sure the sheet sharing is set to &quot;Anyone with the link can view&quot;.
-          </p>
-
-          <div className="flex flex-col sm:flex-row gap-3">
-            <input
-              type="text"
-              value={sheetInput}
-              onChange={(e) => setSheetInput(e.target.value)}
-              placeholder="https://docs.google.com/spreadsheets/d/1BxiMVs0XRA5n.../edit"
-              className="flex-1 px-4 py-2.5 text-xs rounded-xl border border-gray-200 focus:border-emerald-500 outline-none"
-            />
-            <button
-              onClick={handleSaveSheet}
-              className="bg-emerald-600 hover:bg-emerald-700 text-white px-5 py-2.5 rounded-xl font-bold text-xs transition-colors shrink-0"
-            >
-              Save & Link Sheet
-            </button>
-          </div>
-        </div>
-      )}
-
-      {/* Apps Script Installation Modal */}
-      {showScriptModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-in fade-in">
-          <div className="bg-white rounded-3xl max-w-2xl w-full p-6 shadow-2xl border border-gray-200 space-y-4 max-h-[90vh] overflow-y-auto">
-            <div className="flex items-center justify-between border-b pb-3">
-              <div className="flex items-center gap-2">
-                <Code className="w-5 h-5 text-d2c-royal" />
-                <h3 className="text-base font-sora font-bold text-d2c-navy">Two-Way Google Apps Script Setup</h3>
-              </div>
-              <button onClick={() => setShowScriptModal(false)} className="text-gray-400 hover:text-gray-600 text-sm font-bold">✕</button>
-            </div>
-
-            <div className="space-y-3 text-xs text-gray-600 leading-relaxed">
-              <p className="font-semibold text-d2c-navy">To enable full two-way editing (status updates & counselor notes writing back to Google Sheets):</p>
-              <ol className="list-decimal pl-5 space-y-1.5">
-                <li>Open your Google Sheet where student responses go.</li>
-                <li>In the top menu, click <strong>Extensions &gt; Apps Script</strong>.</li>
-                <li>Select all existing code and replace it with the script located in your project at <code className="bg-gray-100 text-d2c-royal px-1.5 py-0.5 rounded font-mono font-bold">google-apps-script.js</code>.</li>
-                <li>Click <strong>Deploy &gt; Manage deployments</strong> &gt; Edit (pencil icon) &gt; Version: <strong>New version</strong> &gt; Deploy.</li>
-                <li>Ensure access is set to <strong>Anyone</strong>.</li>
-              </ol>
-            </div>
-
-            <div className="p-3 bg-gray-50 border border-gray-200 rounded-xl space-y-2">
-              <div className="flex items-center justify-between">
-                <span className="text-[11px] font-bold text-gray-500 uppercase tracking-wider">File: google-apps-script.js</span>
-                <span className="text-[11px] text-emerald-600 font-semibold">Ready in root directory</span>
-              </div>
-              <p className="text-[11px] text-gray-500">
-                The script includes <code className="font-mono text-d2c-navy">doGet</code> (fetching rows for Admin) and <code className="font-mono text-d2c-navy">doPost</code> (writing status/notes updates back from Admin).
-              </p>
-            </div>
-
-            <div className="flex justify-end pt-2">
-              <button
-                onClick={() => setShowScriptModal(false)}
-                className="px-5 py-2 bg-d2c-royal hover:bg-d2c-navy text-white rounded-xl text-xs font-bold"
-              >
-                Got It
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* Filter and Search Bar */}
-      <div className="flex flex-col sm:flex-row items-center justify-between gap-3 bg-white p-3 rounded-2xl border border-gray-150 shadow-sm">
+      {/* FILTER & SEARCH BAR */}
+      <div className="flex flex-col sm:flex-row items-center justify-between gap-3 bg-white p-3 rounded-2xl border border-gray-200 shadow-xs">
         <div className="relative flex-1 w-full">
           <Search className="w-4 h-4 text-gray-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
           <input
             type="text"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            placeholder="Search by student name, phone, college, or counselor notes..."
+            placeholder={`Search across ${selectedCategoryTab === 'ALL' ? 'all' : selectedCategoryTab} submissions by name, phone, course, college...`}
             className="w-full pl-10 pr-4 py-2 text-sm rounded-xl border border-transparent hover:border-gray-200 focus:border-d2c-royal outline-none"
           />
         </div>
@@ -463,43 +484,30 @@ export default function LeadsPage() {
               <option key={s.value} value={s.value}>{s.label}</option>
             ))}
           </select>
-
-          {/* Type Filter */}
-          <select
-            value={filterType}
-            onChange={(e) => setFilterType(e.target.value)}
-            className="text-xs px-3 py-2 rounded-xl border border-gray-200 bg-white font-medium text-gray-700 outline-none focus:border-d2c-royal"
-          >
-            <option value="ALL">All Inquiry Types</option>
-            <option value="Direct Admission">Direct Admission</option>
-            <option value="Management Quota">Management Quota</option>
-            <option value="Fee Inquiry">Fee Inquiry</option>
-            <option value="Exam Counseling">Exam Counseling</option>
-          </select>
         </div>
       </div>
 
-      {/* Leads Table with Direct 2-Way Sync Editing */}
-      <div className="relative bg-white rounded-2xl shadow-sm border border-gray-150 overflow-hidden">
+      {/* LEADS TABLE */}
+      <div className="bg-white rounded-3xl shadow-sm border border-gray-200/80 overflow-hidden relative">
         {refreshing && (
           <CircleLoader
             overlay
             size="md"
             color="royal"
-            text="Syncing live leads with Google Sheets..."
-            subtext="Connecting to live spreadsheet..."
+            text="Syncing form submissions..."
+            subtext="Updating live leads..."
           />
         )}
         <div className="overflow-x-auto">
           <table className="w-full text-left border-collapse">
             <thead>
               <tr className="bg-gray-50/70 border-b border-gray-150 text-[11px] font-bold text-gray-500 uppercase tracking-wider">
-                <th className="px-5 py-4">Student</th>
-                <th className="px-5 py-4">Submitted At (Sheet)</th>
+                <th className="px-5 py-4">Student & Contact</th>
+                <th className="px-5 py-4">Dedicated Form / Course</th>
                 <th className="px-5 py-4">Target College / Context</th>
-                <th className="px-5 py-4">Category</th>
-                <th className="px-5 py-4">Status (Syncs to Sheet)</th>
+                <th className="px-5 py-4">Status (2-Way Sync)</th>
                 <th className="px-5 py-4">Counselor Notes</th>
+                <th className="px-5 py-4">Submitted At</th>
                 <th className="px-5 py-4 text-right">Actions</th>
               </tr>
             </thead>
@@ -510,8 +518,8 @@ export default function LeadsPage() {
                     <CircleLoader
                       size="lg"
                       color="royal"
-                      text="Fetching live student leads from Google Sheets..."
-                      subtext="Reading live responses from connected sheet..."
+                      text="Loading form submissions..."
+                      subtext="Reading leads database..."
                     />
                   </td>
                 </tr>
@@ -519,181 +527,172 @@ export default function LeadsPage() {
                 <tr>
                   <td colSpan={7} className="px-6 py-16 text-center space-y-3">
                     <div className="w-12 h-12 bg-gray-100 text-gray-400 rounded-2xl flex items-center justify-center mx-auto">
-                      <FileSpreadsheet className="w-6 h-6 text-emerald-600" />
+                      <FileSpreadsheet className="w-6 h-6 text-gray-400" />
                     </div>
                     <div>
-                      <h4 className="text-sm font-bold text-d2c-navy">No leads matching filter</h4>
+                      <h4 className="text-sm font-bold text-d2c-navy">
+                        No submissions found for {selectedCategoryTab === 'ALL' ? 'selected filter' : selectedCategoryTab}
+                      </h4>
                       <p className="text-xs text-gray-400 max-w-sm mx-auto mt-1 leading-relaxed">
-                        Leads submitted on public pages stream directly into your Google Sheet and appear here in real-time.
+                        When users submit forms for {selectedCategoryTab} on the website, they immediately appear in this dedicated section.
                       </p>
                     </div>
-                    <button
-                      onClick={() => setShowConfig(true)}
-                      className="inline-flex items-center gap-1.5 px-4 py-2 bg-emerald-50 text-emerald-700 hover:bg-emerald-100 rounded-xl text-xs font-bold transition-colors"
-                    >
-                      <FileSpreadsheet className="w-3.5 h-3.5" /> Check Google Sheet URL
-                    </button>
                   </td>
                 </tr>
               ) : (
                 filtered.map((lead) => {
-                  const isUpdating = updatingRow === lead.rowIndex;
+                  const cat = parseCategory(lead);
                   const isEditingNote = activeEditingNoteId === lead.id;
 
                   return (
-                    <tr key={lead.id} className="hover:bg-gray-50/50 transition-colors">
+                    <tr key={lead.id} className="hover:bg-gray-50/60 transition-colors">
                       {/* Student Info */}
                       <td className="px-5 py-4">
                         <div className="font-bold text-d2c-navy leading-snug">
-                          {lead.name || 'Anonymous Student'}
+                          {lead.name || 'Prospective Student'}
                         </div>
-                        <div className="text-xs text-gray-500 mt-0.5 font-medium">
-                          {lead.phone || lead.email || 'No phone'}
-                        </div>
-                      </td>
-
-                      {/* Submitted At / Timestamp from Sheet */}
-                      <td className="px-5 py-4 whitespace-nowrap">
-                        {(() => {
-                          const timeInfo = parseTimestampParts(lead.created_at || lead.submittedAt);
-                          return (
-                            <div>
-                              <div className="flex items-center gap-1.5 text-xs font-bold text-d2c-navy">
-                                <Calendar className="w-3.5 h-3.5 text-d2c-royal shrink-0" />
-                                <span>{timeInfo.date}</span>
-                              </div>
-                              {timeInfo.time && (
-                                <div className="flex items-center gap-1 text-[11px] text-gray-500 mt-1 font-mono">
-                                  <Clock className="w-3 h-3 text-emerald-600 shrink-0" />
-                                  <span>{timeInfo.time}</span>
-                                </div>
-                              )}
-                            </div>
-                          );
-                        })()}
-                      </td>
-
-                      {/* Interested College */}
-                      <td className="px-5 py-4">
-                        <div className="font-semibold text-xs text-d2c-navy max-w-[200px] truncate" title={lead.interestedCollege || lead.message}>
-                          {lead.interestedCollege || lead.message || 'General Counseling'}
-                        </div>
-                      </td>
-
-                      {/* Lead Type */}
-                      <td className="px-5 py-4">
-                        <span className="text-[11px] font-bold px-2.5 py-1 rounded-full bg-blue-50 text-blue-700">
-                          {lead.leadType || 'Direct Inquiry'}
-                        </span>
-                      </td>
-
-                      {/* Status Dropdown (Writes directly to Google Sheet) */}
-                      <td className="px-5 py-4">
-                        <div className="relative inline-block">
-                          <select
-                            value={lead.status || 'New'}
-                            disabled={isUpdating}
-                            onChange={(e) => handleUpdateStatus(lead, e.target.value)}
-                            className={`text-xs font-bold px-3 py-1.5 rounded-xl border outline-none cursor-pointer transition-all ${
-                              STATUS_OPTIONS.find(s => s.value === lead.status)?.color || 'bg-gray-50 text-gray-700 border-gray-200'
-                            }`}
+                        <div className="flex items-center gap-2 mt-1">
+                          <a
+                            href={`tel:${lead.phone}`}
+                            className="text-xs font-semibold text-gray-600 hover:text-d2c-royal flex items-center gap-1"
                           >
-                            {STATUS_OPTIONS.map((opt) => (
-                              <option key={opt.value} value={opt.value} className="bg-white text-gray-900">
-                                {opt.label}
-                              </option>
-                            ))}
-                          </select>
-                          {isUpdating && (
-                            <span className="flex items-center gap-1.5 text-[10px] text-emerald-600 mt-1 font-semibold">
-                              <CircleLoader size="xs" color="emerald" />
-                              <span>Syncing to sheet...</span>
-                            </span>
+                            <Phone className="w-3 h-3 text-emerald-600" />
+                            <span>{lead.phone}</span>
+                          </a>
+                          {lead.phone && (
+                            <a
+                              href={`https://wa.me/${lead.phone.replace(/[^0-9]/g, '')}`}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="text-[10px] text-emerald-700 bg-emerald-50 px-1.5 py-0.2 rounded hover:bg-emerald-100 transition-colors font-bold"
+                              title="Chat on WhatsApp"
+                            >
+                              WhatsApp
+                            </a>
                           )}
                         </div>
-                      </td>
-
-                      {/* Counselor Notes (Writes directly to Google Sheet) */}
-                      <td className="px-5 py-4 max-w-[240px]">
-                        {isEditingNote ? (
-                          <div className="flex items-center gap-1.5">
-                            <input
-                              type="text"
-                              autoFocus
-                              value={noteDraft}
-                              onChange={(e) => setNoteDraft(e.target.value)}
-                              placeholder="Add counselor note..."
-                              className="text-xs px-2.5 py-1.5 rounded-lg border border-d2c-royal focus:ring-1 focus:ring-d2c-royal outline-none w-full"
-                              onKeyDown={(e) => {
-                                if (e.key === 'Enter') handleSaveNote(lead);
-                                if (e.key === 'Escape') setActiveEditingNoteId(null);
-                              }}
-                            />
-                            <button
-                              type="button"
-                              onClick={() => handleSaveNote(lead)}
-                              className="p-1.5 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700 transition-colors shrink-0"
-                              title="Save to Google Sheet"
-                            >
-                              <Check className="w-3.5 h-3.5" />
-                            </button>
-                          </div>
-                        ) : (
-                          <div 
-                            onClick={() => {
-                              setActiveEditingNoteId(lead.id);
-                              setNoteDraft(lead.notes || '');
-                            }}
-                            className="group flex items-center justify-between gap-2 p-1.5 -m-1.5 rounded-lg hover:bg-gray-100/70 cursor-pointer transition-colors"
-                            title="Click to edit note (syncs to Google Sheet)"
-                          >
-                            <span className="text-xs text-gray-600 truncate">
-                              {lead.notes ? lead.notes : <span className="text-gray-400 italic text-[11px]">+ Add Note</span>}
-                            </span>
-                            <Edit3 className="w-3 h-3 text-gray-400 opacity-0 group-hover:opacity-100 transition-opacity shrink-0" />
+                        {lead.email && (
+                          <div className="text-[11px] text-gray-400 mt-0.5 flex items-center gap-1">
+                            <Mail className="w-3 h-3 text-gray-400" />
+                            <span className="truncate max-w-[180px]">{lead.email}</span>
                           </div>
                         )}
                       </td>
 
-                      {/* Quick Contact & Delete Actions */}
-                      <td className="px-5 py-4 text-right">
+                      {/* Dedicated Category & Course */}
+                      <td className="px-5 py-4">
+                        <div className="flex items-center gap-1.5 mb-1">
+                          <span className={`text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full ${
+                            cat === 'B.Tech' ? 'bg-purple-50 text-purple-800 border border-purple-200' :
+                            cat === 'MBA' ? 'bg-blue-50 text-blue-800 border border-blue-200' :
+                            cat === 'Medical / MBBS' ? 'bg-emerald-50 text-emerald-800 border border-emerald-200' :
+                            cat === 'Callback' ? 'bg-rose-50 text-rose-800 border border-rose-200' :
+                            'bg-gray-100 text-gray-700 border border-gray-200'
+                          }`}>
+                            {cat}
+                          </span>
+                        </div>
+                        <div className="text-xs font-bold text-gray-900 leading-snug">
+                          {lead.course || lead.formType || 'Direct Admission'}
+                        </div>
+                      </td>
+
+                      {/* Target College */}
+                      <td className="px-5 py-4">
+                        <div className="text-xs font-semibold text-d2c-navy leading-snug max-w-[200px]">
+                          {lead.interestedCollege || lead.college || 'General College Guidance'}
+                        </div>
+                        {lead.exam && (
+                          <div className="text-[10px] text-gray-500 mt-0.5">
+                            Exam: <span className="font-semibold text-gray-700">{lead.exam}</span>
+                          </div>
+                        )}
+                      </td>
+
+                      {/* Status */}
+                      <td className="px-5 py-4">
+                        <select
+                          value={lead.status || 'New'}
+                          onChange={(e) => handleStatusChange(lead, e.target.value)}
+                          className={`text-xs px-2.5 py-1.5 rounded-xl font-bold border transition-colors outline-none cursor-pointer ${
+                            STATUS_OPTIONS.find(s => s.value === (lead.status || 'New'))?.color || 'bg-gray-50'
+                          }`}
+                        >
+                          {STATUS_OPTIONS.map(s => (
+                            <option key={s.value} value={s.value}>{s.label}</option>
+                          ))}
+                        </select>
+                      </td>
+
+                      {/* Counselor Notes */}
+                      <td className="px-5 py-4 max-w-[220px]">
+                        {isEditingNote ? (
+                          <div className="space-y-1.5">
+                            <textarea
+                              rows={2}
+                              value={noteDraft}
+                              onChange={(e) => setNoteDraft(e.target.value)}
+                              className="w-full text-xs p-2 rounded-lg border border-d2c-royal outline-none"
+                              placeholder="Add counselor follow-up notes..."
+                            />
+                            <div className="flex items-center gap-1">
+                              <button
+                                onClick={() => handleSaveNotes(lead)}
+                                className="px-2 py-0.5 rounded bg-emerald-600 text-white text-[10px] font-bold"
+                              >
+                                Save
+                              </button>
+                              <button
+                                onClick={() => setActiveEditingNoteId(null)}
+                                className="px-2 py-0.5 rounded bg-gray-200 text-gray-600 text-[10px]"
+                              >
+                                Cancel
+                              </button>
+                            </div>
+                          </div>
+                        ) : (
+                          <div
+                            onClick={() => {
+                              setActiveEditingNoteId(lead.id);
+                              setNoteDraft(lead.notes || '');
+                            }}
+                            className="group/note flex items-start justify-between gap-1 cursor-pointer hover:bg-gray-100/60 p-1 rounded-lg transition-colors"
+                            title="Click to edit notes"
+                          >
+                            <span className="text-xs text-gray-600 line-clamp-2 italic">
+                              {lead.notes || 'Add follow-up notes...'}
+                            </span>
+                            <Edit3 className="w-3 h-3 text-gray-400 group-hover/note:text-d2c-royal shrink-0 mt-0.5 opacity-0 group-hover/note:opacity-100 transition-opacity" />
+                          </div>
+                        )}
+                      </td>
+
+                      {/* Submitted At */}
+                      <td className="px-5 py-4 text-xs text-gray-500 whitespace-nowrap">
+                        <div className="flex items-center gap-1 font-mono">
+                          <Clock className="w-3 h-3 text-gray-400" />
+                          <span>{lead.submittedAt || lead.created_at?.slice(0, 10) || 'Recent'}</span>
+                        </div>
+                      </td>
+
+                      {/* Actions */}
+                      <td className="px-5 py-4 text-right whitespace-nowrap">
                         <div className="flex items-center justify-end gap-1.5">
-                          {lead.phone && (
-                            <>
-                              <a
-                                href={`tel:${lead.phone.replace(/[^\d+]/g, '')}`}
-                                className="p-2 rounded-lg bg-gray-100 hover:bg-emerald-50 text-gray-600 hover:text-emerald-700 transition-colors"
-                                title={`Call ${lead.phone}`}
-                              >
-                                <Phone className="w-3.5 h-3.5" />
-                              </a>
-                              <a
-                                href={`https://wa.me/${lead.phone.replace(/[^\d]/g, '')}`}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="p-2 rounded-lg bg-gray-100 hover:bg-emerald-50 text-gray-600 hover:text-emerald-700 transition-colors"
-                                title="Open WhatsApp chat"
-                              >
-                                <MessageSquare className="w-3.5 h-3.5" />
-                              </a>
-                            </>
-                          )}
-                          {lead.email && (
-                            <a
-                              href={`mailto:${lead.email}`}
-                              className="p-2 rounded-lg bg-gray-100 hover:bg-d2c-royal/10 text-gray-600 hover:text-d2c-royal transition-colors"
-                              title={`Email ${lead.email}`}
-                            >
-                              <Mail className="w-3.5 h-3.5" />
-                            </a>
-                          )}
+                          <button
+                            type="button"
+                            onClick={() => setSelectedLeadModal(lead)}
+                            className="p-1.5 text-gray-500 hover:text-d2c-royal hover:bg-blue-50 rounded-lg transition-colors"
+                            title="View Full Submission Details"
+                          >
+                            <Eye className="w-4 h-4" />
+                          </button>
                           <button
                             type="button"
                             onClick={() => handleDeleteLead(lead)}
-                            className="p-2 rounded-lg text-gray-400 hover:text-red-500 hover:bg-red-50 transition-colors"
-                            title="Delete lead directly from Google Sheet"
+                            className="p-1.5 text-gray-400 hover:text-rose-600 hover:bg-rose-50 rounded-lg transition-colors"
+                            title="Delete Lead"
                           >
-                            <Trash2 className="w-3.5 h-3.5" />
+                            <Trash2 className="w-4 h-4" />
                           </button>
                         </div>
                       </td>
@@ -705,6 +704,114 @@ export default function LeadsPage() {
           </table>
         </div>
       </div>
+
+      {/* LEAD DETAILS MODAL */}
+      {selectedLeadModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-in fade-in">
+          <div className="bg-white rounded-3xl max-w-xl w-full p-6 md:p-8 shadow-2xl border border-gray-200 space-y-6 max-h-[90vh] overflow-y-auto">
+            <div className="flex items-center justify-between pb-3 border-b border-gray-100">
+              <div className="flex items-center gap-2">
+                <span className="text-xs font-bold uppercase tracking-wider px-2.5 py-1 rounded-full bg-purple-50 text-purple-700 border border-purple-100">
+                  {parseCategory(selectedLeadModal)}
+                </span>
+                <span className="text-xs text-gray-400">ID: {selectedLeadModal.id}</span>
+              </div>
+              <button
+                onClick={() => setSelectedLeadModal(null)}
+                className="w-8 h-8 rounded-full bg-gray-100 hover:bg-gray-200 flex items-center justify-center text-gray-500 font-bold"
+              >
+                ✕
+              </button>
+            </div>
+
+            <div>
+              <h3 className="text-xl font-bold font-sora text-d2c-navy">
+                {selectedLeadModal.name || 'Prospective Student'}
+              </h3>
+              <p className="text-xs text-gray-500 mt-0.5">
+                Submitted on {selectedLeadModal.submittedAt || selectedLeadModal.created_at || 'Recent'}
+              </p>
+            </div>
+
+            <div className="grid grid-cols-2 gap-4 text-xs bg-gray-50 p-4 rounded-2xl border border-gray-200">
+              <div>
+                <span className="text-gray-400 block font-medium">Target Course:</span>
+                <span className="font-bold text-gray-900 text-sm">{selectedLeadModal.course || 'Not specified'}</span>
+              </div>
+              <div>
+                <span className="text-gray-400 block font-medium">Form Name:</span>
+                <span className="font-bold text-gray-900 text-sm">{selectedLeadModal.formType || selectedLeadModal.leadType || 'Direct Website Form'}</span>
+              </div>
+              <div>
+                <span className="text-gray-400 block font-medium">Target College:</span>
+                <span className="font-bold text-gray-900">{selectedLeadModal.interestedCollege || selectedLeadModal.college || 'General'}</span>
+              </div>
+              <div>
+                <span className="text-gray-400 block font-medium">Entrance Exam:</span>
+                <span className="font-bold text-gray-900">{selectedLeadModal.exam || 'N/A'}</span>
+              </div>
+            </div>
+
+            {/* Contact Actions */}
+            <div className="flex flex-wrap items-center gap-3">
+              <a
+                href={`tel:${selectedLeadModal.phone}`}
+                className="flex-1 px-4 py-2.5 rounded-xl bg-d2c-royal hover:bg-blue-700 text-white font-bold text-xs flex items-center justify-center gap-2 shadow-sm"
+              >
+                <Phone className="w-4 h-4" /> Call: {selectedLeadModal.phone}
+              </a>
+              {selectedLeadModal.phone && (
+                <a
+                  href={`https://wa.me/${selectedLeadModal.phone.replace(/[^0-9]/g, '')}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex-1 px-4 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs flex items-center justify-center gap-2 shadow-sm"
+                >
+                  <MessageSquare className="w-4 h-4" /> Chat on WhatsApp
+                </a>
+              )}
+            </div>
+
+            {/* Message Body */}
+            <div>
+              <label className="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-1.5">
+                Submitted Message / Query:
+              </label>
+              <div className="p-4 bg-blue-50/50 rounded-2xl border border-blue-100 text-xs md:text-sm text-gray-800 leading-relaxed">
+                {selectedLeadModal.message || 'No specific text message submitted.'}
+              </div>
+            </div>
+
+            {/* Counselor Notes */}
+            <div>
+              <label className="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-1.5">
+                Counselor Follow-up Notes:
+              </label>
+              <div className="p-3 bg-gray-50 rounded-xl border border-gray-200 text-xs text-gray-700">
+                {selectedLeadModal.notes || 'No counselor notes recorded yet.'}
+              </div>
+            </div>
+
+            <div className="flex justify-between items-center pt-2 border-t border-gray-100">
+              <button
+                type="button"
+                onClick={() => handleDeleteLead(selectedLeadModal)}
+                className="text-xs text-rose-600 hover:underline flex items-center gap-1 font-semibold"
+              >
+                <Trash2 className="w-3.5 h-3.5" /> Delete this lead
+              </button>
+              <button
+                type="button"
+                onClick={() => setSelectedLeadModal(null)}
+                className="px-5 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-xl text-xs font-bold"
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
     </div>
   );
 }

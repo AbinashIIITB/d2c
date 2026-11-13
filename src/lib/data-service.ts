@@ -539,8 +539,48 @@ export async function deleteExam(id: string): Promise<boolean> {
 }
 
 // ----------------------------------------------------------------------
-// Blogs CRUD Methods
+// Blogs CRUD Methods & Mappers
 // ----------------------------------------------------------------------
+
+export function mapBlogToCamelCase(b: any): any {
+  if (!b) return b;
+  return {
+    ...b,
+    id: String(b.id ?? b.slug ?? `blog_${Date.now()}`),
+    title: b.title || '',
+    slug: b.slug || '',
+    excerpt: b.excerpt || '',
+    content: b.content || '',
+    category: b.category || 'Admission Guide',
+    author: b.author || 'Direct2Campus Editorial Team',
+    date: b.date || new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }),
+    readTime: b.read_time ?? b.readTime ?? '5 min read',
+    imageUrl: b.image_url ?? b.imageUrl ?? 'https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&q=80&w=800',
+    tags: Array.isArray(b.tags) ? b.tags : [],
+    published: b.published !== false,
+    seoTitle: b.seo_title ?? b.seoTitle ?? b.title ?? '',
+    metaDescription: b.meta_description ?? b.metaDescription ?? b.excerpt ?? '',
+    updatedAt: b.updated_at ?? b.updatedAt ?? new Date().toISOString()
+  };
+}
+
+export function mapBlogToSnakeCase(body: Record<string, any>): Record<string, any> {
+  const result: Record<string, any> = {};
+  const keyMap: Record<string, string> = {
+    readTime: 'read_time',
+    imageUrl: 'image_url',
+    seoTitle: 'seo_title',
+    metaDescription: 'meta_description',
+    updatedAt: 'updated_at'
+  };
+
+  for (const [key, value] of Object.entries(body)) {
+    const targetKey = keyMap[key] || key;
+    result[targetKey] = value;
+  }
+
+  return result;
+}
 
 export async function getAllBlogs(): Promise<any[]> {
   const now = Date.now();
@@ -548,114 +588,154 @@ export async function getAllBlogs(): Promise<any[]> {
     return blogsCache.data;
   }
 
-  let result: any[] = [];
+  const store = initLocalStore();
+  const localList = (store.blogs || []).map(mapBlogToCamelCase);
+  const blogMap = new Map<string, any>();
+
+  // Add local blogs first
+  for (const b of localList) {
+    if (b.slug) blogMap.set(b.slug, b);
+    if (b.id) blogMap.set(String(b.id), b);
+  }
+
   if (isSupabaseConfigured) {
     try {
       const { data, error } = await supabaseAdmin
         .from('blogs')
         .select('*')
         .order('date', { ascending: false });
-      if (!error && data && data.length > 0) {
-        result = data;
+      if (!error && Array.isArray(data)) {
+        for (const item of data) {
+          const mapped = mapBlogToCamelCase(item);
+          // Only add if not already present or newer
+          if (!blogMap.has(mapped.slug) && !blogMap.has(mapped.id)) {
+            blogMap.set(mapped.slug || mapped.id, mapped);
+          }
+        }
       }
     } catch {
       // Supabase table may not exist yet, safely fallback
     }
   }
 
-  if (result.length === 0) {
-    const store = initLocalStore();
-    result = store.blogs || [];
+  // Ensure static fallback if map is empty
+  if (blogMap.size === 0) {
+    for (const b of staticBlogs) {
+      const mapped = mapBlogToCamelCase(b);
+      blogMap.set(mapped.slug || mapped.id, mapped);
+    }
   }
 
+  const result = Array.from(new Set(blogMap.values()));
   blogsCache = { data: result, timestamp: now };
   return result;
 }
 
 export async function getBlogByIdOrSlug(identifier: string): Promise<any | null> {
+  if (!identifier) return null;
+
+  // 1. Check memory cache
   if (blogsCache && Date.now() - blogsCache.timestamp < CMS_CACHE_TTL) {
     const cached = blogsCache.data.find(b => String(b.id) === String(identifier) || b.slug === identifier);
-    if (cached) return cached;
+    if (cached) return mapBlogToCamelCase(cached);
   }
 
+  // 2. Check local store
+  const store = initLocalStore();
+  const foundLocal = (store.blogs || []).find(b => String(b.id) === String(identifier) || b.slug === identifier);
+  if (foundLocal) {
+    return mapBlogToCamelCase(foundLocal);
+  }
+
+  // 3. Check Supabase (safe lookup: query slug first, then id)
   if (isSupabaseConfigured) {
     try {
-      const { data, error } = await supabaseAdmin
+      // First try slug lookup (safe for all string identifiers)
+      const { data: slugData } = await supabaseAdmin
         .from('blogs')
         .select('*')
-        .or(`id.eq.${identifier},slug.eq.${identifier}`)
+        .eq('slug', identifier)
         .maybeSingle();
-      if (!error && data) {
-        return data;
+
+      if (slugData) {
+        return mapBlogToCamelCase(slugData);
+      }
+
+      // If identifier looks like a standard ID or UUID, check id column
+      const { data: idData } = await supabaseAdmin
+        .from('blogs')
+        .select('*')
+        .eq('id', identifier)
+        .maybeSingle();
+
+      if (idData) {
+        return mapBlogToCamelCase(idData);
       }
     } catch {
-      // Fallback to local store
+      // Fallback
     }
   }
 
-  const store = initLocalStore();
-  const found = (store.blogs || []).find(b => String(b.id) === String(identifier) || b.slug === identifier);
-  return found || null;
+  // 4. Fallback to static blogs
+  const foundStatic = staticBlogs.find(b => String(b.id) === String(identifier) || b.slug === identifier);
+  return foundStatic ? mapBlogToCamelCase(foundStatic) : null;
 }
 
 export async function saveBlog(data: any): Promise<any> {
   blogsCache = null; // Invalidate cache immediately on edit
-  const blogId = data.id ? String(data.id) : `blog_${Date.now()}`;
-  const slug = String(data.slug || data.title || '').trim().toLowerCase().replace(/[^a-z0-9-]/g, '-').replace(/-+/g, '-');
-  
-  const payload = {
+  const slug = String(data.slug || data.title || '')
+    .trim()
+    .toLowerCase()
+    .replace(/[^a-z0-9-]/g, '-')
+    .replace(/-+/g, '-');
+  const blogId = data.id ? String(data.id) : (slug || `blog_${Date.now()}`);
+
+  const camelPayload = mapBlogToCamelCase({
     ...data,
     id: blogId,
     slug,
-    title: String(data.title || '').trim(),
-    excerpt: data.excerpt || '',
-    content: data.content || '',
-    category: data.category || 'Admission Guide',
-    author: data.author || 'Direct2Campus Editorial Team',
-    date: data.date || new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }),
-    readTime: data.readTime || '5 min read',
-    imageUrl: data.imageUrl || data.image_url || 'https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&q=80&w=800',
-    tags: Array.isArray(data.tags) ? data.tags : [],
-    published: data.published ?? true,
-    seoTitle: data.seoTitle || data.title,
-    metaDescription: data.metaDescription || data.excerpt,
     updatedAt: new Date().toISOString()
-  };
+  });
 
+  const snakePayload = mapBlogToSnakeCase(camelPayload);
+
+  // 1. Update Supabase if configured
   if (isSupabaseConfigured) {
     try {
       const { data: saved, error } = await supabaseAdmin
         .from('blogs')
-        .upsert(payload, { onConflict: 'id' })
+        .upsert(snakePayload, { onConflict: 'id' })
         .select()
         .single();
       if (!error && saved) {
+        const camelSaved = mapBlogToCamelCase(saved);
         const store = initLocalStore();
         if (!store.blogs) store.blogs = [];
         const idx = store.blogs.findIndex(b => String(b.id) === String(blogId) || b.slug === slug);
         if (idx >= 0) {
-          store.blogs[idx] = saved;
+          store.blogs[idx] = camelSaved;
         } else {
-          store.blogs.unshift(saved);
+          store.blogs.unshift(camelSaved);
         }
         persistLocalStore(store);
-        return saved;
+        return camelSaved;
       }
     } catch (err) {
       console.warn("Supabase upsert blog error, saving to local store:", err);
     }
   }
 
+  // 2. Persist to local store
   const store = initLocalStore();
   if (!store.blogs) store.blogs = [];
   const idx = store.blogs.findIndex(b => String(b.id) === String(blogId) || b.slug === slug);
   if (idx >= 0) {
-    store.blogs[idx] = payload;
+    store.blogs[idx] = camelPayload;
   } else {
-    store.blogs.unshift(payload);
+    store.blogs.unshift(camelPayload);
   }
   persistLocalStore(store);
-  return payload;
+  return camelPayload;
 }
 
 export async function deleteBlog(id: string): Promise<boolean> {

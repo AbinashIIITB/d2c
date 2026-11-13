@@ -34,8 +34,11 @@ export function ExamEnquiryForm({ examName }: ExamEnquiryFormProps) {
                     name: formData.fullName,
                     phone: formData.phone,
                     email: formData.email,
-                    message: `Interested in applying for ${examName}. Course: ${formData.course}`,
-                    leadType: 'Exam Query',
+                    course: formData.course,
+                    exam: examName,
+                    formType: 'Exam Counseling Form',
+                    leadType: formData.course ? `${formData.course} Exam Query` : 'Exam Query',
+                    message: `Interested in applying for ${examName}. Target Course: ${formData.course}`,
                     interestedCollege: examName,
                 }),
             });

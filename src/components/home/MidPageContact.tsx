@@ -22,9 +22,11 @@ export function MidPageContact() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
+          formType: "Homepage Free Counseling",
           leadType: "Free Counselling",
           name: formData.name,
           phone: formData.phone,
+          message: "Requested free counseling from Homepage mid-section.",
         }),
       });
       

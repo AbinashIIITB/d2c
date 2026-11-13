@@ -68,12 +68,14 @@ export function WelcomeLeadModal({ config }: WelcomeLeadModalProps) {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          leadType: "Welcome Modal Form",
+          formType: "Welcome Lead Modal",
+          leadType: formData.course ? `${formData.course} Modal Lead` : "Welcome Modal Form",
           name: formData.name,
           phone: formData.phone,
           email: formData.email,
           course: formData.course,
           preferredLocation: formData.location,
+          message: `Target Course: ${formData.course || "Not chosen"}. Preferred Location: ${formData.location || "Flexible"}`,
         }),
       });
 

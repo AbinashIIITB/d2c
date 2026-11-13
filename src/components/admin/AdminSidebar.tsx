@@ -26,7 +26,7 @@ const NAV_ITEMS = [
   { href: '/admin/pages', label: 'Website Pages', icon: Globe },
   { href: '/admin/pages/home', label: 'Announcement & Banners', icon: Layers },
   { href: '/admin/seo', label: 'Page SEO Studio', icon: Sparkles },
-  { href: '/admin/leads', label: 'Student Leads', icon: Users },
+  { href: '/admin/leads', label: 'Form Inquiries & Leads', icon: Users },
   { href: '/admin/analytics', label: 'Analytics & SEO', icon: BarChart3 },
   { href: '/admin/assets', label: 'Asset Manager', icon: ImageIcon },
   { href: '/admin/settings', label: 'Settings', icon: Settings },

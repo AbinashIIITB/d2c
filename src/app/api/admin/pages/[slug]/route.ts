@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getPageData, savePageData } from '@/lib/page-service';
+import { getPageData, savePageData, deletePage, isCorePage } from '@/lib/page-service';
+import { checkAdminAuth } from '@/lib/auth';
 import { revalidatePath } from 'next/cache';
 
 export async function GET(
@@ -23,6 +24,11 @@ export async function PUT(
   { params }: { params: Promise<{ slug: string }> }
 ) {
   try {
+    const session = await checkAdminAuth();
+    if (!session) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+
     const { slug } = await params;
     const body = await req.json();
     const updated = await savePageData(slug, body);
@@ -34,8 +40,39 @@ export async function PUT(
       revalidatePath(`/${slug}`);
     }
     revalidatePath(`/admin/pages/${slug}`);
+    revalidatePath('/admin/pages');
+    revalidatePath('/sitemap.xml');
 
     return NextResponse.json({ success: true, page: updated });
+  } catch (err: any) {
+    return NextResponse.json({ success: false, error: err.message }, { status: 500 });
+  }
+}
+
+export async function DELETE(
+  req: NextRequest,
+  { params }: { params: Promise<{ slug: string }> }
+) {
+  try {
+    const session = await checkAdminAuth();
+    if (!session) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+
+    const { slug } = await params;
+    if (isCorePage(slug)) {
+      return NextResponse.json({ error: 'Core system pages cannot be deleted.' }, { status: 400 });
+    }
+
+    const deleted = await deletePage(slug);
+    if (!deleted) {
+      return NextResponse.json({ error: 'Failed to delete page or page not found.' }, { status: 404 });
+    }
+
+    revalidatePath('/admin/pages');
+    revalidatePath('/sitemap.xml');
+
+    return NextResponse.json({ success: true, message: 'Page deleted successfully' });
   } catch (err: any) {
     return NextResponse.json({ success: false, error: err.message }, { status: 500 });
   }

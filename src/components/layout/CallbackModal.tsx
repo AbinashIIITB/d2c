@@ -25,7 +25,9 @@ export function CallbackModal({ isOpen, onClose, initialPhone = "" }: { isOpen: 
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          leadType: "Free Counselling",
+          formType: "Callback Request",
+          leadType: formData.course ? `${formData.course} Callback` : "Free Counselling",
+          course: formData.course,
           name: formData.name,
           phone: formData.phone,
           message: `Free Counselling callback requested. Course: ${formData.course}`,

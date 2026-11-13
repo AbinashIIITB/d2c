@@ -4,6 +4,9 @@
       "slug": "home",
       "title": "Direct2Campus – Your Shortcut to the Right Campus",
       "description": "India's most trusted educational consultancy. Get direct admission guidance for B.Tech, MBBS, MBA & BDS. Compare 150+ partner colleges and secure your seat with expert counselling.",
+      "includeInSitemap": true,
+      "sitemapPriority": 1,
+      "changeFrequency": "daily",
       "bannerSection": {
         "enabled": true,
         "title": "Announcement / Banners / Ads Section"
@@ -56,35 +59,71 @@
         "titlePrefix": "Your Shortcut to the",
         "titleHighlight": "Right Campus",
         "description": "India's most trusted educational consultancy. Get direct admission guidance for B.Tech, MBBS, MBA & BDS. Compare 150+ partner colleges and secure your seat with expert counselling.",
-        "rotatingWords": ["B.Tech", "MBA", "Medical", "BCA", "MCA"]
+        "rotatingWords": [
+          "B.Tech",
+          "MBA",
+          "Medical",
+          "BCA",
+          "MCA"
+        ]
       },
       "stats": [
-        { "label": "Students Placed", "value": "12,000+" },
-        { "label": "Partner Institutions", "value": "150+" },
-        { "label": "Years Experience", "value": "10+ Years" },
-        { "label": "Admission Success", "value": "100%" }
+        {
+          "label": "Students Placed",
+          "value": "12,000+"
+        },
+        {
+          "label": "Partner Institutions",
+          "value": "150+"
+        },
+        {
+          "label": "Years Experience",
+          "value": "10+ Years"
+        },
+        {
+          "label": "Admission Success",
+          "value": "100%"
+        }
       ]
     },
     "about": {
       "slug": "about",
       "title": "About Us – India's Trusted Education Partner",
       "description": "Learn about Direct2Campus — India's trusted education bridge with 12,000+ successful admissions, 150+ partner institutions & 10+ years of proven excellence.",
+      "includeInSitemap": true,
+      "sitemapPriority": 0.8,
+      "changeFrequency": "monthly",
       "badge": "India's Trusted Education Partner",
       "heading": "Bridging Dreams to Reality",
       "subheading": "Direct2Campus has spent over a decade shaping academic journeys for ambitious students nationwide.",
       "storyParagraph1": "Direct2Campus was founded with a singular mission: to eliminate confusion, non-transparency, and bureaucratic delays in higher education admissions across India. Whether you are aiming for prestigious private engineering institutes, medical seats, or premier business schools, our vetted network of 150+ colleges provides legitimate, direct counseling routes.",
       "storyParagraph2": "From document verification to fee negotiations and scholarship allocation, our team of seasoned advisors stands beside you every step of the way.",
       "stats": [
-        { "label": "Students Placed", "value": "12,000+" },
-        { "label": "Partner Institutions", "value": "150+" },
-        { "label": "Years Of Excellence", "value": "10+ Years" },
-        { "label": "Verified College Network", "value": "Pan-India" }
+        {
+          "label": "Students Placed",
+          "value": "12,000+"
+        },
+        {
+          "label": "Partner Institutions",
+          "value": "150+"
+        },
+        {
+          "label": "Years Of Excellence",
+          "value": "10+ Years"
+        },
+        {
+          "label": "Verified College Network",
+          "value": "Pan-India"
+        }
       ]
     },
     "contact": {
       "slug": "contact",
       "title": "Contact Us – 24/7 Expert Admission Support",
       "description": "Have questions about admission, WBJEE cutoffs, or fee structures? Get in touch with our team for 24/7 expert counseling.",
+      "includeInSitemap": true,
+      "sitemapPriority": 0.8,
+      "changeFrequency": "monthly",
       "badge": "24/7 Expert Support",
       "heading": "Get In Touch",
       "subheading": "Have questions about admission cutoffs, fee structures, or campus selection? Our advisors are ready to help.",
@@ -93,6 +132,86 @@
       "address": "Ashram Building, GN-34/2, Sector V, Salt Lake Electronics Complex, Kolkata – 700091",
       "whatsapp": "916200325137",
       "workingHours": "Monday to Saturday: 9:00 AM – 7:30 PM (IST)"
+    },
+    "mba": {
+      "slug": "mba",
+      "title": "MBA & PGDM Direct Admissions in Top B-Schools",
+      "description": "Skip CAT/XAT — secure guaranteed management quota seats in Tier-1 & Tier-2 B-Schools across India. Expert MBA admission counselling at Direct2Campus.",
+      "includeInSitemap": true,
+      "sitemapPriority": 0.9,
+      "changeFrequency": "weekly",
+      "badge": "Post-Graduate Programs",
+      "h1": "Elevate your career with a premium MBA",
+      "heading": "Elevate your career with a premium MBA",
+      "subheading": "Skip the extreme competition of CAT/XAT. Secure guaranteed management quota seats in Tier-1 and Tier-2 B-Schools.",
+      "heroDescription": "Skip the extreme competition of CAT/XAT. Secure guaranteed management quota seats in Tier-1 and Tier-2 B-Schools across Bangalore, Pune, Delhi NCR, and Kolkata.",
+      "ctaText": "Free Consultation",
+      "sections": [
+        {
+          "type": "heading2",
+          "text": "Why Pursue Direct MBA / PGDM Admission?"
+        },
+        {
+          "type": "paragraph",
+          "text": "Management quota and institutional quota seats in AICTE and UGC recognized business schools offer ambitious graduates a direct route to top tier placement networks without waiting an extra academic cycle for entrance exams."
+        },
+        {
+          "type": "image",
+          "url": "https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&q=80&w=1200",
+          "alt": "MBA students collaborating in campus business auditorium"
+        }
+      ]
+    },
+    "privacy": {
+      "slug": "privacy",
+      "title": "Privacy Policy – Direct2Campus",
+      "description": "Read the Direct2Campus privacy policy. Learn how we collect, use, and protect your personal data when using our educational consultancy services.",
+      "includeInSitemap": true,
+      "sitemapPriority": 0.5,
+      "changeFrequency": "monthly",
+      "h1": "Privacy Policy",
+      "heading": "Privacy Policy",
+      "lastUpdated": "October 2026",
+      "content": "Your privacy is important to us. It is Direct2Campus's policy to respect your privacy regarding any information we may collect from you across our website, https://direct2campus.com, and other sites we own and operate.\n\n### Information we collect\nWe only ask for personal information when we truly need it to provide a service to you. We collect it by fair and lawful means, with your knowledge and consent. We also let you know why we are collecting it and how it will be used.\n\n### How we use your data\nWe use your contact details exclusively to provide educational counseling, updates on college criteria, and for lead management internally (via our CMS database). We do not share your information publicly or with third-parties, except when required to by law."
+    },
+    "terms": {
+      "slug": "terms",
+      "title": "Terms and Conditions of Service – Direct2Campus",
+      "description": "Review the terms and conditions for using Direct2Campus educational consultancy services, including admission facilitation disclaimers.",
+      "includeInSitemap": true,
+      "sitemapPriority": 0.5,
+      "changeFrequency": "monthly",
+      "h1": "Terms of Service",
+      "heading": "Terms of Service",
+      "lastUpdated": "October 2026",
+      "content": "By accessing the website at https://direct2campus.com, you are agreeing to be bound by these terms of service, all applicable laws and regulations, and agree that you are responsible for compliance with any applicable local laws.\n\n### Disclaimer\nThe materials on Direct2Campus's website are provided on an 'as is' basis. Direct2Campus makes no warranties, expressed or implied, and hereby disclaims and negates all other warranties including, without limitation, implied warranties or conditions of merchantability, fitness for a particular purpose, or non-infringement of intellectual property or other violation of rights.\n\n### Admissions\nWe facilitate counseling and management quota admissions. However, final admission grants are subject to the college's administrative discretion and the student's passing of the required background/academic checks."
+    },
+    "btech-admissions-kolkata": {
+      "title": "B.Tech Admissions in Kolkata 2027",
+      "h1": "Direct B.Tech Admission in Premier Engineering Colleges Kolkata",
+      "subheading": "Complete counseling, cutoff, and fee analysis for 2027.",
+      "includeInSitemap": true,
+      "sitemapPriority": 0.9,
+      "sections": [
+        {
+          "type": "h2",
+          "text": "Top Engineering Colleges in Kolkata"
+        },
+        {
+          "type": "paragraph",
+          "text": "Kolkata houses premier institutions like IEM Salt Lake and Heritage."
+        },
+        {
+          "type": "image",
+          "url": "https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&q=80&w=800",
+          "alt": "IEM Kolkata engineering campus laboratory"
+        }
+      ],
+      "slug": "btech-admissions-kolkata",
+      "changeFrequency": "weekly",
+      "published": true,
+      "updatedAt": "2026-11-13T05:00:29.962Z"
     }
-  }
+  },
+  "updatedAt": "2026-11-13T05:00:29.962Z"
 }

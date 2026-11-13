@@ -24,6 +24,7 @@ export function ContactClientView({ contactData }: ContactClientViewProps) {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
+          formType: "Contact Us Page Form",
           leadType: "Contact Us",
           name: formData.name,
           email: formData.email,

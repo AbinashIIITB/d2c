@@ -40,9 +40,12 @@ export function CollegeEnquiryForm({ collegeName }: CollegeEnquiryFormProps) {
                     lastName,
                     phone: formData.phone,
                     email: formData.email,
+                    course: formData.course,
+                    formType: 'College Enquiry Form',
+                    leadType: formData.course ? `${formData.course} Query` : 'College Query',
                     message: `Interested in admission at ${collegeName}. Course: ${formData.course}`,
-                    leadType: 'College Query',
                     interestedCollege: collegeName,
+                    college: collegeName,
                 }),
             });
 

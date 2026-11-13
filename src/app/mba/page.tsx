@@ -1,17 +1,30 @@
-import { Metadata } from "next"
-import Link from "next/link"
-import { Briefcase, Building2, TrendingUp, Users, ArrowRight } from "lucide-react"
-import { AnimatedPatternBg } from "@/components/ui/AnimatedPatternBg"
-import { ApplyButton } from "@/components/ui/ApplyButton"
+import { Metadata } from "next";
+import Link from "next/link";
+import { Briefcase, Building2, TrendingUp, Users, ArrowRight } from "lucide-react";
+import { AnimatedPatternBg } from "@/components/ui/AnimatedPatternBg";
+import { ApplyButton } from "@/components/ui/ApplyButton";
+import { getPageData } from "@/lib/page-service";
 
-export const metadata: Metadata = {
-  title: "MBA & PGDM Direct Admissions in Top B-Schools",
-  description: "Skip CAT/XAT — secure guaranteed management quota seats in Tier-1 & Tier-2 B-Schools across India. Expert MBA admission counselling at Direct2Campus.",
-  keywords: ["MBA direct admission", "PGDM admission", "top B-Schools India", "management quota MBA", "MBA admission counselling"],
-  alternates: { canonical: "https://direct2campus.com/mba" },
+export const revalidate = 0;
+
+export async function generateMetadata(): Promise<Metadata> {
+  const page = await getPageData("mba");
+  return {
+    title: page?.seoTitle || page?.title || "MBA & PGDM Direct Admissions in Top B-Schools",
+    description: page?.metaDescription || page?.description || "Skip CAT/XAT — secure guaranteed management quota seats in Tier-1 & Tier-2 B-Schools across India. Expert MBA admission counselling at Direct2Campus.",
+    keywords: ["MBA direct admission", "PGDM admission", "top B-Schools India", "management quota MBA", "MBA admission counselling"],
+    alternates: { canonical: "https://direct2campus.com/mba" },
+  };
 }
 
-export default function MBAPage() {
+export default async function MBAPage() {
+  const page = await getPageData("mba");
+
+  const badge = page?.badge || "Post-Graduate Programs";
+  const h1 = page?.h1 || page?.heading || "Elevate your career with a premium MBA";
+  const heroDescription = page?.heroDescription || page?.subheading || "Skip the extreme competition of CAT/XAT. Secure guaranteed management quota seats in Tier-1 and Tier-2 B-Schools.";
+  const ctaText = page?.ctaText || "Free Consultation";
+
   return (
     <div className="pb-20 bg-d2c-white min-h-screen">
       {/* Hero Section — matches Homepage */}
@@ -30,16 +43,13 @@ export default function MBAPage() {
             <div className="text-center md:text-left">
               <div className="inline-flex items-center gap-2 px-4 py-2 bg-white/10 backdrop-blur-sm border border-white/20 mb-8">
                 <Briefcase className="w-4 h-4 text-d2c-sky" />
-                <span className="text-sm font-medium tracking-wide">Post-Graduate Programs</span>
+                <span className="text-sm font-medium tracking-wide">{badge}</span>
               </div>
               <h1 className="text-4xl md:text-5xl lg:text-6xl font-sora font-bold tracking-tight mb-6 leading-[1.1]">
-                Elevate your career with a{" "}
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-d2c-sky to-d2c-ice">
-                  premium MBA
-                </span>
+                {h1}
               </h1>
               <p className="text-lg text-d2c-ice/80 leading-relaxed mb-8 max-w-lg">
-                Skip the extreme competition of CAT/XAT. Secure guaranteed management quota seats in Tier-1 and Tier-2 B-Schools.
+                {heroDescription}
               </p>
               <div className="flex flex-col sm:flex-row gap-4">
                 <Link href="/colleges" className="px-8 py-4 bg-white text-d2c-navy font-semibold text-lg hover:bg-d2c-ice transition-colors flex items-center justify-center gap-2 group shadow-[0_0_40px_rgba(255,255,255,0.2)]">
@@ -47,7 +57,7 @@ export default function MBAPage() {
                   <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
                 </Link>
                 <ApplyButton className="px-8 py-4 bg-white/10 border border-white/20 text-white font-semibold text-lg hover:bg-white/20 transition-colors flex items-center justify-center gap-2" context="MBA Free Consultation">
-                  Free Consultation
+                  {ctaText}
                 </ApplyButton>
               </div>
             </div>
@@ -147,5 +157,5 @@ export default function MBAPage() {
         </div>
       </div>
     </div>
-  )
+  );
 }

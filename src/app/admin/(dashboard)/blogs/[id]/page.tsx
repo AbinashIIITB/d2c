@@ -10,7 +10,8 @@ export default async function AdminEditBlogPage({
   params: Promise<{ id: string }>
 }) {
   const { id } = await params;
-  const blog = await getBlogByIdOrSlug(id);
+  const decodedId = decodeURIComponent(id || '').trim();
+  const blog = await getBlogByIdOrSlug(decodedId);
 
   if (!blog) {
     notFound();

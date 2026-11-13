@@ -43,7 +43,9 @@ export function ApplyModal({ isOpen, onClose, context = "General" }: { isOpen: b
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          leadType: "Application Form",
+          formType: formData.course ? `${formData.course} Application` : "Apply Now Modal",
+          leadType: formData.course ? `${formData.course} Application` : "Application Form",
+          course: formData.course,
           name: formData.name,
           phone: formData.phone,
           email: formData.email,

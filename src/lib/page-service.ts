@@ -10,10 +10,18 @@ declare global {
   var __d2c_pages_store__: Record<string, any> | undefined;
 }
 
+export const CORE_PAGE_SLUGS = ['home', 'about', 'contact', 'mba', 'privacy', 'terms'];
+
+export function isCorePage(slug: string): boolean {
+  return CORE_PAGE_SLUGS.includes(slug.toLowerCase());
+}
+
 function initPagesStore(): Record<string, any> {
   if (globalThis.__d2c_pages_store__) {
     return globalThis.__d2c_pages_store__;
   }
+
+  const defaults = (defaultPagesData as any).pages || {};
 
   // 1. Try reading from /tmp (serverless)
   try {
@@ -21,8 +29,10 @@ function initPagesStore(): Record<string, any> {
       const content = fs.readFileSync(TMP_PAGES_FILE, 'utf-8');
       const parsed = JSON.parse(content);
       if (parsed.pages) {
-        globalThis.__d2c_pages_store__ = parsed.pages;
-        return parsed.pages;
+        // Merge defaults with stored custom pages
+        const merged = { ...defaults, ...parsed.pages };
+        globalThis.__d2c_pages_store__ = merged;
+        return merged;
       }
     }
   } catch {
@@ -35,8 +45,9 @@ function initPagesStore(): Record<string, any> {
       const content = fs.readFileSync(PAGES_FILE, 'utf-8');
       const parsed = JSON.parse(content);
       if (parsed.pages) {
-        globalThis.__d2c_pages_store__ = parsed.pages;
-        return parsed.pages;
+        const merged = { ...defaults, ...parsed.pages };
+        globalThis.__d2c_pages_store__ = merged;
+        return merged;
       }
     }
   } catch {
@@ -44,9 +55,8 @@ function initPagesStore(): Record<string, any> {
   }
 
   // 3. Fallback to default
-  const initial = (defaultPagesData as any).pages || {};
-  globalThis.__d2c_pages_store__ = initial;
-  return initial;
+  globalThis.__d2c_pages_store__ = defaults;
+  return defaults;
 }
 
 function persistPagesStore(pages: Record<string, any>) {
@@ -71,25 +81,59 @@ function persistPagesStore(pages: Record<string, any>) {
 }
 
 export async function getPageData(slug: string): Promise<any | null> {
+  if (!slug) return null;
+  const normalizedSlug = slug.toLowerCase().trim();
   const store = initPagesStore();
-  const page = store[slug];
+  const page = store[normalizedSlug];
   if (page) return page;
 
   // If not found in store, fallback to default import
   const defaults = (defaultPagesData as any).pages || {};
-  return defaults[slug] || null;
+  return defaults[normalizedSlug] || null;
 }
 
 export async function savePageData(slug: string, data: any): Promise<any> {
+  const normalizedSlug = String(slug || data.slug || data.title || '')
+    .toLowerCase()
+    .trim()
+    .replace(/[^a-z0-9-]/g, '-')
+    .replace(/-+/g, '-');
+
   const store = initPagesStore();
-  store[slug] = {
-    ...store[slug],
+  const existing = store[normalizedSlug] || {};
+
+  const updatedPage = {
+    ...existing,
     ...data,
-    slug,
+    slug: normalizedSlug,
+    title: data.title || existing.title || normalizedSlug,
+    h1: data.h1 || data.heading || data.title || existing.h1 || '',
+    includeInSitemap: data.includeInSitemap ?? existing.includeInSitemap ?? true,
+    sitemapPriority: Number(data.sitemapPriority || existing.sitemapPriority || 0.8),
+    changeFrequency: data.changeFrequency || existing.changeFrequency || 'weekly',
+    published: data.published ?? existing.published ?? true,
     updatedAt: new Date().toISOString(),
   };
+
+  store[normalizedSlug] = updatedPage;
   persistPagesStore(store);
-  return store[slug];
+  return updatedPage;
+}
+
+export async function deletePage(slug: string): Promise<boolean> {
+  const normalizedSlug = slug.toLowerCase().trim();
+  if (isCorePage(normalizedSlug)) {
+    // Do not delete core system pages
+    return false;
+  }
+
+  const store = initPagesStore();
+  if (store[normalizedSlug]) {
+    delete store[normalizedSlug];
+    persistPagesStore(store);
+    return true;
+  }
+  return false;
 }
 
 export async function getAllPages(): Promise<any[]> {
