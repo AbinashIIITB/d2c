@@ -237,7 +237,7 @@ export default async function AdminPagesListPage() {
 
                 <div className="pt-4 border-t border-gray-100 flex items-center justify-between gap-3">
                   <Link
-                    href={`/${page.slug}`}
+                    href={`/${String(page.slug || '').replace(/^\/+|\/+$/g, '')}`}
                     target="_blank"
                     className="text-xs text-gray-500 hover:text-gray-900 flex items-center gap-1 font-medium"
                   >

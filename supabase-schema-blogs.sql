@@ -35,3 +35,4 @@ CREATE POLICY "Allow service role full access to blogs"
   TO service_role
   USING (true)
   WITH CHECK (true);
+

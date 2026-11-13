@@ -43,9 +43,12 @@ export async function POST(req: Request) {
       published: body.published ?? true
     });
 
-    revalidatePath(`/${slug}`);
-    revalidatePath('/admin/pages');
-    revalidatePath('/sitemap.xml');
+    try {
+      revalidatePath(`/${slug}`);
+      revalidatePath('/[slug]', 'page');
+      revalidatePath('/admin/pages');
+      revalidatePath('/sitemap.xml');
+    } catch {}
 
     return NextResponse.json({ success: true, page: saved }, { status: 201 });
   } catch (err: any) {

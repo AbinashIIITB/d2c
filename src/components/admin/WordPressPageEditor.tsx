@@ -198,7 +198,9 @@ export function WordPressPageEditor({ initialData = {}, isNew = false }: WordPre
       }
 
       const saved = json.page || pageData;
-      setSavedSuccess(saved.slug);
+      const cleanSavedSlug = String(saved.slug || pageData.slug || '').trim().replace(/^\/+|\/+$/g, '');
+      setPageData((prev: any) => ({ ...prev, slug: cleanSavedSlug }));
+      setSavedSuccess(cleanSavedSlug);
       router.refresh();
     } catch (err: any) {
       setErrorMessage(err.message || 'An error occurred while saving the page.');
@@ -321,12 +323,12 @@ export function WordPressPageEditor({ initialData = {}, isNew = false }: WordPre
             <CheckCircle2 className="w-5 h-5 text-emerald-600 shrink-0" />
             <div>
               <p className="font-bold text-sm">Page published and live in sitemap!</p>
-              <p className="text-xs text-emerald-700">Public URL: /{savedSuccess}</p>
+              <p className="text-xs text-emerald-700">Public URL: {savedSuccess === 'home' ? '/' : `/${savedSuccess}`}</p>
             </div>
           </div>
           <div className="flex items-center gap-2">
             <Link
-              href={`/${savedSuccess}`}
+              href={savedSuccess === 'home' ? '/' : `/${savedSuccess}`}
               target="_blank"
               rel="noopener noreferrer"
               className="px-3.5 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-bold transition-colors flex items-center gap-1.5 shadow-sm"

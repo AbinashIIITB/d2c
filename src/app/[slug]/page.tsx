@@ -18,30 +18,40 @@ import { ApplyButton } from "@/components/ui/ApplyButton";
 
 type Params = Promise<{ slug: string }>;
 
+export const dynamic = 'force-dynamic';
 export const revalidate = 0;
 export const dynamicParams = true;
 
 // Pre-render known slugs
 export async function generateStaticParams() {
-  const pages = await getAllPages();
-  // Filter out core system pages that already have dedicated route files
-  const reservedRoutes = ['home', 'about', 'contact', 'mba', 'privacy', 'terms', 'admin', 'api', 'blog', 'colleges', 'exams', 'stories'];
-  return pages
-    .filter(p => p.slug && !reservedRoutes.includes(p.slug.toLowerCase()))
-    .map(p => ({ slug: p.slug }));
+  try {
+    const pages = await getAllPages();
+    // Filter out core system pages that already have dedicated route files
+    const reservedRoutes = ['home', 'about', 'contact', 'mba', 'privacy', 'terms', 'admin', 'api', 'blog', 'colleges', 'exams', 'stories'];
+    return pages
+      .filter(p => p.slug && !reservedRoutes.includes(p.slug.toLowerCase()))
+      .map(p => ({ slug: p.slug }));
+  } catch {
+    return [];
+  }
 }
 
 export async function generateMetadata({ params }: { params: Params }): Promise<Metadata> {
   const { slug } = await params;
-  const page = await getPageData(slug);
+  let decodedSlug = slug;
+  try {
+    decodedSlug = decodeURIComponent(slug || '').trim();
+  } catch {}
+
+  const page = (await getPageData(decodedSlug)) || (await getPageData(slug));
 
   if (!page) {
-    return { title: "Page Not Found" };
+    return { title: "Page Not Found | Direct2Campus" };
   }
 
-  const pageTitle = page.seoTitle || page.title || `${page.h1 || slug} | Direct2Campus`;
-  const metaDesc = page.metaDescription || page.description || `Explore ${page.title || slug} on Direct2Campus for latest higher education admission insights.`;
-  const canonical = page.canonicalUrl || `https://direct2campus.com/${slug}`;
+  const pageTitle = page.seoTitle || page.title || `${page.h1 || decodedSlug} | Direct2Campus`;
+  const metaDesc = page.metaDescription || page.description || `Explore ${page.title || decodedSlug} on Direct2Campus for latest higher education admission insights.`;
+  const canonical = page.canonicalUrl || `https://direct2campus.com/${page.slug || decodedSlug}`;
   const isIndexed = page.published !== false && page.noIndex !== true;
 
   return {
@@ -80,7 +90,12 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
 
 export default async function CustomDynamicPage({ params }: { params: Params }) {
   const { slug } = await params;
-  const page = await getPageData(slug);
+  let decodedSlug = slug;
+  try {
+    decodedSlug = decodeURIComponent(slug || '').trim();
+  } catch {}
+
+  const page = (await getPageData(decodedSlug)) || (await getPageData(slug));
 
   // If page does not exist or is marked draft and not published
   if (!page || page.published === false) {

@@ -33,15 +33,18 @@ export async function PUT(
     const body = await req.json();
     const updated = await savePageData(slug, body);
 
-    // Revalidate relevant public paths
-    if (slug === 'home') {
-      revalidatePath('/');
-    } else {
-      revalidatePath(`/${slug}`);
-    }
-    revalidatePath(`/admin/pages/${slug}`);
-    revalidatePath('/admin/pages');
-    revalidatePath('/sitemap.xml');
+    try {
+      // Revalidate relevant public paths
+      if (slug === 'home') {
+        revalidatePath('/');
+      } else {
+        revalidatePath(`/${slug}`);
+        revalidatePath('/[slug]', 'page');
+      }
+      revalidatePath(`/admin/pages/${slug}`);
+      revalidatePath('/admin/pages');
+      revalidatePath('/sitemap.xml');
+    } catch {}
 
     return NextResponse.json({ success: true, page: updated });
   } catch (err: any) {
