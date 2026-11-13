@@ -22,27 +22,37 @@ import { ApplyButton } from "@/components/ui/ApplyButton"
 
 type Params = Promise<{ slug: string }>
 
+export const dynamic = 'force-dynamic';
 export const revalidate = 0;
 export const dynamicParams = true;
 
 export async function generateStaticParams() {
-  const blogs = await getAllBlogs();
-  return (blogs || []).map((blog) => ({
-    slug: blog.slug,
-  }))
+  try {
+    const blogs = await getAllBlogs();
+    return (blogs || []).map((blog) => ({
+      slug: blog.slug,
+    }));
+  } catch {
+    return [];
+  }
 }
 
 export async function generateMetadata({ params }: { params: Params }): Promise<Metadata> {
-  const { slug } = await params
-  const blog = await getBlogByIdOrSlug(slug);
+  const { slug } = await params;
+  let decodedSlug = slug;
+  try {
+    decodedSlug = decodeURIComponent(slug || '').trim();
+  } catch {}
+
+  const blog = (await getBlogByIdOrSlug(decodedSlug)) || (await getBlogByIdOrSlug(slug));
   
   if (!blog) {
-    return { title: "Article Not Found" }
+    return { title: "Article Not Found | Direct2Campus" };
   }
 
   const pageTitle = blog.seoTitle || `${blog.title} | Direct2Campus`;
   const metaDesc = blog.metaDescription || blog.excerpt || `Read ${blog.title} on Direct2Campus for latest admission insights, cutoffs, and guidance.`;
-  const canonical = `https://direct2campus.com/blog/${slug}`;
+  const canonical = `https://direct2campus.com/blog/${blog.slug || decodedSlug}`;
   const imageUrl = blog.imageUrl || blog.image_url || "/images/blog/default.jpg";
   const authorName = blog.author || "Direct2Campus Editorial Team";
 
@@ -98,17 +108,22 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
 }
 
 export default async function BlogPostPage({ params }: { params: Params }) {
-  const { slug } = await params
+  const { slug } = await params;
+  let decodedSlug = slug;
+  try {
+    decodedSlug = decodeURIComponent(slug || '').trim();
+  } catch {}
+
   const [blog, allBlogs] = await Promise.all([
-    getBlogByIdOrSlug(slug),
+    getBlogByIdOrSlug(decodedSlug).then(res => res || getBlogByIdOrSlug(slug)),
     getAllBlogs()
   ]);
 
   if (!blog) {
-    notFound()
+    notFound();
   }
 
-  const canonical = `https://direct2campus.com/blog/${slug}`;
+  const canonical = `https://direct2campus.com/blog/${blog.slug || decodedSlug}`;
   const imageUrl = blog.imageUrl || blog.image_url || "https://direct2campus.com/logo-footer.png";
   const authorName = blog.author || "Direct2Campus Editorial Team";
 

@@ -213,7 +213,7 @@ export default function AdminBlogsPage() {
                     <td className="py-4 px-4 text-right">
                       <div className="flex items-center justify-end gap-1.5">
                         <Link
-                          href={`/blog/${post.slug}`}
+                          href={`/blog/${String(post.slug || post.id).replace(/^\/?blog\//, '').replace(/^\/+/, '')}`}
                           target="_blank"
                           rel="noopener noreferrer"
                           className="p-1.5 text-gray-400 hover:text-d2c-navy hover:bg-gray-100 rounded-lg transition-colors"

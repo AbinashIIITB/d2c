@@ -43,9 +43,13 @@ export async function PUT(
 
     const saved = await saveBlog({ ...body, id });
 
-    revalidatePath('/blog');
-    revalidatePath('/admin/blogs');
-    if (saved.slug) revalidatePath(`/blog/${saved.slug}`);
+    try {
+      revalidatePath('/blog');
+      revalidatePath('/admin/blogs');
+      revalidatePath('/blog/[slug]', 'page');
+      if (saved.slug) revalidatePath(`/blog/${saved.slug}`);
+      if (body.slug && body.slug !== saved.slug) revalidatePath(`/blog/${body.slug}`);
+    } catch {}
 
     return NextResponse.json({ success: true, blog: saved });
   } catch (error: any) {

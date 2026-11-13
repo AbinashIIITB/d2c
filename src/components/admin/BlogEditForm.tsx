@@ -109,15 +109,21 @@ export function BlogEditForm({ initialData = {}, isNew = false }: BlogEditFormPr
       }
 
       const savedBlog = json.blog || formData;
+      const cleanSavedSlug = String(savedBlog.slug || formData.slug || '')
+        .trim()
+        .toLowerCase()
+        .replace(/^\/?blog\//, '')
+        .replace(/^\/+/, '');
+
       setFormData((prev: any) => ({
         ...prev,
         id: savedBlog.id || prev.id,
-        slug: savedBlog.slug || prev.slug
+        slug: cleanSavedSlug
       }));
 
       setSavedSuccess({
-        id: String(savedBlog.id || formData.id || formData.slug),
-        slug: String(savedBlog.slug || formData.slug)
+        id: String(savedBlog.id || formData.id || cleanSavedSlug),
+        slug: cleanSavedSlug
       });
 
       router.refresh();

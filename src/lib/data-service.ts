@@ -35,9 +35,16 @@ function initLocalStore(): LocalCmsData {
       const content = fs.readFileSync(TMP_STORE_FILE, 'utf-8');
       const parsed = JSON.parse(content);
       if (Array.isArray(parsed.colleges) && Array.isArray(parsed.exams)) {
-        if (!Array.isArray(parsed.blogs)) {
-          parsed.blogs = [...staticBlogs];
+        const blogMap = new Map<string, any>();
+        for (const b of staticBlogs) {
+          blogMap.set(String(b.id || b.slug), b);
         }
+        if (Array.isArray(parsed.blogs)) {
+          for (const b of parsed.blogs) {
+            blogMap.set(String(b.id || b.slug), b);
+          }
+        }
+        parsed.blogs = Array.from(blogMap.values());
         globalThis.__d2c_cms_store__ = parsed;
         return parsed;
       }
@@ -52,9 +59,16 @@ function initLocalStore(): LocalCmsData {
       const content = fs.readFileSync(LOCAL_STORE_FILE, 'utf-8');
       const parsed = JSON.parse(content);
       if (Array.isArray(parsed.colleges) && Array.isArray(parsed.exams)) {
-        if (!Array.isArray(parsed.blogs)) {
-          parsed.blogs = [...staticBlogs];
+        const blogMap = new Map<string, any>();
+        for (const b of staticBlogs) {
+          blogMap.set(String(b.id || b.slug), b);
         }
+        if (Array.isArray(parsed.blogs)) {
+          for (const b of parsed.blogs) {
+            blogMap.set(String(b.id || b.slug), b);
+          }
+        }
+        parsed.blogs = Array.from(blogMap.values());
         globalThis.__d2c_cms_store__ = parsed;
         return parsed;
       }
@@ -86,12 +100,11 @@ function persistLocalStore(data: LocalCmsData) {
       fs.mkdirSync(dir, { recursive: true });
     }
     fs.writeFileSync(LOCAL_STORE_FILE, payload, 'utf-8');
-    return;
   } catch {
     // Expected to fail on read-only serverless filesystems (e.g. Vercel)
   }
 
-  // Fallback to /tmp write in serverless containers
+  // Also write to /tmp in serverless containers
   try {
     fs.writeFileSync(TMP_STORE_FILE, payload, 'utf-8');
   } catch (err) {
@@ -431,7 +444,9 @@ export async function getAllExams(): Promise<any[]> {
         .select('*')
         .order('name');
       if (!error && data && data.length > 0) {
-        result = data.map(mapExamToCamelCase);
+        result = data
+          .filter(e => !String(e.id || '').startsWith('__d2c_') && !String(e.slug || '').startsWith('__d2c_'))
+          .map(mapExamToCamelCase);
       }
     } catch (err) {
       console.warn("Supabase query failed, falling back to local cms store:", err);
@@ -440,7 +455,9 @@ export async function getAllExams(): Promise<any[]> {
 
   if (result.length === 0) {
     const store = initLocalStore();
-    result = store.exams.map(mapExamToCamelCase);
+    result = store.exams
+      .filter(e => !String(e.id || '').startsWith('__d2c_') && !String(e.slug || '').startsWith('__d2c_'))
+      .map(mapExamToCamelCase);
   }
 
   examsCache = { data: result, timestamp: now };
@@ -448,6 +465,8 @@ export async function getAllExams(): Promise<any[]> {
 }
 
 export async function getExamByIdOrSlug(identifier: string): Promise<any | null> {
+  if (!identifier || String(identifier).startsWith('__d2c_')) return null;
+
   if (examsCache && Date.now() - examsCache.timestamp < CMS_CACHE_TTL) {
     const cached = examsCache.data.find(e => e.id === identifier || e.slug === identifier);
     if (cached) return cached;
@@ -461,7 +480,7 @@ export async function getExamByIdOrSlug(identifier: string): Promise<any | null>
         .or(`id.eq.${identifier},slug.eq.${identifier}`)
         .maybeSingle();
 
-      if (!error && data) {
+      if (!error && data && !String(data.id || '').startsWith('__d2c_')) {
         return mapExamToCamelCase(data);
       }
     } catch (err) {
@@ -470,7 +489,9 @@ export async function getExamByIdOrSlug(identifier: string): Promise<any | null>
   }
 
   const store = initLocalStore();
-  const found = store.exams.find(e => e.id === identifier || e.slug === identifier);
+  const found = store.exams.find(e => 
+    !String(e.id || '').startsWith('__d2c_') && (e.id === identifier || e.slug === identifier)
+  );
   return found ? mapExamToCamelCase(found) : null;
 }
 
@@ -582,6 +603,77 @@ export function mapBlogToSnakeCase(body: Record<string, any>): Record<string, an
   return result;
 }
 
+// ----------------------------------------------------------------------
+// Supabase Persistent Backup Store & Helpers
+// ----------------------------------------------------------------------
+async function fetchBlogsFromSupabaseBackup(): Promise<any[]> {
+  if (!isSupabaseConfigured) return [];
+  try {
+    const { data, error } = await supabaseAdmin
+      .from('exams')
+      .select('description')
+      .eq('id', '__d2c_cms_blogs_store__')
+      .maybeSingle();
+
+    if (!error && data && data.description) {
+      const parsed = JSON.parse(data.description);
+      if (Array.isArray(parsed)) {
+        return parsed.map(mapBlogToCamelCase);
+      }
+    }
+  } catch {
+    // Ignore backup fetch error
+  }
+  return [];
+}
+
+async function saveBlogsToSupabaseBackup(blogsList: any[]): Promise<boolean> {
+  if (!isSupabaseConfigured) return false;
+  try {
+    await supabaseAdmin
+      .from('exams')
+      .upsert({
+        id: '__d2c_cms_blogs_store__',
+        slug: '__d2c_cms_blogs_store__',
+        name: '__d2c_cms_blogs_store__',
+        description: JSON.stringify(blogsList)
+      }, { onConflict: 'id' });
+    return true;
+  } catch (err) {
+    console.warn("Could not save to __d2c_cms_blogs_store__ in Supabase:", err);
+    return false;
+  }
+}
+
+export function matchesBlog(b: any, identifier: string): boolean {
+  if (!b || !identifier) return false;
+  const raw = String(identifier).trim().replace(/^\/+|\/+$/g, '');
+  let decoded = raw;
+  try {
+    decoded = decodeURIComponent(raw).trim().replace(/^\/+|\/+$/g, '');
+  } catch {
+    // ignore
+  }
+
+  const lower = decoded.toLowerCase();
+  const rawLower = raw.toLowerCase();
+  const cleanSlug = lower.replace(/[^a-z0-9-]/g, '-').replace(/^-+|-+$/g, '').replace(/-+/g, '-');
+  const stripped = lower.replace(/[-_\s/]/g, '');
+
+  const bId = String(b.id || '').trim().toLowerCase();
+  const bSlug = String(b.slug || '').trim().toLowerCase().replace(/^\/+|\/+$/g, '');
+  const bSlugStripped = bSlug.replace(/[-_\s/]/g, '');
+
+  return (
+    bId === lower ||
+    bSlug === lower ||
+    bId === rawLower ||
+    bSlug === rawLower ||
+    bSlug === cleanSlug ||
+    (bSlugStripped.length > 0 && bSlugStripped === stripped)
+  );
+}
+
 export async function getAllBlogs(): Promise<any[]> {
   const now = Date.now();
   if (blogsCache && now - blogsCache.timestamp < CMS_CACHE_TTL) {
@@ -592,37 +684,43 @@ export async function getAllBlogs(): Promise<any[]> {
   const localList = (store.blogs || []).map(mapBlogToCamelCase);
   const blogMap = new Map<string, any>();
 
-  // Add local blogs first
+  // 1. Add static blogs first
+  for (const b of staticBlogs) {
+    const mapped = mapBlogToCamelCase(b);
+    if (mapped.slug) blogMap.set(mapped.slug, mapped);
+    if (mapped.id) blogMap.set(String(mapped.id), mapped);
+  }
+
+  // 2. Add local store blogs
   for (const b of localList) {
     if (b.slug) blogMap.set(b.slug, b);
     if (b.id) blogMap.set(String(b.id), b);
   }
 
+  // 3. Add Supabase blogs (check native table and persistent backup)
   if (isSupabaseConfigured) {
+    let nativeLoaded = false;
     try {
       const { data, error } = await supabaseAdmin
         .from('blogs')
         .select('*')
         .order('date', { ascending: false });
-      if (!error && Array.isArray(data)) {
+      if (!error && Array.isArray(data) && data.length > 0) {
+        nativeLoaded = true;
         for (const item of data) {
           const mapped = mapBlogToCamelCase(item);
-          // Only add if not already present or newer
-          if (!blogMap.has(mapped.slug) && !blogMap.has(mapped.id)) {
-            blogMap.set(mapped.slug || mapped.id, mapped);
-          }
+          blogMap.set(mapped.slug || mapped.id, mapped);
         }
       }
     } catch {
-      // Supabase table may not exist yet, safely fallback
+      nativeLoaded = false;
     }
-  }
 
-  // Ensure static fallback if map is empty
-  if (blogMap.size === 0) {
-    for (const b of staticBlogs) {
-      const mapped = mapBlogToCamelCase(b);
-      blogMap.set(mapped.slug || mapped.id, mapped);
+    if (!nativeLoaded) {
+      const backupBlogs = await fetchBlogsFromSupabaseBackup();
+      for (const item of backupBlogs) {
+        blogMap.set(item.slug || item.id, item);
+      }
     }
   }
 
@@ -636,58 +734,60 @@ export async function getBlogByIdOrSlug(identifier: string): Promise<any | null>
 
   // 1. Check memory cache
   if (blogsCache && Date.now() - blogsCache.timestamp < CMS_CACHE_TTL) {
-    const cached = blogsCache.data.find(b => String(b.id) === String(identifier) || b.slug === identifier);
+    const cached = blogsCache.data.find(b => matchesBlog(b, identifier));
     if (cached) return mapBlogToCamelCase(cached);
   }
 
   // 2. Check local store
   const store = initLocalStore();
-  const foundLocal = (store.blogs || []).find(b => String(b.id) === String(identifier) || b.slug === identifier);
+  const foundLocal = (store.blogs || []).find(b => matchesBlog(b, identifier));
   if (foundLocal) {
     return mapBlogToCamelCase(foundLocal);
   }
 
-  // 3. Check Supabase (safe lookup: query slug first, then id)
+  // 3. Check Supabase (safe lookup)
   if (isSupabaseConfigured) {
+    const raw = String(identifier).trim();
+    let decoded = raw;
+    try { decoded = decodeURIComponent(raw).trim(); } catch {}
+
     try {
-      // First try slug lookup (safe for all string identifiers)
       const { data: slugData } = await supabaseAdmin
         .from('blogs')
         .select('*')
-        .eq('slug', identifier)
+        .or(`slug.eq.${decoded},slug.eq.${raw},id.eq.${decoded},id.eq.${raw}`)
         .maybeSingle();
 
       if (slugData) {
         return mapBlogToCamelCase(slugData);
       }
-
-      // If identifier looks like a standard ID or UUID, check id column
-      const { data: idData } = await supabaseAdmin
-        .from('blogs')
-        .select('*')
-        .eq('id', identifier)
-        .maybeSingle();
-
-      if (idData) {
-        return mapBlogToCamelCase(idData);
-      }
     } catch {
-      // Fallback
+      // Native query failed or table not found
+    }
+
+    // Check backup store in Supabase
+    const backupBlogs = await fetchBlogsFromSupabaseBackup();
+    const foundBackup = backupBlogs.find(b => matchesBlog(b, identifier));
+    if (foundBackup) {
+      return mapBlogToCamelCase(foundBackup);
     }
   }
 
   // 4. Fallback to static blogs
-  const foundStatic = staticBlogs.find(b => String(b.id) === String(identifier) || b.slug === identifier);
+  const foundStatic = staticBlogs.find(b => matchesBlog(b, identifier));
   return foundStatic ? mapBlogToCamelCase(foundStatic) : null;
 }
 
 export async function saveBlog(data: any): Promise<any> {
   blogsCache = null; // Invalidate cache immediately on edit
-  const slug = String(data.slug || data.title || '')
+  const rawSlug = String(data.slug || data.title || '')
     .trim()
     .toLowerCase()
+    .replace(/^\/?blog\//, '')
     .replace(/[^a-z0-9-]/g, '-')
+    .replace(/^-+|-+$/g, '')
     .replace(/-+/g, '-');
+  const slug = rawSlug || `article-${Date.now()}`;
   const blogId = data.id ? String(data.id) : (slug || `blog_${Date.now()}`);
 
   const camelPayload = mapBlogToCamelCase({
@@ -702,60 +802,86 @@ export async function saveBlog(data: any): Promise<any> {
   // 1. Update Supabase if configured
   if (isSupabaseConfigured) {
     try {
-      const { data: saved, error } = await supabaseAdmin
+      await supabaseAdmin
         .from('blogs')
-        .upsert(snakePayload, { onConflict: 'id' })
-        .select()
-        .single();
-      if (!error && saved) {
-        const camelSaved = mapBlogToCamelCase(saved);
-        const store = initLocalStore();
-        if (!store.blogs) store.blogs = [];
-        const idx = store.blogs.findIndex(b => String(b.id) === String(blogId) || b.slug === slug);
-        if (idx >= 0) {
-          store.blogs[idx] = camelSaved;
-        } else {
-          store.blogs.unshift(camelSaved);
-        }
-        persistLocalStore(store);
-        return camelSaved;
-      }
+        .upsert(snakePayload, { onConflict: 'id' });
     } catch (err) {
-      console.warn("Supabase upsert blog error, saving to local store:", err);
+      console.warn("Supabase native blogs upsert error:", err);
+    }
+
+    // Also update Supabase backup store (__d2c_cms_blogs_store__)
+    try {
+      const backupList = await fetchBlogsFromSupabaseBackup();
+      const store = initLocalStore();
+      const existingList = backupList.length > 0 ? backupList : (store.blogs || [...staticBlogs]);
+      const idx = existingList.findIndex(b => matchesBlog(b, blogId) || matchesBlog(b, slug));
+      if (idx >= 0) {
+        existingList[idx] = camelPayload;
+      } else {
+        existingList.unshift(camelPayload);
+      }
+      await saveBlogsToSupabaseBackup(existingList);
+    } catch (err) {
+      console.warn("Failed to backup blog in Supabase:", err);
     }
   }
 
   // 2. Persist to local store
   const store = initLocalStore();
   if (!store.blogs) store.blogs = [];
-  const idx = store.blogs.findIndex(b => String(b.id) === String(blogId) || b.slug === slug);
+  const idx = store.blogs.findIndex(b => matchesBlog(b, blogId) || matchesBlog(b, slug));
   if (idx >= 0) {
     store.blogs[idx] = camelPayload;
   } else {
     store.blogs.unshift(camelPayload);
   }
   persistLocalStore(store);
+
+  // 3. Sync to src/data/blog.json if writable
+  try {
+    const blogJsonPath = path.join(process.cwd(), 'src', 'data', 'blog.json');
+    if (fs.existsSync(blogJsonPath)) {
+      fs.writeFileSync(blogJsonPath, JSON.stringify(store.blogs, null, 2), 'utf-8');
+    }
+  } catch {}
+
   return camelPayload;
 }
 
 export async function deleteBlog(id: string): Promise<boolean> {
   blogsCache = null; // Invalidate cache immediately on delete
+  const target = String(id).trim();
+
   if (isSupabaseConfigured) {
     try {
-      await supabaseAdmin.from('blogs').delete().eq('id', id);
+      await supabaseAdmin.from('blogs').delete().or(`id.eq.${target},slug.eq.${target}`);
     } catch (err) {
       console.warn("Supabase delete blog error:", err);
     }
+
+    try {
+      const backupList = await fetchBlogsFromSupabaseBackup();
+      const filtered = backupList.filter(b => !matchesBlog(b, target));
+      await saveBlogsToSupabaseBackup(filtered);
+    } catch {}
   }
 
   const store = initLocalStore();
   if (store.blogs) {
     const initialLength = store.blogs.length;
-    store.blogs = store.blogs.filter(b => String(b.id) !== String(id) && b.slug !== id);
+    store.blogs = store.blogs.filter(b => !matchesBlog(b, target));
     if (store.blogs.length !== initialLength) {
       persistLocalStore(store);
     }
   }
+
+  try {
+    const blogJsonPath = path.join(process.cwd(), 'src', 'data', 'blog.json');
+    if (fs.existsSync(blogJsonPath) && store.blogs) {
+      fs.writeFileSync(blogJsonPath, JSON.stringify(store.blogs, null, 2), 'utf-8');
+    }
+  } catch {}
+
   return true;
 }
 
