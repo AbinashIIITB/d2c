@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from "framer-motion"
 import { Building2, BookOpen } from "lucide-react"
 import { useRouter } from "next/navigation"
 import { searchAndRank } from "@/lib/search"
+import { useSiteContent } from "@/components/cms/SiteContentProvider"
 
 type MobileSearchItem = {
   id: string
@@ -21,7 +22,7 @@ type MobileSearchItem = {
   matchedBy?: string
 }
 
-function useMobileSearchData() {
+function useMobileSearchData(fallbacks: { college: string; exam: string }) {
   const [dbColleges, setDbColleges] = useState<any[]>([])
   const [dbExams, setDbExams] = useState<any[]>([])
 
@@ -34,7 +35,7 @@ function useMobileSearchData() {
     ...dbColleges.map(c => ({
       id: `c_${c.id}`,
       title: c.name,
-      subtitle: c.location || "College",
+      subtitle: c.location || fallbacks.college,
       url: `/colleges/${c.slug}`,
       icon: "college" as const,
       imageUrl: c.imageUrl,
@@ -47,7 +48,7 @@ function useMobileSearchData() {
     ...dbExams.map(e => ({
       id: `e_${e.id}`,
       title: e.name,
-      subtitle: e.fullName || "Entrance Exam",
+      subtitle: e.fullName || fallbacks.exam,
       url: `/exams/${e.slug}`,
       icon: "exam" as const,
       imageUrl: e.logoUrl,
@@ -67,7 +68,9 @@ export function NavbarMobileSearch({
   mobileQuery: string
 }) {
   const router = useRouter()
-  const allSearchItems = useMobileSearchData()
+  const { modals } = useSiteContent()
+  const searchText = modals.search
+  const allSearchItems = useMobileSearchData({ college: searchText.collegeFallbackSubtitle, exam: searchText.examFallbackSubtitle })
   const [mobileActiveIndex, setMobileActiveIndex] = useState(-1)
 
   const collegeItems = allSearchItems.filter(i => i.icon === "college")
@@ -123,7 +126,7 @@ export function NavbarMobileSearch({
             {mobileFilteredColleges.length > 0 && (
               <div>
                 <div className="px-3 py-1.5 text-[11px] font-bold text-gray-400 uppercase tracking-wider">
-                  Colleges
+                  {searchText.collegesHeading}
                 </div>
                 {mobileFilteredColleges.map((item) => {
                   const index = mobileFilteredItems.indexOf(item)
@@ -170,7 +173,7 @@ export function NavbarMobileSearch({
             {mobileFilteredExams.length > 0 && (
               <div>
                 <div className="px-3 py-1.5 text-[11px] font-bold text-gray-400 uppercase tracking-wider">
-                  Exams
+                  {searchText.examsHeading}
                 </div>
                 {mobileFilteredExams.map((item) => {
                   const index = mobileFilteredItems.indexOf(item)

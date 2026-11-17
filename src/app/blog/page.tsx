@@ -4,51 +4,45 @@ import { Newspaper, BookOpen, Users, Award } from "lucide-react"
 import { getAllBlogs } from "@/lib/data-service"
 import { BlogsList } from "./BlogsList"
 import { HeroBackground } from "@/components/ui/HeroBackground"
+import { getContent } from "@/lib/cms/content"
+import { buildMetadata, JsonLd } from "@/lib/cms/seo"
+import { CmsIcon } from "@/components/cms/CmsIcon"
+import { accentClass, withCount } from "@/content/listing-shared"
+import type { BlogIndexContent } from "@/content/blog-index"
 
-export const metadata: Metadata = {
-  title: "Blogs & Admission Insights 2027 – Direct2Campus",
-  description: "Expert guides on college admissions, entrance exams, management quota procedures, and career counseling. Stay ahead with Direct2Campus insights.",
-  keywords: ["college admission blog", "management quota guide", "entrance exam tips", "engineering admissions Kolkata", "career counseling blog"],
-  alternates: { canonical: "https://direct2campus.com/blog" },
-  robots: {
-    index: true,
-    follow: true,
-    googleBot: {
-      index: true,
-      follow: true,
-      "max-video-preview": -1,
-      "max-image-preview": "large",
-      "max-snippet": -1,
-    },
-  },
-  openGraph: {
-    title: "Blogs & Admission Insights 2027 – Direct2Campus",
-    description: "Expert guides on college admissions, entrance exams, management quota procedures, and career counseling.",
-    url: "https://direct2campus.com/blog",
-    siteName: "Direct2Campus",
-    locale: "en_IN",
-    type: "website",
-    images: [{ url: "/logo-footer.png", width: 1200, height: 630, alt: "Direct2Campus Blog" }],
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "Blogs & Admission Insights 2027 – Direct2Campus",
-    description: "Expert guides on college admissions, entrance exams, and management quota procedures.",
-    images: ["/logo-footer.png"],
-  },
+const KNOWN_ICONS = {
+  newspaper: Newspaper,
+  "book-open": BookOpen,
+  users: Users,
+  award: Award,
+}
+
+export async function generateMetadata(): Promise<Metadata> {
+  const content = await getContent<BlogIndexContent>("blog-index");
+  const meta = buildMetadata(content.seo, { path: "/blog" });
+  // buildMetadata emits title/description/type/images only; add the fixed Open Graph extras live pages carry today.
+  if (meta.openGraph) {
+    const og = meta.openGraph as Record<string, unknown>;
+    og.url = content.seo.canonical || "https://direct2campus.com/blog";
+    og.siteName = "Direct2Campus";
+    og.locale = "en_IN";
+    const img = content.seo.og?.image;
+    if (img) og.images = [{ url: img, width: 1200, height: 630, alt: content.ogImageAlt }];
+  }
+  return meta;
 }
 
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
 
 export default async function BlogListingPage() {
-  const blogs = await getAllBlogs();
+  const [blogs, content] = await Promise.all([getAllBlogs(), getContent<BlogIndexContent>("blog-index")]);
 
   const blogListSchema = {
     "@context": "https://schema.org",
     "@type": "CollectionPage",
-    "name": "Direct2Campus Admission Insights & Guides",
-    "description": "Expert guides on college admissions, entrance exams, management quota procedures, and career counseling.",
+    "name": content.schema.name,
+    "description": content.schema.description,
     "url": "https://direct2campus.com/blog",
     "hasPart": (blogs || []).map((b: any) => ({
       "@type": "BlogPosting",
@@ -60,10 +54,7 @@ export default async function BlogListingPage() {
 
   return (
     <div className="pb-16 bg-d2c-white min-h-screen page-fade-in">
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(blogListSchema) }}
-      />
+      <JsonLd seo={content.seo} data={blogListSchema} />
       {/* Hero-style header matching /colleges and /exams */}
       <section className="relative isolate flex flex-col items-center justify-center min-[1025px]:justify-start max-[340px]:min-h-[756px] min-h-[605px] min-[1025px]:min-h-[800px] text-d2c-white pt-12 pb-12 sm:pt-6 min-[1025px]:pt-48 lg:pt-36 overflow-hidden -mb-24 sm:-mb-36 lg:-mb-40">
         {/* Split Background Engine */}
@@ -73,60 +64,42 @@ export default async function BlogListingPage() {
 
         <div className="content-boundary relative z-10 text-center">
           <div className="inline-flex items-center gap-2 px-3 py-1.5 min-[1025px]:px-4 min-[1025px]:py-2 bg-white/10 backdrop-blur-sm border border-white/20 mb-8 sm:mb-4 min-[1025px]:mb-12 lg:mb-10 rounded-lg">
-            <Newspaper className="w-4 h-4 text-d2c-sky" />
-            <span className="text-sm font-medium tracking-wide text-white">Articles & Admission Insights</span>
+            <CmsIcon name={content.hero.badgeIcon} known={KNOWN_ICONS} fallback={Newspaper} className="w-4 h-4 text-d2c-sky" />
+            <span className="text-sm font-medium tracking-wide text-white">{content.hero.badge}</span>
           </div>
 
           <h1 className="text-2xl sm:text-4xl min-[1025px]:text-6xl lg:text-7xl font-sora font-bold tracking-tight mb-6 sm:mb-4 min-[1025px]:mb-10 lg:mb-8 text-balance leading-[1.1] text-white">
-            Admission & Career{" "}
+            {content.hero.titlePrefix}{" "}
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-d2c-sky to-d2c-ice">
-              Insights
+              {content.hero.titleHighlight}
             </span>
           </h1>
 
           <p className="text-base min-[1025px]:text-xl text-d2c-ice/80 max-w-2xl mx-auto mb-6 leading-relaxed font-medium">
-            Stay informed with verified guidance on entrance exams, quota eligibility, college cutoffs, and counseling blueprints.
+            {content.hero.subheading}
           </p>
 
           {/* Stats bar */}
           <div className="flex flex-wrap justify-center gap-5 min-[1025px]:gap-14 pt-5 min-[1025px]:pt-12 border-t border-white/10 max-w-3xl mx-auto">
-            <div className="flex items-center gap-3 text-d2c-ice">
-              <div className="p-2 bg-white/5 rounded-lg border border-white/10">
-                <BookOpen className="w-5 h-5 text-d2c-sky" />
+            {content.hero.stats?.map((stat, idx) => (
+              <div key={idx} className="flex items-center gap-3 text-d2c-ice">
+                <div className="p-2 bg-white/5 rounded-lg border border-white/10">
+                  <CmsIcon name={stat.icon} known={KNOWN_ICONS} fallback={BookOpen} className={`w-5 h-5 ${accentClass(stat.accent)}`} />
+                </div>
+                <div className="text-left">
+                  <div className="text-base min-[1025px]:text-xl font-bold font-sora text-white">{withCount(stat.value, blogs.length)}</div>
+                  <div className="text-[10px] min-[1025px]:text-xs text-white/50 font-medium uppercase tracking-wider">{stat.label}</div>
+                </div>
               </div>
-              <div className="text-left">
-                <div className="text-base min-[1025px]:text-xl font-bold font-sora text-white">{blogs.length}+</div>
-                <div className="text-[10px] min-[1025px]:text-xs text-white/50 font-medium uppercase tracking-wider">Guides Published</div>
-              </div>
-            </div>
-
-            <div className="flex items-center gap-3 text-d2c-ice">
-              <div className="p-2 bg-white/5 rounded-lg border border-white/10">
-                <Users className="w-5 h-5 text-d2c-gold" />
-              </div>
-              <div className="text-left">
-                <div className="text-base min-[1025px]:text-xl font-bold font-sora text-white">15,000+</div>
-                <div className="text-[10px] min-[1025px]:text-xs text-white/50 font-medium uppercase tracking-wider">Students Guided</div>
-              </div>
-            </div>
-
-            <div className="flex items-center gap-3 text-d2c-ice">
-              <div className="p-2 bg-white/5 rounded-lg border border-white/10">
-                <Award className="w-5 h-5 text-d2c-success" />
-              </div>
-              <div className="text-left">
-                <div className="text-base min-[1025px]:text-xl font-bold font-sora text-white">100%</div>
-                <div className="text-[10px] min-[1025px]:text-xs text-white/50 font-medium uppercase tracking-wider">Verified Insights</div>
-              </div>
-            </div>
+            ))}
           </div>
         </div>
       </section>
 
       {/* Main Listing Grid */}
       <div className="content-boundary py-12 relative z-20">
-        <Suspense fallback={<div className="text-center py-24 text-d2c-muted">Loading articles...</div>}>
-          <BlogsList initialBlogs={blogs as any} />
+        <Suspense fallback={<div className="text-center py-24 text-d2c-muted">{content.list.loadingText}</div>}>
+          <BlogsList initialBlogs={blogs as any} content={content.list} />
         </Suspense>
       </div>
     </div>

@@ -7,8 +7,8 @@ import { Award, Target, HeadphonesIcon, Briefcase } from "lucide-react"
 const features = [
   {
     icon: <Target className="w-8 h-8 text-d2c-navy" />,
-    title: "100% Guaranteed Admissions",
-    desc: "We don't deal in probabilities. Once we commit, your college seat is guaranteed without any hidden hurdles.",
+    title: "Dedicated Admission Support",
+    desc: "We don't deal in guesswork. Our counsellors give you clear, data-backed guidance without any hidden hurdles.",
     delay: 0.1
   },
   {
@@ -19,8 +19,8 @@ const features = [
   },
   {
     icon: <Briefcase className="w-8 h-8 text-d2c-royal" />,
-    title: "Direct College Tie-ups",
-    desc: "We represent over 50+ premier institutions across India officially, ensuring a smooth and legitimate admission process.",
+    title: "Wide College Network",
+    desc: "We guide students to over 50+ premier institutions across India, ensuring a smooth and legitimate admission process.",
     delay: 0.3
   },
   {

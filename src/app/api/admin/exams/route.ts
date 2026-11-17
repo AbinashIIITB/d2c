@@ -3,6 +3,7 @@ import { supabaseAdmin } from '@/lib/supabase';
 import { checkAdminAuth } from '@/lib/auth';
 import { mapExamToDb, mapDbToExam } from '@/lib/admin-mappers';
 import { revalidatePath } from 'next/cache';
+import { clearCmsMemoryCache } from '@/lib/data-service';
 
 export async function GET() {
   try {
@@ -60,9 +61,16 @@ export async function POST(req: Request) {
     if (error) throw error;
 
     // Revalidate paths
-    revalidatePath('/exams');
-    revalidatePath(`/exams/${dbPayload.slug}`);
-    revalidatePath('/admin/exams');
+    clearCmsMemoryCache();
+    try {
+      revalidatePath('/exams');
+      revalidatePath(`/exams/${dbPayload.slug}`);
+      revalidatePath('/sitemap.xml');
+      revalidatePath('/admin/exams');
+      revalidatePath('/admin/seo');
+    } catch (err) {
+      console.warn('revalidatePath failed', err);
+    }
 
     return NextResponse.json({
       success: true,

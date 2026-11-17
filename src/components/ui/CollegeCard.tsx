@@ -3,8 +3,15 @@
 import Link from "next/link";
 import { MapPin, ArrowUpRight, Star, ChevronRight } from "lucide-react";
 import { College } from "@/lib/data";
+import { defaults as pageDefaults, type CollegePageContent } from "@/content/college-page";
 
-export function CollegeCard({ college }: { college: College }) {
+export function CollegeCard({
+  college,
+  content = pageDefaults.card,
+}: {
+  college: College;
+  content?: CollegePageContent["card"];
+}) {
   return (
     <Link
       href={`/colleges/${college.slug}`}
@@ -26,7 +33,7 @@ export function CollegeCard({ college }: { college: College }) {
         {/* Premium Badge */}
         <div className="absolute top-4 left-4 z-20 bg-white/95 backdrop-blur-md px-3 py-1 rounded-full flex items-center gap-1.5 text-[10px] font-bold text-d2c-navy tracking-widest uppercase shadow-sm border border-slate-100">
           <Star className="w-3 h-3 fill-d2c-gold text-d2c-gold" />
-          Premium
+          {content.premiumBadge}
         </div>
 
         {/* Location Pill */}
@@ -50,7 +57,7 @@ export function CollegeCard({ college }: { college: College }) {
         {/* Action Button Area */}
         <div className="mt-auto pt-4 border-t border-slate-50 flex items-center justify-between">
           <span className="text-sm font-bold text-d2c-royal font-inter">
-            Explore Admission
+            {content.exploreLabel}
           </span>
           <div className="w-8 h-8 rounded-full bg-slate-50 flex items-center justify-center group-hover:bg-d2c-royal group-hover:text-white transition-colors duration-300">
             <ChevronRight className="w-4 h-4" />

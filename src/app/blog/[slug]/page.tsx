@@ -1,5 +1,5 @@
 // @ts-nocheck
-import { notFound } from "next/navigation"
+import { notFound, permanentRedirect } from "next/navigation"
 import { Metadata } from "next"
 import Link from "next/link"
 import { 
@@ -17,10 +17,39 @@ import {
   Share2
 } from "lucide-react"
 import { getAllBlogs, getBlogByIdOrSlug } from "@/lib/data-service"
+import { getContent } from "@/lib/cms/content"
+import { JsonLd } from "@/lib/cms/seo"
+import { CmsIcon } from "@/components/cms/CmsIcon"
+import { blogMetadata, blogSeo } from "@/lib/record-seo"
+import { fill } from "@/lib/record-text"
+import { defaults as blogPostDefaults, type BlogPostContent } from "@/content/blog-post"
 import { AnimatedPatternBg } from "@/components/ui/AnimatedPatternBg"
 import { ApplyButton } from "@/components/ui/ApplyButton"
 
 type Params = Promise<{ slug: string }>
+
+// Old slugs (they contained "direct-admission") -> new slugs.
+const RENAMED_SLUGS: Record<string, string> = {
+  "direct-admission-in-top-engineering-colleges-2027": "admission-in-top-engineering-colleges-2027",
+  "direct-admission-management-quota-guide-2027": "admission-management-quota-guide-2027",
+}
+
+function redirectIfRenamed(slug: string, decodedSlug: string) {
+  const target = RENAMED_SLUGS[decodedSlug] || RENAMED_SLUGS[slug]
+  if (target) permanentRedirect(`/blog/${target}`)
+}
+
+const ICONS = {
+  "arrow-left": ArrowLeft,
+  user: User,
+  calendar: Calendar,
+  clock: Clock,
+  tag: Tag,
+  sparkles: Sparkles,
+  "phone-call": PhoneCall,
+  "message-square": MessageSquare,
+  "book-open": BookOpen,
+}
 
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
@@ -44,67 +73,15 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
     decodedSlug = decodeURIComponent(slug || '').trim();
   } catch {}
 
+  redirectIfRenamed(slug, decodedSlug);
+
   const blog = (await getBlogByIdOrSlug(decodedSlug)) || (await getBlogByIdOrSlug(slug));
   
   if (!blog) {
     return { title: "Article Not Found | Direct2Campus" };
   }
 
-  const pageTitle = blog.seoTitle || `${blog.title} | Direct2Campus`;
-  const metaDesc = blog.metaDescription || blog.excerpt || `Read ${blog.title} on Direct2Campus for latest admission insights, cutoffs, and guidance.`;
-  const canonical = `https://direct2campus.com/blog/${blog.slug || decodedSlug}`;
-  const imageUrl = blog.imageUrl || blog.image_url || "/images/blog/default.jpg";
-  const authorName = blog.author || "Direct2Campus Editorial Team";
-
-  return {
-    title: pageTitle,
-    description: metaDesc,
-    keywords: [
-      ...(Array.isArray(blog.tags) ? blog.tags : []),
-      blog.category || "Admission Guide",
-      "college admissions",
-      "engineering admission",
-      "Direct2Campus"
-    ],
-    authors: [{ name: authorName, url: "https://direct2campus.com" }],
-    alternates: { canonical },
-    robots: {
-      index: blog.published !== false,
-      follow: true,
-      googleBot: {
-        index: blog.published !== false,
-        follow: true,
-        "max-video-preview": -1,
-        "max-image-preview": "large",
-        "max-snippet": -1,
-      },
-    },
-    openGraph: {
-      type: "article",
-      title: pageTitle,
-      description: metaDesc,
-      url: canonical,
-      siteName: "Direct2Campus",
-      locale: "en_IN",
-      publishedTime: blog.date,
-      authors: [authorName],
-      tags: blog.tags || [],
-      images: [
-        {
-          url: imageUrl,
-          width: 1200,
-          height: 630,
-          alt: blog.title,
-        },
-      ],
-    },
-    twitter: {
-      card: "summary_large_image",
-      title: pageTitle,
-      description: metaDesc,
-      images: [imageUrl],
-    },
-  }
+  return blogMetadata(blog, decodedSlug);
 }
 
 export default async function BlogPostPage({ params }: { params: Params }) {
@@ -114,18 +91,22 @@ export default async function BlogPostPage({ params }: { params: Params }) {
     decodedSlug = decodeURIComponent(slug || '').trim();
   } catch {}
 
-  const [blog, allBlogs] = await Promise.all([
+  redirectIfRenamed(slug, decodedSlug);
+
+  const [blog, allBlogs, content] = await Promise.all([
     getBlogByIdOrSlug(decodedSlug).then(res => res || getBlogByIdOrSlug(slug)),
-    getAllBlogs()
+    getAllBlogs(),
+    getContent<BlogPostContent>("blog-post"),
   ]);
 
   if (!blog) {
     notFound();
   }
 
-  const canonical = `https://direct2campus.com/blog/${blog.slug || decodedSlug}`;
+  const seo = blogSeo(blog, decodedSlug);
+  const canonical = seo.canonical || `https://direct2campus.com/blog/${blog.slug || decodedSlug}`;
   const imageUrl = blog.imageUrl || blog.image_url || "https://direct2campus.com/logo-footer.png";
-  const authorName = blog.author || "Direct2Campus Editorial Team";
+  const authorName = blog.author || content.hero.fallbackAuthor;
 
   const breadcrumbSchema = {
     "@context": "https://schema.org",
@@ -280,24 +261,18 @@ export default async function BlogPostPage({ params }: { params: Params }) {
 
   return (
     <div className="pb-24 bg-d2c-white min-h-screen font-dm-sans">
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
-      />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }}
-      />
+      <JsonLd data={breadcrumbSchema} />
+      <JsonLd data={articleSchema} seo={seo} />
       {/* Hero Header */}
       <div className="bg-d2c-navy pt-32 pb-24 px-4 shadow-xl border-b-4 border-d2c-royal relative overflow-hidden">
         <AnimatedPatternBg opacity={0.1} speed={160} />
         
         <div className="content-boundary relative z-10 max-w-5xl mx-auto">
           <Link 
-            href="/blog" 
+            href={content.hero.backHref} 
             className="inline-flex items-center gap-2 text-d2c-sky hover:text-white transition-colors mb-8 text-xs font-semibold px-4 py-2 rounded-full bg-white/5 border border-white/10"
           >
-            <ArrowLeft className="w-3.5 h-3.5" /> Back to All Articles
+            <CmsIcon name={content.hero.backIcon} known={ICONS} className="w-3.5 h-3.5" /> {content.hero.backLabel}
           </Link>
 
           <div>
@@ -315,21 +290,21 @@ export default async function BlogPostPage({ params }: { params: Params }) {
             <div className="flex flex-wrap items-center gap-6 text-xs md:text-sm text-d2c-ice/80 pt-2 border-t border-white/10">
               <div className="flex items-center gap-2">
                 <div className="w-8 h-8 rounded-full bg-d2c-royal flex items-center justify-center font-bold text-white">
-                  <User className="w-4 h-4" />
+                  <CmsIcon name={content.hero.authorIcon} known={ICONS} className="w-4 h-4" />
                 </div>
-                <span className="font-semibold text-white">{blog.author || "Direct2Campus Editorial Team"}</span>
+                <span className="font-semibold text-white">{blog.author || content.hero.fallbackAuthor}</span>
               </div>
 
               {blog.date && (
                 <div className="flex items-center gap-1.5">
-                  <Calendar className="w-4 h-4 text-d2c-sky" />
+                  <CmsIcon name={content.hero.dateIcon} known={ICONS} className="w-4 h-4 text-d2c-sky" />
                   <span>{blog.date}</span>
                 </div>
               )}
 
               {blog.readTime && (
                 <div className="flex items-center gap-1.5">
-                  <Clock className="w-4 h-4 text-d2c-gold" />
+                  <CmsIcon name={content.hero.readTimeIcon} known={ICONS} className="w-4 h-4 text-d2c-gold" />
                   <span>{blog.readTime}</span>
                 </div>
               )}
@@ -348,7 +323,7 @@ export default async function BlogPostPage({ params }: { params: Params }) {
               <div className="rounded-3xl overflow-hidden shadow-xl border border-gray-150 bg-white">
                 <img
                   src={blog.imageUrl}
-                  alt={blog.title}
+                  alt={blog.seo?.imageAlt || blog.title}
                   className="w-full max-h-[460px] object-cover"
                 />
               </div>
@@ -373,7 +348,7 @@ export default async function BlogPostPage({ params }: { params: Params }) {
               {blog.tags && blog.tags.length > 0 && (
                 <div className="mt-10 pt-6 border-t border-gray-150">
                   <div className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-3 flex items-center gap-1.5">
-                    <Tag className="w-3.5 h-3.5 text-d2c-royal" /> Related Topics:
+                    <CmsIcon name={content.article.relatedTopicsIcon} known={ICONS} className="w-3.5 h-3.5 text-d2c-royal" /> {content.article.relatedTopicsLabel}
                   </div>
                   <div className="flex flex-wrap gap-2">
                     {blog.tags.map((tag: string, idx: number) => (
@@ -395,10 +370,10 @@ export default async function BlogPostPage({ params }: { params: Params }) {
                 {(blog.author || "D")[0]}
               </div>
               <div>
-                <div className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-1">Written By</div>
-                <div className="text-base font-sora font-bold text-d2c-navy">{blog.author || "Direct2Campus Editorial Team"}</div>
+                <div className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-1">{content.article.writtenByLabel}</div>
+                <div className="text-base font-sora font-bold text-d2c-navy">{blog.author || content.hero.fallbackAuthor}</div>
                 <p className="text-xs text-gray-500 mt-1 leading-relaxed">
-                  Verified educational counselor and admission specialist providing research-backed guidance on Indian higher education.
+                  {content.article.authorBio}
                 </p>
               </div>
             </div>
@@ -409,35 +384,35 @@ export default async function BlogPostPage({ params }: { params: Params }) {
             {/* Admission Counseling CTA Box */}
             <div className="bg-gradient-to-br from-white to-d2c-ice/30 rounded-3xl p-8 shadow-sm border border-d2c-royal/10 flex flex-col text-center">
               <div className="w-14 h-14 bg-d2c-royal text-white rounded-2xl flex items-center justify-center shadow-lg shadow-d2c-navy/10 mx-auto mb-5">
-                <Sparkles className="w-7 h-7 text-d2c-gold" />
+                <CmsIcon name={content.cta.icon} known={ICONS} className="w-7 h-7 text-d2c-gold" />
               </div>
-              <h3 className="text-xl font-sora font-bold text-d2c-navy mb-3">Need Admission Guidance?</h3>
+              <h3 className="text-xl font-sora font-bold text-d2c-navy mb-3">{content.cta.heading}</h3>
               <p className="text-xs md:text-sm text-d2c-muted mb-6 leading-relaxed">
-                Connect with our senior counselors at Direct2Campus to explore management quota, cutoff ranks, and direct seat availability in top colleges.
+                {content.cta.text}
               </p>
               
               <div className="space-y-3">
                 <ApplyButton
                   className="block w-full bg-d2c-navy hover:bg-d2c-royal text-white py-3.5 rounded-xl font-bold transition-all shadow-md shadow-d2c-navy/20 text-xs"
-                  context={`Blog Counseling: ${blog.title}`}
+                  context={fill(content.cta.applyContext, { title: blog.title })}
                 >
-                  Get Free Counseling
+                  {content.cta.applyLabel}
                 </ApplyButton>
 
                 <a
-                  href="tel:+916200325137"
+                  href={content.cta.callHref}
                   className="block w-full bg-white border border-gray-200 text-d2c-navy py-3 rounded-xl font-bold transition-colors hover:bg-gray-50 text-xs flex items-center justify-center gap-2"
                 >
-                  <PhoneCall className="w-3.5 h-3.5 text-d2c-royal" /> Call Counselor
+                  <CmsIcon name={content.cta.callIcon} known={ICONS} className="w-3.5 h-3.5 text-d2c-royal" /> {content.cta.callLabel}
                 </a>
 
                 <a
-                  href="https://wa.me/916200325137"
+                  href={content.cta.whatsappHref}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="block w-full bg-emerald-50 border border-emerald-200 text-emerald-800 py-3 rounded-xl font-bold transition-colors hover:bg-emerald-100 text-xs flex items-center justify-center gap-2"
                 >
-                  <MessageSquare className="w-3.5 h-3.5 text-emerald-600" /> WhatsApp Expert
+                  <CmsIcon name={content.cta.whatsappIcon} known={ICONS} className="w-3.5 h-3.5 text-emerald-600" /> {content.cta.whatsappLabel}
                 </a>
               </div>
             </div>
@@ -446,7 +421,7 @@ export default async function BlogPostPage({ params }: { params: Params }) {
             {otherBlogs.length > 0 && (
               <div className="bg-white rounded-3xl p-6 shadow-sm border border-gray-100">
                 <h4 className="text-sm font-sora font-bold text-d2c-navy mb-4 flex items-center gap-2">
-                  <BookOpen className="w-4 h-4 text-d2c-royal" /> Recommended Guides
+                  <CmsIcon name={content.recommended.icon} known={ICONS} className="w-4 h-4 text-d2c-royal" /> {content.recommended.heading}
                 </h4>
                 <div className="divide-y divide-gray-100">
                   {otherBlogs.map((item) => (
@@ -459,9 +434,9 @@ export default async function BlogPostPage({ params }: { params: Params }) {
                         {item.title}
                       </div>
                       <div className="flex items-center gap-2 text-[10px] text-gray-400 mt-1.5 font-medium">
-                        <span>{item.category || "Guide"}</span>
+                        <span>{item.category || content.recommended.fallbackCategory}</span>
                         <span>•</span>
-                        <span>{item.readTime || "5 min"}</span>
+                        <span>{item.readTime || content.recommended.fallbackReadTime}</span>
                       </div>
                     </Link>
                   ))}

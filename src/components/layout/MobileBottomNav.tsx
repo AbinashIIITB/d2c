@@ -3,16 +3,14 @@
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { Home, PhoneCall, GraduationCap, Building2, Info } from "lucide-react"
+import { CmsIcon } from "@/components/cms/CmsIcon"
+import { floatingDefaults, type FloatingContent } from "@/content/floating"
 
-const BOTTOM_LINKS = [
-  { label: "Home", href: "/", icon: Home },
-  { label: "Colleges", href: "/colleges", icon: Building2 },
-  { label: "Consult Us", href: "/contact", icon: PhoneCall, isCenter: true },
-  { label: "Exams", href: "/exams", icon: GraduationCap },
-  { label: "About", href: "/about", icon: Info },
-]
+const KNOWN_ICONS = { home: Home, "phone-call": PhoneCall, "graduation-cap": GraduationCap, "building-2": Building2, info: Info }
 
-export function MobileBottomNav() {
+
+export function MobileBottomNav({ content = floatingDefaults }: { content?: FloatingContent }) {
+  const BOTTOM_LINKS = content.bottomNav
   const pathname = usePathname()
 
   return (
@@ -20,7 +18,6 @@ export function MobileBottomNav() {
       <div className="flex items-center justify-between">
         {BOTTOM_LINKS.map((link) => {
           const isActive = pathname === link.href
-          const Icon = link.icon
 
           if (link.isCenter) {
             return (
@@ -29,7 +26,7 @@ export function MobileBottomNav() {
                 onClick={() => window.dispatchEvent(new CustomEvent("open-callback-modal"))}
                 className="relative -top-6 flex flex-col items-center justify-center w-14 h-14 bg-d2c-royal rounded-full text-white shadow-xl shadow-d2c-royal/30 active:scale-95 transition-transform"
               >
-                <Icon className="w-6 h-6 animate-pulse" />
+                <CmsIcon name={link.icon} known={KNOWN_ICONS} fallback={PhoneCall} className="w-6 h-6 animate-pulse" />
               </button>
             )
           }
@@ -42,7 +39,7 @@ export function MobileBottomNav() {
                 isActive ? "text-d2c-royal" : "text-d2c-muted hover:text-d2c-navy"
               }`}
             >
-              <Icon className={`w-5 h-5 ${isActive ? "fill-d2c-royal/20" : ""}`} />
+              <CmsIcon name={link.icon} known={KNOWN_ICONS} fallback={Home} className={`w-5 h-5 ${isActive ? "fill-d2c-royal/20" : ""}`} />
               <span className="text-[10px] font-semibold">{link.label}</span>
             </Link>
           )

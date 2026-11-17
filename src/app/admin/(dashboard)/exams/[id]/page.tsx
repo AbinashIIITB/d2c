@@ -1,6 +1,6 @@
 import { supabaseAdmin } from "@/lib/supabase";
 import { notFound } from "next/navigation";
-import { VisualExamEditor } from "@/components/admin/visual-editor/VisualExamEditor";
+import { ExamEditForm } from "@/components/admin/ExamEditForm";
 import { mapDbToExam } from "@/lib/admin-mappers";
 import { getExamByIdOrSlug } from "@/lib/data-service";
 
@@ -30,6 +30,6 @@ export default async function EditExamPage({ params }: { params: Params }) {
     notFound();
   }
 
-  return <VisualExamEditor initialData={examData} isNew={false} />;
+  return <ExamEditForm initialData={examData} isNew={false} />;
 }
 

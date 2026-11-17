@@ -4,6 +4,7 @@ import { useState, useEffect, useRef, useCallback } from "react";
 import { ChevronLeft, ChevronRight, ExternalLink } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import { homeDefaults } from "@/content/home.defaults";
 
 export interface BannerItem {
   id?: string | number;
@@ -15,11 +16,7 @@ export interface BannerItem {
   badge?: string;
 }
 
-const defaultSlides: BannerItem[] = [
-  { id: 1, image: "/images/banners/heritage_enhanced.png", alt: "Heritage Institute of Medical Sciences, Varanasi - High-definition Campus View", title: "Heritage Institute of Medical Sciences", subtitle: "Premier Medical Institution in Varanasi" },
-  { id: 2, image: "/images/banners/jis_enhanced.png", alt: "JIS College of Engineering Campus — Direct2Campus Partner Institution", title: "JIS College of Engineering Campus", subtitle: "Autonomous Institution with AI & Robotics Research Centers" },
-  { id: 3, image: "/images/banners/ncr_enhanced.png", alt: "NCR Institute of Medical Sciences, Meerut — AI-Enhanced Exterior", title: "NCR Institute of Medical Sciences", subtitle: "Leading Medical Healthcare & Education Complex in Meerut" },
-];
+const defaultSlides: BannerItem[] = homeDefaults.banners.slides;
 
 const AUTO_INTERVAL = 5000;
 

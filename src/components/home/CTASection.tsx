@@ -5,8 +5,9 @@ import Link from "next/link";
 import { motion, useInView } from "framer-motion";
 import { PhoneCall, MessageCircle, Sparkles, ArrowUpRight } from "lucide-react";
 import { ApplyModal } from "@/components/layout/ApplyModal";
+import { homeDefaults, type HomeContent } from "@/content/home.defaults";
 
-export function CTASection() {
+export function CTASection({ content = homeDefaults.cta }: { content?: HomeContent["cta"] } = {}) {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -23,8 +24,8 @@ export function CTASection() {
           {/* ── 3D GRAPHIC BACKGROUND ── */}
           <div className="absolute top-0 right-0 w-full h-full pointer-events-none overflow-hidden opacity-40 group-hover:opacity-60 transition-opacity duration-1000">
             <img 
-              src="/images/cta-3d-graphic.png" 
-              alt="Background mesh" 
+              src={content.backgroundImage}
+              alt={content.backgroundImageAlt}
               className="absolute inset-0 w-full h-full object-cover opacity-30 group-hover:scale-110 group-hover:rotate-3 transition-transform duration-1000"
             />
           </div>
@@ -38,7 +39,7 @@ export function CTASection() {
               className="inline-flex items-center gap-2 px-4 py-2 bg-d2c-sky/10 border border-d2c-sky/20 rounded-full text-d2c-sky text-xs font-bold mb-8 backdrop-blur-sm uppercase tracking-widest"
             >
               <Sparkles className="w-4 h-4" />
-              Your Premium Path
+              {content.badge}
             </motion.div>
             
             <motion.h2
@@ -48,8 +49,8 @@ export function CTASection() {
               transition={{ delay: 0.1 }}
               className="text-4xl md:text-6xl font-sora font-extrabold text-white mb-8 leading-tight"
             >
-              Ready to Secure Your <br />
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-d2c-gold via-[#FBD46D] to-d2c-gold">Future?</span>
+              {`${content.headingPrefix} `}<br />
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-d2c-gold via-[#FBD46D] to-d2c-gold">{content.headingHighlight}</span>
             </motion.h2>
             
             <motion.p
@@ -59,7 +60,7 @@ export function CTASection() {
               transition={{ delay: 0.2 }}
               className="text-lg md:text-xl text-slate-300 mb-12 leading-relaxed max-w-xl font-inter"
             >
-              Connect with our veteran counsellors today. Get a free, data-backed profile evaluation and find out which premium colleges perfectly match your academic ambitions.
+              {content.description}
             </motion.p>
 
             <motion.div
@@ -70,12 +71,12 @@ export function CTASection() {
               className="flex flex-col sm:flex-row items-center gap-6"
             >
               <Link
-                href="https://wa.me/916200325137"
-                target="_blank"
+                href={content.whatsappButton.href}
+                target={content.whatsappButton.newTab ? "_blank" : undefined}
                 className="w-full sm:w-auto flex items-center justify-center gap-2 sm:gap-3 px-6 sm:px-10 py-3.5 sm:py-5 bg-[#25D366] hover:bg-[#20BD5A] text-white font-bold text-sm sm:text-lg rounded-xl sm:rounded-2xl transition-all duration-300 shadow-[0_20px_40px_-10px_rgba(37,211,102,0.3)] hover:shadow-[0_25px_50px_-12px_rgba(37,211,102,0.5)] transform hover:-translate-y-1"
               >
                 <MessageCircle className="w-6 h-6 fill-white" />
-                WhatsApp Now
+                {content.whatsappButton.label}
                 <ArrowUpRight className="w-5 h-5" />
               </Link>
 
@@ -84,7 +85,7 @@ export function CTASection() {
                 className="w-full sm:w-auto flex items-center justify-center gap-2 sm:gap-3 px-6 sm:px-10 py-3.5 sm:py-5 bg-white/5 hover:bg-white/10 text-white font-semibold text-sm sm:text-lg rounded-xl sm:rounded-2xl border border-white/10 backdrop-blur-md transition-all duration-300 hover:-translate-y-1"
               >
                 <PhoneCall className="w-5 h-5" />
-                Request Callback
+                {content.callbackLabel}
               </button>
             </motion.div>
           </div>

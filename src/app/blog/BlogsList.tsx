@@ -4,6 +4,7 @@ import { useState } from "react"
 import Link from "next/link"
 import { Search, Calendar, User, Clock, ArrowRight, BookOpen, Tag } from "lucide-react"
 import { motion, AnimatePresence } from "framer-motion"
+import { defaults as blogIndexDefaults, type BlogIndexContent } from "@/content/blog-index"
 
 interface BlogItem {
   id: string | number
@@ -26,11 +27,11 @@ const CATEGORY_COLORS: Record<string, { bg: string, text: string }> = {
   "Medical": { bg: "bg-rose-50", text: "text-rose-700" },
 }
 
-export function BlogsList({ initialBlogs }: { initialBlogs: BlogItem[] }) {
+export function BlogsList({ initialBlogs, content = blogIndexDefaults.list }: { initialBlogs: BlogItem[]; content?: BlogIndexContent["list"] }) {
   const [search, setSearch] = useState("")
-  const [selectedCategory, setSelectedCategory] = useState("All")
+  const [selectedCategory, setSelectedCategory] = useState(content.allCategoryLabel)
 
-  const categories = ["All", ...Array.from(new Set(initialBlogs.map(b => b.category).filter(Boolean)))]
+  const categories = [content.allCategoryLabel, ...Array.from(new Set(initialBlogs.map(b => b.category).filter(Boolean)))]
 
   const filteredBlogs = initialBlogs.filter(blog => {
     const matchesSearch = 
@@ -39,7 +40,7 @@ export function BlogsList({ initialBlogs }: { initialBlogs: BlogItem[] }) {
       (blog.author || "").toLowerCase().includes(search.toLowerCase()) ||
       (blog.tags || []).some(t => t.toLowerCase().includes(search.toLowerCase()))
 
-    const matchesCategory = selectedCategory === "All" || blog.category === selectedCategory
+    const matchesCategory = selectedCategory === content.allCategoryLabel || blog.category === selectedCategory
     return matchesSearch && matchesCategory
   })
 
@@ -53,7 +54,7 @@ export function BlogsList({ initialBlogs }: { initialBlogs: BlogItem[] }) {
             type="text"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            placeholder="Search articles by title, topic, or keyword..."
+            placeholder={content.searchPlaceholder}
             className="w-full pl-12 pr-4 py-3.5 rounded-2xl bg-white border border-gray-200 focus:border-d2c-royal focus:ring-2 focus:ring-d2c-royal/20 outline-none text-sm shadow-sm transition-all text-gray-800"
           />
         </div>
@@ -82,15 +83,15 @@ export function BlogsList({ initialBlogs }: { initialBlogs: BlogItem[] }) {
       {filteredBlogs.length === 0 ? (
         <div className="text-center py-20 bg-white rounded-3xl border border-gray-150 p-10 max-w-xl mx-auto shadow-sm">
           <BookOpen className="w-16 h-16 text-gray-300 mx-auto mb-4" />
-          <h3 className="text-xl font-sora font-bold text-d2c-navy mb-2">No Articles Found</h3>
+          <h3 className="text-xl font-sora font-bold text-d2c-navy mb-2">{content.emptyTitle}</h3>
           <p className="text-sm text-gray-400">
-            No articles match &ldquo;{search}&rdquo;. Try another search term or reset filters.
+            {content.emptyText.replace("{query}", search)}
           </p>
           <button
-            onClick={() => { setSearch(""); setSelectedCategory("All"); }}
+            onClick={() => { setSearch(""); setSelectedCategory(content.allCategoryLabel); }}
             className="mt-6 px-5 py-2.5 bg-d2c-royal text-white rounded-xl text-xs font-bold hover:bg-d2c-navy transition-colors shadow-sm"
           >
-            Clear Filters
+            {content.clearFiltersLabel}
           </button>
         </div>
       ) : (
@@ -115,7 +116,7 @@ export function BlogsList({ initialBlogs }: { initialBlogs: BlogItem[] }) {
                   {/* Cover Image */}
                   <Link href={`/blog/${blog.slug}`} prefetch={true} className="block relative h-56 overflow-hidden bg-gray-100">
                     <img
-                      src={blog.imageUrl || "https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&q=80&w=800"}
+                      src={blog.imageUrl || content.fallbackImage}
                       alt={blog.title}
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 ease-out"
                     />
@@ -165,7 +166,7 @@ export function BlogsList({ initialBlogs }: { initialBlogs: BlogItem[] }) {
                           <User className="w-3.5 h-3.5 text-d2c-royal" />
                         </div>
                         <span className="text-xs font-semibold text-gray-700 truncate max-w-[130px]">
-                          {blog.author || "Direct2Campus Editorial Team"}
+                          {blog.author || content.defaultAuthor}
                         </span>
                       </div>
 
@@ -173,7 +174,7 @@ export function BlogsList({ initialBlogs }: { initialBlogs: BlogItem[] }) {
                         href={`/blog/${blog.slug}`}
                         className="inline-flex items-center gap-1.5 text-xs font-bold text-d2c-royal group-hover:text-d2c-navy group-hover:translate-x-1 transition-all"
                       >
-                        Read More <ArrowRight className="w-3.5 h-3.5" />
+                        {content.readMoreLabel} <ArrowRight className="w-3.5 h-3.5" />
                       </Link>
                     </div>
                   </div>

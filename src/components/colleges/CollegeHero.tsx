@@ -5,9 +5,19 @@ import { AnimatedPatternBg } from "@/components/ui/AnimatedPatternBg"
 import { ApplyNowButton } from "@/components/ui/ApplyNowButton"
 
 import { isIEMCollege } from "@/lib/iem-priority"
+import { fill } from "@/lib/record-text"
+import { defaults as pageDefaults, type CollegePageContent } from "@/content/college-page"
 
 // We expect a robust college object matching the schema from data.ts
-export function CollegeHero({ college }: { college: any }) {
+export function CollegeHero({
+  college,
+  content = pageDefaults.hero,
+  contact = pageDefaults.contact,
+}: {
+  college: any
+  content?: CollegePageContent["hero"]
+  contact?: CollegePageContent["contact"]
+}) {
   const seo = college.seo || college.contact?.seo || {};
   const isIem = isIEMCollege(college);
   const defaultH1 = isIem
@@ -36,9 +46,9 @@ export function CollegeHero({ college }: { college: any }) {
       <div className="content-boundary relative z-10 pt-28 pb-8">
         {/* Breadcrumbs */}
         <nav className="flex items-center gap-2 text-sm mb-8">
-          <Link href="/" className="text-white/40 hover:text-white/70 transition-colors">Home</Link>
+          <Link href="/" className="text-white/40 hover:text-white/70 transition-colors">{content.breadcrumbHome}</Link>
           <ChevronRight className="w-3.5 h-3.5 text-white/20" />
-          <Link href="/colleges" className="text-white/40 hover:text-white/70 transition-colors">Colleges</Link>
+          <Link href="/colleges" className="text-white/40 hover:text-white/70 transition-colors">{content.breadcrumbColleges}</Link>
           <ChevronRight className="w-3.5 h-3.5 text-white/20" />
           <span className="text-[#f6c804]/80 font-medium truncate max-w-[200px] md:max-w-none">{college.name}</span>
         </nav>
@@ -52,7 +62,7 @@ export function CollegeHero({ college }: { college: any }) {
               <div className="absolute -inset-1 bg-gradient-to-br from-[#3B4CC0]/40 to-[#f6c804]/20 rounded-3xl blur-lg opacity-60 group-hover:opacity-100 transition-opacity duration-500" />
               <div className="relative w-full aspect-video lg:aspect-auto lg:h-64 lg:w-96 bg-white/[0.08] backdrop-blur-2xl rounded-2xl p-2 border border-white/[0.12] shadow-[0_24px_48px_-12px_rgba(0,0,0,0.3)] overflow-hidden">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={displayImage} alt={`${college.name} Visual`} className="w-full h-full object-cover rounded-xl" />
+                <img src={displayImage} alt={seo.images?.heroAlt || seo.heroAlt || fill(content.imageAltTemplate, { name: college.name })} className="w-full h-full object-cover rounded-xl" />
               </div>
             </div>
           )}
@@ -66,11 +76,11 @@ export function CollegeHero({ college }: { college: any }) {
               </span>
               <span className="inline-flex items-center gap-1.5 px-3.5 py-1.5 bg-[#f6c804]/[0.08] backdrop-blur-sm text-[#f6c804] rounded-lg text-[11px] font-bold tracking-[0.08em] uppercase border border-[#f6c804]/[0.12]">
                 <Sparkles className="w-3 h-3" />
-                EST. {college.established || "N/A"}
+                {content.establishedPrefix} {college.established || content.establishedFallback}
               </span>
               <span className="inline-flex items-center gap-1.5 px-3.5 py-1.5 bg-white/[0.06] backdrop-blur-sm text-white/80 rounded-lg text-[11px] font-bold tracking-[0.08em] uppercase border border-white/[0.06]">
                 <Star className="w-3 h-3 fill-[#f6c804] text-[#f6c804]" />
-                {college.rating} ({college.reviews} Reviews)
+                {fill(content.ratingTemplate, { rating: college.rating, reviews: college.reviews })}
               </span>
             </div>
 
@@ -94,8 +104,8 @@ export function CollegeHero({ college }: { college: any }) {
             <div className="flex flex-wrap gap-3">
               <ApplyNowButton collegeName={college.name} />
               <Button variant="outline" asChild className="bg-white/[0.04] border-white/[0.1] text-white hover:bg-white/[0.08] h-12 px-8 rounded-xl backdrop-blur-sm transition-all duration-300 hover:-translate-y-0.5">
-                <Link href="https://wa.me/916200325137" target="_blank">
-                  <MessageSquare className="w-5 h-5 mr-2" /> WhatsApp Us
+                <Link href={contact.whatsappHref} target="_blank">
+                  <MessageSquare className="w-5 h-5 mr-2" /> {content.whatsappButton}
                 </Link>
               </Button>
             </div>
@@ -120,19 +130,19 @@ export function CollegeHero({ college }: { college: any }) {
               <>
                 <div className="flex flex-col items-center justify-center py-6 px-4 bg-[#0B1120]/60 backdrop-blur-sm text-center">
                   <p className="text-2xl md:text-3xl font-bold font-sora text-[#f6c804] mb-1">{college.rating}★</p>
-                  <p className="text-[11px] font-bold uppercase tracking-[0.1em] text-white/40">Rating</p>
+                  <p className="text-[11px] font-bold uppercase tracking-[0.1em] text-white/40">{content.statFallbackRating}</p>
                 </div>
                 <div className="flex flex-col items-center justify-center py-6 px-4 bg-[#0B1120]/60 backdrop-blur-sm text-center">
                   <p className="text-2xl md:text-3xl font-bold font-sora text-[#22c55e] mb-1">{college.type}</p>
-                  <p className="text-[11px] font-bold uppercase tracking-[0.1em] text-white/40">Institute Type</p>
+                  <p className="text-[11px] font-bold uppercase tracking-[0.1em] text-white/40">{content.statFallbackType}</p>
                 </div>
                 <div className="flex flex-col items-center justify-center py-6 px-4 bg-[#0B1120]/60 backdrop-blur-sm text-center">
                   <p className="text-2xl md:text-3xl font-bold font-sora text-white mb-1">{college.courses?.length || 0}+</p>
-                  <p className="text-[11px] font-bold uppercase tracking-[0.1em] text-white/40">Programs</p>
+                  <p className="text-[11px] font-bold uppercase tracking-[0.1em] text-white/40">{content.statFallbackPrograms}</p>
                 </div>
                 <div className="flex flex-col items-center justify-center py-6 px-4 bg-[#0B1120]/60 backdrop-blur-sm text-center">
-                  <p className="text-2xl md:text-3xl font-bold font-sora text-[#60A5FA] mb-1">{college.fees || "N/A"}</p>
-                  <p className="text-[11px] font-bold uppercase tracking-[0.1em] text-white/40">Starting Fee</p>
+                  <p className="text-2xl md:text-3xl font-bold font-sora text-[#60A5FA] mb-1">{college.fees || content.feeFallback}</p>
+                  <p className="text-[11px] font-bold uppercase tracking-[0.1em] text-white/40">{content.statFallbackFee}</p>
                 </div>
               </>
             )}

@@ -1,5 +1,6 @@
 import Link from "next/link";
-import { getAllPages, isCorePage } from "@/lib/page-service";
+import { getAllPages, getManagedContentKey, getManagedPublicPath } from "@/lib/page-service";
+import { getDefinition } from "@/lib/cms/registry";
 import { 
   Globe, 
   ExternalLink, 
@@ -20,10 +21,11 @@ import {
 export const dynamic = "force-dynamic";
 
 export default async function AdminPagesListPage() {
-  const pagesList = await getAllPages();
+  const pagesList = await getAllPages({ includeManaged: true });
 
-  const corePages = pagesList.filter((p: any) => isCorePage(p.slug));
-  const customPages = pagesList.filter((p: any) => !isCorePage(p.slug));
+  // Built-in pages (core pages and the IEM landing pages) are edited in the content editor.
+  const corePages = pagesList.filter((p: any) => getManagedContentKey(p.slug));
+  const customPages = pagesList.filter((p: any) => !getManagedContentKey(p.slug));
 
   return (
     <div className="space-y-10 font-dm-sans max-w-7xl pb-20">
@@ -71,10 +73,10 @@ export default async function AdminPagesListPage() {
           <div>
             <h2 className="text-lg font-bold font-sora text-d2c-navy flex items-center gap-2">
               <Layers className="w-4 h-4 text-d2c-royal" />
-              <span>Core Website Pages ({corePages.length})</span>
+              <span>Built-in Pages ({corePages.length})</span>
             </h2>
             <p className="text-xs text-gray-500">
-              Primary navigational pages across the Direct2Campus portal
+              Built-in pages (core and IEM landing pages). They open in the content editor
             </p>
           </div>
         </div>
@@ -82,7 +84,9 @@ export default async function AdminPagesListPage() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {corePages.map((page: any) => {
             const isHome = page.slug === "home";
-            const publicUrl = isHome ? "/" : `/${page.slug}`;
+            const publicUrl = getManagedPublicPath(page.slug);
+            const contentKey = getManagedContentKey(page.slug) as string;
+            const definition = getDefinition(contentKey);
 
             return (
               <div
@@ -92,7 +96,7 @@ export default async function AdminPagesListPage() {
                 <div className="space-y-3">
                   <div className="flex items-center justify-between">
                     <span className="text-[10px] font-bold uppercase tracking-wider text-d2c-royal px-2.5 py-1 rounded-full bg-blue-50 border border-blue-100">
-                      {page.slug.toUpperCase()}
+                      {contentKey.toUpperCase()}
                     </span>
                     <span className="flex items-center gap-1 text-[11px] font-semibold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-md">
                       <CheckCircle2 className="w-3 h-3" /> Live
@@ -101,7 +105,7 @@ export default async function AdminPagesListPage() {
 
                   <div>
                     <h3 className="text-base font-bold font-sora text-gray-900 group-hover:text-d2c-royal transition-colors">
-                      {page.h1 || page.heading || page.title?.split("–")[0]?.trim() || page.slug}
+                      {definition?.title || page.h1 || page.heading || page.title?.split("–")[0]?.trim() || page.slug}
                     </h3>
                     <p className="text-xs text-gray-500 mt-1 line-clamp-2 leading-relaxed">
                       {page.description || "Public portal page."}
@@ -137,11 +141,11 @@ export default async function AdminPagesListPage() {
                   </Link>
 
                   <Link
-                    href={`/admin/pages/${page.slug}`}
+                    href={`/admin/content/${contentKey}`}
                     className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-d2c-royal hover:bg-blue-700 text-white text-xs font-bold shadow-sm transition-all"
                   >
                     <FileEdit className="w-3.5 h-3.5" />
-                    <span>Edit Page</span>
+                    <span>Edit in Content Editor</span>
                   </Link>
                 </div>
               </div>

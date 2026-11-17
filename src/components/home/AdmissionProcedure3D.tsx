@@ -3,6 +3,8 @@
 import { useRef } from "react";
 import Image from "next/image";
 import { motion, useInView } from "framer-motion";
+import { CmsIcon } from "@/components/cms/CmsIcon";
+import { homeDefaults, type HomeContent } from "@/content/home.defaults";
 import {
   MessageCircle,
   Search,
@@ -12,57 +14,23 @@ import {
   ChevronDown,
 } from "lucide-react";
 
-/* ─── step data ─── */
-export const STEPS = [
-  {
-    id: 1,
-    title: "Free Consultation",
-    subtitle: "Tell us your goals",
-    desc: "Start with a one-on-one session with our expert counsellors to build a personalised admission roadmap based on your profile.",
-    image: "/images/steps/step-consultation.png",
-    icon: MessageCircle,
-    color: "#3B4CC0",
-    bg: "bg-blue-50",
-    border: "border-blue-200",
-    badge: "bg-blue-100 text-blue-700",
-  },
-  {
-    id: 2,
-    title: "College Shortlisting",
-    subtitle: "Data-backed research",
-    desc: "We curate a personalised shortlist of colleges with detailed placement records, fee breakdowns, and campus insights.",
-    image: "/images/steps/step-shortlisting.png",
-    icon: Search,
-    color: "#5B9BD5",
-    bg: "bg-sky-50",
-    border: "border-sky-200",
-    badge: "bg-sky-100 text-sky-700",
-  },
-  {
-    id: 3,
-    title: "Application & Docs",
-    subtitle: "Paperwork handled",
-    desc: "No missed deadlines, no incorrect submissions — we ensure a flawless application process from start to finish.",
-    image: "/images/steps/step-application.png",
-    icon: FileText,
-    color: "#D4A843",
-    bg: "bg-amber-50",
-    border: "border-amber-200",
-    badge: "bg-amber-100 text-amber-700",
-  },
-  {
-    id: 4,
-    title: "Confirmed Admission",
-    subtitle: "Seat secured!",
-    desc: "Once accepted, we guide you through fee payment, hostel allotment, orientation, and everything you need to start your journey.",
-    image: "/images/steps/step-confirmed.png",
-    icon: GraduationCap,
-    color: "#22C55E",
-    bg: "bg-green-50",
-    border: "border-green-200",
-    badge: "bg-green-100 text-green-700",
-  },
-];
+/* ─── step data (content comes from the CMS; see src/content/home.defaults.ts) ─── */
+const KNOWN_ICONS = {
+  "message-circle": MessageCircle,
+  search: Search,
+  "file-text": FileText,
+  "graduation-cap": GraduationCap,
+};
+
+const STEP_TONES: Record<string, { bg: string; border: string; badge: string }> = {
+  blue: { bg: "bg-blue-50", border: "border-blue-200", badge: "bg-blue-100 text-blue-700" },
+  sky: { bg: "bg-sky-50", border: "border-sky-200", badge: "bg-sky-100 text-sky-700" },
+  amber: { bg: "bg-amber-50", border: "border-amber-200", badge: "bg-amber-100 text-amber-700" },
+  green: { bg: "bg-green-50", border: "border-green-200", badge: "bg-green-100 text-green-700" },
+};
+
+type StepContent = HomeContent["procedure"]["steps"][number];
+type Step = StepContent & { id: number; bg: string; border: string; badge: string };
 
 /* ─── Animated Arrow Connector ─── */
 function ArrowConnector({ color, nextColor }: { color: string; nextColor: string }) {
@@ -104,13 +72,14 @@ function ArrowConnector({ color, nextColor }: { color: string; nextColor: string
 function StepCard({
   step,
   index,
+  stepLabel,
 }: {
-  step: (typeof STEPS)[0];
+  step: Step;
   index: number;
+  stepLabel: string;
 }) {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-80px" });
-  const Icon = step.icon;
   const isEven = index % 2 === 0;
 
   return (
@@ -134,7 +103,7 @@ function StepCard({
               <span
                 className={`text-xs font-bold uppercase tracking-[0.12em] px-2 py-0.5 rounded-full ${step.badge}`}
               >
-                Step {step.id}
+                {stepLabel} {step.id}
               </span>
               <h3 className="text-xl font-sora font-bold text-d2c-navy mt-1">
                 {step.title}
@@ -149,7 +118,7 @@ function StepCard({
               className="w-8 h-8 rounded-lg flex items-center justify-center"
               style={{ backgroundColor: `${step.color}18` }}
             >
-              <Icon className="w-4 h-4" style={{ color: step.color }} />
+              <CmsIcon name={step.icon} known={KNOWN_ICONS} className="w-4 h-4" style={{ color: step.color }} />
             </div>
             <span
               className="text-xs font-semibold"
@@ -174,7 +143,7 @@ function StepCard({
             <div className="relative w-full aspect-[4/3]">
               <Image
                 src={step.image}
-                alt={step.title}
+                alt={step.imageAlt}
                 fill
                 className="object-contain"
                 sizes="400px"
@@ -193,7 +162,7 @@ function StepCard({
           <span
             className={`inline-flex text-xs font-bold uppercase tracking-[0.15em] px-3 py-1.5 rounded-full mb-4 ${step.badge}`}
           >
-            Step {step.id} — {step.subtitle}
+            {stepLabel} {step.id} — {step.subtitle}
           </span>
 
           <h3 className="text-4xl font-sora font-bold text-d2c-navy mb-3 leading-tight">
@@ -209,7 +178,7 @@ function StepCard({
               className="w-10 h-10 rounded-xl flex items-center justify-center"
               style={{ backgroundColor: `${step.color}18` }}
             >
-              <Icon className="w-5 h-5" style={{ color: step.color }} />
+              <CmsIcon name={step.icon} known={KNOWN_ICONS} className="w-5 h-5" style={{ color: step.color }} />
             </div>
             <div
               className="h-px flex-1 max-w-[80px]"
@@ -229,7 +198,12 @@ function StepCard({
 }
 
 /* ─── Main Section ─── */
-export function AdmissionProcedure3D() {
+export function AdmissionProcedure3D({ content = homeDefaults.procedure }: { content?: HomeContent["procedure"] } = {}) {
+  const steps: Step[] = (content.steps ?? []).map((st, i) => ({
+    ...st,
+    id: i + 1,
+    ...(STEP_TONES[st.tone] ?? STEP_TONES.blue),
+  }));
   const sectionRef = useRef(null);
   const isInView = useInView(sectionRef, { once: true, margin: "-100px" });
 
@@ -263,7 +237,7 @@ export function AdmissionProcedure3D() {
             transition={{ duration: 0.5 }}
             className="inline-flex px-4 py-1.5 bg-blue-100 text-blue-700 font-bold text-xs mb-4 rounded-full border border-blue-200 uppercase tracking-[0.2em]"
           >
-            Your Journey
+            {content.badge}
           </motion.div>
           <motion.h2
             initial={{ opacity: 0, y: 20 }}
@@ -271,7 +245,7 @@ export function AdmissionProcedure3D() {
             transition={{ duration: 0.5, delay: 0.1 }}
             className="text-3xl lg:text-5xl font-sora font-bold text-d2c-navy mb-3"
           >
-            How Direct Admission Works
+            {content.heading}
           </motion.h2>
           <motion.p
             initial={{ opacity: 0, y: 20 }}
@@ -279,20 +253,19 @@ export function AdmissionProcedure3D() {
             transition={{ duration: 0.5, delay: 0.2 }}
             className="text-base lg:text-lg text-neutral-500 leading-relaxed max-w-sm lg:max-w-2xl mx-auto"
           >
-            A streamlined 4‑step journey from consultation to confirmed
-            admission
+            {content.subheading}
           </motion.p>
         </div>
 
         {/* Steps with arrow connectors */}
         <div className="flex flex-col items-center max-w-5xl mx-auto">
-          {STEPS.map((step, i) => (
+          {steps.map((step, i) => (
             <div key={step.id} className="w-full">
-              <StepCard step={step} index={i} />
-              {i < STEPS.length - 1 && (
+              <StepCard step={step} index={i} stepLabel={content.stepLabel} />
+              {i < steps.length - 1 && (
                 <ArrowConnector
                   color={step.color}
-                  nextColor={STEPS[i + 1].color}
+                  nextColor={steps[i + 1].color}
                 />
               )}
             </div>

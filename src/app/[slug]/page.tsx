@@ -12,7 +12,9 @@ import {
   ChevronRight,
   ExternalLink
 } from "lucide-react";
-import { getPageData, getAllPages, isCorePage } from "@/lib/page-service";
+import { getPageData, getAllPages } from "@/lib/page-service";
+import { pageSeo, pageMetadata } from "@/lib/record-seo";
+import { JsonLd } from "@/lib/cms/seo";
 import { AnimatedPatternBg } from "@/components/ui/AnimatedPatternBg";
 import { ApplyButton } from "@/components/ui/ApplyButton";
 
@@ -26,6 +28,7 @@ export const dynamicParams = true;
 export async function generateStaticParams() {
   try {
     const pages = await getAllPages();
+    // getAllPages() already leaves out the IEM landing pages (static routes own them).
     // Filter out core system pages that already have dedicated route files
     const reservedRoutes = ['home', 'about', 'contact', 'mba', 'privacy', 'terms', 'admin', 'api', 'blog', 'colleges', 'exams', 'stories'];
     return pages
@@ -49,43 +52,7 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
     return { title: "Page Not Found | Direct2Campus" };
   }
 
-  const pageTitle = page.seoTitle || page.title || `${page.h1 || decodedSlug} | Direct2Campus`;
-  const metaDesc = page.metaDescription || page.description || `Explore ${page.title || decodedSlug} on Direct2Campus for latest higher education admission insights.`;
-  const canonical = page.canonicalUrl || `https://direct2campus.com/${page.slug || decodedSlug}`;
-  const isIndexed = page.published !== false && page.noIndex !== true;
-
-  return {
-    title: pageTitle,
-    description: metaDesc,
-    keywords: Array.isArray(page.keywords) ? page.keywords : (page.keywords ? [page.keywords] : ["Direct2Campus", "College Admissions"]),
-    alternates: { canonical },
-    robots: {
-      index: isIndexed,
-      follow: isIndexed,
-      googleBot: {
-        index: isIndexed,
-        follow: isIndexed,
-        "max-video-preview": -1,
-        "max-image-preview": "large",
-        "max-snippet": -1,
-      },
-    },
-    openGraph: {
-      title: pageTitle,
-      description: metaDesc,
-      url: canonical,
-      siteName: "Direct2Campus",
-      locale: "en_IN",
-      type: "website",
-      images: page.featuredImage ? [{ url: page.featuredImage, alt: page.imageAlt || pageTitle }] : [],
-    },
-    twitter: {
-      card: "summary_large_image",
-      title: pageTitle,
-      description: metaDesc,
-      images: page.featuredImage ? [page.featuredImage] : [],
-    },
-  };
+  return pageMetadata(page, decodedSlug);
 }
 
 export default async function CustomDynamicPage({ params }: { params: Params }) {
@@ -103,7 +70,23 @@ export default async function CustomDynamicPage({ params }: { params: Params }) 
   }
 
   // Schema generation for FAQ if present
-  const faqs = Array.isArray(page.faqs) ? page.faqs : [];
+  // FAQs: the page's FAQ list plus any FAQ blocks added in the block editor.
+  const faqs = [
+    ...(Array.isArray(page.faqs) ? page.faqs : []),
+    ...(Array.isArray(page.sections)
+      ? page.sections.filter((b: any) => b && b.type === 'faq' && (b.question || b.answer)).map((b: any) => ({ question: b.question, answer: b.answer }))
+      : []),
+  ];
+  const seo = pageSeo(page, decodedSlug);
+  // Page chrome that the admin can override per page (defaults are today's text).
+  const homeLabel = page.homeLabel || "Home";
+  const heroChips: string[] = Array.isArray(page.heroChips) ? page.heroChips : ["Verified Session 2026-27", "Government Approved Quota"];
+  const faqHeading = page.faqHeading || "Frequently Asked Questions";
+  const bottomCta = {
+    heading: page.bottomCta?.heading || "Need personalized guidance?",
+    text: page.bottomCta?.text || "Contact our senior counseling panel for 100% verified admissions.",
+    button: page.bottomCta?.button || "Request Free Call",
+  };
   const faqSchema = faqs.length > 0 ? {
     "@context": "https://schema.org",
     "@type": "FAQPage",
@@ -124,7 +107,7 @@ export default async function CustomDynamicPage({ params }: { params: Params }) 
       {
         "@type": "ListItem",
         "position": 1,
-        "name": "Home",
+        "name": homeLabel,
         "item": "https://direct2campus.com"
       },
       {
@@ -227,16 +210,8 @@ export default async function CustomDynamicPage({ params }: { params: Params }) 
 
   return (
     <div className="pb-24 bg-d2c-white min-h-screen font-dm-sans">
-      {faqSchema && (
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
-        />
-      )}
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
-      />
+      {faqSchema && <JsonLd data={faqSchema} />}
+      <JsonLd data={breadcrumbSchema} seo={seo} />
 
       {/* Hero Header Banner */}
       <div className="bg-d2c-navy pt-32 pb-20 px-4 shadow-xl border-b-4 border-d2c-royal relative overflow-hidden">
@@ -245,7 +220,7 @@ export default async function CustomDynamicPage({ params }: { params: Params }) 
         <div className="content-boundary relative z-10 max-w-5xl mx-auto">
           {/* Breadcrumb Navigation */}
           <nav className="flex items-center gap-2 text-xs text-d2c-ice/70 mb-6 font-medium">
-            <Link href="/" className="hover:text-white transition-colors">Home</Link>
+            <Link href="/" className="hover:text-white transition-colors">{homeLabel}</Link>
             <ChevronRight className="w-3.5 h-3.5 text-d2c-gold" />
             <span className="text-white font-semibold truncate max-w-xs">{page.title || slug}</span>
           </nav>
@@ -268,14 +243,16 @@ export default async function CustomDynamicPage({ params }: { params: Params }) 
           )}
 
           <div className="flex flex-wrap items-center gap-4 text-xs text-d2c-ice/70 pt-4 mt-6 border-t border-white/10">
-            <div className="flex items-center gap-1.5">
-              <Calendar className="w-3.5 h-3.5 text-d2c-sky" />
-              <span>Verified Session 2026-27</span>
-            </div>
-            <div className="flex items-center gap-1.5">
-              <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" />
-              <span>Government Approved Quota</span>
-            </div>
+            {heroChips.filter((chip) => chip && String(chip).trim()).map((chip, chipIdx) => (
+              <div key={chipIdx} className="flex items-center gap-1.5">
+                {chipIdx === 0 ? (
+                  <Calendar className="w-3.5 h-3.5 text-d2c-sky" />
+                ) : (
+                  <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" />
+                )}
+                <span>{chip}</span>
+              </div>
+            ))}
           </div>
         </div>
       </div>
@@ -366,7 +343,7 @@ export default async function CustomDynamicPage({ params }: { params: Params }) 
               <div className="flex items-center gap-2 mb-6">
                 <HelpCircle className="w-6 h-6 text-d2c-royal" />
                 <h2 className="text-2xl md:text-3xl font-sora font-bold text-d2c-navy">
-                  Frequently Asked Questions
+                  {faqHeading}
                 </h2>
               </div>
               <div className="space-y-4">
@@ -393,15 +370,15 @@ export default async function CustomDynamicPage({ params }: { params: Params }) 
           {/* Bottom Floating Inquiry Bar */}
           <div className="pt-8 border-t border-gray-100 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div>
-              <h4 className="font-sora font-bold text-lg text-d2c-navy">Need personalized guidance?</h4>
-              <p className="text-xs text-gray-500">Contact our senior counseling panel for 100% verified admissions.</p>
+              <h4 className="font-sora font-bold text-lg text-d2c-navy">{bottomCta.heading}</h4>
+              <p className="text-xs text-gray-500">{bottomCta.text}</p>
             </div>
             <ApplyButton
               className="px-6 py-3 bg-d2c-royal hover:bg-blue-700 text-white font-bold rounded-xl text-sm transition-all shadow-md flex items-center justify-center gap-2"
               context={`Page Enquiry: ${page.title || slug}`}
             >
               <PhoneCall className="w-4 h-4" />
-              <span>Request Free Call</span>
+              <span>{bottomCta.button}</span>
             </ApplyButton>
           </div>
 

@@ -3,10 +3,13 @@
 import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import { motion, AnimatePresence } from "framer-motion";
+import { useSiteContent, fillTemplate, whatsappHref } from "@/components/cms/SiteContentProvider";
 import { X, PhoneCall, Zap, MessageCircle } from "lucide-react";
 import { CollegeEnquiryForm } from "./CollegeEnquiryForm";
 
 export function CollegeAdmissionModal({ isOpen, onClose, collegeName }: { isOpen: boolean, onClose: () => void, collegeName: string }) {
+  const { site, modals } = useSiteContent();
+  const m = modals.collegeAdmission;
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
@@ -52,37 +55,37 @@ export function CollegeAdmissionModal({ isOpen, onClose, collegeName }: { isOpen
               </button>
 
               <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 bg-[#22c55e]/10 text-[#22c55e] rounded-lg text-[10px] font-bold tracking-[0.1em] uppercase border border-[#22c55e]/20 mb-3">
-                <Zap className="w-3 h-3" /> Admission Open
+                <Zap className="w-3 h-3" /> {m.badge}
               </span>
-              <h3 className="text-xl font-sora font-bold text-white mb-1.5 pr-8">Apply for {collegeName}</h3>
+              <h3 className="text-xl font-sora font-bold text-white mb-1.5 pr-8">{fillTemplate(m.title, collegeName)}</h3>
               <p className="text-white/40 text-[11px] sm:text-xs mb-6 leading-relaxed hidden sm:block">
-                Enter your details. Our admission counselor will reach out within 24 hours to help you secure a seat.
+                {m.description}
               </p>
               
               <CollegeEnquiryForm collegeName={collegeName} />
               
               <div className="relative flex items-center py-5">
                 <div className="flex-grow border-t border-white/[0.06]"></div>
-                <span className="flex-shrink-0 mx-4 text-white/40 text-xs tracking-wider uppercase font-bold">OR</span>
+                <span className="flex-shrink-0 mx-4 text-white/40 text-xs tracking-wider uppercase font-bold">{m.orLabel}</span>
                 <div className="flex-grow border-t border-white/[0.06]"></div>
               </div>
 
               <div className="flex flex-col sm:flex-row gap-3 w-full">
                 <a
-                  href="tel:+916200325137"
+                  href={`tel:${site.contact.phoneTel}`}
                   className="flex-1 flex items-center justify-center gap-2 py-3.5 bg-white/[0.04] text-white text-sm font-semibold hover:bg-white/[0.08] border border-white/[0.06] rounded-xl transition-colors"
                 >
                   <PhoneCall className="w-4 h-4 text-[#f6c804]" />
-                  Call Us
+                  {m.callLabel}
                 </a>
                 <a
-                  href="https://wa.me/916200325137"
+                  href={whatsappHref(site.contact.whatsappNumber, site.contact.whatsappMessage)}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex-1 flex items-center justify-center gap-2 py-3.5 bg-[#25D366]/10 text-[#25D366] text-sm font-semibold hover:bg-[#25D366]/20 border border-[#25D366]/20 rounded-xl transition-colors"
                 >
                   <MessageCircle className="w-4 h-4 fill-current" />
-                  WhatsApp
+                  {m.whatsappLabel}
                 </a>
               </div>
             </div>

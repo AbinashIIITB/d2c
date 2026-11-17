@@ -2,58 +2,59 @@ import { notFound } from "next/navigation"
 import { Metadata } from "next"
 import Link from "next/link"
 import { ChevronRight, Quote, Star, ArrowLeft, GraduationCap, MessageCircle } from "lucide-react"
-import testimonialsData from "@/data/testimonials.json"
 import { ApplyButton } from "@/components/ui/ApplyButton"
+import { getContent } from "@/lib/cms/content"
+import type { TestimonialItem, TestimonialsContent, TestimonialStory } from "@/content/testimonials.defaults"
 
 type Params = Promise<{ slug: string }>
 
-interface Testimonial {
-  id: number
-  name: string
-  slug?: string
-  role: string
-  message: string
-  avatarUrl: string
-  fullStory?: {
-    headline: string
-    college: string
-    branch: string
-    year: string
-    examScore: string
-    body: string[]
-  }
+// Stories are editable in the admin, so the page is rendered per request (new slugs work immediately).
+export const dynamic = "force-dynamic"
+
+function findStory(content: TestimonialsContent, slug: string): (TestimonialItem & { fullStory: TestimonialStory }) | undefined {
+  const item = (content.items ?? []).find((t) => t.slug === slug)
+  if (!item || !item.fullStory || !item.fullStory.headline) return undefined
+  return item as TestimonialItem & { fullStory: TestimonialStory }
 }
 
-const testimonials = testimonialsData as Testimonial[]
-
-export async function generateStaticParams() {
-  return testimonials
-    .filter((t) => t.slug)
-    .map((t) => ({ slug: t.slug! }))
+function fill(template: string, values: Record<string, string>): string {
+  return template.replace(/\{(\w+)\}/g, (m, k: string) => (k in values ? values[k] : m))
 }
 
 export async function generateMetadata({ params }: { params: Params }): Promise<Metadata> {
   const { slug } = await params
-  const testimonial = testimonials.find((t) => t.slug === slug)
+  const content = await getContent<TestimonialsContent>("testimonials")
+  const testimonial = findStory(content, slug)
 
-  if (!testimonial || !testimonial.fullStory) {
-    return { title: "Story Not Found" }
+  if (!testimonial) {
+    return { title: content.storyPage.notFoundTitle }
   }
 
+  const values = {
+    name: testimonial.name,
+    headline: testimonial.fullStory.headline,
+    college: testimonial.fullStory.college,
+  }
   return {
-    title: `${testimonial.name}'s Story — ${testimonial.fullStory.headline} | Direct2Campus`,
-    description: `Read how ${testimonial.name} secured admission at ${testimonial.fullStory.college} through Direct2Campus.`,
+    title: testimonial.seo?.title?.trim() || fill(content.storyPage.titleTemplate, values),
+    description: testimonial.seo?.description?.trim() || fill(content.storyPage.descriptionTemplate, values),
   }
 }
 
 export default async function StoryPage({ params }: { params: Params }) {
   const { slug } = await params
-  const testimonial = testimonials.find((t) => t.slug === slug)
+  const content = await getContent<TestimonialsContent>("testimonials")
+  const testimonial = findStory(content, slug)
 
-  if (!testimonial || !testimonial.fullStory) {
+  if (!testimonial) {
     notFound()
   }
 
+  const page = content.storyPage
+  const paragraphs = (testimonial.fullStory.body || "")
+    .split(/\n\s*\n/)
+    .map((p) => p.trim())
+    .filter(Boolean)
   const story = testimonial.fullStory
 
   return (
@@ -68,9 +69,9 @@ export default async function StoryPage({ params }: { params: Params }) {
         <div className="content-boundary relative z-10 pt-28 pb-16 md:pt-32 md:pb-20">
           {/* Breadcrumbs */}
           <nav className="flex items-center gap-2 text-sm mb-10">
-            <Link href="/" className="text-white/40 hover:text-white/70 transition-colors">Home</Link>
+            <Link href="/" className="text-white/40 hover:text-white/70 transition-colors">{page.breadcrumbHome}</Link>
             <ChevronRight className="w-3.5 h-3.5 text-white/20" />
-            <span className="text-white/40">Success Stories</span>
+            <span className="text-white/40">{page.breadcrumbSection}</span>
             <ChevronRight className="w-3.5 h-3.5 text-white/20" />
             <span className="text-[#f6c804]/80 font-medium truncate">{testimonial.name}</span>
           </nav>
@@ -82,7 +83,7 @@ export default async function StoryPage({ params }: { params: Params }) {
               <div className="relative w-24 h-24 md:w-32 md:h-32 rounded-full overflow-hidden border-4 border-white/10 shadow-[0_24px_48px_-12px_rgba(0,0,0,0.4)]">
                 <img
                   src={testimonial.avatarUrl || `https://ui-avatars.com/api/?name=${encodeURIComponent(testimonial.name)}&background=3B4CC0&color=fff&size=128`}
-                  alt={testimonial.name}
+                  alt={testimonial.avatarAlt || testimonial.name}
                   className="w-full h-full object-cover"
                 />
               </div>
@@ -96,7 +97,7 @@ export default async function StoryPage({ params }: { params: Params }) {
                   {story.branch}
                 </span>
                 <span className="inline-flex items-center gap-1.5 px-3.5 py-1.5 bg-[#f6c804]/[0.08] text-[#f6c804] rounded-lg text-[11px] font-bold tracking-[0.08em] uppercase border border-[#f6c804]/[0.12]">
-                  Batch {story.year}
+                  {page.batchLabel} {story.year}
                 </span>
               </div>
 
@@ -119,20 +120,20 @@ export default async function StoryPage({ params }: { params: Params }) {
           <div className="content-boundary">
             <div className="grid grid-cols-2 md:grid-cols-4 gap-px bg-white/[0.04] rounded-2xl overflow-hidden border border-white/[0.06] backdrop-blur-xl">
               <div className="flex flex-col items-center justify-center py-6 px-4 bg-[#0B1120]/60 backdrop-blur-sm text-center">
-                <p className="text-2xl font-bold font-sora text-[#f6c804] mb-1">{story.college.split(" ")[0]}</p>
-                <p className="text-[11px] font-bold uppercase tracking-[0.1em] text-white/40">College</p>
+                <p className="text-2xl font-bold font-sora text-[#f6c804] mb-1">{(story.college || "").split(" ")[0]}</p>
+                <p className="text-[11px] font-bold uppercase tracking-[0.1em] text-white/40">{page.statCollegeLabel}</p>
               </div>
               <div className="flex flex-col items-center justify-center py-6 px-4 bg-[#0B1120]/60 backdrop-blur-sm text-center">
                 <p className="text-2xl font-bold font-sora text-[#22c55e] mb-1">{story.branch}</p>
-                <p className="text-[11px] font-bold uppercase tracking-[0.1em] text-white/40">Branch Secured</p>
+                <p className="text-[11px] font-bold uppercase tracking-[0.1em] text-white/40">{page.statBranchLabel}</p>
               </div>
               <div className="flex flex-col items-center justify-center py-6 px-4 bg-[#0B1120]/60 backdrop-blur-sm text-center">
                 <p className="text-2xl font-bold font-sora text-white mb-1">{story.examScore}</p>
-                <p className="text-[11px] font-bold uppercase tracking-[0.1em] text-white/40">Exam Score</p>
+                <p className="text-[11px] font-bold uppercase tracking-[0.1em] text-white/40">{page.statScoreLabel}</p>
               </div>
               <div className="flex flex-col items-center justify-center py-6 px-4 bg-[#0B1120]/60 backdrop-blur-sm text-center">
                 <p className="text-2xl font-bold font-sora text-[#60A5FA] mb-1">{story.year}</p>
-                <p className="text-[11px] font-bold uppercase tracking-[0.1em] text-white/40">Admission Year</p>
+                <p className="text-[11px] font-bold uppercase tracking-[0.1em] text-white/40">{page.statYearLabel}</p>
               </div>
             </div>
           </div>
@@ -150,7 +151,7 @@ export default async function StoryPage({ params }: { params: Params }) {
               &ldquo;{testimonial.message}&rdquo;
             </blockquote>
             <div className="flex gap-1 mt-4 pl-8">
-              {[...Array(5)].map((_, i) => (
+              {[...Array(Math.min(5, Math.max(0, Math.round(testimonial.rating ?? 5))))].map((_, i) => (
                 <Star key={i} className="w-5 h-5 fill-d2c-gold text-d2c-gold" />
               ))}
             </div>
@@ -158,7 +159,7 @@ export default async function StoryPage({ params }: { params: Params }) {
 
           {/* Story paragraphs */}
           <article className="prose prose-lg max-w-none">
-            {story.body.map((paragraph, idx) => (
+            {paragraphs.map((paragraph, idx) => (
               <p
                 key={idx}
                 className="text-[#45464d] text-[1.1rem] leading-[1.9] mb-8 font-inter"
@@ -173,25 +174,25 @@ export default async function StoryPage({ params }: { params: Params }) {
             <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(59,76,192,0.15),transparent_60%)]" />
             <div className="relative z-10 text-center">
               <h3 className="text-2xl md:text-3xl font-sora font-bold text-white mb-3">
-                Want a Similar Success Story?
+                {page.ctaHeading}
               </h3>
               <p className="text-white/50 text-base mb-8 max-w-lg mx-auto">
-                Our expert counselors have helped hundreds of students get into their dream colleges. Your turn is next.
+                {page.ctaText}
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <Link
-                  href="https://wa.me/916200325137"
-                  target="_blank"
+                  href={page.whatsappButton.href}
+                  target={page.whatsappButton.newTab ? "_blank" : undefined}
                   className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-[#25D366] hover:bg-[#20BD5A] text-white font-bold rounded-xl transition-all duration-300 shadow-[0_12px_24px_-6px_rgba(37,211,102,0.3)] hover:-translate-y-0.5"
                 >
                   <MessageCircle className="w-5 h-5 fill-white" />
-                  WhatsApp Now
+                  {page.whatsappButton.label}
                 </Link>
                 <ApplyButton
                   className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-white/[0.06] hover:bg-white/[0.1] text-white font-semibold rounded-xl border border-white/10 backdrop-blur-md transition-all duration-300 hover:-translate-y-0.5"
                   context="Success Story: Free Counselling"
                 >
-                  Request Free Counselling
+                  {page.callbackLabel}
                 </ApplyButton>
               </div>
             </div>
@@ -200,11 +201,11 @@ export default async function StoryPage({ params }: { params: Params }) {
           {/* Back link */}
           <div className="pb-16">
             <Link
-              href="/#testimonials"
+              href={page.backLink.href}
               className="inline-flex items-center gap-2 text-d2c-royal font-semibold hover:text-d2c-navy transition-colors"
             >
               <ArrowLeft className="w-4 h-4" />
-              Back to all stories
+              {page.backLink.label}
             </Link>
           </div>
         </div>

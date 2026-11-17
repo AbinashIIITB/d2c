@@ -5,21 +5,14 @@ import { motion, AnimatePresence } from "framer-motion";
 import { X, Sparkles, PhoneCall, ShieldCheck, CheckCircle2, GraduationCap } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { trackLeadSubmission } from "@/lib/gtag";
+import { homeDefaults, type HomeContent } from "@/content/home.defaults";
 
 interface WelcomeLeadModalProps {
-  config?: {
-    enabled?: boolean;
-    title?: string;
-    subtitle?: string;
-    badge?: string;
-    offerText?: string;
-    buttonText?: string;
-    courseOptions?: string[];
-    autoOpenDelaySeconds?: number;
-  };
+  config?: HomeContent["welcomeModal"];
 }
 
-export function WelcomeLeadModal({ config }: WelcomeLeadModalProps) {
+export function WelcomeLeadModal({ config = homeDefaults.welcomeModal }: WelcomeLeadModalProps) {
+  const courseList = config.courseOptions?.length ? config.courseOptions : homeDefaults.welcomeModal.courseOptions;
   const [isOpen, setIsOpen] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -27,12 +20,12 @@ export function WelcomeLeadModal({ config }: WelcomeLeadModalProps) {
     name: "",
     phone: "",
     email: "",
-    course: "B.Tech Computer Science & Engineering",
+    course: courseList[0] ?? "",
     location: "",
   });
 
-  const isEnabled = Boolean(config?.enabled);
-  const delaySec = config?.autoOpenDelaySeconds ?? 3;
+  const isEnabled = Boolean(config.enabled);
+  const delaySec = Number(config.autoOpenDelaySeconds ?? 3);
 
   useEffect(() => {
     // If modal is disabled, do not open
@@ -102,15 +95,6 @@ export function WelcomeLeadModal({ config }: WelcomeLeadModalProps) {
     return null;
   }
 
-  const courseList = config?.courseOptions || [
-    "B.Tech Computer Science & Engineering",
-    "B.Tech (Other Branches)",
-    "MBBS / BDS Medical",
-    "MBA / PGDM Management",
-    "BCA / MCA Computer Applications",
-    "BBA / Law / Pharmacy",
-  ];
-
   return (
     <AnimatePresence>
       {isOpen && (
@@ -140,7 +124,7 @@ export function WelcomeLeadModal({ config }: WelcomeLeadModalProps) {
             <button
               onClick={handleClose}
               className="absolute top-5 right-5 w-9 h-9 rounded-full bg-white/[0.06] hover:bg-white/[0.12] border border-white/[0.08] flex items-center justify-center text-white/60 hover:text-white transition-all z-20"
-              aria-label="Close"
+              aria-label={config.closeLabel}
             >
               <X className="w-4 h-4" />
             </button>
@@ -151,11 +135,11 @@ export function WelcomeLeadModal({ config }: WelcomeLeadModalProps) {
                   <CheckCircle2 className="w-8 h-8" />
                 </div>
                 <h3 className="text-2xl font-sora font-bold text-white mb-2">
-                  Request Received!
+                  {config.successTitle}
                 </h3>
                 <p className="text-sm text-white/70 max-w-sm mx-auto leading-relaxed">
-                  Our chief admission counselor will call you shortly on{" "}
-                  <span className="text-[#f6c804] font-semibold">{formData.phone}</span> with seat availability and fee guidance.
+                  {config.successTextBefore}{" "}
+                  <span className="text-[#f6c804] font-semibold">{formData.phone}</span> {config.successTextAfter}
                 </p>
               </div>
             ) : (
@@ -163,28 +147,27 @@ export function WelcomeLeadModal({ config }: WelcomeLeadModalProps) {
                 {/* Header Badge */}
                 <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#f6c804]/10 border border-[#f6c804]/25 text-[#f6c804] text-[11px] font-bold tracking-wider uppercase mb-4">
                   <Sparkles className="w-3.5 h-3.5" />
-                  <span>{config?.badge || "SESSION 2026-27"}</span>
+                  <span>{config.badge}</span>
                 </div>
 
                 {/* Title & Subtitle */}
                 <h2 className="text-2xl sm:text-[1.75rem] font-sora font-bold text-white leading-tight mb-2">
-                  {config?.title || "Get 1-on-1 Direct Admission Guidance"}
+                  {config.title}
                 </h2>
                 <p className="text-xs sm:text-sm text-white/60 leading-relaxed mb-6">
-                  {config?.subtitle ||
-                    "Speak directly with senior academic counselors to check eligibility, fee structure, and seat availability."}
+                  {config.subtitle}
                 </p>
 
                 {/* Form */}
                 <form onSubmit={handleSubmit} className="space-y-4">
                   <div>
                     <label className="block text-xs font-semibold uppercase tracking-wider text-white/60 mb-1.5">
-                      Your Full Name *
+                      {config.nameLabel}
                     </label>
                     <input
                       type="text"
                       required
-                      placeholder="e.g. Rahul Sharma"
+                      placeholder={config.namePlaceholder}
                       value={formData.name}
                       onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                       className="w-full h-11 px-4 rounded-xl bg-white/[0.04] border border-white/[0.1] text-white placeholder-white/30 text-sm focus:outline-none focus:border-[#3B4CC0] focus:ring-1 focus:ring-[#3B4CC0] transition-colors"
@@ -194,12 +177,12 @@ export function WelcomeLeadModal({ config }: WelcomeLeadModalProps) {
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                     <div>
                       <label className="block text-xs font-semibold uppercase tracking-wider text-white/60 mb-1.5">
-                        WhatsApp / Phone *
+                        {config.phoneLabel}
                       </label>
                       <input
                         type="tel"
                         required
-                        placeholder="10-digit number"
+                        placeholder={config.phonePlaceholder}
                         value={formData.phone}
                         onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
                         className="w-full h-11 px-4 rounded-xl bg-white/[0.04] border border-white/[0.1] text-white placeholder-white/30 text-sm focus:outline-none focus:border-[#3B4CC0] focus:ring-1 focus:ring-[#3B4CC0] transition-colors"
@@ -207,11 +190,11 @@ export function WelcomeLeadModal({ config }: WelcomeLeadModalProps) {
                     </div>
                     <div>
                       <label className="block text-xs font-semibold uppercase tracking-wider text-white/60 mb-1.5">
-                        Email Address
+                        {config.emailLabel}
                       </label>
                       <input
                         type="email"
-                        placeholder="yourname@gmail.com"
+                        placeholder={config.emailPlaceholder}
                         value={formData.email}
                         onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                         className="w-full h-11 px-4 rounded-xl bg-white/[0.04] border border-white/[0.1] text-white placeholder-white/30 text-sm focus:outline-none focus:border-[#3B4CC0] focus:ring-1 focus:ring-[#3B4CC0] transition-colors"
@@ -221,7 +204,7 @@ export function WelcomeLeadModal({ config }: WelcomeLeadModalProps) {
 
                   <div>
                     <label className="block text-xs font-semibold uppercase tracking-wider text-white/60 mb-1.5">
-                      Interested Course *
+                      {config.courseLabel}
                     </label>
                     <select
                       value={formData.course}
@@ -236,7 +219,7 @@ export function WelcomeLeadModal({ config }: WelcomeLeadModalProps) {
                     </select>
                   </div>
 
-                  {config?.offerText && (
+                  {config.offerText && (
                     <div className="p-2.5 rounded-lg bg-white/[0.04] border border-white/[0.06] text-[11px] text-[#f6c804] text-center font-medium">
                       {config.offerText}
                     </div>
@@ -248,18 +231,18 @@ export function WelcomeLeadModal({ config }: WelcomeLeadModalProps) {
                     className="w-full h-12 rounded-xl bg-gradient-to-r from-[#f6c804] to-[#e5b703] hover:from-[#e5b703] hover:to-[#d4a802] text-[#0B1120] font-bold text-sm tracking-wide shadow-[0_8px_20px_-4px_rgba(246,200,4,0.35)] transition-all hover:scale-[1.01]"
                   >
                     {loading ? (
-                      "Connecting with Counselor..."
+                      config.loadingText
                     ) : (
                       <>
                         <PhoneCall className="w-4 h-4 mr-2" />
-                        {config?.buttonText || "Request Free Counseling Call"}
+                        {config.buttonText}
                       </>
                     )}
                   </Button>
 
                   <div className="flex items-center justify-center gap-1.5 text-[11px] text-white/40 pt-1">
                     <ShieldCheck className="w-3.5 h-3.5 text-[#22c55e]" />
-                    <span>100% Confidential • Official Direct Admission Partner</span>
+                    <span>{config.footnote}</span>
                   </div>
                 </form>
               </div>

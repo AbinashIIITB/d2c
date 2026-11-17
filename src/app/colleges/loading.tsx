@@ -13,7 +13,7 @@ export default function CollegesLoading() {
         <div className="content-boundary relative z-10 text-center">
           <div className="inline-flex items-center gap-2 px-3 py-1.5 min-[1025px]:px-4 min-[1025px]:py-2 bg-white/10 backdrop-blur-sm border border-white/20 mb-10 sm:mb-4 min-[1025px]:mb-12 lg:mb-10 rounded-lg">
             <Building2 className="w-4 h-4 text-d2c-sky" />
-            <span className="text-sm font-medium tracking-wide text-white">Partner Institutions</span>
+            <span className="text-sm font-medium tracking-wide text-white">Institutions</span>
           </div>
 
           <h1 className="text-2xl sm:text-4xl min-[1025px]:text-6xl lg:text-7xl font-sora font-bold tracking-tight mb-8 sm:mb-4 min-[1025px]:mb-10 lg:mb-8 text-balance leading-[1.1] text-white">

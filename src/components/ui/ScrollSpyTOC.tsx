@@ -1,6 +1,7 @@
 "use client"
 
 import * as React from "react"
+import { CmsIcon } from "@/components/cms/CmsIcon"
 import { motion, AnimatePresence } from "framer-motion"
 import {
     Building2, BookOpen, DollarSign, Briefcase, Calendar,
@@ -25,6 +26,38 @@ const iconMap: Record<string, React.ComponentType<{ className?: string }>> = {
     Images,
 }
 
+// Same icons under kebab-case names, for icon values coming from the CMS ("clipboard-list").
+const knownIcons: Record<string, React.ComponentType<{ className?: string }>> = {
+    "building-2": Building2,
+    "book-open": BookOpen,
+    "dollar-sign": DollarSign,
+    "briefcase": Briefcase,
+    "calendar": Calendar,
+    "users": Users,
+    "award": Award,
+    "trending-up": TrendingUp,
+    "scale": Scale,
+    "clipboard-list": ClipboardList,
+    "help-circle": HelpCircle,
+    "lightbulb": Lightbulb,
+    "images": Images,
+}
+
+/** PascalCase names keep their old behaviour (unknown -> Building2); kebab-case names go through CmsIcon. */
+function TocIcon({ iconName, className }: { iconName: string; className?: string }) {
+    if (/^[A-Z]/.test(iconName || "")) {
+        const Legacy = iconMap[iconName] || Building2
+        return <Legacy className={className} />
+    }
+    return <CmsIcon name={iconName} known={knownIcons as any} fallback={Building2 as any} className={className} />
+}
+
+export interface TocLabels {
+    title?: string
+    mobileTitle?: string
+    drawerTitle?: string
+}
+
 interface Section {
     id: string
     label: string
@@ -34,9 +67,10 @@ interface Section {
 interface ScrollSpyTOCProps {
     sections: Section[]
     className?: string
+    labels?: TocLabels
 }
 
-export function ScrollSpyTOC({ sections, className = "" }: ScrollSpyTOCProps) {
+export function ScrollSpyTOC({ sections, className = "", labels }: ScrollSpyTOCProps) {
     const [activeSection, setActiveSection] = React.useState<string>(sections[0]?.id || "")
 
     React.useEffect(() => {
@@ -78,12 +112,11 @@ export function ScrollSpyTOC({ sections, className = "" }: ScrollSpyTOCProps) {
     return (
         <div className={`space-y-1 bg-card border rounded-2xl p-4 shadow-sm max-h-[80vh] overflow-y-auto ${className}`}>
             <p className="font-semibold text-muted-foreground px-4 mb-2 text-sm uppercase tracking-wider">
-                Table of Contents
+                {labels?.title ?? "Table of Contents"}
             </p>
             <nav className="relative">
                 {sections.map(({ id, label, iconName }) => {
                     const isActive = activeSection === id
-                    const Icon = iconMap[iconName] || Building2
                     return (
                         <a
                             key={id}
@@ -97,7 +130,7 @@ export function ScrollSpyTOC({ sections, className = "" }: ScrollSpyTOCProps) {
                                     transition={{ type: "spring", stiffness: 380, damping: 30 }}
                                 />
                             )}
-                            <Icon className={`h-4 w-4 relative z-10 transition-colors ${isActive ? "text-[#f6c804]" : "text-muted-foreground"}`} />
+                            <TocIcon iconName={iconName} className={`h-4 w-4 relative z-10 transition-colors ${isActive ? "text-[#f6c804]" : "text-muted-foreground"}`} />
                             <span className={`relative z-10 transition-colors ${isActive ? "text-[#f6c804]" : "text-muted-foreground hover:text-foreground"}`}>
                                 {label}
                             </span>
@@ -113,9 +146,10 @@ export function ScrollSpyTOC({ sections, className = "" }: ScrollSpyTOCProps) {
 interface MobileScrollSpyTOCProps {
     sections: Section[]
     className?: string
+    labels?: TocLabels
 }
 
-export function MobileScrollSpyTOC({ sections, className = "" }: MobileScrollSpyTOCProps) {
+export function MobileScrollSpyTOC({ sections, className = "", labels }: MobileScrollSpyTOCProps) {
     const [activeSection, setActiveSection] = React.useState<string>(sections[0]?.id || "")
     const scrollContainerRef = React.useRef<HTMLDivElement>(null)
 
@@ -166,7 +200,7 @@ export function MobileScrollSpyTOC({ sections, className = "" }: MobileScrollSpy
     return (
         <div className={className}>
             <p className="font-semibold text-muted-foreground text-xs uppercase tracking-wider mb-3">
-                Jump to Section
+                {labels?.mobileTitle ?? "Jump to Section"}
             </p>
             <div
                 ref={scrollContainerRef}
@@ -174,7 +208,6 @@ export function MobileScrollSpyTOC({ sections, className = "" }: MobileScrollSpy
             >
                 {sections.map(({ id, label, iconName }) => {
                     const isActive = activeSection === id
-                    const Icon = iconMap[iconName] || Building2
                     return (
                         <a
                             key={id}
@@ -185,7 +218,7 @@ export function MobileScrollSpyTOC({ sections, className = "" }: MobileScrollSpy
                                 : "bg-card border border-border text-muted-foreground hover:text-[#f6c804] hover:border-[#f6c804]/50"
                                 }`}
                         >
-                            <Icon className="h-4 w-4" />
+                            <TocIcon iconName={iconName} className="h-4 w-4" />
                             {label}
                         </a>
                     )
@@ -199,9 +232,10 @@ export function MobileScrollSpyTOC({ sections, className = "" }: MobileScrollSpy
 interface FloatingMobileTOCProps {
     sections: Section[]
     className?: string
+    labels?: TocLabels
 }
 
-export function FloatingMobileTOC({ sections, className = "" }: FloatingMobileTOCProps) {
+export function FloatingMobileTOC({ sections, className = "", labels }: FloatingMobileTOCProps) {
     const [isOpen, setIsOpen] = React.useState(false)
     const [activeSection, setActiveSection] = React.useState<string>(sections[0]?.id || "")
 
@@ -326,13 +360,12 @@ export function FloatingMobileTOC({ sections, className = "" }: FloatingMobileTO
                             <div className="py-2 px-3 pb-8 flex flex-col gap-1 max-h-[80vh] overflow-y-auto">
                                 {/* Header */}
                                 <div className="px-4 pb-3 mb-1">
-                                    <h3 className="text-[11px] font-bold text-gray-400 uppercase tracking-wider">Quick Navigation</h3>
+                                    <h3 className="text-[11px] font-bold text-gray-400 uppercase tracking-wider">{labels?.drawerTitle ?? "Quick Navigation"}</h3>
                                 </div>
                                 
                                 {/* Sections List */}
                                 {sections.map(({ id, label, iconName }) => {
                                     const isActive = activeSection === id
-                                    const Icon = iconMap[iconName] || Building2
                                     return (
                                         <button
                                             key={id}
@@ -342,7 +375,7 @@ export function FloatingMobileTOC({ sections, className = "" }: FloatingMobileTO
                                                 : "text-d2c-navy hover:bg-gray-50"
                                                 }`}
                                         >
-                                            <Icon className={`h-4 w-4 sm:h-5 sm:w-5 ${isActive ? "text-d2c-royal" : "text-gray-400"}`} />
+                                            <TocIcon iconName={iconName} className={`h-4 w-4 sm:h-5 sm:w-5 ${isActive ? "text-d2c-royal" : "text-gray-400"}`} />
                                             <span>{label}</span>
                                         </button>
                                     )

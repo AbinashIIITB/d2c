@@ -7,6 +7,25 @@ import { getAllExams, getExamByIdOrSlug } from "@/lib/data-service"
 import { AnimatedPatternBg } from "@/components/ui/AnimatedPatternBg"
 import { ExamApplyButton } from "@/components/ui/ExamApplyButton"
 import { ApplyButton } from "@/components/ui/ApplyButton"
+import { CmsIcon } from "@/components/cms/CmsIcon"
+import { getContent } from "@/lib/cms/content"
+import { JsonLd } from "@/lib/cms/seo"
+import { examMetadata, examSeo } from "@/lib/record-seo"
+import { fill } from "@/lib/record-text"
+import type { ExamPageContent } from "@/content/exam-page"
+
+const ICONS = {
+  "arrow-left": ArrowLeft,
+  "book-open": BookOpen,
+  calendar: Calendar,
+  "circle-help": HelpCircle,
+  "help-circle": HelpCircle,
+  "circle-alert": AlertCircle,
+  "alert-circle": AlertCircle,
+  "circle-check": CheckCircle2,
+  "check-circle-2": CheckCircle2,
+  "chevron-right": ChevronRight,
+}
 
 type Params = Promise<{ slug: string }>
 
@@ -18,64 +37,10 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
     return { title: "Exam Not Found" }
   }
 
-  const seo = exam.seo || exam.exam_pattern?.seo || (exam as any).examPattern?.seo || {};
-  const pageTitle = seo.seoTitle?.trim() || `${exam.name} – Admission & Pattern Guide 2027`;
-  const metaDesc = seo.metaDescription?.trim() || `${(exam.aboutExam || exam.about_exam || exam.description || '').slice(0, 155)}…`;
-  const canonical = seo.canonicalUrl?.trim() || `https://direct2campus.com/exams/${slug}`;
-  const keywords = [
-    ...(seo.primaryKeyword ? [seo.primaryKeyword] : []),
-    ...(Array.isArray(seo.secondaryKeywords) ? seo.secondaryKeywords : []),
-    exam.name, 
-    `${exam.name} exam`, 
-    `${exam.name} pattern`, 
-    `${exam.name} eligibility`, 
-    `${exam.name} cutoff`,
-    ...((exam as any).tags || [])
-  ];
-  const logoAlt = seo.images?.logoAlt || `${exam.name} Logo`;
-  const logoUrl = exam.logoUrl || exam.logo_url || "/logo-footer.png";
-  
-  return {
-    title: pageTitle,
-    description: metaDesc,
-    keywords,
-    alternates: { canonical },
-    robots: {
-      index: true,
-      follow: true,
-      googleBot: {
-        index: true,
-        follow: true,
-        "max-video-preview": -1,
-        "max-image-preview": "large",
-        "max-snippet": -1,
-      },
-    },
-    openGraph: {
-      title: pageTitle,
-      description: metaDesc,
-      url: canonical,
-      siteName: "Direct2Campus",
-      locale: "en_IN",
-      type: "website",
-      images: [
-        {
-          url: logoUrl,
-          width: 800,
-          height: 600,
-          alt: logoAlt,
-        },
-      ],
-    },
-    twitter: {
-      card: "summary_large_image",
-      title: pageTitle,
-      description: metaDesc,
-      images: [logoUrl],
-    },
-  }
+  return examMetadata(exam)
 }
 
+export const dynamic = 'force-dynamic';
 export const revalidate = 0;
 export const dynamicParams = true;
 
@@ -88,11 +53,12 @@ export async function generateStaticParams() {
 
 export default async function ExamDetailPage({ params }: { params: Params }) {
   const { slug } = await params
-  const exam = await getExamByIdOrSlug(slug);
+  const [exam, content] = await Promise.all([getExamByIdOrSlug(slug), getContent<ExamPageContent>('exam-page')]);
 
   if (!exam) {
     notFound()
   }
+  const examSeoLegacy = exam.seo || exam.exam_pattern?.seo || (exam as any).examPattern?.seo || {};
 
   const examUrl = `https://direct2campus.com/exams/${slug}`;
   const breadcrumbSchema = {
@@ -102,13 +68,13 @@ export default async function ExamDetailPage({ params }: { params: Params }) {
       {
         "@type": "ListItem",
         "position": 1,
-        "name": "Home",
+        "name": content.schema.homeName,
         "item": "https://direct2campus.com"
       },
       {
         "@type": "ListItem",
         "position": 2,
-        "name": "Entrance Exams",
+        "name": content.schema.listName,
         "item": "https://direct2campus.com/exams"
       },
       {
@@ -136,31 +102,24 @@ export default async function ExamDetailPage({ params }: { params: Params }) {
 
   return (
     <div className="pb-20 bg-d2c-white min-h-screen">
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
-      />
-      {faqSchema && (
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
-        />
-      )}
+      <JsonLd data={breadcrumbSchema} />
+      {faqSchema && <JsonLd data={faqSchema} />}
+      <JsonLd seo={examSeo(exam)} />
       {/* Hero Section */}
       <div className="bg-d2c-navy pt-32 pb-32 px-4 shadow-xl border-b-4 border-d2c-royal relative overflow-hidden">
         <AnimatedPatternBg opacity={0.1} speed={160} />
         <div className="content-boundary relative z-10">
           <Link href="/exams" className="inline-flex items-center gap-2 text-d2c-sky hover:text-white transition-colors mb-8 text-sm font-semibold px-4 py-2 rounded-full bg-white/5 border border-white/10">
-            <ArrowLeft className="w-4 h-4" /> Back to Exams
+            <CmsIcon name={content.hero.backIcon} known={ICONS} fallback={ArrowLeft} className="w-4 h-4" /> {content.hero.backLabel}
           </Link>
           
           <div className="flex flex-col md:flex-row items-center md:items-start gap-8">
             <div className="w-32 h-32 rounded-2xl bg-white p-4 shadow-2xl flex-shrink-0 flex items-center justify-center">
-              <img src={exam.logoUrl} alt={exam.name} className="max-w-full max-h-full object-contain" />
+              <img src={exam.logoUrl} alt={examSeoLegacy.images?.pageLogoAlt || exam.name} className="max-w-full max-h-full object-contain" />
             </div>
             <div className="text-center md:text-left">
               <div className="inline-block px-3 py-1 bg-d2c-sky/10 border border-d2c-sky/20 rounded-md text-d2c-sky text-xs font-bold uppercase tracking-widest mb-4">
-                Master Guide 2027
+                {content.hero.badge}
               </div>
               <h1 className="text-4xl md:text-6xl font-sora font-bold text-white mb-4 line-tight">
                 {exam.name}
@@ -180,24 +139,24 @@ export default async function ExamDetailPage({ params }: { params: Params }) {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <div className="bg-white rounded-3xl p-8 shadow-[0_8px_30px_rgb(0,0,0,0.06)] border border-gray-50">
               <div className="flex items-center gap-3 text-d2c-muted mb-4 font-semibold uppercase text-xs tracking-wider">
-                <Calendar className="w-5 h-5 text-d2c-royal" /> Important Date
+                <CmsIcon name={content.stats.dateIcon} known={ICONS} fallback={Calendar} className="w-5 h-5 text-d2c-royal" /> {content.stats.dateLabel}
               </div>
               <div className="font-sora font-bold text-d2c-navy text-xl leading-tight">{exam.date}</div>
-              <p className="text-sm text-d2c-muted mt-2">Check official portal for updates</p>
+              <p className="text-sm text-d2c-muted mt-2">{content.stats.dateNote}</p>
             </div>
             <div className="bg-white rounded-3xl p-8 shadow-[0_8px_30px_rgb(0,0,0,0.06)] border border-gray-50">
               <div className="flex items-center gap-3 text-d2c-muted mb-4 font-semibold uppercase text-xs tracking-wider">
-                <BookOpen className="w-5 h-5 text-d2c-success" /> Exam Mode
+                <CmsIcon name={content.stats.modeIcon} known={ICONS} fallback={BookOpen} className="w-5 h-5 text-d2c-success" /> {content.stats.modeLabel}
               </div>
-              <div className="font-sora font-bold text-d2c-navy text-xl leading-tight">{exam.examPattern?.mode || "Online (CBT)"}</div>
-              <p className="text-sm text-d2c-muted mt-2">{exam.examPattern?.duration || "Standard duration"}</p>
+              <div className="font-sora font-bold text-d2c-navy text-xl leading-tight">{exam.examPattern?.mode || content.stats.modeFallback}</div>
+              <p className="text-sm text-d2c-muted mt-2">{exam.examPattern?.duration || content.stats.durationFallback}</p>
             </div>
             <div className="bg-white rounded-3xl p-8 shadow-[0_8px_30px_rgb(0,0,0,0.06)] border border-gray-50">
               <div className="flex items-center gap-3 text-d2c-muted mb-4 font-semibold uppercase text-xs tracking-wider">
-                <HelpCircle className="w-5 h-5 text-d2c-gold" /> Application
+                <CmsIcon name={content.stats.applicationIcon} known={ICONS} fallback={HelpCircle} className="w-5 h-5 text-d2c-gold" /> {content.stats.applicationLabel}
               </div>
               <ExamApplyButton examName={exam.name} />
-              <p className="text-sm text-d2c-muted mt-2">Official Entrance Portal</p>
+              <p className="text-sm text-d2c-muted mt-2">{content.stats.applicationNote}</p>
             </div>
           </div>
 
@@ -207,7 +166,7 @@ export default async function ExamDetailPage({ params }: { params: Params }) {
               {/* Introduction */}
               <section className="bg-white rounded-3xl p-10 shadow-sm border border-gray-100">
                 <h2 className="text-2xl font-sora font-bold text-d2c-navy mb-6">
-                  About the Exam
+                  {content.about.heading}
                 </h2>
                 <div className="prose prose-slate max-w-none text-d2c-muted leading-relaxed">
                   <p className="mb-6">{exam.introduction}</p>
@@ -219,24 +178,24 @@ export default async function ExamDetailPage({ params }: { params: Params }) {
               {exam.examPattern && (
                 <section className="bg-white rounded-3xl p-10 shadow-sm border border-gray-100">
                   <h2 className="text-2xl font-sora font-bold text-d2c-navy mb-6">
-                    Question Paper Pattern
+                    {content.pattern.heading}
                   </h2>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-8">
                     <div className="bg-d2c-ice/30 p-6 rounded-2xl border border-d2c-royal/5">
-                      <div className="text-xs font-bold text-d2c-royal uppercase tracking-widest mb-1">Total Marks</div>
+                      <div className="text-xs font-bold text-d2c-royal uppercase tracking-widest mb-1">{content.pattern.totalMarksLabel}</div>
                       <div className="text-2xl font-sora font-bold text-d2c-navy">{exam.examPattern.totalMarks}</div>
                     </div>
                     <div className="bg-d2c-sky/5 p-6 rounded-2xl border border-d2c-sky/10">
-                      <div className="text-xs font-bold text-d2c-sky uppercase tracking-widest mb-1">Marking Scheme</div>
+                      <div className="text-xs font-bold text-d2c-sky uppercase tracking-widest mb-1">{content.pattern.markingSchemeLabel}</div>
                       <div className="text-lg font-semibold text-d2c-navy leading-tight">{exam.examPattern.markingScheme}</div>
                     </div>
                   </div>
                   <div className="space-y-4">
-                    <h3 className="font-sora font-bold text-d2c-navy">Subject-wise Distribution</h3>
+                    <h3 className="font-sora font-bold text-d2c-navy">{content.pattern.subjectsHeading}</h3>
                     <div className="flex flex-wrap gap-3">
-                      {exam.examPattern.subjects.map((subject, idx) => (
+                      {(exam.examPattern.subjects || []).map((subject, idx) => (
                         <div key={idx} className="bg-white border border-gray-100 px-5 py-3 rounded-xl shadow-sm font-medium text-d2c-navy flex items-center gap-2">
-                          <CheckCircle2 className="w-4 h-4 text-d2c-success" /> {subject}
+                          <CmsIcon name={content.pattern.subjectIcon} known={ICONS} fallback={CheckCircle2} className="w-4 h-4 text-d2c-success" /> {subject}
                         </div>
                       ))}
                     </div>
@@ -247,10 +206,10 @@ export default async function ExamDetailPage({ params }: { params: Params }) {
               {/* Eligibility */}
               <section className="bg-white rounded-3xl p-10 shadow-sm border border-gray-100">
                 <h2 className="text-2xl font-sora font-bold text-d2c-navy mb-6">
-                  Eligibility Criteria
+                  {content.eligibility.heading}
                 </h2>
                 <ul className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  {exam.eligibility.map((item, idx) => (
+                  {(exam.eligibility || []).map((item, idx) => (
                     <li key={idx} className="flex gap-4 p-4 rounded-2xl bg-gray-50/50 border border-gray-100">
                       <div className="w-6 h-6 rounded-full bg-d2c-success/10 text-d2c-success flex items-center justify-center shrink-0 mt-0.5 font-bold text-xs">{idx + 1}</div>
                       <span className="text-sm text-d2c-muted leading-relaxed">{item}</span>
@@ -261,7 +220,7 @@ export default async function ExamDetailPage({ params }: { params: Params }) {
 
               {/* ────────────── FAQs & AEO Schema Section ────────────── */}
               {(() => {
-                const seo = exam.seo || exam.exam_pattern?.seo || (exam as any).examPattern?.seo || {};
+                const seo = examSeoLegacy;
                 const faqsList = [
                   ...(exam.faqs || []),
                   ...((seo.aeoFaqs || []).map((af: any) => ({ question: af.question, answer: af.answer })))
@@ -282,17 +241,12 @@ export default async function ExamDetailPage({ params }: { params: Params }) {
 
                 return (
                   <>
-                    {faqSchema && (
-                      <script
-                        type="application/ld+json"
-                        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
-                      />
-                    )}
+                    {faqSchema && <JsonLd data={faqSchema} />}
 
                     {faqsList.length > 0 && (
                       <section className="bg-white rounded-3xl p-10 shadow-sm border border-gray-100">
                         <h2 className="text-2xl font-sora font-bold text-d2c-navy mb-6">
-                          Frequently Asked Questions
+                          {content.faq.heading}
                         </h2>
                         <div className="space-y-4">
                           {faqsList.map((faq, idx) => (
@@ -314,7 +268,7 @@ export default async function ExamDetailPage({ params }: { params: Params }) {
                     {seo.internalLinks && seo.internalLinks.length > 0 && (
                       <section className="bg-white rounded-3xl p-10 shadow-sm border border-gray-100">
                         <h2 className="text-2xl font-sora font-bold text-d2c-navy mb-6">
-                          Recommended Direct2Campus Guides
+                          {content.guides.heading}
                         </h2>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                           {seo.internalLinks.map((link: any, idx: number) => (
@@ -331,7 +285,7 @@ export default async function ExamDetailPage({ params }: { params: Params }) {
                                   <div className="text-[11px] text-gray-500 mt-0.5">{link.context}</div>
                                 )}
                               </div>
-                              <ChevronRight className="w-4 h-4 text-gray-400 group-hover:text-d2c-royal group-hover:translate-x-0.5 transition-all shrink-0 mt-0.5" />
+                              <CmsIcon name="chevron-right" known={ICONS} fallback={ChevronRight} className="w-4 h-4 text-gray-400 group-hover:text-d2c-royal group-hover:translate-x-0.5 transition-all shrink-0 mt-0.5" />
                             </Link>
                           ))}
                         </div>
@@ -347,12 +301,12 @@ export default async function ExamDetailPage({ params }: { params: Params }) {
               {/* Important Events */}
               <div className="bg-d2c-navy text-white rounded-3xl p-8 shadow-xl relative overflow-hidden">
                 <div className="absolute top-0 right-0 w-32 h-32 bg-d2c-royal/20 rounded-full -mr-16 -mt-16 blur-3xl"></div>
-                <h3 className="text-xl font-sora font-bold mb-6 relative z-10">Application Timeline</h3>
+                <h3 className="text-xl font-sora font-bold mb-6 relative z-10">{content.timeline.heading}</h3>
                 <div className="space-y-6 relative z-10">
-                  {exam.importantDates.map((date, idx) => (
+                  {(exam.importantDates || []).map((date, idx) => (
                     <div key={idx} className="flex gap-4 items-start pb-6 border-b border-white/10 last:border-0 last:pb-0">
                       <div className="w-10 h-10 rounded-xl bg-white/10 border border-white/20 flex items-center justify-center shrink-0">
-                        <Calendar className="w-5 h-5 text-d2c-sky" />
+                        <CmsIcon name={content.timeline.eventIcon} known={ICONS} fallback={Calendar} className="w-5 h-5 text-d2c-sky" />
                       </div>
                       <div>
                         <div className="text-sm font-bold text-white mb-1">{date.event}</div>
@@ -365,15 +319,15 @@ export default async function ExamDetailPage({ params }: { params: Params }) {
 
               {/* Support Card */}
               {(() => {
-                const seo = exam.seo || exam.exam_pattern?.seo || (exam as any).examPattern?.seo || {};
-                const ctaHeadline = seo.cta?.headline || "Need Admission Help?";
-                const ctaSubtext = seo.cta?.subtext || "Management quota and direct admission options are available in top institutes accepting this exam. Get end-to-end counseling support from Direct2Campus.";
-                const ctaButtonText = seo.cta?.buttonText || "Get Free Counseling";
+                const seo = examSeoLegacy;
+                const ctaHeadline = seo.cta?.headline || content.cta.headline;
+                const ctaSubtext = seo.cta?.subtext || content.cta.subtext;
+                const ctaButtonText = seo.cta?.buttonText || content.cta.buttonText;
 
                 return (
                   <div className="bg-gradient-to-br from-white to-d2c-ice/30 rounded-3xl p-8 shadow-sm border border-d2c-royal/10 flex flex-col text-center">
                     <div className="w-16 h-16 bg-white rounded-2xl flex items-center justify-center shadow-lg shadow-d2c-navy/5 mx-auto mb-6">
-                      <AlertCircle className="w-8 h-8 text-d2c-royal" />
+                      <CmsIcon name={content.cta.icon} known={ICONS} fallback={AlertCircle} className="w-8 h-8 text-d2c-royal" />
                     </div>
                     <h2 className="text-2xl font-sora font-bold text-d2c-navy mb-4">{ctaHeadline}</h2>
                     <p className="text-sm text-d2c-muted mb-8 leading-relaxed">
@@ -382,15 +336,15 @@ export default async function ExamDetailPage({ params }: { params: Params }) {
                     <div className="space-y-3">
                       <ApplyButton 
                         className="block w-full bg-d2c-navy hover:bg-d2c-royal text-white py-4 rounded-xl font-bold transition-colors shadow-lg shadow-d2c-navy/20"
-                        context={`Exam Counseling: ${exam.name}`}
+                        context={fill(content.cta.leadContext, { name: exam.name })}
                       >
                         {ctaButtonText}
                       </ApplyButton>
                       <a 
-                        href="tel:+916200325137"
+                        href={content.cta.callHref}
                         className="block w-full bg-white border border-gray-200 text-d2c-navy py-4 rounded-xl font-bold transition-colors hover:bg-gray-50"
                       >
-                        Call Counselor
+                        {content.cta.callLabel}
                       </a>
                     </div>
                   </div>

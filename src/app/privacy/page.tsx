@@ -1,29 +1,23 @@
 import { Metadata } from "next";
-import { getPageData } from "@/lib/page-service";
+import { getContent } from "@/lib/cms/content";
+import { buildMetadata } from "@/lib/cms/seo";
+import type { PrivacyContent } from "@/content/privacy";
 
 export const revalidate = 0;
+export const dynamic = "force-dynamic";
 
 export async function generateMetadata(): Promise<Metadata> {
-  const page = await getPageData("privacy");
-  return {
-    title: page?.seoTitle || page?.title || "Privacy Policy",
-    description: page?.metaDescription || page?.description || "Read the Direct2Campus privacy policy. Learn how we collect, use, and protect your personal data when using our educational consultancy services.",
-    alternates: { canonical: "https://direct2campus.com/privacy" },
-  };
+  const page = await getContent<PrivacyContent>("privacy");
+  return buildMetadata(page.seo, { path: "/privacy" });
 }
 
 export default async function PrivacyPage() {
-  const page = await getPageData("privacy");
+  const page = await getContent<PrivacyContent>("privacy");
 
-  const title = page?.h1 || page?.heading || "Privacy Policy";
-  const lastUpdated = page?.lastUpdated || "October 2026";
-  const content = page?.content || `Your privacy is important to us. It is Direct2Campus's policy to respect your privacy regarding any information we may collect from you across our website, https://direct2campus.com, and other sites we own and operate.
-
-### Information we collect
-We only ask for personal information when we truly need it to provide a service to you. We collect it by fair and lawful means, with your knowledge and consent. We also let you know why we are collecting it and how it will be used.
-
-### How we use your data
-We use your contact details exclusively to provide educational counseling, updates on college criteria, and for lead management internally (via our CMS database). We do not share your information publicly or with third-parties, except when required to by law.`;
+  const title = page.heading;
+  const lastUpdated = page.lastUpdated;
+  const content = page.content ?? "";
+  const isHtml = /<\/?(p|h[1-6]|ul|ol|li|br|div|strong|em|a|blockquote)\b/i.test(content);
 
   return (
     <div className="pt-28 pb-20 bg-d2c-white min-h-screen font-dm-sans">
@@ -31,6 +25,12 @@ We use your contact details exclusively to provide educational counseling, updat
         <h1 className="text-3xl md:text-4xl font-sora font-bold text-d2c-navy mb-2">{title}</h1>
         <p className="text-xs text-d2c-muted mb-8 pb-4 border-b border-gray-100">Last updated: {lastUpdated}</p>
 
+        {isHtml ? (
+          <div
+            className="prose prose-slate max-w-none space-y-4 text-gray-700 leading-relaxed"
+            dangerouslySetInnerHTML={{ __html: content }}
+          />
+        ) : (
         <div className="prose prose-slate max-w-none space-y-4 text-gray-700 leading-relaxed">
           {content.split("\n\n").map((chunk: string, idx: number) => {
             const trimmed = chunk.trim();
@@ -55,6 +55,7 @@ We use your contact details exclusively to provide educational counseling, updat
             return <p key={idx}>{trimmed}</p>;
           })}
         </div>
+        )}
       </div>
     </div>
   );

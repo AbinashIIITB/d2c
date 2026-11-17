@@ -94,3 +94,4 @@ const eeConfig: BranchPageConfig = {
 export default function IemEeLandingPage() {
   return <IemBranchLandingTemplate config={eeConfig} />;
 }
+

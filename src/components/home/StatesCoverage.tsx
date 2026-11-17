@@ -24,7 +24,7 @@ const STATES = [
 // Big aggregate stats for the hero row
 const HERO_STATS = [
   { value: 500, suffix: "+", label: "Students Placed", icon: Users },
-  { value: 90, suffix: "+", label: "Partner Colleges", icon: GraduationCap },
+  { value: 90, suffix: "+", label: "Colleges", icon: GraduationCap },
   { value: 12, suffix: "", label: "States Covered", icon: MapPin },
   { value: 98, suffix: "%", label: "Success Rate", icon: TrendingUp },
 ]
@@ -80,7 +80,7 @@ export function StatesCoverage() {
             The backbone of{" "}
             <br className="hidden md:block" />
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-d2c-sky via-d2c-ice to-d2c-sky">
-              direct admissions
+              admissions
             </span>
           </motion.h2>
 
@@ -123,7 +123,7 @@ export function StatesCoverage() {
               transition={{ duration: 0.5, delay: 0.55 }}
               className="text-white/40 text-center max-w-lg mx-auto mb-12"
             >
-              Official partnerships with premier institutions in India&apos;s top educational hubs.
+              Guidance for premier institutions in India&apos;s top educational hubs.
             </motion.p>
 
             {/* ── STATE CARDS — Clean grid ── */}

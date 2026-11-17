@@ -3,7 +3,7 @@
     "home": {
       "slug": "home",
       "title": "Direct2Campus – Your Shortcut to the Right Campus",
-      "description": "India's most trusted educational consultancy. Get direct admission guidance for B.Tech, MBBS, MBA & BDS. Compare 150+ partner colleges and secure your seat with expert counselling.",
+      "description": "India's most trusted educational consultancy. Get admission guidance for B.Tech, MBBS, MBA & BDS. Compare 150+ colleges and secure your seat with expert counselling.",
       "includeInSitemap": true,
       "sitemapPriority": 1,
       "changeFrequency": "daily",
@@ -24,7 +24,7 @@
           "id": 2,
           "image": "/images/banners/jis_enhanced.png",
           "title": "JIS College of Engineering Campus",
-          "subtitle": "Direct2Campus Partner Institution with AI & Robotics Research Centers",
+          "subtitle": "Leading Institution with AI & Robotics Research Centers",
           "link": "/colleges",
           "badge": "Autonomous"
         },
@@ -39,10 +39,10 @@
       ],
       "welcomeLeadModal": {
         "enabled": false,
-        "title": "Get 1-on-1 Direct Admission Guidance",
+        "title": "Get 1-on-1 Admission Guidance",
         "subtitle": "Speak directly with senior academic counselors to check eligibility, fee structure, and seat availability.",
         "badge": "SESSION 2026-27",
-        "offerText": "⚡ Verified Partner Seats | Transparent Process | 100% Genuine Guidance",
+        "offerText": "⚡ Verified Seat Guidance | Transparent Process | 100% Genuine Guidance",
         "buttonText": "Request Free Counseling Call",
         "courseOptions": [
           "B.Tech Computer Science & Engineering",
@@ -58,7 +58,7 @@
         "badge": "Trusted by 12,000+ Students",
         "titlePrefix": "Your Shortcut to the",
         "titleHighlight": "Right Campus",
-        "description": "India's most trusted educational consultancy. Get direct admission guidance for B.Tech, MBBS, MBA & BDS. Compare 150+ partner colleges and secure your seat with expert counselling.",
+        "description": "India's most trusted educational consultancy. Get admission guidance for B.Tech, MBBS, MBA & BDS. Compare 150+ colleges and secure your seat with expert counselling.",
         "rotatingWords": [
           "B.Tech",
           "MBA",
@@ -73,7 +73,7 @@
           "value": "12,000+"
         },
         {
-          "label": "Partner Institutions",
+          "label": "Institutions",
           "value": "150+"
         },
         {
@@ -89,7 +89,7 @@
     "about": {
       "slug": "about",
       "title": "About Us – India's Trusted Education Partner",
-      "description": "Learn about Direct2Campus — India's trusted education bridge with 12,000+ successful admissions, 150+ partner institutions & 10+ years of proven excellence.",
+      "description": "Learn about Direct2Campus — India's trusted education bridge with 12,000+ successful admissions, 150+ institutions & 10+ years of proven excellence.",
       "includeInSitemap": true,
       "sitemapPriority": 0.8,
       "changeFrequency": "monthly",
@@ -104,7 +104,7 @@
           "value": "12,000+"
         },
         {
-          "label": "Partner Institutions",
+          "label": "Institutions",
           "value": "150+"
         },
         {
@@ -135,16 +135,16 @@
     },
     "mba": {
       "slug": "mba",
-      "title": "MBA & PGDM Direct Admissions in Top B-Schools",
-      "description": "Skip CAT/XAT — secure guaranteed management quota seats in Tier-1 & Tier-2 B-Schools across India. Expert MBA admission counselling at Direct2Campus.",
+      "title": "MBA & PGDM Admissions in Top B-Schools",
+      "description": "Skip CAT/XAT — secure management quota seats in Tier-1 & Tier-2 B-Schools across India. Expert MBA admission counselling at Direct2Campus.",
       "includeInSitemap": true,
       "sitemapPriority": 0.9,
       "changeFrequency": "weekly",
       "badge": "Post-Graduate Programs",
       "h1": "Elevate your career with a premium MBA",
       "heading": "Elevate your career with a premium MBA",
-      "subheading": "Skip the extreme competition of CAT/XAT. Secure guaranteed management quota seats in Tier-1 and Tier-2 B-Schools.",
-      "heroDescription": "Skip the extreme competition of CAT/XAT. Secure guaranteed management quota seats in Tier-1 and Tier-2 B-Schools across Bangalore, Pune, Delhi NCR, and Kolkata.",
+      "subheading": "Skip the extreme competition of CAT/XAT. Secure management quota seats in Tier-1 and Tier-2 B-Schools.",
+      "heroDescription": "Skip the extreme competition of CAT/XAT. Secure management quota seats in Tier-1 and Tier-2 B-Schools across Bangalore, Pune, Delhi NCR, and Kolkata.",
       "ctaText": "Free Consultation",
       "sections": [
         {
@@ -188,7 +188,7 @@
     },
     "btech-admissions-kolkata": {
       "title": "B.Tech Admissions in Kolkata 2027",
-      "h1": "Direct B.Tech Admission in Premier Engineering Colleges Kolkata",
+      "h1": "B.Tech Admission in Premier Engineering Colleges Kolkata",
       "subheading": "Complete counseling, cutoff, and fee analysis for 2027.",
       "includeInSitemap": true,
       "sitemapPriority": 0.9,
@@ -216,7 +216,7 @@
       "title": "B.Tech Admission in IEM Kolkata 2027 | Eligibility & Guidance",
       "h1": "B.Tech Admission in IEM Kolkata 2027",
       "subheading": "Get the Right Guidance for Your Engineering Admission Journey",
-      "slug": "btech-direct-admission-in-iem-kolkata",
+      "slug": "btech-admission-in-iem-kolkata",
       "badge": "Engineering Admission 2027",
       "description": "Explore engineering programmes at IEM Kolkata, understand available specialisations, eligibility criteria and IEMJEE 2027 entrance steps.",
       "includeInSitemap": true,
@@ -226,10 +226,10 @@
       "updatedAt": "2026-11-14T11:38:21.506Z"
     },
     "direct-admission-in-iem-kolkata": {
-      "title": "Direct Admission in IEM Kolkata 2027 – Courses & Eligibility",
-      "h1": "Direct Admission in IEM Kolkata 2027",
+      "title": "Admission in IEM Kolkata 2027 – Courses & Eligibility",
+      "h1": "Admission in IEM Kolkata 2027",
       "subheading": "Get Expert Guidance for Admission to the Institute of Engineering & Management, Kolkata",
-      "slug": "direct-admission-in-iem-kolkata",
+      "slug": "admission-in-iem-kolkata",
       "badge": "IEM Admission Hub 2027",
       "description": "Looking for admission in IEM Kolkata? Explore B.Tech, BBA, BCA and MBA courses, eligibility, admission process and expert guidance.",
       "includeInSitemap": true,
@@ -239,10 +239,10 @@
       "updatedAt": "2026-11-14T11:38:21.516Z"
     },
     "iem-kolkata-cse-direct-admission": {
-      "title": "IEM Kolkata CSE Direct Admission 2027 – Eligibility & Fees",
-      "h1": "IEM Kolkata Computer Science & Engineering (CSE) Direct Admission 2027",
+      "title": "IEM Kolkata CSE Admission 2027 – Eligibility & Fees",
+      "h1": "IEM Kolkata Computer Science & Engineering (CSE) Admission 2027",
       "subheading": "Complete 2027 admission guidance, cutoffs, eligibility and syllabus for CSE at IEM Kolkata.",
-      "slug": "iem-kolkata-cse-direct-admission",
+      "slug": "iem-kolkata-cse-admission",
       "badge": "CSE Specialisation 2027",
       "description": "Explore IEM Kolkata CSE admission 2027. Check programme information, eligibility, admission steps and fee details.",
       "includeInSitemap": true,
@@ -252,10 +252,10 @@
       "updatedAt": "2026-11-14T11:38:21.516Z"
     },
     "iem-kolkata-cse-ai-ml-direct-admission": {
-      "title": "IEM Kolkata CSE AI & ML Direct Admission 2027 – Eligibility",
-      "h1": "IEM Kolkata CSE – Artificial Intelligence & Machine Learning Direct Admission 2027",
+      "title": "IEM Kolkata CSE AI & ML Admission 2027 – Eligibility",
+      "h1": "IEM Kolkata CSE – Artificial Intelligence & Machine Learning Admission 2027",
       "subheading": "Study intelligent systems, neural networks, and machine learning at IEM Kolkata.",
-      "slug": "iem-kolkata-cse-ai-ml-direct-admission",
+      "slug": "iem-kolkata-cse-ai-ml-admission",
       "badge": "AI & ML Specialisation 2027",
       "description": "Explore IEM Kolkata CSE AI & ML admission 2027. Review programme details, eligibility, admission steps and fees.",
       "includeInSitemap": true,
@@ -265,10 +265,10 @@
       "updatedAt": "2026-11-14T11:38:21.516Z"
     },
     "iem-kolkata-it-direct-admission": {
-      "title": "IEM Kolkata IT Direct Admission 2027 – Eligibility & Fees",
-      "h1": "IEM Kolkata Information Technology (IT) Direct Admission 2027",
+      "title": "IEM Kolkata IT Admission 2027 – Eligibility & Fees",
+      "h1": "IEM Kolkata Information Technology (IT) Admission 2027",
       "subheading": "Applied software systems, networking, cloud platforms and cybersecurity at IEM Kolkata.",
-      "slug": "iem-kolkata-it-direct-admission",
+      "slug": "iem-kolkata-it-admission",
       "badge": "IT Specialisation 2027",
       "description": "Explore IEM Kolkata Information Technology admission 2027. Check IT programme details, eligibility, and process.",
       "includeInSitemap": true,
@@ -278,10 +278,10 @@
       "updatedAt": "2026-11-14T11:38:21.516Z"
     },
     "iem-kolkata-ece-direct-admission": {
-      "title": "IEM Kolkata ECE Direct Admission 2027 – Eligibility & Fees",
-      "h1": "IEM Kolkata Electronics & Communication Engineering (ECE) Direct Admission 2027",
+      "title": "IEM Kolkata ECE Admission 2027 – Eligibility & Fees",
+      "h1": "IEM Kolkata Electronics & Communication Engineering (ECE) Admission 2027",
       "subheading": "Semiconductor design, telecom systems, VLSI, and embedded computing at IEM Kolkata.",
-      "slug": "iem-kolkata-ece-direct-admission",
+      "slug": "iem-kolkata-ece-admission",
       "badge": "ECE Specialisation 2027",
       "description": "Explore IEM Kolkata ECE admission 2027. Understand electronics and communication engineering, eligibility and enquiry options.",
       "includeInSitemap": true,
@@ -291,10 +291,10 @@
       "updatedAt": "2026-11-14T11:38:21.516Z"
     },
     "iem-kolkata-electrical-engineering-direct-admission": {
-      "title": "IEM Kolkata Electrical Engineering Direct Admission 2027",
-      "h1": "IEM Kolkata Electrical Engineering Direct Admission 2027",
+      "title": "IEM Kolkata Electrical Engineering Admission 2027",
+      "h1": "IEM Kolkata Electrical Engineering Admission 2027",
       "subheading": "Power systems, smart grids, electrical machines, and renewable energy at IEM Kolkata.",
-      "slug": "iem-kolkata-electrical-engineering-direct-admission",
+      "slug": "iem-kolkata-electrical-engineering-admission",
       "badge": "Electrical Engineering 2027",
       "description": "Explore IEM Kolkata Electrical Engineering admission 2027. Review the subject overview, eligibility and enquiry details.",
       "includeInSitemap": true,
@@ -304,10 +304,10 @@
       "updatedAt": "2026-11-14T11:38:21.516Z"
     },
     "iem-kolkata-mechanical-engineering-direct-admission": {
-      "title": "IEM Kolkata Mechanical Engineering Direct Admission 2027",
-      "h1": "IEM Kolkata Mechanical Engineering Direct Admission 2027",
+      "title": "IEM Kolkata Mechanical Engineering Admission 2027",
+      "h1": "IEM Kolkata Mechanical Engineering Admission 2027",
       "subheading": "Mechanics, CAD/CAM automation, robotics, and thermal engineering at IEM Kolkata.",
-      "slug": "iem-kolkata-mechanical-engineering-direct-admission",
+      "slug": "iem-kolkata-mechanical-engineering-admission",
       "badge": "Mechanical Engineering 2027",
       "description": "Explore IEM Kolkata Mechanical Engineering admission 2027. Learn about the discipline, eligibility and admission steps.",
       "includeInSitemap": true,

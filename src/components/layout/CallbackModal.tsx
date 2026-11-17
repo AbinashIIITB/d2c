@@ -4,8 +4,11 @@ import { useState, useEffect } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import { X, PhoneCall, MessageCircle } from "lucide-react"
 import { trackLeadSubmission } from "@/lib/gtag"
+import { useSiteContent, whatsappHref } from "@/components/cms/SiteContentProvider"
 
 export function CallbackModal({ isOpen, onClose, initialPhone = "" }: { isOpen: boolean, onClose: () => void, initialPhone?: string }) {
+  const { site, modals } = useSiteContent()
+  const m = modals.callback
   const [formData, setFormData] = useState({ name: "", phone: initialPhone, course: "" })
   const [status, setStatus] = useState<"IDLE" | "SUBMITTING" | "SUCCESS" | "ERROR">("IDLE")
 
@@ -86,8 +89,8 @@ export function CallbackModal({ isOpen, onClose, initialPhone = "" }: { isOpen: 
             <div className="w-16 h-16 mx-auto bg-d2c-royal/20 rounded-full flex items-center justify-center mb-4">
               <PhoneCall className="w-8 h-8 text-d2c-royal animate-pulse" />
             </div>
-            <h3 className="text-2xl font-sora font-bold text-white mb-2">Request Callback</h3>
-            <p className="text-d2c-sky text-sm">Our expert counsellors will contact you within 24 hours.</p>
+            <h3 className="text-2xl font-sora font-bold text-white mb-2">{m.title}</h3>
+            <p className="text-d2c-sky text-sm">{m.subtitle}</p>
           </div>
 
           {/* Form */}
@@ -95,35 +98,35 @@ export function CallbackModal({ isOpen, onClose, initialPhone = "" }: { isOpen: 
             {status === "SUCCESS" ? (
               <div className="py-12 text-center text-d2c-success flex flex-col items-center gap-4">
                 <div className="w-16 h-16 bg-d2c-success/10 rounded-full flex items-center justify-center text-3xl font-bold">✓</div>
-                <h4 className="font-sora font-bold text-xl text-d2c-navy">Request Received!</h4>
-                <p className="text-d2c-muted">We&apos;ll be in touch shortly.</p>
+                <h4 className="font-sora font-bold text-xl text-d2c-navy">{m.successTitle}</h4>
+                <p className="text-d2c-muted">{m.successText}</p>
               </div>
             ) : (
               <>
                 <div>
-                  <label className="block text-sm font-semibold text-d2c-navy mb-2">Full Name</label>
+                  <label className="block text-sm font-semibold text-d2c-navy mb-2">{m.nameLabel}</label>
                   <input 
                     required
                     type="text" 
                     value={formData.name}
                     onChange={(e) => setFormData(prev => ({ ...prev, name: e.target.value }))}
                     className="w-full px-4 py-3 border border-gray-200 text-d2c-navy focus:border-d2c-royal focus:ring-2 focus:ring-d2c-royal/20 outline-none transition-all"
-                    placeholder="Enter your name"
+                    placeholder={m.namePlaceholder}
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-semibold text-d2c-navy mb-2">Course/Branch</label>
+                  <label className="block text-sm font-semibold text-d2c-navy mb-2">{m.courseLabel}</label>
                   <input 
                     required
                     type="text" 
                     value={formData.course}
                     onChange={(e) => setFormData(prev => ({ ...prev, course: e.target.value }))}
                     className="w-full px-4 py-3 border border-gray-200 text-d2c-navy focus:border-d2c-royal focus:ring-2 focus:ring-d2c-royal/20 outline-none transition-all"
-                    placeholder="Select Course/Branch (eg B Tech, M Tech, etc)"
+                    placeholder={m.coursePlaceholder}
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-semibold text-d2c-navy mb-2">Phone Number</label>
+                  <label className="block text-sm font-semibold text-d2c-navy mb-2">{m.phoneLabel}</label>
                   <input 
                     required
                     type="tel" 
@@ -131,7 +134,7 @@ export function CallbackModal({ isOpen, onClose, initialPhone = "" }: { isOpen: 
                     value={formData.phone}
                     onChange={(e) => setFormData(prev => ({ ...prev, phone: e.target.value }))}
                     className="w-full px-4 py-3 border border-gray-200 text-d2c-navy focus:border-d2c-royal focus:ring-2 focus:ring-d2c-royal/20 outline-none transition-all"
-                    placeholder="10-digit mobile number"
+                    placeholder={m.phonePlaceholder}
                   />
                 </div>
                 <button 
@@ -139,31 +142,31 @@ export function CallbackModal({ isOpen, onClose, initialPhone = "" }: { isOpen: 
                   disabled={status === "SUBMITTING"}
                   className="w-full mt-2 py-4 bg-d2c-royal text-white font-semibold text-lg hover:bg-d2c-navy transition-colors disabled:opacity-70 disabled:cursor-not-allowed shadow-xl shadow-d2c-royal/20"
                 >
-                  {status === "SUBMITTING" ? "Submitting..." : "Submit Request"}
+                  {status === "SUBMITTING" ? m.submittingLabel : m.submitLabel}
                 </button>
 
                 <div className="relative flex items-center pt-2">
                   <div className="flex-grow border-t border-gray-200"></div>
-                  <span className="flex-shrink-0 mx-4 text-d2c-muted text-sm font-semibold">OR</span>
+                  <span className="flex-shrink-0 mx-4 text-d2c-muted text-sm font-semibold">{m.orLabel}</span>
                   <div className="flex-grow border-t border-gray-200"></div>
                 </div>
                 
                 <div className="flex gap-4 w-full">
                   <a
-                    href="tel:+916200325137"
+                    href={`tel:${site.contact.phoneTel}`}
                     className="flex-1 flex items-center justify-center gap-2 py-3 bg-d2c-navy text-white font-semibold hover:bg-d2c-navy/90 transition-colors"
                   >
                     <PhoneCall className="w-5 h-5" />
-                    Call Us
+                    {m.callLabel}
                   </a>
                   <a
-                    href="https://wa.me/916200325137"
+                    href={whatsappHref(site.contact.whatsappNumber, site.contact.whatsappMessage)}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="flex-1 flex items-center justify-center gap-2 py-3 bg-[#25D366] text-white font-semibold hover:bg-[#25D366]/90 transition-colors"
                   >
                     <MessageCircle className="w-5 h-5 fill-current" />
-                    WhatsApp
+                    {m.whatsappLabel}
                   </a>
                 </div>
               </>

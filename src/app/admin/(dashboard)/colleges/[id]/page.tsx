@@ -1,17 +1,19 @@
 import { supabaseAdmin } from "@/lib/supabase";
 import { notFound } from "next/navigation";
-import { VisualCollegeEditor } from "@/components/admin/visual-editor/VisualCollegeEditor";
+import { CollegeEditForm } from "@/components/admin/CollegeEditForm";
 import { mapDbToCollege } from "@/lib/admin-mappers";
 import { getCollegeByIdOrSlug } from "@/lib/data-service";
 
 type Params = Promise<{ id: string }>;
+
+export const dynamic = "force-dynamic";
 
 export default async function EditCollegePage({ params }: { params: Params }) {
   const { id } = await params;
 
   let collegeData: any = null;
 
-  const { data: college, error } = await supabaseAdmin
+  const { data: college } = await supabaseAdmin
     .from('colleges')
     .select('*')
     .eq('id', id)
@@ -20,7 +22,7 @@ export default async function EditCollegePage({ params }: { params: Params }) {
   if (college) {
     collegeData = mapDbToCollege(college);
   } else {
-    // Fallback to local data service
+    // Fallback to local data service (colleges that only exist in the bundled data)
     const local = await getCollegeByIdOrSlug(id);
     if (local) {
       collegeData = local;
@@ -31,6 +33,5 @@ export default async function EditCollegePage({ params }: { params: Params }) {
     notFound();
   }
 
-  return <VisualCollegeEditor initialData={collegeData} isNew={false} />;
+  return <CollegeEditForm initialData={collegeData} isNew={false} />;
 }
-

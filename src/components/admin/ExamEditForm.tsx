@@ -12,17 +12,21 @@ import {
   ArrowLeft,
   Plus,
   Trash2,
-  Sparkles
+  Sparkles,
+  Megaphone,
+  Link2
 } from 'lucide-react';
 import Link from 'next/link';
-import { ImageUploader } from './ImageUploader';
+import { ImageField } from './cms/ImageField';
+import { SeoField } from './cms/SeoField';
+import type { SeoFields } from '@/lib/cms/types';
+import { examSeo, examDerivedSeo, seoOverrides } from '@/lib/record-seo';
 import { JsonArrayEditor } from './JsonArrayEditor';
 import { KeyValueEditor } from './KeyValueEditor';
 import { RichTextArea } from './RichTextArea';
 import { SlugInput } from './SlugInput';
 import { SectionCard } from './SectionCard';
 import { AdminFormSaveBar } from './AdminFormSaveBar';
-import { SeoSuiteEditor } from './SeoSuiteEditor';
 
 interface ExamEditFormProps {
   initialData?: any;
@@ -36,7 +40,8 @@ const TABS = [
   { id: 'dates-process', label: 'Timeline & Process', icon: Calendar },
   { id: 'eligibility', label: 'Eligibility & Documents', icon: Shield },
   { id: 'faqs', label: 'FAQs & Counselling', icon: HelpCircle },
-  { id: 'seo-suite', label: 'SEO & AEO Suite', icon: Sparkles },
+  { id: 'extras', label: 'Help Card & Guides', icon: Megaphone },
+  { id: 'seo-suite', label: 'SEO', icon: Sparkles },
 ];
 
 export function ExamEditForm({ initialData = {}, isNew = false }: ExamEditFormProps) {
@@ -54,25 +59,26 @@ export function ExamEditForm({ initialData = {}, isNew = false }: ExamEditFormPr
     introduction: initialData.introduction || '',
     overview: initialData.overview || '',
     aboutExam: initialData.aboutExam || initialData.about_exam || '',
-    importantDates: initialData.importantDates || initialData.important_dates || [
-      { event: 'Notification Release', date: 'November 2026' },
-      { event: 'Registration Window', date: 'Dec 2026 - Jan 2027' },
-      { event: 'Exam Date', date: 'April 2027' }
-    ],
+    importantDates: initialData.importantDates || initialData.important_dates || [],
     applicationProcess: initialData.applicationProcess || initialData.application_process || [],
     documents: initialData.documents || [],
     eligibility: initialData.eligibility || [],
     examPattern: initialData.examPattern || initialData.exam_pattern || {
-      mode: 'Online (Computer Based Test)',
-      duration: '3 Hours',
-      totalMarks: '300',
-      markingScheme: '+4 for Correct, -1 for Incorrect',
-      subjects: ['Physics', 'Chemistry', 'Mathematics']
+      mode: '',
+      duration: '',
+      totalMarks: '',
+      markingScheme: '',
+      subjects: []
     },
     counselling: initialData.counselling || '',
     faqs: initialData.faqs || [],
     seo: initialData.seo || {}
   });
+
+  // SEO: what the site emits today (legacy fields) overlaid with the stored new-style fields.
+  // `seoEdit` is what the editor shows; only fields that differ from the derived values are stored.
+  const [derivedSeo] = useState<SeoFields>(() => (isNew ? {} : examDerivedSeo(initialData)));
+  const [seoEdit, setSeoEdit] = useState<SeoFields>(() => (isNew ? {} : examSeo(initialData)));
 
   const [saving, setSaving] = useState(false);
   const [successMessage, setSuccessMessage] = useState('');
@@ -87,6 +93,10 @@ export function ExamEditForm({ initialData = {}, isNew = false }: ExamEditFormPr
       ...prev,
       examPattern: { ...prev.examPattern, [field]: value }
     }));
+  };
+
+  const updateSeoLegacy = (patch: Record<string, any>) => {
+    setFormData((prev: any) => ({ ...prev, seo: { ...(prev.seo || {}), ...patch } }));
   };
 
   const handleSave = async () => {
@@ -106,13 +116,19 @@ export function ExamEditForm({ initialData = {}, isNew = false }: ExamEditFormPr
     setSuccessMessage('');
 
     try {
+      const buildPayload = () => {
+        const { meta: _oldMeta, ...legacySeo } = formData.seo || {};
+        const overrides = seoOverrides(seoEdit, derivedSeo);
+        const seo = Object.keys(overrides).length ? { ...legacySeo, meta: overrides } : legacySeo;
+        return { ...formData, seo };
+      };
       const url = isNew ? '/api/admin/exams' : `/api/admin/exams/${formData.id}`;
       const method = isNew ? 'POST' : 'PUT';
 
       const res = await fetch(url, {
         method,
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData),
+        body: JSON.stringify(buildPayload()),
       });
 
       const data = await res.json();
@@ -295,15 +311,33 @@ export function ExamEditForm({ initialData = {}, isNew = false }: ExamEditFormPr
       {activeTab === 'images' && (
         <div className="space-y-6">
           <SectionCard title="Exam Logo & Authority Crest" icon={ImageIcon} description="Square logo displayed in exam cards and hero banner">
-            <div className="max-w-md">
-              <ImageUploader
-                label="Exam Conducting Authority Logo"
-                value={formData.logoUrl}
-                aspect="square"
-                folder="exams/logos"
-                hint="Used prominently on exam guide and listing cards (1:1 square)"
-                onChange={(url) => updateField('logoUrl', url)}
-              />
+      <div className="max-w-xl space-y-4">
+              <div>
+                <label className="block text-sm font-semibold text-d2c-navy mb-1.5">Exam Conducting Authority Logo</label>
+                <ImageField value={formData.logoUrl} folder="exams/logos" label="Exam logo" onChange={(url) => updateField('logoUrl', url)} />
+                <p className="text-xs text-gray-500 mt-1.5">Used prominently on the exam page and listing cards (1:1 square)</p>
+              </div>
+              <div>
+                <label className="block text-sm font-semibold text-d2c-navy mb-1.5">Logo alt text (exam page)</label>
+                <input
+                  type="text"
+                  value={formData.seo?.images?.pageLogoAlt || ''}
+                  onChange={(e) => updateSeoLegacy({ images: { ...(formData.seo?.images || {}), pageLogoAlt: e.target.value } })}
+                  placeholder={formData.name || 'Describe the logo'}
+                  className="w-full px-4 py-3 text-sm rounded-xl border border-gray-200 focus:border-d2c-royal outline-none"
+                />
+                <p className="text-xs text-gray-500 mt-1">Leave empty to use the exam name.</p>
+              </div>
+              <div>
+                <label className="block text-sm font-semibold text-d2c-navy mb-1.5">Logo alt text (social share image)</label>
+                <input
+                  type="text"
+                  value={formData.seo?.images?.logoAlt || ''}
+                  onChange={(e) => updateSeoLegacy({ images: { ...(formData.seo?.images || {}), logoAlt: e.target.value } })}
+                  placeholder={`${formData.name || 'Exam'} Logo`}
+                  className="w-full px-4 py-3 text-sm rounded-xl border border-gray-200 focus:border-d2c-royal outline-none"
+                />
+              </div>
             </div>
           </SectionCard>
         </div>
@@ -430,13 +464,13 @@ export function ExamEditForm({ initialData = {}, isNew = false }: ExamEditFormPr
       {/* Tab 6: FAQs & Counselling */}
       {activeTab === 'faqs' && (
         <div className="space-y-6">
-          <SectionCard title="Counselling & Quota Guidance" icon={HelpCircle} description="Direct admissions and counselling information">
+          <SectionCard title="Counselling & Quota Guidance" icon={HelpCircle} description="Counselling and quota guidance information">
             <RichTextArea
               label="Counselling & Seat Allocation Process"
               value={formData.counselling}
               rows={4}
               onChange={(val) => updateField('counselling', val)}
-              placeholder="Details about JoSAA / CSAB counselling, state level quotas, and Direct2Campus management seat assistance..."
+              placeholder="Details about JoSAA / CSAB counselling, state level quotas, and management quota counselling support..."
             />
           </SectionCard>
 
@@ -494,16 +528,144 @@ export function ExamEditForm({ initialData = {}, isNew = false }: ExamEditFormPr
         </div>
       )}
 
-      {/* Tab: SEO & AEO Suite */}
+      {/* Tab: Help card, extra FAQs, guides */}
+      {activeTab === 'extras' && (
+        <div className="space-y-6">
+          <SectionCard title="Help Card (right sidebar)" icon={Megaphone} description="Leave a field empty to use the default text from Content > Exam detail pages">
+            <div className="space-y-4">
+              <div>
+                <label className="block text-sm font-semibold text-d2c-navy mb-1.5">Headline</label>
+                <input
+                  type="text"
+                  value={formData.seo?.cta?.headline || ''}
+                  onChange={(e) => updateSeoLegacy({ cta: { ...(formData.seo?.cta || {}), headline: e.target.value } })}
+                  placeholder="Need Admission Help?"
+                  className="w-full px-4 py-3 text-sm rounded-xl border border-gray-200 focus:border-d2c-royal outline-none"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-semibold text-d2c-navy mb-1.5">Text</label>
+                <textarea
+                  rows={3}
+                  value={formData.seo?.cta?.subtext || ''}
+                  onChange={(e) => updateSeoLegacy({ cta: { ...(formData.seo?.cta || {}), subtext: e.target.value } })}
+                  className="w-full px-4 py-3 text-sm rounded-xl border border-gray-200 focus:border-d2c-royal outline-none"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-semibold text-d2c-navy mb-1.5">Button label</label>
+                <input
+                  type="text"
+                  value={formData.seo?.cta?.buttonText || ''}
+                  onChange={(e) => updateSeoLegacy({ cta: { ...(formData.seo?.cta || {}), buttonText: e.target.value } })}
+                  placeholder="Get Free Counseling"
+                  className="w-full px-4 py-3 text-sm rounded-xl border border-gray-200 focus:border-d2c-royal outline-none"
+                />
+              </div>
+            </div>
+          </SectionCard>
+
+          <SectionCard title="Additional FAQs (shown after the FAQs, also added to search engine FAQ data)" icon={HelpCircle}>
+            <div className="flex justify-end mb-3">
+              <button
+                type="button"
+                onClick={() => updateSeoLegacy({ aeoFaqs: [...(formData.seo?.aeoFaqs || []), { question: '', answer: '' }] })}
+                className="text-xs bg-d2c-royal/10 text-d2c-royal hover:bg-d2c-royal hover:text-white px-3 py-1.5 rounded-lg font-bold transition-colors flex items-center gap-1"
+              >
+                <Plus className="w-3.5 h-3.5" /> Add FAQ
+              </button>
+            </div>
+            {(formData.seo?.aeoFaqs || []).length === 0 ? (
+              <div className="p-6 rounded-2xl border border-dashed border-gray-200 text-center text-xs text-gray-400 bg-gray-50/50">No additional FAQs.</div>
+            ) : (
+              <div className="space-y-3">
+                {(formData.seo.aeoFaqs as any[]).map((faq, idx) => (
+                  <div key={idx} className="p-4 rounded-xl border border-gray-200 bg-gray-50/50 space-y-2">
+                    <div className="flex items-center gap-3">
+                      <input
+                        type="text"
+                        value={faq.question || ''}
+                        onChange={(e) => {
+                          const list = [...formData.seo.aeoFaqs];
+                          list[idx] = { ...list[idx], question: e.target.value };
+                          updateSeoLegacy({ aeoFaqs: list });
+                        }}
+                        placeholder="Question"
+                        className="flex-1 text-xs font-bold px-3 py-2 rounded-lg border border-gray-200 bg-white outline-none focus:border-d2c-royal"
+                      />
+                      <button
+                        type="button"
+                        onClick={() => updateSeoLegacy({ aeoFaqs: formData.seo.aeoFaqs.filter((_: any, i: number) => i !== idx) })}
+                        className="text-gray-400 hover:text-red-500 p-1.5 transition-colors"
+                        aria-label="Remove FAQ"
+                      >
+                        <Trash2 className="w-4 h-4" />
+                      </button>
+                    </div>
+                    <textarea
+                      rows={2}
+                      value={faq.answer || ''}
+                      onChange={(e) => {
+                        const list = [...formData.seo.aeoFaqs];
+                        list[idx] = { ...list[idx], answer: e.target.value };
+                        updateSeoLegacy({ aeoFaqs: list });
+                      }}
+                      placeholder="Answer"
+                      className="w-full text-xs px-3 py-2 rounded-lg border border-gray-200 bg-white outline-none focus:border-d2c-royal"
+                    />
+                  </div>
+                ))}
+              </div>
+            )}
+          </SectionCard>
+
+          <SectionCard title="Recommended guides (links)" icon={Link2} description="Shown as link cards below the FAQs">
+            <div className="flex justify-end mb-3">
+              <button
+                type="button"
+                onClick={() => updateSeoLegacy({ internalLinks: [...(formData.seo?.internalLinks || []), { targetUrl: '', anchorText: '', context: '' }] })}
+                className="text-xs bg-d2c-royal/10 text-d2c-royal hover:bg-d2c-royal hover:text-white px-3 py-1.5 rounded-lg font-bold transition-colors flex items-center gap-1"
+              >
+                <Plus className="w-3.5 h-3.5" /> Add link
+              </button>
+            </div>
+            {(formData.seo?.internalLinks || []).length === 0 ? (
+              <div className="p-6 rounded-2xl border border-dashed border-gray-200 text-center text-xs text-gray-400 bg-gray-50/50">No links.</div>
+            ) : (
+              <div className="space-y-3">
+                {(formData.seo.internalLinks as any[]).map((link, idx) => {
+                  const setLink = (patch: Record<string, string>) => {
+                    const list = [...formData.seo.internalLinks];
+                    list[idx] = { ...list[idx], ...patch };
+                    updateSeoLegacy({ internalLinks: list });
+                  };
+                  return (
+                    <div key={idx} className="p-4 rounded-xl border border-gray-200 bg-gray-50/50 grid grid-cols-1 md:grid-cols-[1fr_1fr_1fr_auto] gap-2 items-center">
+                      <input type="text" value={link.anchorText || ''} onChange={(e) => setLink({ anchorText: e.target.value })} placeholder="Link text" className="text-xs px-3 py-2 rounded-lg border border-gray-200 bg-white outline-none focus:border-d2c-royal" />
+                      <input type="text" value={link.targetUrl || ''} onChange={(e) => setLink({ targetUrl: e.target.value })} placeholder="/colleges/..." className="text-xs px-3 py-2 rounded-lg border border-gray-200 bg-white outline-none focus:border-d2c-royal font-mono" />
+                      <input type="text" value={link.context || ''} onChange={(e) => setLink({ context: e.target.value })} placeholder="Short note (optional)" className="text-xs px-3 py-2 rounded-lg border border-gray-200 bg-white outline-none focus:border-d2c-royal" />
+                      <button
+                        type="button"
+                        onClick={() => updateSeoLegacy({ internalLinks: formData.seo.internalLinks.filter((_: any, i: number) => i !== idx) })}
+                        className="text-gray-400 hover:text-red-500 p-1.5 transition-colors"
+                        aria-label="Remove link"
+                      >
+                        <Trash2 className="w-4 h-4" />
+                      </button>
+                    </div>
+                  );
+                })}
+              </div>
+            )}
+          </SectionCard>
+        </div>
+      )}
+
+      {/* Tab: SEO */}
       {activeTab === 'seo-suite' && (
-        <SeoSuiteEditor
-          value={formData.seo}
-          onChange={(newSeo) => updateField('seo', newSeo)}
-          pageName={formData.name}
-          pageSlug={formData.slug}
-          prefix="exams"
-          defaultDescription={formData.description || formData.overview || formData.introduction}
-        />
+        <SectionCard title="Search & social (SEO)" icon={Sparkles} description="Shows what the page emits today. Only fields you change are stored.">
+          <SeoField value={seoEdit} onChange={setSeoEdit} />
+        </SectionCard>
       )}
 
       {/* Save Bar */}

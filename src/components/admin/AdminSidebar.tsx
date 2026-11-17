@@ -2,11 +2,11 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { PageSwitcher } from '@/components/admin/cms/PageSwitcher';
 import { 
   Home, 
   GraduationCap, 
   FileText, 
-  Settings, 
   BarChart3, 
   ImageIcon, 
   Users, 
@@ -15,21 +15,29 @@ import {
   Layers,
   Sparkles,
   Newspaper,
-  Globe
+  Globe,
+  PenSquare,
+  SlidersHorizontal,
+  PanelTop,
+  LayoutTemplate
 } from 'lucide-react';
 
-const NAV_ITEMS = [
+const CONTENT_SHORTCUTS = ['/admin/content/site', '/admin/content/navbar', '/admin/content/home'];
+
+const NAV_ITEMS: { href: string; label: string; icon: typeof Home; exact?: boolean; contentRoot?: boolean }[] = [
   { href: '/admin', label: 'Dashboard', icon: Home, exact: true },
-  { href: '/admin/colleges', label: 'Manage Colleges', icon: GraduationCap },
-  { href: '/admin/exams', label: 'Manage Exams', icon: FileText },
-  { href: '/admin/blogs', label: 'Manage Blogs', icon: Newspaper },
-  { href: '/admin/pages', label: 'Website Pages', icon: Globe },
-  { href: '/admin/pages/home', label: 'Announcement & Banners', icon: Layers },
-  { href: '/admin/seo', label: 'Page SEO Studio', icon: Sparkles },
-  { href: '/admin/leads', label: 'Form Inquiries & Leads', icon: Users },
-  { href: '/admin/analytics', label: 'Analytics & SEO', icon: BarChart3 },
-  { href: '/admin/assets', label: 'Asset Manager', icon: ImageIcon },
-  { href: '/admin/settings', label: 'Settings', icon: Settings },
+  { href: '/admin/content', label: 'Website content', icon: PenSquare, contentRoot: true },
+  { href: '/admin/content/site', label: 'Site settings', icon: SlidersHorizontal },
+  { href: '/admin/content/navbar', label: 'Navigation & footer', icon: PanelTop },
+  { href: '/admin/content/home', label: 'Home page', icon: LayoutTemplate },
+  { href: '/admin/colleges', label: 'Colleges', icon: GraduationCap },
+  { href: '/admin/exams', label: 'Exams', icon: FileText },
+  { href: '/admin/blogs', label: 'Blogs', icon: Newspaper },
+  { href: '/admin/pages', label: 'Custom pages', icon: Globe },
+  { href: '/admin/seo', label: 'SEO Studio', icon: Sparkles },
+  { href: '/admin/media', label: 'Media library', icon: ImageIcon },
+  { href: '/admin/leads', label: 'Leads', icon: Users },
+  { href: '/admin/analytics', label: 'Analytics', icon: BarChart3 },
 ];
 
 export function AdminSidebar() {
@@ -38,6 +46,12 @@ export function AdminSidebar() {
   const isActive = (item: typeof NAV_ITEMS[0]) => {
     if (item.exact) {
       return pathname === item.href;
+    }
+    if (item.contentRoot) {
+      return (
+        (pathname === item.href || pathname.startsWith(`${item.href}/`)) &&
+        !CONTENT_SHORTCUTS.some((h) => pathname === h || pathname.startsWith(`${h}/`))
+      );
     }
     return pathname === item.href || pathname.startsWith(`${item.href}/`);
   };
@@ -61,6 +75,10 @@ export function AdminSidebar() {
         </div>
       </div>
       
+      <div className="px-3 pt-4">
+        <PageSwitcher variant="sidebar" hotkey={!/^\/admin\/content\/[^/]+/.test(pathname)} />
+      </div>
+
       {/* Navigation */}
       <nav className="flex-1 py-6 px-3 space-y-1.5 overflow-y-auto">
         {NAV_ITEMS.map((item) => {

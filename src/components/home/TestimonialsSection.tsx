@@ -4,20 +4,20 @@ import { useRef, useState } from "react"
 import Link from "next/link"
 import { motion, useInView, AnimatePresence } from "framer-motion"
 import { Quote, Star, ChevronDown, GraduationCap } from "lucide-react"
-import testimonialsData from "@/data/testimonials.json"
+import { testimonialsDefaults, type TestimonialsContent } from "@/content/testimonials.defaults"
 
-// Group testimonials into "featured" (expanded card with stats) and "list" items
-const FEATURED = testimonialsData[0] // First testimonial gets the hero card
-const LIST_ITEMS = testimonialsData.slice(1)
+function starCount(rating: number | undefined): number {
+  const n = typeof rating === "number" && Number.isFinite(rating) ? Math.round(rating) : 5
+  return Math.min(5, Math.max(0, n))
+}
 
-// Fake stat data tied to the featured testimonial
-const FEATURED_STATS = [
-  { label: "Branch Secured", value: "CSE" },
-  { label: "Admission Year", value: "2025" },
-  { label: "Counselling Sessions", value: "3" },
-]
-
-export function TestimonialsSection() {
+export function TestimonialsSection({ content = testimonialsDefaults }: { content?: TestimonialsContent } = {}) {
+  // Group testimonials into "featured" (expanded card with stats) and "list" items
+  const allItems = content.items ?? []
+  const FEATURED = allItems[0] // First testimonial gets the hero card
+  const LIST_ITEMS = allItems.slice(1)
+  const FEATURED_STATS = content.featuredStats ?? []
+  const section = content.section
   const ref = useRef(null)
   const isInView = useInView(ref, { once: true, margin: "-80px" })
   const [expandedId, setExpandedId] = useState<number | null>(null)
@@ -41,7 +41,7 @@ export function TestimonialsSection() {
           >
             <div className="h-px w-8 bg-d2c-royal" />
             <span className="text-d2c-royal font-semibold text-sm tracking-widest uppercase">
-              Success Stories
+              {section.eyebrow}
             </span>
           </motion.div>
 
@@ -51,9 +51,9 @@ export function TestimonialsSection() {
             transition={{ duration: 0.5, delay: 0.1 }}
             className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-sora font-bold text-d2c-navy leading-[1.1] mb-6"
           >
-            Students trust Direct2Campus for{" "}
+            {section.headingPrefix}{" "}
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-d2c-royal to-d2c-sky">
-              life-changing results.
+              {section.headingHighlight}
             </span>
           </motion.h2>
 
@@ -63,11 +63,12 @@ export function TestimonialsSection() {
             transition={{ duration: 0.5, delay: 0.15 }}
             className="text-lg text-d2c-muted leading-relaxed max-w-xl"
           >
-            From first consultation to campus day — hear directly from the students and parents who made it happen.
+            {section.description}
           </motion.p>
         </div>
 
         {/* ── FEATURED TESTIMONIAL CARD — Stripe "Hero Story" style ── */}
+        {FEATURED && (
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
@@ -81,7 +82,7 @@ export function TestimonialsSection() {
                 <div className="w-10 h-10 rounded-full overflow-hidden bg-d2c-ice border-2 border-d2c-royal/20 shrink-0">
                   <img
                     src={FEATURED.avatarUrl}
-                    alt={FEATURED.name}
+                    alt={FEATURED.avatarAlt || FEATURED.name}
                     className="w-full h-full object-cover"
                     onError={(e) => {
                       (e.target as HTMLImageElement).src = `https://ui-avatars.com/api/?name=${encodeURIComponent(FEATURED.name)}&background=3B4CC0&color=fff`
@@ -89,7 +90,7 @@ export function TestimonialsSection() {
                   />
                 </div>
                 <p className="text-lg md:text-xl font-semibold text-d2c-navy">
-                  {FEATURED.name} secured admission through Direct2Campus.
+                  {section.featuredLine.replace("{name}", FEATURED.name)}
                 </p>
               </div>
               {FEATURED.slug ? (
@@ -97,12 +98,12 @@ export function TestimonialsSection() {
                   href={`/stories/${FEATURED.slug}`}
                   className="hidden md:inline-flex items-center gap-1 text-d2c-royal text-sm font-semibold hover:underline shrink-0"
                 >
-                  Read the story
+                  {section.readStoryLabel}
                   <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M6 3l5 5-5 5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
                 </Link>
               ) : (
                 <span className="hidden md:inline-flex items-center gap-1 text-d2c-royal text-sm font-semibold shrink-0 opacity-50 cursor-default">
-                  Read the story
+                  {section.readStoryLabel}
                   <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M6 3l5 5-5 5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
                 </span>
               )}
@@ -122,7 +123,7 @@ export function TestimonialsSection() {
                     &ldquo;{FEATURED.message}&rdquo;
                   </p>
                   <div className="flex gap-1 justify-center mt-4">
-                    {[...Array(5)].map((_, i) => (
+                    {[...Array(starCount(FEATURED.rating))].map((_, i) => (
                       <Star key={i} className="w-5 h-5 fill-d2c-gold text-d2c-gold" />
                     ))}
                   </div>
@@ -132,8 +133,8 @@ export function TestimonialsSection() {
 
             {/* Stats row — Stripe-style key metrics */}
             <div className="px-6 md:px-8 py-5 flex flex-wrap gap-x-12 gap-y-3 border-t border-gray-100">
-              {FEATURED_STATS.map((stat) => (
-                <div key={stat.label} className="flex items-baseline gap-2">
+              {FEATURED_STATS.map((stat, i) => (
+                <div key={i} className="flex items-baseline gap-2">
                   <span className="text-lg font-bold text-d2c-navy">{stat.value}</span>
                   <span className="text-sm text-d2c-muted">{stat.label}</span>
                 </div>
@@ -144,19 +145,20 @@ export function TestimonialsSection() {
             </div>
           </div>
         </motion.div>
+        )}
 
         {/* ── ACCORDION LIST — Stripe-style expandable rows ── */}
         <div className="border border-gray-200 rounded-2xl overflow-hidden bg-white divide-y divide-gray-100">
           {LIST_ITEMS.map((testimonial, idx) => (
             <motion.div
-              key={testimonial.id}
+              key={idx}
               initial={{ opacity: 0, y: 10 }}
               animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 10 }}
               transition={{ duration: 0.4, delay: 0.3 + idx * 0.08 }}
             >
               <button
                 onClick={() =>
-                  setExpandedId(expandedId === testimonial.id ? null : testimonial.id)
+                  setExpandedId(expandedId === idx ? null : idx)
                 }
                 className="w-full flex items-center justify-between px-6 md:px-8 py-5 text-left hover:bg-gray-50/50 transition-colors duration-200 group"
               >
@@ -164,7 +166,7 @@ export function TestimonialsSection() {
                   <div className="w-8 h-8 rounded-full overflow-hidden bg-d2c-ice border border-d2c-royal/10 shrink-0">
                     <img
                       src={testimonial.avatarUrl}
-                      alt={testimonial.name}
+                      alt={testimonial.avatarAlt || testimonial.name}
                       className="w-full h-full object-cover"
                       onError={(e) => {
                         (e.target as HTMLImageElement).src = `https://ui-avatars.com/api/?name=${encodeURIComponent(testimonial.name)}&background=3B4CC0&color=fff`
@@ -177,7 +179,7 @@ export function TestimonialsSection() {
                 </div>
 
                 <motion.div
-                  animate={{ rotate: expandedId === testimonial.id ? 45 : 0 }}
+                  animate={{ rotate: expandedId === idx ? 45 : 0 }}
                   transition={{ duration: 0.2 }}
                   className="w-8 h-8 rounded-full border border-gray-200 flex items-center justify-center shrink-0 group-hover:border-d2c-royal/30 transition-colors"
                 >
@@ -188,7 +190,7 @@ export function TestimonialsSection() {
               </button>
 
               <AnimatePresence>
-                {expandedId === testimonial.id && (
+                {expandedId === idx && (
                   <motion.div
                     initial={{ height: 0, opacity: 0 }}
                     animate={{ height: "auto", opacity: 1 }}
@@ -200,7 +202,7 @@ export function TestimonialsSection() {
                       {/* Expanded content area */}
                       <div className="bg-d2c-ice/30 rounded-xl p-6 md:p-8">
                         <div className="flex gap-1 mb-4">
-                          {[...Array(5)].map((_, i) => (
+                          {[...Array(starCount(testimonial.rating))].map((_, i) => (
                             <Star key={i} className="w-4 h-4 fill-d2c-gold text-d2c-gold" />
                           ))}
                         </div>
@@ -211,7 +213,7 @@ export function TestimonialsSection() {
                           <div className="w-10 h-10 rounded-full overflow-hidden bg-d2c-ice border-2 border-d2c-royal/20">
                             <img
                               src={testimonial.avatarUrl}
-                              alt={testimonial.name}
+                              alt={testimonial.avatarAlt || testimonial.name}
                               className="w-full h-full object-cover"
                               onError={(e) => {
                                 (e.target as HTMLImageElement).src = `https://ui-avatars.com/api/?name=${encodeURIComponent(testimonial.name)}&background=3B4CC0&color=fff`

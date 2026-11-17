@@ -2,6 +2,17 @@
 
 export const GA_TRACKING_ID = process.env.NEXT_PUBLIC_GA_ID || 'G-67Y37C17GC';
 
+/** Default measurement IDs (the old property plus the second GA4 property), de-duplicated. */
+export const GA_TRACKING_IDS: string[] = Array.from(new Set([GA_TRACKING_ID, 'G-16VHLY7CMF']));
+
+// IDs actually in use at runtime. <GoogleAnalytics> replaces these with the IDs from the CMS (Site settings).
+let activeGaIds: string[] = GA_TRACKING_IDS;
+
+export const setGaIds = (ids: string[] | undefined) => {
+  const clean = Array.from(new Set((ids || []).map((id) => String(id).trim()).filter(Boolean)));
+  activeGaIds = clean.length > 0 ? clean : GA_TRACKING_IDS;
+};
+
 // Declare global gtag function on window
 declare global {
   interface Window {
@@ -26,9 +37,12 @@ export const pageview = (url: string, title?: string) => {
   // Never track internal admin routes
   if (url.startsWith('/admin')) return;
 
-  window.gtag('config', GA_TRACKING_ID, {
-    page_path: url,
-    page_title: title || (typeof document !== 'undefined' ? document.title : ''),
+  // One config call per measurement ID: each sends its own page_view.
+  activeGaIds.forEach((id) => {
+    window.gtag('config', id, {
+      page_path: url,
+      page_title: title || (typeof document !== 'undefined' ? document.title : ''),
+    });
   });
 };
 

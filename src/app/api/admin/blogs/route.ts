@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import { checkAdminAuth } from '@/lib/auth';
-import { getAllBlogs, saveBlog } from '@/lib/data-service';
+import { getAllBlogs, saveBlog, clearCmsMemoryCache } from '@/lib/data-service';
 import { revalidatePath } from 'next/cache';
 
 export const dynamic = 'force-dynamic';
@@ -34,12 +34,14 @@ export async function POST(req: Request) {
 
     const saved = await saveBlog(body);
 
+    clearCmsMemoryCache();
     try {
       revalidatePath('/blog');
       revalidatePath('/admin/blogs');
+      revalidatePath('/admin/seo');
+      revalidatePath('/sitemap.xml');
       revalidatePath('/blog/[slug]', 'page');
       if (saved.slug) revalidatePath(`/blog/${saved.slug}`);
-      if (body.slug && body.slug !== saved.slug) revalidatePath(`/blog/${body.slug}`);
     } catch {}
 
     return NextResponse.json({ success: true, blog: saved }, { status: 201 });

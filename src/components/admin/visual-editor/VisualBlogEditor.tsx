@@ -44,7 +44,7 @@ export function VisualBlogEditor({ initialData, isNew = false }: VisualBlogEdito
   const [blogData, setBlogData] = useState<any>({
     ...initialData,
     customSections: initialData.customSections || [],
-    tags: initialData.tags || ["Admission Guidance", "Direct Admission"]
+    tags: initialData.tags || ["Admission Guidance"]
   });
 
   const [selectedElement, setSelectedElement] = useState<{

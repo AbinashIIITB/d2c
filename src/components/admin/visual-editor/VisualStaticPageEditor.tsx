@@ -478,7 +478,7 @@ export function VisualStaticPageEditor({ slug, initialData }: VisualStaticPageEd
                             id: newId,
                             image: "/images/colleges/iem-saltlake.jpg",
                             title: "New Featured College Banner",
-                            subtitle: "Direct Admission & Counseling Window Active",
+                            subtitle: "Admission & Counseling Window Active",
                             link: "/colleges",
                             badge: "Featured 2026"
                           }
@@ -817,7 +817,7 @@ export function VisualStaticPageEditor({ slug, initialData }: VisualStaticPageEd
                   </button>
                 </div>
                 <h3 className="text-xl font-bold font-sora text-white">
-                  {pageData.welcomeLeadModal?.title || "Get 1-on-1 Direct Admission Guidance"}
+                  {pageData.welcomeLeadModal?.title || "Get 1-on-1 Admission Guidance"}
                 </h3>
                 <p className="text-xs text-white/70">
                   {pageData.welcomeLeadModal?.subtitle || "Speak directly with senior counselors."}

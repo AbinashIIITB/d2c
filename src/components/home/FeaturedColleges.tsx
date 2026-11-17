@@ -6,8 +6,9 @@ import { motion, useInView } from "framer-motion"
 import { MapPin, ChevronRight, Star, ArrowUpRight } from "lucide-react"
 import { CollegeCard } from "@/components/ui/CollegeCard"
 import { sortCollegesWithIEMFirst } from "@/lib/iem-priority"
+import { homeDefaults, type HomeContent } from "@/content/home.defaults"
 
-export function FeaturedColleges() {
+export function FeaturedColleges({ content = homeDefaults.featuredColleges }: { content?: HomeContent["featuredColleges"] } = {}) {
   const ref = useRef(null)
   const isInView = useInView(ref, { once: true, margin: "-100px" })
   const [colleges, setColleges] = useState<any[]>([])
@@ -19,7 +20,7 @@ export function FeaturedColleges() {
       .catch(() => setColleges([]));
   }, []);
 
-  const featuredColleges = colleges.slice(0, 6)
+  const featuredColleges = colleges.slice(0, Math.max(0, Number(content.count) || 0))
 
   return (
     <section className="py-16 lg:pb-24 lg:pt-0 bg-d2c-white" ref={ref}>
@@ -32,7 +33,7 @@ export function FeaturedColleges() {
               transition={{ duration: 0.5 }}
               className="text-3xl md:text-5xl font-sora font-bold text-d2c-navy mb-4"
             >
-              Top Partner Colleges
+              {content.heading}
             </motion.h2>
             <motion.p
               initial={{ opacity: 0, y: 20 }}
@@ -40,7 +41,7 @@ export function FeaturedColleges() {
               transition={{ duration: 0.5, delay: 0.1 }}
               className="text-d2c-muted text-lg"
             >
-              Explore premium institutions where we have a track record of securing guaranteed direct admissions.
+              {content.description}
             </motion.p>
           </div>
           <motion.div
@@ -49,10 +50,11 @@ export function FeaturedColleges() {
             transition={{ duration: 0.5, delay: 0.2 }}
           >
             <Link
-              href="/colleges"
+              href={content.viewAll.href}
+              target={content.viewAll.newTab ? "_blank" : undefined}
               className="group inline-flex items-center gap-2 text-d2c-royal font-semibold hover:text-d2c-navy transition-colors whitespace-nowrap"
             >
-              View All Colleges
+              {content.viewAll.label}
               <span className="p-1 bg-d2c-ice group-hover:bg-d2c-royal/10 transition-colors">
                 <ChevronRight className="w-4 h-4" />
               </span>

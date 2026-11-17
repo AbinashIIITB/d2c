@@ -5,8 +5,9 @@ import { motion, useInView } from "framer-motion"
 import { Send, Phone, MessageCircle } from "lucide-react"
 import Link from "next/link"
 import { trackLeadSubmission } from "@/lib/gtag"
+import { homeDefaults, type HomeContent } from "@/content/home.defaults"
 
-export function MidPageContact() {
+export function MidPageContact({ content = homeDefaults.contact }: { content?: HomeContent["contact"] } = {}) {
   const ref = useRef(null)
   const isInView = useInView(ref, { once: true, margin: "-80px" })
 
@@ -64,38 +65,38 @@ export function MidPageContact() {
             <div className="flex items-center gap-2 mb-5">
               <div className="h-px w-8 bg-d2c-royal" />
               <span className="text-d2c-royal font-semibold text-sm tracking-widest uppercase">
-                Get in Touch
+                {content.eyebrow}
               </span>
             </div>
 
             <h2 className="text-3xl md:text-5xl font-sora font-bold text-d2c-navy mb-6 leading-[1.15]">
-              Start Your Admission{" "}
+              {content.headingPrefix}{" "}
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-d2c-royal to-d2c-sky">
-                Journey Today
+                {content.headingHighlight}
               </span>
             </h2>
 
             <p className="text-d2c-muted text-lg leading-relaxed mb-8 max-w-lg">
-              Fill out this quick form and our expert counsellors will get back to you within 2 hours with a
-              personalised admission roadmap for your dream college.
+              {content.description}
             </p>
 
             {/* Quick contact options */}
             <div className="flex flex-col sm:flex-row gap-4">
               <Link
-                href="https://wa.me/916200325137"
-                target="_blank"
+                href={content.whatsappButton.href}
+                target={content.whatsappButton.newTab ? "_blank" : undefined}
                 className="inline-flex items-center gap-2 px-5 py-3 bg-d2c-success text-white font-semibold text-sm rounded-xl hover:bg-d2c-success/90 transition-colors shadow-md"
               >
                 <MessageCircle className="w-4 h-4 fill-current" />
-                WhatsApp Us
+                {content.whatsappButton.label}
               </Link>
               <Link
-                href="tel:+916200325137"
+                href={content.callButton.href}
+                target={content.callButton.newTab ? "_blank" : undefined}
                 className="inline-flex items-center gap-2 px-5 py-3 bg-white text-d2c-navy font-semibold text-sm rounded-xl border border-gray-200 hover:border-d2c-royal/30 hover:bg-d2c-ice transition-all shadow-sm"
               >
                 <Phone className="w-4 h-4" />
-                Call Now
+                {content.callButton.label}
               </Link>
             </div>
           </motion.div>
@@ -108,13 +109,13 @@ export function MidPageContact() {
           >
             <div className="bg-white rounded-2xl p-8 md:p-10 shadow-xl shadow-d2c-navy/5 border border-gray-100">
               <h3 className="text-xl font-sora font-bold text-d2c-navy mb-6">
-                Get Free Counselling
+                {content.formTitle}
               </h3>
 
               <form onSubmit={handleSubmit} className="space-y-5">
                 <div>
                   <label className="block text-sm font-semibold text-d2c-navy mb-2">
-                    Full Name
+                    {content.nameLabel}
                   </label>
                   <input
                     required
@@ -122,13 +123,13 @@ export function MidPageContact() {
                     className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-d2c-royal focus:ring-2 focus:ring-d2c-royal/20 outline-none transition-all text-d2c-text"
                     value={formData.name}
                     onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                    placeholder="Enter your full name"
+                    placeholder={content.namePlaceholder}
                   />
                 </div>
 
                 <div>
                   <label className="block text-sm font-semibold text-d2c-navy mb-2">
-                    Phone Number
+                    {content.phoneLabel}
                   </label>
                   <input
                     required
@@ -136,7 +137,7 @@ export function MidPageContact() {
                     className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-d2c-royal focus:ring-2 focus:ring-d2c-royal/20 outline-none transition-all text-d2c-text"
                     value={formData.phone}
                     onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                    placeholder="+91"
+                    placeholder={content.phonePlaceholder}
                   />
                 </div>
 
@@ -152,14 +153,14 @@ export function MidPageContact() {
                   {status === "submitting" ? (
                     <span className="flex items-center gap-2">
                       <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                      Sending...
+                      {content.sendingLabel}
                     </span>
                   ) : status === "success" ? (
-                    "✓ We'll call you shortly!"
+                    content.successLabel
                   ) : (
                     <>
                       <Send className="w-4 h-4" />
-                      Get Free Consultation
+                      {content.submitLabel}
                     </>
                   )}
                 </button>

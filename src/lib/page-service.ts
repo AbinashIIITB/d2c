@@ -3,18 +3,78 @@ import path from 'path';
 import defaultPagesData from '@/data/pages-cms-data.json';
 import { supabaseAdmin, isSupabaseConfigured } from './supabase';
 
+// Custom pages ("WordPress-style" landing pages served by src/app/[slug]).
+//
+// Resolution order (highest priority first):
+//   1. Supabase copy   the JSON map kept in the description column of the `exams` row
+//                      `__d2c_cms_pages_store__` (existing storage; live custom pages live there)
+//   2. local store     dev only: /tmp or src/data file, used when Supabase is not configured
+//   3. bundled         src/data/pages-cms-data.json defaults
+// Deleting a page that also exists in the bundled defaults stores a tombstone ({ deleted: true })
+// in the Supabase copy so the bundled page does not come back.
+
 const PAGES_FILE = path.join(process.cwd(), 'src', 'data', 'pages-cms-data.json');
 const TMP_PAGES_FILE = path.join('/tmp', 'd2c-pages-cms-data.json');
+const CLOUD_ROW_ID = '__d2c_cms_pages_store__';
+const CLOUD_TTL_MS = 10_000;
 
 declare global {
   // eslint-disable-next-line no-var
   var __d2c_pages_store__: Record<string, any> | undefined;
+  // eslint-disable-next-line no-var
+  var __d2c_pages_cloud__: { at: number; pages: Record<string, any> } | undefined;
 }
 
 export const CORE_PAGE_SLUGS = ['home', 'about', 'contact', 'mba', 'privacy', 'terms'];
 
+/** Landing pages that moved to the content CMS (`/admin/content/<key>`) and static routes. */
+export const IEM_PAGE_CONTENT_KEYS: Record<string, string> = {
+  'btech-direct-admission-in-iem-kolkata': 'iem-btech',
+  'direct-admission-in-iem-kolkata': 'iem-hub',
+  'iem-kolkata-cse-direct-admission': 'iem-cse',
+  'iem-kolkata-cse-ai-ml-direct-admission': 'iem-cse-ai-ml',
+  'iem-kolkata-ece-direct-admission': 'iem-ece',
+  'iem-kolkata-it-direct-admission': 'iem-it',
+  'iem-kolkata-electrical-engineering-direct-admission': 'iem-electrical',
+  'iem-kolkata-mechanical-engineering-direct-admission': 'iem-mechanical',
+};
+
+/** New public URL of each IEM landing page (the old direct-admission URLs redirect here). */
+export const IEM_PAGE_PUBLIC_PATHS: Record<string, string> = {
+  'btech-direct-admission-in-iem-kolkata': '/btech-admission-in-iem-kolkata',
+  'direct-admission-in-iem-kolkata': '/admission-in-iem-kolkata',
+  'iem-kolkata-cse-direct-admission': '/iem-kolkata-cse-admission',
+  'iem-kolkata-cse-ai-ml-direct-admission': '/iem-kolkata-cse-ai-ml-admission',
+  'iem-kolkata-ece-direct-admission': '/iem-kolkata-ece-admission',
+  'iem-kolkata-it-direct-admission': '/iem-kolkata-it-admission',
+  'iem-kolkata-electrical-engineering-direct-admission': '/iem-kolkata-electrical-engineering-admission',
+  'iem-kolkata-mechanical-engineering-direct-admission': '/iem-kolkata-mechanical-engineering-admission',
+};
+
+const CORE_CONTENT_KEYS: Record<string, string> = Object.fromEntries(CORE_PAGE_SLUGS.map((s) => [s, s]));
+
 export function isCorePage(slug: string): boolean {
   return CORE_PAGE_SLUGS.includes(normalizePageSlug(slug));
+}
+
+/** True for the IEM landing pages that must never render through the generic [slug] route. */
+export function isIemManagedPage(slug: string): boolean {
+  return Object.prototype.hasOwnProperty.call(IEM_PAGE_CONTENT_KEYS, normalizePageSlug(slug));
+}
+
+/** Content document key that now owns this page (core pages and IEM landing pages), or null. */
+export function getManagedContentKey(slug: string): string | null {
+  const s = normalizePageSlug(slug);
+  if (Object.prototype.hasOwnProperty.call(IEM_PAGE_CONTENT_KEYS, s)) return IEM_PAGE_CONTENT_KEYS[s];
+  if (Object.prototype.hasOwnProperty.call(CORE_CONTENT_KEYS, s)) return CORE_CONTENT_KEYS[s];
+  return null;
+}
+
+/** Public path of a managed page (core pages live at /<slug>, home at /). */
+export function getManagedPublicPath(slug: string): string {
+  const s = normalizePageSlug(slug);
+  if (Object.prototype.hasOwnProperty.call(IEM_PAGE_PUBLIC_PATHS, s)) return IEM_PAGE_PUBLIC_PATHS[s];
+  return s === 'home' ? '/' : `/${s}`;
 }
 
 export function normalizePageSlug(raw: string): string {
@@ -32,162 +92,154 @@ export function normalizePageSlug(raw: string): string {
     .replace(/-+/g, '-');
 }
 
+function isTombstone(p: any): boolean {
+  return !!p && typeof p === 'object' && p.deleted === true;
+}
+
+function bundledPages(): Record<string, any> {
+  return ((defaultPagesData as any).pages || {}) as Record<string, any>;
+}
+
 // ----------------------------------------------------------------------
-// Supabase Persistent Cloud Backup Store for Pages
+// Supabase copy
 // ----------------------------------------------------------------------
-async function fetchPagesFromSupabaseBackup(): Promise<Record<string, any>> {
-  if (!isSupabaseConfigured) return {};
+async function fetchCloudPages(force = false): Promise<Record<string, any> | null> {
+  if (!isSupabaseConfigured) return null;
+  const cached = globalThis.__d2c_pages_cloud__;
+  if (!force && cached && Date.now() - cached.at < CLOUD_TTL_MS) return cached.pages;
   try {
     const { data, error } = await supabaseAdmin
       .from('exams')
       .select('description')
-      .eq('id', '__d2c_cms_pages_store__')
+      .eq('id', CLOUD_ROW_ID)
       .maybeSingle();
-
-    if (!error && data && data.description) {
+    if (error) {
+      console.warn('Could not read custom pages from Supabase:', error.message);
+      return cached ? cached.pages : null;
+    }
+    let pages: Record<string, any> = {};
+    if (data && data.description) {
       const parsed = JSON.parse(data.description);
-      if (parsed && typeof parsed === 'object' && !Array.isArray(parsed)) {
-        return parsed;
-      }
+      if (parsed && typeof parsed === 'object' && !Array.isArray(parsed)) pages = parsed;
     }
-  } catch {
-    // Ignore backup fetch error
-  }
-  return {};
-}
-
-async function savePagesToSupabaseBackup(pagesRecord: Record<string, any>): Promise<boolean> {
-  if (!isSupabaseConfigured) return false;
-  try {
-    await supabaseAdmin
-      .from('exams')
-      .upsert({
-        id: '__d2c_cms_pages_store__',
-        slug: '__d2c_cms_pages_store__',
-        name: '__d2c_cms_pages_store__',
-        description: JSON.stringify(pagesRecord)
-      }, { onConflict: 'id' });
-    return true;
+    globalThis.__d2c_pages_cloud__ = { at: Date.now(), pages };
+    return pages;
   } catch (err) {
-    console.warn("Could not save to __d2c_cms_pages_store__ in Supabase:", err);
-    return false;
+    console.warn('Could not read custom pages from Supabase:', err);
+    return cached ? cached.pages : null;
   }
 }
 
-function initPagesStore(): Record<string, any> {
-  if (globalThis.__d2c_pages_store__) {
-    return globalThis.__d2c_pages_store__;
-  }
+async function writeCloudPages(pagesRecord: Record<string, any>): Promise<void> {
+  const { error } = await supabaseAdmin
+    .from('exams')
+    .upsert(
+      {
+        id: CLOUD_ROW_ID,
+        slug: CLOUD_ROW_ID,
+        name: CLOUD_ROW_ID,
+        description: JSON.stringify(pagesRecord),
+      },
+      { onConflict: 'id' },
+    );
+  if (error) throw new Error(`Could not save page to Supabase: ${error.message}`);
+  globalThis.__d2c_pages_cloud__ = { at: Date.now(), pages: pagesRecord };
+}
 
-  const defaults = (defaultPagesData as any).pages || {};
+/** Drops this instance's page caches (call after every admin write). */
+export function clearPagesCache(): void {
+  globalThis.__d2c_pages_cloud__ = undefined;
+}
 
-  // 1. Try reading from /tmp (serverless)
-  try {
-    if (fs.existsSync(TMP_PAGES_FILE)) {
-      const content = fs.readFileSync(TMP_PAGES_FILE, 'utf-8');
-      const parsed = JSON.parse(content);
-      if (parsed.pages) {
-        const merged = { ...defaults, ...parsed.pages };
-        globalThis.__d2c_pages_store__ = merged;
-        return merged;
+// ----------------------------------------------------------------------
+// Local store (development without Supabase)
+// ----------------------------------------------------------------------
+function initLocalPagesStore(): Record<string, any> {
+  if (globalThis.__d2c_pages_store__) return globalThis.__d2c_pages_store__;
+
+  const defaults = bundledPages();
+  for (const file of [TMP_PAGES_FILE, PAGES_FILE]) {
+    try {
+      if (fs.existsSync(file)) {
+        const parsed = JSON.parse(fs.readFileSync(file, 'utf-8'));
+        if (parsed.pages) {
+          const merged = { ...defaults, ...parsed.pages };
+          globalThis.__d2c_pages_store__ = merged;
+          return merged;
+        }
       }
+    } catch {
+      // try the next location
     }
-  } catch {
-    // Ignore /tmp error
   }
 
-  // 2. Try reading from local project
-  try {
-    if (fs.existsSync(PAGES_FILE)) {
-      const content = fs.readFileSync(PAGES_FILE, 'utf-8');
-      const parsed = JSON.parse(content);
-      if (parsed.pages) {
-        const merged = { ...defaults, ...parsed.pages };
-        globalThis.__d2c_pages_store__ = merged;
-        return merged;
-      }
-    }
-  } catch {
-    // Ignore
-  }
-
-  // 3. Fallback to default
   const fallback = { ...defaults };
   globalThis.__d2c_pages_store__ = fallback;
   return fallback;
 }
 
-function persistPagesStore(pages: Record<string, any>) {
+function persistLocalPagesStore(pages: Record<string, any>) {
   globalThis.__d2c_pages_store__ = pages;
   const payload = JSON.stringify({ pages, updatedAt: new Date().toISOString() }, null, 2);
 
   try {
     const dir = path.dirname(PAGES_FILE);
-    if (!fs.existsSync(dir)) {
-      fs.mkdirSync(dir, { recursive: true });
-    }
+    if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
     fs.writeFileSync(PAGES_FILE, payload, 'utf-8');
   } catch {
-    // Serverless fallback
+    // read-only filesystem
   }
-
   try {
     fs.writeFileSync(TMP_PAGES_FILE, payload, 'utf-8');
   } catch {
-    // Ignore
+    // ignore
   }
+}
+
+/** Every page by slug: bundled, then local store (no Supabase), then the Supabase copy. Tombstones removed. */
+async function resolveAllPages(): Promise<Record<string, any>> {
+  const out: Record<string, any> = {};
+  const apply = (source: Record<string, any>) => {
+    for (const [key, val] of Object.entries(source)) {
+      if (!val || typeof val !== 'object') continue;
+      const k = key.toLowerCase();
+      if (isTombstone(val)) delete out[k];
+      else out[k] = { ...val, slug: (val as any).slug || key };
+    }
+  };
+  apply(bundledPages());
+  if (isSupabaseConfigured) {
+    const cloud = await fetchCloudPages();
+    if (cloud) apply(cloud);
+    else apply(initLocalPagesStore()); // Supabase unreachable: best effort from this instance
+  } else {
+    apply(initLocalPagesStore());
+  }
+  return out;
 }
 
 export async function getPageData(slug: string): Promise<any | null> {
   if (!slug) return null;
   const raw = String(slug).trim().replace(/^\/+|\/+$/g, '');
   const normSlug = normalizePageSlug(raw);
+  if (!normSlug) return null;
+  // IEM landing pages are served by their own static routes, never by the generic [slug] page.
+  if (isIemManagedPage(normSlug)) return null;
 
-  const store = initPagesStore();
-  
-  // 1. Direct check in in-memory / local store
-  if (store[normSlug]) return store[normSlug];
-  if (store[raw.toLowerCase()]) return store[raw.toLowerCase()];
-
-  // 2. Case-insensitive search across store keys
-  for (const [key, val] of Object.entries(store)) {
-    if (key.toLowerCase() === normSlug || key.toLowerCase() === raw.toLowerCase() || (val && (val as any).slug === normSlug)) {
-      return val;
-    }
+  const all = await resolveAllPages();
+  if (all[normSlug]) return all[normSlug];
+  if (all[raw.toLowerCase()]) return all[raw.toLowerCase()];
+  for (const [key, val] of Object.entries(all)) {
+    if (key === normSlug || (val && (val as any).slug === normSlug)) return val;
   }
-
-  // 3. Check Supabase cloud store
-  if (isSupabaseConfigured) {
-    const cloudPages = await fetchPagesFromSupabaseBackup();
-    if (cloudPages[normSlug]) {
-      store[normSlug] = cloudPages[normSlug];
-      return cloudPages[normSlug];
-    }
-    if (cloudPages[raw.toLowerCase()]) {
-      store[raw.toLowerCase()] = cloudPages[raw.toLowerCase()];
-      return cloudPages[raw.toLowerCase()];
-    }
-    for (const [key, val] of Object.entries(cloudPages)) {
-      if (key.toLowerCase() === normSlug || key.toLowerCase() === raw.toLowerCase() || (val && (val as any).slug === normSlug)) {
-        store[normSlug] = val;
-        return val;
-      }
-    }
-  }
-
-  // 4. Fallback to default static JSON data
-  const defaults = (defaultPagesData as any).pages || {};
-  if (defaults[normSlug]) return defaults[normSlug];
-  if (defaults[raw.toLowerCase()]) return defaults[raw.toLowerCase()];
-
   return null;
 }
 
 export async function savePageData(slug: string, data: any): Promise<any> {
   const normalizedSlug = normalizePageSlug(slug || data.slug || data.title || '') || `page-${Date.now()}`;
 
-  const store = initPagesStore();
-  const existing = store[normalizedSlug] || {};
+  const all = await resolveAllPages();
+  const existing = all[normalizedSlug] || {};
 
   const updatedPage = {
     ...existing,
@@ -201,21 +253,18 @@ export async function savePageData(slug: string, data: any): Promise<any> {
     published: data.published ?? existing.published ?? true,
     updatedAt: new Date().toISOString(),
   };
+  delete (updatedPage as any).deleted;
+  // An empty SEO block is stored as no block at all.
+  if (updatedPage.seo && Object.keys(updatedPage.seo).length === 0) delete (updatedPage as any).seo;
 
-  store[normalizedSlug] = updatedPage;
-  persistPagesStore(store);
-
-  // Sync to Supabase cloud store so all serverless lambdas have immediate access
   if (isSupabaseConfigured) {
-    try {
-      const cloudPages = await fetchPagesFromSupabaseBackup();
-      const merged = { ...store, ...cloudPages, [normalizedSlug]: updatedPage };
-      await savePagesToSupabaseBackup(merged);
-    } catch (err) {
-      console.warn("Failed to backup page to Supabase:", err);
-    }
+    const cloud = (await fetchCloudPages(true)) || {};
+    await writeCloudPages({ ...cloud, [normalizedSlug]: updatedPage });
+  } else {
+    const store = initLocalPagesStore();
+    store[normalizedSlug] = updatedPage;
+    persistLocalPagesStore(store);
   }
-
   return updatedPage;
 }
 
@@ -226,59 +275,29 @@ export async function deletePage(slug: string): Promise<boolean> {
     return false;
   }
 
-  const store = initPagesStore();
-  let deleted = false;
-  if (store[normalizedSlug]) {
-    delete store[normalizedSlug];
-    deleted = true;
-  }
-
-  persistPagesStore(store);
+  const all = await resolveAllPages();
+  if (!all[normalizedSlug]) return false;
+  const bundled = !!bundledPages()[normalizedSlug];
 
   if (isSupabaseConfigured) {
-    try {
-      const cloudPages = await fetchPagesFromSupabaseBackup();
-      if (cloudPages[normalizedSlug]) {
-        delete cloudPages[normalizedSlug];
-        await savePagesToSupabaseBackup(cloudPages);
-        deleted = true;
-      }
-    } catch {}
+    const cloud = (await fetchCloudPages(true)) || {};
+    const next = { ...cloud };
+    if (bundled) next[normalizedSlug] = { slug: normalizedSlug, deleted: true };
+    else delete next[normalizedSlug];
+    await writeCloudPages(next);
+  } else {
+    const store = initLocalPagesStore();
+    if (bundled) store[normalizedSlug] = { slug: normalizedSlug, deleted: true };
+    else delete store[normalizedSlug];
+    persistLocalPagesStore(store);
   }
-
-  return deleted;
+  return true;
 }
 
-export async function getAllPages(): Promise<any[]> {
-  const store = initPagesStore();
-  const pagesMap = new Map<string, any>();
-
-  // 1. Defaults first
-  const defaults = (defaultPagesData as any).pages || {};
-  for (const [key, val] of Object.entries(defaults)) {
-    if (val && typeof val === 'object') {
-      pagesMap.set(key.toLowerCase(), { ...val, slug: (val as any).slug || key });
-    }
-  }
-
-  // 2. In-memory / local store
-  for (const [key, val] of Object.entries(store)) {
-    if (val && typeof val === 'object') {
-      pagesMap.set(key.toLowerCase(), { ...val, slug: (val as any).slug || key });
-    }
-  }
-
-  // 3. Supabase cloud store
-  if (isSupabaseConfigured) {
-    try {
-      const cloudPages = await fetchPagesFromSupabaseBackup();
-      for (const [key, val] of Object.entries(cloudPages)) {
-        if (val && typeof val === 'object') {
-          pagesMap.set(key.toLowerCase(), { ...val, slug: (val as any).slug || key });
-        }
-      }
-    } catch {}
-  }
-
-  return Array.from(pagesMap.values());
+export async function getAllPages(opts: { includeManaged?: boolean } = {}): Promise<any[]> {
+  const all = await resolveAllPages();
+  const list = Object.values(all);
+  // The IEM landing pages are owned by the content CMS; the public sitemap must not list them
+  // through the custom-page path. The admin passes includeManaged to show them with a link.
+  return opts.includeManaged ? list : list.filter((p: any) => !isIemManagedPage(p.slug || ''));
 }

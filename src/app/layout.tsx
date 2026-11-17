@@ -3,6 +3,14 @@ import { Sora, DM_Sans, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import { GoogleAnalytics } from "@/components/analytics/GoogleAnalytics";
 import { ConditionalLayout } from "@/components/layout/ConditionalLayout";
+import { SiteContentProvider } from "@/components/cms/SiteContentProvider";
+import { getContents } from "@/lib/cms/content";
+import { buildMetadata, JsonLd } from "@/lib/cms/seo";
+import { siteDefaults, type SiteContent } from "@/content/site";
+import type { NavbarContent } from "@/content/navbar";
+import type { FooterContent } from "@/content/footer";
+import type { FloatingContent } from "@/content/floating";
+import type { ModalsContent } from "@/content/modals";
 
 const sora = Sora({
   variable: "--font-sora",
@@ -22,109 +30,119 @@ const jetbrainsMono = JetBrains_Mono({
   display: "swap",
 });
 
-const SITE_URL = "https://direct2campus.com";
+export async function generateViewport(): Promise<Viewport> {
+  const { site } = await getContents(["site"]);
+  return {
+    width: "device-width",
+    initialScale: 1,
+    themeColor: (site as SiteContent).themeColor || siteDefaults.themeColor,
+  };
+}
 
-export const viewport: Viewport = {
-  width: "device-width",
-  initialScale: 1,
-  themeColor: "#0a1128",
-};
+function absoluteUrl(base: string, value: string | undefined): string | undefined {
+  if (!value) return undefined;
+  return /^https?:\/\//i.test(value) ? value : `${base}${value.startsWith("/") ? "" : "/"}${value}`;
+}
 
-export const metadata: Metadata = {
-  metadataBase: new URL(SITE_URL),
-  title: {
-    default: "Direct2Campus – Your Shortcut to the Right Campus",
-    template: "%s | Direct2Campus",
-  },
-  description:
-    "India's trusted educational consultancy for direct B.Tech, MBBS, MBA & BDS admissions. Compare 150+ colleges, check eligibility & get expert counselling.",
-  keywords: [
-    "direct admission",
-    "B.Tech admission",
-    "MBBS admission",
-    "MBA admission",
-    "management quota",
-    "college admission India",
-    "engineering colleges India",
-    "medical colleges India",
-    "Direct2Campus",
-    "admission counselling",
-  ],
-  authors: [{ name: "Direct2Campus", url: SITE_URL }],
-  creator: "Direct2Campus",
-  publisher: "Direct2Campus",
-  robots: {
-    index: true,
-    follow: true,
-    googleBot: {
-      index: true,
-      follow: true,
-      "max-video-preview": -1,
-      "max-image-preview": "large",
-      "max-snippet": -1,
-    },
-  },
-  alternates: {
-    canonical: SITE_URL,
-  },
-  openGraph: {
-    type: "website",
-    locale: "en_IN",
-    url: SITE_URL,
-    siteName: "Direct2Campus",
-    title: "Direct2Campus – Your Shortcut to the Right Campus",
-    description:
-      "India's trusted educational consultancy for direct B.Tech, MBBS, MBA & BDS admissions. Compare 150+ colleges & get expert counselling.",
-    images: [
-      {
-        url: "/logo-footer.png",
-        width: 1200,
-        height: 630,
-        alt: "Direct2Campus – Premium Educational Consultancy",
+export async function generateMetadata(): Promise<Metadata> {
+  const { site } = (await getContents(["site"])) as { site: SiteContent };
+  const siteUrl = (site.siteUrl || siteDefaults.siteUrl).replace(/\/+$/, "");
+  const seo = site.seo || {};
+  const x = site.seoExtra || siteDefaults.seoExtra;
+  const base = buildMetadata(seo, { path: "/" });
+
+  const meta: Metadata = {
+    ...base,
+    metadataBase: new URL(siteUrl),
+    title: { default: seo.title || siteDefaults.seo.title || "", template: x.titleTemplate || "%s" },
+    authors: [{ name: x.authorName, url: x.authorUrl }],
+    creator: x.creator,
+    publisher: x.publisher,
+  };
+
+  if (seo.robots && (typeof seo.robots.index === "boolean" || typeof seo.robots.follow === "boolean")) {
+    meta.robots = {
+      index: seo.robots.index,
+      follow: seo.robots.follow,
+      googleBot: {
+        index: seo.robots.index,
+        follow: seo.robots.follow,
+        "max-video-preview": x.googleBotMaxVideoPreview,
+        "max-image-preview": x.googleBotMaxImagePreview as "none" | "standard" | "large",
+        "max-snippet": x.googleBotMaxSnippet,
       },
-    ],
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "Direct2Campus – Your Shortcut to the Right Campus",
-    description:
-      "India's trusted educational consultancy for direct B.Tech, MBBS, MBA & BDS admissions.",
-    images: ["/logo-footer.png"],
-  },
-};
+    };
+  }
 
-/* ── JSON-LD Structured Data ── */
-const jsonLd = {
-  "@context": "https://schema.org",
-  "@type": "EducationalOrganization",
-  name: "Direct2Campus",
-  url: SITE_URL,
-  logo: `${SITE_URL}/logo-footer.png`,
-  description:
-    "India's trusted educational consultancy for direct B.Tech, MBBS, MBA & BDS admissions.",
-  address: {
-    "@type": "PostalAddress",
-    streetAddress: "GN-34/1, Aurora Water Front, Unit 21, 11th Floor, Sector V, Salt Lake",
-    addressLocality: "Kolkata",
-    addressRegion: "West Bengal",
-    postalCode: "700091",
-    addressCountry: "IN",
-  },
-  contactPoint: {
-    "@type": "ContactPoint",
-    telephone: "+91-62003-25137",
-    contactType: "customer service",
-    areaServed: "IN",
-    availableLanguage: ["English", "Hindi"],
-  },
-  sameAs: [],
-};
+  if (base.openGraph || x.ogUrl) {
+    const ogImage = seo.og?.image;
+    meta.openGraph = {
+      ...(seo.og?.type ? { type: seo.og.type } : {}),
+      locale: x.ogLocale,
+      url: x.ogUrl,
+      siteName: x.ogSiteName,
+      ...(seo.og?.title ? { title: seo.og.title } : {}),
+      ...(seo.og?.description ? { description: seo.og.description } : {}),
+      ...(ogImage
+        ? { images: [{ url: ogImage, width: x.ogImageWidth, height: x.ogImageHeight, alt: x.ogImageAlt }] }
+        : {}),
+    } as Metadata["openGraph"];
+  }
 
-export default function RootLayout({
+  if (x.googleVerification && x.googleVerification.trim()) {
+    meta.verification = { google: x.googleVerification.trim() };
+  }
+
+  return meta;
+}
+
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const { site, navbar, footer, floating, modals } = (await getContents([
+    "site",
+    "navbar",
+    "footer",
+    "floating",
+    "modals",
+  ])) as {
+    site: SiteContent;
+    navbar: NavbarContent;
+    footer: FooterContent;
+    floating: FloatingContent;
+    modals: ModalsContent;
+  };
+
+  const siteUrl = (site.siteUrl || siteDefaults.siteUrl).replace(/\/+$/, "");
+  const org = site.organization || siteDefaults.organization;
+  /* ── JSON-LD Structured Data ── */
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": org.type,
+    name: site.brand?.name || siteDefaults.brand.name,
+    url: siteUrl,
+    logo: absoluteUrl(siteUrl, org.logo),
+    description: org.description,
+    address: {
+      "@type": "PostalAddress",
+      streetAddress: org.streetAddress,
+      addressLocality: org.locality,
+      addressRegion: org.region,
+      postalCode: org.postalCode,
+      addressCountry: org.country,
+    },
+    contactPoint: {
+      "@type": "ContactPoint",
+      telephone: org.contactTelephone,
+      contactType: org.contactType,
+      areaServed: org.areaServed,
+      availableLanguage: org.languages,
+    },
+    sameAs: (site.social || []).map((s) => s.href).filter((h) => /^https?:\/\//i.test(h)),
+  };
+
   return (
     <html
       lang="en"
@@ -135,12 +153,15 @@ export default function RootLayout({
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
+        <JsonLd seo={site.seo} />
       </head>
       <body className="min-h-full flex flex-col font-dm-sans bg-d2c-white text-d2c-text selection:bg-d2c-royal/30 selection:text-d2c-navy-dark">
-        <GoogleAnalytics />
-        <ConditionalLayout>
-          {children}
-        </ConditionalLayout>
+        <SiteContentProvider site={site} modals={modals}>
+          <GoogleAnalytics ids={site.analytics?.gaIds} enabled={site.analytics?.enabled !== false} />
+          <ConditionalLayout navbar={navbar} footer={footer} floating={floating}>
+            {children}
+          </ConditionalLayout>
+        </SiteContentProvider>
       </body>
     </html>
   );

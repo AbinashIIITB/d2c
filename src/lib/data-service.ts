@@ -4,6 +4,9 @@ import { colleges as staticColleges, exams as staticExams, College, Exam } from 
 import staticBlogs from '@/data/blog.json';
 import { supabaseAdmin, isSupabaseConfigured } from './supabase';
 import { sortCollegesWithIEMFirst, isIEMCollege } from './iem-priority';
+import type { SeoFields } from './cms/types';
+import { normalizeSeo } from './record-seo';
+import { mapCollegeToDb, mapExamToDb } from './admin-mappers';
 
 export { sortCollegesWithIEMFirst, isIEMCollege } from './iem-priority';
 
@@ -35,16 +38,8 @@ function initLocalStore(): LocalCmsData {
       const content = fs.readFileSync(TMP_STORE_FILE, 'utf-8');
       const parsed = JSON.parse(content);
       if (Array.isArray(parsed.colleges) && Array.isArray(parsed.exams)) {
-        const blogMap = new Map<string, any>();
-        for (const b of staticBlogs) {
-          blogMap.set(String(b.id || b.slug), b);
-        }
-        if (Array.isArray(parsed.blogs)) {
-          for (const b of parsed.blogs) {
-            blogMap.set(String(b.id || b.slug), b);
-          }
-        }
-        parsed.blogs = Array.from(blogMap.values());
+        // Blogs in the local store are edits only (bundled blogs are layered underneath at read time).
+        if (!Array.isArray(parsed.blogs)) parsed.blogs = [];
         globalThis.__d2c_cms_store__ = parsed;
         return parsed;
       }
@@ -59,16 +54,8 @@ function initLocalStore(): LocalCmsData {
       const content = fs.readFileSync(LOCAL_STORE_FILE, 'utf-8');
       const parsed = JSON.parse(content);
       if (Array.isArray(parsed.colleges) && Array.isArray(parsed.exams)) {
-        const blogMap = new Map<string, any>();
-        for (const b of staticBlogs) {
-          blogMap.set(String(b.id || b.slug), b);
-        }
-        if (Array.isArray(parsed.blogs)) {
-          for (const b of parsed.blogs) {
-            blogMap.set(String(b.id || b.slug), b);
-          }
-        }
-        parsed.blogs = Array.from(blogMap.values());
+        // Blogs in the local store are edits only (bundled blogs are layered underneath at read time).
+        if (!Array.isArray(parsed.blogs)) parsed.blogs = [];
         globalThis.__d2c_cms_store__ = parsed;
         return parsed;
       }
@@ -81,7 +68,7 @@ function initLocalStore(): LocalCmsData {
   const initialData: LocalCmsData = {
     colleges: [...staticColleges],
     exams: [...staticExams],
-    blogs: [...staticBlogs],
+    blogs: [],
     updatedAt: new Date().toISOString()
   };
 
@@ -267,7 +254,9 @@ interface CacheEntry<T> {
 let collegesCache: CacheEntry<any[]> | null = null;
 let examsCache: CacheEntry<any[]> | null = null;
 let blogsCache: CacheEntry<any[]> | null = null;
-const CMS_CACHE_TTL = 60 * 1000; // 60 seconds TTL
+// Short TTL: the cache is per server instance, so other instances catch up within this window
+// after an admin write (the writing instance is cleared immediately via clearCmsMemoryCache).
+const CMS_CACHE_TTL = 15 * 1000;
 
 export function clearCmsMemoryCache() {
   collegesCache = null;
@@ -361,38 +350,35 @@ export async function getCollegeByIdOrSlug(identifier: string): Promise<any | nu
 }
 
 export async function saveCollege(data: any): Promise<any> {
-  collegesCache = null; // Invalidate cache immediately on edit
+  clearCmsMemoryCache(); // Invalidate cache immediately on edit
   const snakeData = mapCollegeToSnakeCase(data);
   const collegeId = snakeData.id || snakeData.slug || `college_${Date.now()}`;
   snakeData.id = collegeId;
 
   if (isSupabaseConfigured) {
-    try {
-      const { data: saved, error } = await supabaseAdmin
-        .from('colleges')
-        .upsert(snakeData, { onConflict: 'id' })
-        .select()
-        .single();
+    const { data: saved, error } = await supabaseAdmin
+      .from('colleges')
+      .upsert(mapCollegeToDb({ ...data, id: collegeId }), { onConflict: 'id' })
+      .select()
+      .single();
 
-      if (!error && saved) {
-        // Also update local store so it stays in sync
-        const store = initLocalStore();
-        const existingIdx = store.colleges.findIndex(c => c.id === collegeId || c.slug === snakeData.slug);
-        const camelSaved = mapCollegeToCamelCase(saved);
-        if (existingIdx >= 0) {
-          store.colleges[existingIdx] = { ...store.colleges[existingIdx], ...camelSaved };
-        } else {
-          store.colleges.unshift(camelSaved);
-        }
-        persistLocalStore(store);
-        return camelSaved;
-      }
-    } catch (err) {
-      console.warn("Supabase upsert failed, saving to local store:", err);
+    if (error || !saved) {
+      throw new Error(`Could not save college: ${error?.message || 'no row returned'}`);
     }
+    // Also update local store so it stays in sync
+    const store = initLocalStore();
+    const existingIdx = store.colleges.findIndex(c => c.id === collegeId || c.slug === snakeData.slug);
+    const camelSaved = mapCollegeToCamelCase(saved);
+    if (existingIdx >= 0) {
+      store.colleges[existingIdx] = { ...store.colleges[existingIdx], ...camelSaved };
+    } else {
+      store.colleges.unshift(camelSaved);
+    }
+    persistLocalStore(store);
+    return camelSaved;
   }
 
-  // Local store save
+  // Local store save (Supabase not configured: local development)
   const store = initLocalStore();
   const camelData = mapCollegeToCamelCase({ ...snakeData, id: collegeId });
   const existingIdx = store.colleges.findIndex(c => c.id === collegeId || (c.slug && c.slug === camelData.slug));
@@ -408,13 +394,10 @@ export async function saveCollege(data: any): Promise<any> {
 }
 
 export async function deleteCollege(id: string): Promise<boolean> {
-  collegesCache = null; // Invalidate cache immediately on delete
+  clearCmsMemoryCache(); // Invalidate cache immediately on delete
   if (isSupabaseConfigured) {
-    try {
-      await supabaseAdmin.from('colleges').delete().eq('id', id);
-    } catch (err) {
-      console.warn("Supabase delete error:", err);
-    }
+    const { error } = await supabaseAdmin.from('colleges').delete().eq('id', id);
+    if (error) throw new Error(`Could not delete college: ${error.message}`);
   }
 
   const store = initLocalStore();
@@ -424,6 +407,40 @@ export async function deleteCollege(id: string): Promise<boolean> {
     persistLocalStore(store);
   }
   return true;
+}
+
+/**
+ * Stores the new SeoFields block (`contact.seo.meta`) without touching any other column.
+ * Colleges that only exist in the bundled data are upserted into Supabase first.
+ */
+export async function saveCollegeSeoMeta(idOrSlug: string, meta: SeoFields): Promise<any> {
+  const record = await getCollegeByIdOrSlug(idOrSlug);
+  if (!record) throw new Error('College not found');
+  const clean = normalizeSeo(meta);
+  const withMeta = (seo: any) => {
+    const next = { ...(seo || {}) };
+    if (Object.keys(clean).length) next.meta = clean;
+    else delete next.meta;
+    return next;
+  };
+
+  if (isSupabaseConfigured) {
+    const { data: row, error } = await supabaseAdmin
+      .from('colleges')
+      .select('id, contact')
+      .eq('id', record.id)
+      .maybeSingle();
+    if (error) throw new Error(`Could not read college: ${error.message}`);
+    if (row) {
+      const contact = { ...(row.contact || {}), seo: withMeta(row.contact?.seo) };
+      const { error: upErr } = await supabaseAdmin.from('colleges').update({ contact }).eq('id', record.id);
+      if (upErr) throw new Error(`Could not save SEO: ${upErr.message}`);
+      clearCmsMemoryCache();
+      return { id: record.id, slug: record.slug };
+    }
+  }
+  const saved = await saveCollege({ ...record, seo: withMeta(record.seo) });
+  return { id: saved.id, slug: saved.slug };
 }
 
 // ----------------------------------------------------------------------
@@ -496,34 +513,31 @@ export async function getExamByIdOrSlug(identifier: string): Promise<any | null>
 }
 
 export async function saveExam(data: any): Promise<any> {
-  examsCache = null; // Invalidate cache immediately on edit
+  clearCmsMemoryCache(); // Invalidate cache immediately on edit
   const snakeData = mapExamToSnakeCase(data);
   const examId = snakeData.id || snakeData.slug || `exam_${Date.now()}`;
   snakeData.id = examId;
 
   if (isSupabaseConfigured) {
-    try {
-      const { data: saved, error } = await supabaseAdmin
-        .from('exams')
-        .upsert(snakeData, { onConflict: 'id' })
-        .select()
-        .single();
+    const { data: saved, error } = await supabaseAdmin
+      .from('exams')
+      .upsert(mapExamToDb({ ...data, id: examId }), { onConflict: 'id' })
+      .select()
+      .single();
 
-      if (!error && saved) {
-        const store = initLocalStore();
-        const existingIdx = store.exams.findIndex(e => e.id === examId || e.slug === snakeData.slug);
-        const camelSaved = mapExamToCamelCase(saved);
-        if (existingIdx >= 0) {
-          store.exams[existingIdx] = { ...store.exams[existingIdx], ...camelSaved };
-        } else {
-          store.exams.unshift(camelSaved);
-        }
-        persistLocalStore(store);
-        return camelSaved;
-      }
-    } catch (err) {
-      console.warn("Supabase upsert failed, saving to local store:", err);
+    if (error || !saved) {
+      throw new Error(`Could not save exam: ${error?.message || 'no row returned'}`);
     }
+    const store = initLocalStore();
+    const existingIdx = store.exams.findIndex(e => e.id === examId || e.slug === snakeData.slug);
+    const camelSaved = mapExamToCamelCase(saved);
+    if (existingIdx >= 0) {
+      store.exams[existingIdx] = { ...store.exams[existingIdx], ...camelSaved };
+    } else {
+      store.exams.unshift(camelSaved);
+    }
+    persistLocalStore(store);
+    return camelSaved;
   }
 
   const store = initLocalStore();
@@ -541,13 +555,10 @@ export async function saveExam(data: any): Promise<any> {
 }
 
 export async function deleteExam(id: string): Promise<boolean> {
-  examsCache = null; // Invalidate cache immediately on delete
+  clearCmsMemoryCache(); // Invalidate cache immediately on delete
   if (isSupabaseConfigured) {
-    try {
-      await supabaseAdmin.from('exams').delete().eq('id', id);
-    } catch (err) {
-      console.warn("Supabase delete exam error:", err);
-    }
+    const { error } = await supabaseAdmin.from('exams').delete().eq('id', id);
+    if (error) throw new Error(`Could not delete exam: ${error.message}`);
   }
 
   const store = initLocalStore();
@@ -559,9 +570,59 @@ export async function deleteExam(id: string): Promise<boolean> {
   return true;
 }
 
+/** Stores the new SeoFields block (`exam_pattern.seo.meta`) without touching any other column. */
+export async function saveExamSeoMeta(idOrSlug: string, meta: SeoFields): Promise<any> {
+  const record = await getExamByIdOrSlug(idOrSlug);
+  if (!record) throw new Error('Exam not found');
+  const clean = normalizeSeo(meta);
+  const withMeta = (seo: any) => {
+    const next = { ...(seo || {}) };
+    if (Object.keys(clean).length) next.meta = clean;
+    else delete next.meta;
+    return next;
+  };
+
+  if (isSupabaseConfigured) {
+    const { data: row, error } = await supabaseAdmin
+      .from('exams')
+      .select('id, exam_pattern')
+      .eq('id', record.id)
+      .maybeSingle();
+    if (error) throw new Error(`Could not read exam: ${error.message}`);
+    if (row) {
+      const exam_pattern = { ...(row.exam_pattern || {}), seo: withMeta(row.exam_pattern?.seo) };
+      const { error: upErr } = await supabaseAdmin.from('exams').update({ exam_pattern }).eq('id', record.id);
+      if (upErr) throw new Error(`Could not save SEO: ${upErr.message}`);
+      clearCmsMemoryCache();
+      return { id: record.id, slug: record.slug };
+    }
+  }
+  const saved = await saveExam({ ...record, seo: withMeta(record.seo) });
+  return { id: saved.id, slug: saved.slug };
+}
+
 // ----------------------------------------------------------------------
-// Blogs CRUD Methods & Mappers
+// Blogs
+//
+// Layering (lowest to highest priority):
+//   1. bundled src/data/blog.json
+//   2. the persistent store:  Supabase `blogs` table  (or, until the migration has run, the legacy
+//      `__d2c_cms_blogs_store__` backup row; or, with no Supabase at all, the local dev store)
+// A stored row replaces the bundled blog with the same id or slug. Bundled blogs that have no stored
+// row still show. Deleting a bundled blog stores a tombstone row (published=false, seo.deleted=true)
+// that hides it everywhere; deleting any other blog removes its row.
 // ----------------------------------------------------------------------
+
+function formatBlogDate(iso: unknown): string {
+  if (typeof iso !== 'string' || !iso) return '';
+  const d = new Date(iso);
+  if (Number.isNaN(d.getTime())) return '';
+  return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+}
+
+export function isBlogTombstone(b: any): boolean {
+  return !!b && typeof b.seo === 'object' && b.seo !== null && b.seo.deleted === true;
+}
 
 export function mapBlogToCamelCase(b: any): any {
   if (!b) return b;
@@ -574,37 +635,64 @@ export function mapBlogToCamelCase(b: any): any {
     content: b.content || '',
     category: b.category || 'Admission Guide',
     author: b.author || 'Direct2Campus Editorial Team',
-    date: b.date || new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }),
+    // Never invent a date: use the stored one, else the row's creation date, else nothing.
+    date: b.date || formatBlogDate(b.created_at ?? b.createdAt),
     readTime: b.read_time ?? b.readTime ?? '5 min read',
     imageUrl: b.image_url ?? b.imageUrl ?? 'https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&q=80&w=800',
     tags: Array.isArray(b.tags) ? b.tags : [],
     published: b.published !== false,
     seoTitle: b.seo_title ?? b.seoTitle ?? b.title ?? '',
     metaDescription: b.meta_description ?? b.metaDescription ?? b.excerpt ?? '',
-    updatedAt: b.updated_at ?? b.updatedAt ?? new Date().toISOString()
+    seo: b.seo && typeof b.seo === 'object' && !Array.isArray(b.seo) ? b.seo : undefined,
+    canonicalUrl: b.canonical_url ?? b.canonicalUrl ?? '',
+    ogTitle: b.og_title ?? b.ogTitle ?? '',
+    ogDescription: b.og_description ?? b.ogDescription ?? '',
+    ogImage: b.og_image ?? b.ogImage ?? '',
+    updatedAt: b.updated_at ?? b.updatedAt ?? '',
   };
 }
 
+/** Explicit column list for the `blogs` table (never send unknown keys to PostgREST). */
 export function mapBlogToSnakeCase(body: Record<string, any>): Record<string, any> {
-  const result: Record<string, any> = {};
-  const keyMap: Record<string, string> = {
-    readTime: 'read_time',
-    imageUrl: 'image_url',
-    seoTitle: 'seo_title',
-    metaDescription: 'meta_description',
-    updatedAt: 'updated_at'
+  const seo = body.seo && typeof body.seo === 'object' && !Array.isArray(body.seo) ? body.seo : null;
+  const row: Record<string, any> = {
+    id: String(body.id),
+    slug: body.slug,
+    title: body.title || '',
+    excerpt: body.excerpt ?? '',
+    content: body.content ?? '',
+    category: body.category ?? 'Admission Guide',
+    author: body.author ?? 'Direct2Campus Editorial Team',
+    date: body.date ?? '',
+    read_time: body.readTime ?? body.read_time ?? '5 min read',
+    image_url: body.imageUrl ?? body.image_url ?? '',
+    tags: Array.isArray(body.tags) ? body.tags : [],
+    published: body.published !== false,
+    seo_title: body.seoTitle ?? body.seo_title ?? '',
+    meta_description: body.metaDescription ?? body.meta_description ?? '',
+    seo,
+    // These columns mirror the SEO block so they can be filtered in SQL; the SEO block is the source of truth.
+    canonical_url: seo?.canonical || null,
+    og_title: seo?.og?.title || null,
+    og_description: seo?.og?.description || null,
+    og_image: seo?.og?.image || null,
+    updated_at: body.updatedAt ?? body.updated_at ?? new Date().toISOString(),
   };
+  return row;
+}
 
-  for (const [key, value] of Object.entries(body)) {
-    const targetKey = keyMap[key] || key;
-    result[targetKey] = value;
-  }
-
-  return result;
+function isTableMissingError(err: any): boolean {
+  if (!err) return false;
+  const msg = String(err.message || '');
+  return (
+    err.code === 'PGRST205' ||
+    err.code === '42P01' ||
+    /could not find the table|relation .* does not exist|schema cache/i.test(msg)
+  );
 }
 
 // ----------------------------------------------------------------------
-// Supabase Persistent Backup Store & Helpers
+// Legacy Supabase backup row (used only while the `blogs` table does not exist yet)
 // ----------------------------------------------------------------------
 async function fetchBlogsFromSupabaseBackup(): Promise<any[]> {
   if (!isSupabaseConfigured) return [];
@@ -627,22 +715,16 @@ async function fetchBlogsFromSupabaseBackup(): Promise<any[]> {
   return [];
 }
 
-async function saveBlogsToSupabaseBackup(blogsList: any[]): Promise<boolean> {
-  if (!isSupabaseConfigured) return false;
-  try {
-    await supabaseAdmin
-      .from('exams')
-      .upsert({
-        id: '__d2c_cms_blogs_store__',
-        slug: '__d2c_cms_blogs_store__',
-        name: '__d2c_cms_blogs_store__',
-        description: JSON.stringify(blogsList)
-      }, { onConflict: 'id' });
-    return true;
-  } catch (err) {
-    console.warn("Could not save to __d2c_cms_blogs_store__ in Supabase:", err);
-    return false;
-  }
+async function saveBlogsToSupabaseBackup(blogsList: any[]): Promise<void> {
+  const { error } = await supabaseAdmin
+    .from('exams')
+    .upsert({
+      id: '__d2c_cms_blogs_store__',
+      slug: '__d2c_cms_blogs_store__',
+      name: '__d2c_cms_blogs_store__',
+      description: JSON.stringify(blogsList)
+    }, { onConflict: 'id' });
+  if (error) throw new Error(`Could not save blog: ${error.message}`);
 }
 
 export function matchesBlog(b: any, identifier: string): boolean {
@@ -674,214 +756,201 @@ export function matchesBlog(b: any, identifier: string): boolean {
   );
 }
 
+function exactBlogMatch(b: any, identifier: string): boolean {
+  const raw = String(identifier || '').trim();
+  let decoded = raw;
+  try { decoded = decodeURIComponent(raw).trim(); } catch {}
+  const id = String(b?.id ?? '');
+  const slug = String(b?.slug ?? '');
+  return id === raw || slug === raw || id === decoded || slug === decoded;
+}
+
+function blogTime(b: any): number {
+  const t = Date.parse(String(b?.date || ''));
+  return Number.isNaN(t) ? 0 : t;
+}
+
+/** Stored rows (tombstones included) from whichever persistent store is active. */
+async function loadStoredBlogs(): Promise<any[]> {
+  if (isSupabaseConfigured) {
+    try {
+      const { data, error } = await supabaseAdmin.from('blogs').select('*');
+      if (!error && Array.isArray(data)) return data.map(mapBlogToCamelCase);
+      if (error && !isTableMissingError(error)) console.warn('Supabase blogs query failed:', error.message);
+    } catch (err) {
+      console.warn('Supabase blogs query failed:', err);
+    }
+    return fetchBlogsFromSupabaseBackup();
+  }
+  const store = initLocalStore();
+  return (store.blogs || []).map(mapBlogToCamelCase);
+}
+
+/** Bundled blogs overlaid by stored rows; tombstoned blogs removed. */
+function layerBlogs(stored: any[]): any[] {
+  const byId = new Map<string, any>();
+  const bySlug = new Map<string, any>();
+  for (const r of stored) {
+    if (r.id) byId.set(String(r.id), r);
+    if (r.slug) bySlug.set(String(r.slug), r);
+  }
+  const used = new Set<any>();
+  const out: any[] = [];
+  for (const raw of staticBlogs as any[]) {
+    const b = mapBlogToCamelCase(raw);
+    const row = byId.get(String(b.id)) || bySlug.get(String(b.slug));
+    if (row) {
+      used.add(row);
+      if (!isBlogTombstone(row)) out.push(row);
+    } else {
+      out.push(b);
+    }
+  }
+  const extra = stored.filter(r => !used.has(r) && !isBlogTombstone(r));
+  extra.sort((a, b) => blogTime(b) - blogTime(a));
+  return [...out, ...extra];
+}
+
 export async function getAllBlogs(): Promise<any[]> {
   const now = Date.now();
   if (blogsCache && now - blogsCache.timestamp < CMS_CACHE_TTL) {
     return blogsCache.data;
   }
-
-  const store = initLocalStore();
-  const localList = (store.blogs || []).map(mapBlogToCamelCase);
-  const blogMap = new Map<string, any>();
-
-  // 1. Add static blogs first
-  for (const b of staticBlogs) {
-    const mapped = mapBlogToCamelCase(b);
-    if (mapped.slug) blogMap.set(mapped.slug, mapped);
-    if (mapped.id) blogMap.set(String(mapped.id), mapped);
-  }
-
-  // 2. Add local store blogs
-  for (const b of localList) {
-    if (b.slug) blogMap.set(b.slug, b);
-    if (b.id) blogMap.set(String(b.id), b);
-  }
-
-  // 3. Add Supabase blogs (check native table and persistent backup)
-  if (isSupabaseConfigured) {
-    let nativeLoaded = false;
-    try {
-      const { data, error } = await supabaseAdmin
-        .from('blogs')
-        .select('*')
-        .order('date', { ascending: false });
-      if (!error && Array.isArray(data) && data.length > 0) {
-        nativeLoaded = true;
-        for (const item of data) {
-          const mapped = mapBlogToCamelCase(item);
-          blogMap.set(mapped.slug || mapped.id, mapped);
-        }
-      }
-    } catch {
-      nativeLoaded = false;
-    }
-
-    if (!nativeLoaded) {
-      const backupBlogs = await fetchBlogsFromSupabaseBackup();
-      for (const item of backupBlogs) {
-        blogMap.set(item.slug || item.id, item);
-      }
-    }
-  }
-
-  const result = Array.from(new Set(blogMap.values()));
+  const result = layerBlogs(await loadStoredBlogs());
   blogsCache = { data: result, timestamp: now };
   return result;
 }
 
 export async function getBlogByIdOrSlug(identifier: string): Promise<any | null> {
   if (!identifier) return null;
-
-  // 1. Check memory cache
-  if (blogsCache && Date.now() - blogsCache.timestamp < CMS_CACHE_TTL) {
-    const cached = blogsCache.data.find(b => matchesBlog(b, identifier));
-    if (cached) return mapBlogToCamelCase(cached);
-  }
-
-  // 2. Check local store
-  const store = initLocalStore();
-  const foundLocal = (store.blogs || []).find(b => matchesBlog(b, identifier));
-  if (foundLocal) {
-    return mapBlogToCamelCase(foundLocal);
-  }
-
-  // 3. Check Supabase (safe lookup)
-  if (isSupabaseConfigured) {
-    const raw = String(identifier).trim();
-    let decoded = raw;
-    try { decoded = decodeURIComponent(raw).trim(); } catch {}
-
-    try {
-      const { data: slugData } = await supabaseAdmin
-        .from('blogs')
-        .select('*')
-        .or(`slug.eq.${decoded},slug.eq.${raw},id.eq.${decoded},id.eq.${raw}`)
-        .maybeSingle();
-
-      if (slugData) {
-        return mapBlogToCamelCase(slugData);
-      }
-    } catch {
-      // Native query failed or table not found
-    }
-
-    // Check backup store in Supabase
-    const backupBlogs = await fetchBlogsFromSupabaseBackup();
-    const foundBackup = backupBlogs.find(b => matchesBlog(b, identifier));
-    if (foundBackup) {
-      return mapBlogToCamelCase(foundBackup);
-    }
-  }
-
-  // 4. Fallback to static blogs
-  const foundStatic = staticBlogs.find(b => matchesBlog(b, identifier));
-  return foundStatic ? mapBlogToCamelCase(foundStatic) : null;
+  const list = await getAllBlogs();
+  const found = list.find(b => exactBlogMatch(b, identifier)) || list.find(b => matchesBlog(b, identifier));
+  return found ? mapBlogToCamelCase(found) : null;
 }
 
-export async function saveBlog(data: any): Promise<any> {
-  blogsCache = null; // Invalidate cache immediately on edit
-  const rawSlug = String(data.slug || data.title || '')
+function slugifyBlog(raw: string): string {
+  return String(raw || '')
     .trim()
     .toLowerCase()
     .replace(/^\/?blog\//, '')
     .replace(/[^a-z0-9-]/g, '-')
     .replace(/^-+|-+$/g, '')
     .replace(/-+/g, '-');
-  const slug = rawSlug || `article-${Date.now()}`;
-  const blogId = data.id ? String(data.id) : (slug || `blog_${Date.now()}`);
+}
+
+/** A tombstone from another id may hold the slug (unique column): remove it so the slug can be reused. */
+async function freeTombstoneSlug(slug: string, ownId: string): Promise<void> {
+  const { data, error } = await supabaseAdmin.from('blogs').select('id, seo').eq('slug', slug).neq('id', ownId).maybeSingle();
+  if (error || !data) return;
+  if (isBlogTombstone(data)) {
+    await supabaseAdmin.from('blogs').delete().eq('id', data.id);
+  }
+}
+
+export async function saveBlog(data: any): Promise<any> {
+  clearCmsMemoryCache(); // Invalidate cache immediately on edit
+  const slug = slugifyBlog(data.slug || data.title) || `article-${Date.now()}`;
+  const blogId = data.id ? String(data.id) : slug;
+
+  const existing = await getBlogByIdOrSlug(blogId);
+  const seo = data.seo && typeof data.seo === 'object' && !Array.isArray(data.seo)
+    ? (() => { const { deleted: _deleted, ...rest } = data.seo; return rest; })()
+    : undefined;
 
   const camelPayload = mapBlogToCamelCase({
     ...data,
     id: blogId,
     slug,
+    seo,
+    date: data.date || existing?.date || new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }),
     updatedAt: new Date().toISOString()
   });
 
-  const snakePayload = mapBlogToSnakeCase(camelPayload);
-
-  // 1. Update Supabase if configured
   if (isSupabaseConfigured) {
-    try {
-      await supabaseAdmin
-        .from('blogs')
-        .upsert(snakePayload, { onConflict: 'id' });
-    } catch (err) {
-      console.warn("Supabase native blogs upsert error:", err);
+    await freeTombstoneSlug(slug, blogId);
+    const { error } = await supabaseAdmin
+      .from('blogs')
+      .upsert(mapBlogToSnakeCase(camelPayload), { onConflict: 'id' });
+    if (error) {
+      if (!isTableMissingError(error)) throw new Error(`Could not save blog: ${error.message}`);
+      // The blogs table has not been created yet: keep the legacy backup row working.
+      const list = await fetchBlogsFromSupabaseBackup();
+      const idx = list.findIndex(b => String(b.id) === blogId);
+      if (idx >= 0) list[idx] = camelPayload; else list.unshift(camelPayload);
+      await saveBlogsToSupabaseBackup(list);
     }
-
-    // Also update Supabase backup store (__d2c_cms_blogs_store__)
-    try {
-      const backupList = await fetchBlogsFromSupabaseBackup();
-      const store = initLocalStore();
-      const existingList = backupList.length > 0 ? backupList : (store.blogs || [...staticBlogs]);
-      const idx = existingList.findIndex(b => matchesBlog(b, blogId) || matchesBlog(b, slug));
-      if (idx >= 0) {
-        existingList[idx] = camelPayload;
-      } else {
-        existingList.unshift(camelPayload);
-      }
-      await saveBlogsToSupabaseBackup(existingList);
-    } catch (err) {
-      console.warn("Failed to backup blog in Supabase:", err);
-    }
-  }
-
-  // 2. Persist to local store
-  const store = initLocalStore();
-  if (!store.blogs) store.blogs = [];
-  const idx = store.blogs.findIndex(b => matchesBlog(b, blogId) || matchesBlog(b, slug));
-  if (idx >= 0) {
-    store.blogs[idx] = camelPayload;
   } else {
-    store.blogs.unshift(camelPayload);
+    const store = initLocalStore();
+    if (!store.blogs) store.blogs = [];
+    const idx = store.blogs.findIndex(b => String(b.id) === blogId);
+    if (idx >= 0) store.blogs[idx] = camelPayload; else store.blogs.unshift(camelPayload);
+    persistLocalStore(store);
   }
-  persistLocalStore(store);
 
-  // 3. Sync to src/data/blog.json if writable
-  try {
-    const blogJsonPath = path.join(process.cwd(), 'src', 'data', 'blog.json');
-    if (fs.existsSync(blogJsonPath)) {
-      fs.writeFileSync(blogJsonPath, JSON.stringify(store.blogs, null, 2), 'utf-8');
-    }
-  } catch {}
-
+  clearCmsMemoryCache();
   return camelPayload;
 }
 
-export async function deleteBlog(id: string): Promise<boolean> {
-  blogsCache = null; // Invalidate cache immediately on delete
-  const target = String(id).trim();
-
-  if (isSupabaseConfigured) {
-    try {
-      await supabaseAdmin.from('blogs').delete().or(`id.eq.${target},slug.eq.${target}`);
-    } catch (err) {
-      console.warn("Supabase delete blog error:", err);
-    }
-
-    try {
-      const backupList = await fetchBlogsFromSupabaseBackup();
-      const filtered = backupList.filter(b => !matchesBlog(b, target));
-      await saveBlogsToSupabaseBackup(filtered);
-    } catch {}
-  }
-
-  const store = initLocalStore();
-  if (store.blogs) {
-    const initialLength = store.blogs.length;
-    store.blogs = store.blogs.filter(b => !matchesBlog(b, target));
-    if (store.blogs.length !== initialLength) {
-      persistLocalStore(store);
-    }
-  }
-
-  try {
-    const blogJsonPath = path.join(process.cwd(), 'src', 'data', 'blog.json');
-    if (fs.existsSync(blogJsonPath) && store.blogs) {
-      fs.writeFileSync(blogJsonPath, JSON.stringify(store.blogs, null, 2), 'utf-8');
-    }
-  } catch {}
-
-  return true;
+/** Stores the new SeoFields block of a blog without touching its other fields. */
+export async function saveBlogSeoMeta(idOrSlug: string, meta: SeoFields): Promise<any> {
+  const blog = await getBlogByIdOrSlug(idOrSlug);
+  if (!blog) throw new Error('Blog not found');
+  // The blog's seo block also carries non-SEO helpers (imageAlt); keep them when replacing the SEO fields.
+  const next: Record<string, any> = { ...normalizeSeo(meta) };
+  if (blog.seo && typeof blog.seo.imageAlt === 'string' && blog.seo.imageAlt) next.imageAlt = blog.seo.imageAlt;
+  return saveBlog({ ...blog, seo: Object.keys(next).length ? next : undefined });
 }
 
+export async function deleteBlog(id: string): Promise<boolean> {
+  clearCmsMemoryCache(); // Invalidate cache immediately on delete
+  const target = String(id).trim();
+  const bundled = (staticBlogs as any[]).find(b => exactBlogMatch(b, target)) || (staticBlogs as any[]).find(b => matchesBlog(b, target));
+
+  const tombstone = bundled
+    ? mapBlogToCamelCase({
+        id: String(bundled.id),
+        slug: bundled.slug,
+        title: bundled.title,
+        published: false,
+        seo: { deleted: true },
+        updatedAt: new Date().toISOString(),
+      })
+    : null;
+
+  if (isSupabaseConfigured) {
+    const removeRows = async () => {
+      for (const col of ['id', 'slug'] as const) {
+        const { error } = await supabaseAdmin.from('blogs').delete().eq(col, target);
+        if (error) throw error;
+      }
+      if (bundled) {
+        // Remove a row that replaced the bundled blog under a changed slug, then write the tombstone.
+        const { error } = await supabaseAdmin.from('blogs').delete().eq('id', String(bundled.id));
+        if (error) throw error;
+        const { error: slugErr } = await supabaseAdmin.from('blogs').delete().eq('slug', bundled.slug);
+        if (slugErr) throw slugErr;
+      }
+    };
+    try {
+      await removeRows();
+      if (tombstone) {
+        const { error } = await supabaseAdmin.from('blogs').upsert(mapBlogToSnakeCase(tombstone), { onConflict: 'id' });
+        if (error) throw error;
+      }
+    } catch (err: any) {
+      if (!isTableMissingError(err)) throw new Error(`Could not delete blog: ${err?.message || err}`);
+      const list = (await fetchBlogsFromSupabaseBackup()).filter(b => !exactBlogMatch(b, target) && !(bundled && String(b.id) === String(bundled.id)));
+      if (tombstone) list.unshift(tombstone);
+      await saveBlogsToSupabaseBackup(list);
+    }
+  } else {
+    const store = initLocalStore();
+    const list = (store.blogs || []).filter(b => !exactBlogMatch(b, target) && !(bundled && String(b.id) === String(bundled.id)));
+    if (tombstone) list.unshift(tombstone);
+    store.blogs = list;
+    persistLocalStore(store);
+  }
+
+  clearCmsMemoryCache();
+  return true;
+}

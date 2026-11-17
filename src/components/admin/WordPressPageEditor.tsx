@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import {
@@ -33,8 +33,12 @@ import {
 } from 'lucide-react';
 import { SlugInput } from './SlugInput';
 import { SectionCard } from './SectionCard';
-import { ImageUploader } from './ImageUploader';
 import { AdminFormSaveBar } from './AdminFormSaveBar';
+import { ImageField } from './cms/ImageField';
+import { SeoField } from './cms/SeoField';
+import { StringListWidget } from './cms/widgets';
+import type { SeoFields } from '@/lib/cms/types';
+import { pageSeo, pageDerivedSeo, seoOverrides } from '@/lib/record-seo';
 
 export interface PageBlock {
   id: string;
@@ -65,11 +69,14 @@ export function WordPressPageEditor({ initialData = {}, isNew = false }: WordPre
     title: initialData.title || '',
     h1: initialData.h1 || initialData.heading || initialData.title || '',
     subheading: initialData.subheading || '',
-    badge: initialData.badge || 'Admissions Guide 2026-27',
+    badge: initialData.badge ?? '',
     description: initialData.description || '',
-    seoTitle: initialData.seoTitle || initialData.title || '',
-    metaDescription: initialData.metaDescription || initialData.description || '',
+    // Legacy SEO fields are kept as they are; the SEO panel below writes the new `seo` block.
+    seoTitle: initialData.seoTitle || '',
+    metaDescription: initialData.metaDescription || '',
     canonicalUrl: initialData.canonicalUrl || '',
+    keywords: initialData.keywords,
+    noIndex: initialData.noIndex,
     includeInSitemap: initialData.includeInSitemap ?? true,
     sitemapPriority: initialData.sitemapPriority ?? 0.8,
     changeFrequency: initialData.changeFrequency || 'weekly',
@@ -78,36 +85,24 @@ export function WordPressPageEditor({ initialData = {}, isNew = false }: WordPre
     imageAlt: initialData.imageAlt || '',
     imageCaption: initialData.imageCaption || '',
     content: initialData.content || '',
-    sections: Array.isArray(initialData.sections) && initialData.sections.length > 0
+    faqs: Array.isArray(initialData.faqs) ? initialData.faqs : [],
+    homeLabel: initialData.homeLabel || '',
+    heroChips: Array.isArray(initialData.heroChips) ? initialData.heroChips : ['Verified Session 2026-27', 'Government Approved Quota'],
+    faqHeading: initialData.faqHeading || '',
+    bottomCta: {
+      heading: initialData.bottomCta?.heading || '',
+      text: initialData.bottomCta?.text || '',
+      button: initialData.bottomCta?.button || '',
+    },
+    sections: Array.isArray(initialData.sections)
       ? initialData.sections.map((s: any, idx: number) => ({ ...s, id: s.id || `block-${idx}` }))
-      : [
-          {
-            id: 'block-1',
-            type: 'h2',
-            text: 'Overview & Direct Admission Opportunities'
-          },
-          {
-            id: 'block-2',
-            type: 'paragraph',
-            text: 'Discover approved management quota pathways, college cutoffs, and transparent fee allocations for premier technical and professional institutes across India.'
-          },
-          {
-            id: 'block-3',
-            type: 'image',
-            url: 'https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&q=80&w=1200',
-            alt: 'Campus auditorium and students collaborating on academic research',
-            caption: 'Students engaging in campus technical workshops'
-          },
-          {
-            id: 'block-4',
-            type: 'cta',
-            title: 'Ready to Secure Your Seat?',
-            subtitle: 'Schedule a free consultation call with our senior counseling team.',
-            buttonText: 'Book Free Profile Evaluation',
-            badge: 'Session 2026-27'
-          }
-        ]
+      : []
   });
+
+  // SEO: the panel edits the effective values; on save only what differs from what the site would
+  // derive on its own (measured against the page as loaded) is stored in `seo`.
+  const derivedAtLoad = useMemo(() => pageDerivedSeo(initialData, initialData.slug || ''), [initialData]);
+  const [seoDraft, setSeoDraft] = useState<SeoFields>(() => pageSeo(initialData, initialData.slug || ''));
 
   const [viewMode, setViewMode] = useState<'editor' | 'split' | 'preview'>('editor');
   const [devicePreview, setDevicePreview] = useState<'desktop' | 'tablet' | 'mobile'>('desktop');
@@ -124,16 +119,16 @@ export function WordPressPageEditor({ initialData = {}, isNew = false }: WordPre
     const newBlock: PageBlock = {
       id: `block-${Date.now()}`,
       type,
-      text: type === 'h2' ? 'New Section Heading' : type === 'h3' ? 'Subsection Title' : 'Write your paragraph content here...',
-      url: type === 'image' ? 'https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&q=80&w=1200' : undefined,
-      alt: type === 'image' ? 'Describe the image for SEO search engines' : undefined,
-      caption: type === 'image' ? 'Image caption' : undefined,
+      text: type === 'h2' ? 'New Section Heading' : type === 'h3' ? 'Subsection Title' : type === 'paragraph' ? 'Write your paragraph content here...' : undefined,
+      url: type === 'image' ? '' : undefined,
+      alt: type === 'image' ? '' : undefined,
+      caption: type === 'image' ? '' : undefined,
       title: type === 'cta' ? 'Take Action Now' : type === 'highlights' ? 'Key Highlights' : undefined,
-      subtitle: type === 'cta' ? 'Connect with certified academic counselors today.' : undefined,
+      subtitle: type === 'cta' ? 'Connect with our admission counsellors today.' : undefined,
       buttonText: type === 'cta' ? 'Request Free Counseling' : undefined,
-      items: type === 'highlights' ? ['100% Genuine Guidance', 'Transparent Fee Structure', 'Direct College Verification'] : undefined,
-      question: type === 'faq' ? 'What is the eligibility criteria?' : undefined,
-      answer: type === 'faq' ? 'Candidates must meet minimum Class 12 aggregate marks as per institutional guidelines.' : undefined
+      items: type === 'highlights' ? ['Transparent Fee Structure', 'Verified College Information'] : undefined,
+      question: type === 'faq' ? '' : undefined,
+      answer: type === 'faq' ? '' : undefined
     };
 
     setPageData((prev: any) => ({
@@ -189,7 +184,7 @@ export function WordPressPageEditor({ initialData = {}, isNew = false }: WordPre
       const res = await fetch(url, {
         method,
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(pageData)
+        body: JSON.stringify({ ...pageData, seo: seoOverrides(seoDraft, derivedAtLoad) })
       });
 
       const json = await res.json();
@@ -387,7 +382,7 @@ export function WordPressPageEditor({ initialData = {}, isNew = false }: WordPre
                         updateField('title', e.target.value);
                       }
                     }}
-                    placeholder="e.g. Complete Guide to B.Tech Direct Admission & Cutoffs 2027"
+                    placeholder="e.g. Complete Guide to B.Tech Admission & Cutoffs 2027"
                     className="w-full px-4 py-3 text-base rounded-xl border border-gray-200 focus:border-d2c-royal focus:ring-1 focus:ring-d2c-royal outline-none font-bold text-d2c-navy"
                   />
                   <p className="text-[11px] text-gray-500 mt-1">
@@ -402,7 +397,7 @@ export function WordPressPageEditor({ initialData = {}, isNew = false }: WordPre
                       type="text"
                       value={pageData.title}
                       onChange={(e) => updateField('title', e.target.value)}
-                      placeholder="e.g. B.Tech Direct Admission"
+                      placeholder="e.g. B.Tech Admission"
                       className="w-full px-3.5 py-2.5 text-sm rounded-xl border border-gray-200 focus:border-d2c-royal outline-none"
                     />
                   </div>
@@ -510,6 +505,13 @@ export function WordPressPageEditor({ initialData = {}, isNew = false }: WordPre
                   >
                     <HelpCircle className="w-3.5 h-3.5 text-purple-600" /> + FAQ Accordion
                   </button>
+                  <button
+                    type="button"
+                    onClick={() => addBlock('highlights')}
+                    className="px-2.5 py-1.5 rounded-lg text-xs font-bold bg-white hover:bg-gray-100 text-sky-800 border border-gray-200 shadow-xs flex items-center gap-1 transition-colors"
+                  >
+                    <Sparkles className="w-3.5 h-3.5 text-sky-600" /> + Highlights List
+                  </button>
                 </div>
 
                 {/* Blocks List */}
@@ -535,6 +537,7 @@ export function WordPressPageEditor({ initialData = {}, isNew = false }: WordPre
                              block.type === 'paragraph' ? '<p> Paragraph Tag' :
                              block.type === 'image' ? '<img alt="..."> SEO Image' :
                              block.type === 'cta' ? 'CTA Banner' :
+                             block.type === 'highlights' ? 'Highlights List' :
                              'FAQ Schema'}
                           </span>
                           <span className="text-xs text-gray-400 font-mono">#{index + 1}</span>
@@ -621,14 +624,14 @@ export function WordPressPageEditor({ initialData = {}, isNew = false }: WordPre
                           <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                             <div>
                               <label className="block text-xs font-semibold text-gray-700 mb-1">
-                                Image Source URL <span className="text-red-500">*</span>
+                                Image <span className="text-red-500">*</span>
                               </label>
-                              <input
-                                type="text"
+                              <ImageField
                                 value={block.url || ''}
-                                onChange={(e) => updateBlock(block.id, 'url', e.target.value)}
-                                placeholder="https://..."
-                                className="w-full px-3 py-2 text-xs rounded-xl border border-gray-200 outline-none focus:border-d2c-royal font-mono"
+                                onChange={(url) => updateBlock(block.id, 'url', url)}
+                                folder="pages"
+                                compact
+                                label={block.alt || 'Image block'}
                               />
                             </div>
                             <div>
@@ -709,6 +712,29 @@ export function WordPressPageEditor({ initialData = {}, isNew = false }: WordPre
                         </div>
                       )}
 
+                      {block.type === 'highlights' && (
+                        <div className="space-y-3">
+                          <div>
+                            <label className="block text-xs font-semibold text-gray-700 mb-1">Highlights Title</label>
+                            <input
+                              type="text"
+                              value={block.title || ''}
+                              onChange={(e) => updateBlock(block.id, 'title', e.target.value)}
+                              placeholder="Key Highlights"
+                              className="w-full px-3 py-2 text-xs rounded-xl border border-gray-200 outline-none"
+                            />
+                          </div>
+                          <div>
+                            <label className="block text-xs font-semibold text-gray-700 mb-1">Highlight Points</label>
+                            <StringListWidget
+                              value={block.items || []}
+                              onChange={(items) => updateBlock(block.id, 'items', items)}
+                              placeholder="Add a point and press Enter"
+                            />
+                          </div>
+                        </div>
+                      )}
+
                       {block.type === 'faq' && (
                         <div className="space-y-2">
                           <div>
@@ -717,7 +743,7 @@ export function WordPressPageEditor({ initialData = {}, isNew = false }: WordPre
                               type="text"
                               value={block.question || ''}
                               onChange={(e) => updateBlock(block.id, 'question', e.target.value)}
-                              placeholder="e.g. Can I get direct admission without entrance exam rank?"
+                              placeholder="e.g. Can I apply without an entrance exam rank?"
                               className="w-full px-3 py-2 text-xs font-semibold text-d2c-navy rounded-xl border border-gray-200 outline-none"
                             />
                           </div>
@@ -727,7 +753,7 @@ export function WordPressPageEditor({ initialData = {}, isNew = false }: WordPre
                               rows={2}
                               value={block.answer || ''}
                               onChange={(e) => updateBlock(block.id, 'answer', e.target.value)}
-                              placeholder="e.g. Yes, authorized management quota seats allow direct admissions..."
+                              placeholder="e.g. Eligibility depends on the college and the counselling rules for the year..."
                               className="w-full px-3 py-2 text-xs text-gray-700 rounded-xl border border-gray-200 outline-none"
                             />
                           </div>
@@ -735,6 +761,175 @@ export function WordPressPageEditor({ initialData = {}, isNew = false }: WordPre
                       )}
                     </div>
                   ))}
+                </div>
+              </div>
+            </SectionCard>
+
+            {/* Section 3a: Featured image, page labels, FAQs and free text */}
+            <SectionCard
+              title="Featured Image"
+              icon={ImageIcon}
+              description="Shown at the top of the page content; also used as the default social share image"
+              collapsible
+              defaultOpen={!!pageData.featuredImage}
+            >
+              <div className="space-y-3">
+                <ImageField value={pageData.featuredImage} onChange={(url) => updateField('featuredImage', url)} folder="pages" label="Featured image" />
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                  <div>
+                    <label className="block text-xs font-semibold text-gray-700 mb-1">Image alt text</label>
+                    <input
+                      type="text"
+                      value={pageData.imageAlt}
+                      onChange={(e) => updateField('imageAlt', e.target.value)}
+                      placeholder="Describe the image"
+                      className="w-full px-3 py-2 text-xs rounded-xl border border-gray-200 outline-none focus:border-d2c-royal"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-xs font-semibold text-gray-700 mb-1">Caption (optional)</label>
+                    <input
+                      type="text"
+                      value={pageData.imageCaption}
+                      onChange={(e) => updateField('imageCaption', e.target.value)}
+                      className="w-full px-3 py-2 text-xs rounded-xl border border-gray-200 outline-none focus:border-d2c-royal"
+                    />
+                  </div>
+                </div>
+              </div>
+            </SectionCard>
+
+            <SectionCard
+              title="Page Labels (header chips, FAQ heading, bottom call-to-action)"
+              icon={Sparkles}
+              description="Texts the page template shows around your content. Leave a field empty to use the standard wording"
+              collapsible
+              defaultOpen={false}
+            >
+              <div className="space-y-4">
+                <div>
+                  <label className="block text-xs font-semibold text-gray-700 mb-1">Header chips (small lines under the subtitle)</label>
+                  <StringListWidget
+                    value={pageData.heroChips}
+                    onChange={(chips) => updateField('heroChips', chips)}
+                    placeholder="Add a chip and press Enter"
+                  />
+                </div>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                  <div>
+                    <label className="block text-xs font-semibold text-gray-700 mb-1">Breadcrumb &quot;Home&quot; label</label>
+                    <input
+                      type="text"
+                      value={pageData.homeLabel}
+                      onChange={(e) => updateField('homeLabel', e.target.value)}
+                      placeholder="Home"
+                      className="w-full px-3 py-2 text-xs rounded-xl border border-gray-200 outline-none focus:border-d2c-royal"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-xs font-semibold text-gray-700 mb-1">FAQ section heading</label>
+                    <input
+                      type="text"
+                      value={pageData.faqHeading}
+                      onChange={(e) => updateField('faqHeading', e.target.value)}
+                      placeholder="Frequently Asked Questions"
+                      className="w-full px-3 py-2 text-xs rounded-xl border border-gray-200 outline-none focus:border-d2c-royal"
+                    />
+                  </div>
+                </div>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+                  <div>
+                    <label className="block text-xs font-semibold text-gray-700 mb-1">Bottom bar heading</label>
+                    <input
+                      type="text"
+                      value={pageData.bottomCta.heading}
+                      onChange={(e) => updateField('bottomCta', { ...pageData.bottomCta, heading: e.target.value })}
+                      placeholder="Need personalized guidance?"
+                      className="w-full px-3 py-2 text-xs rounded-xl border border-gray-200 outline-none focus:border-d2c-royal"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-xs font-semibold text-gray-700 mb-1">Bottom bar text</label>
+                    <input
+                      type="text"
+                      value={pageData.bottomCta.text}
+                      onChange={(e) => updateField('bottomCta', { ...pageData.bottomCta, text: e.target.value })}
+                      placeholder="Contact our senior counseling panel for 100% verified admissions."
+                      className="w-full px-3 py-2 text-xs rounded-xl border border-gray-200 outline-none focus:border-d2c-royal"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-xs font-semibold text-gray-700 mb-1">Bottom bar button</label>
+                    <input
+                      type="text"
+                      value={pageData.bottomCta.button}
+                      onChange={(e) => updateField('bottomCta', { ...pageData.bottomCta, button: e.target.value })}
+                      placeholder="Request Free Call"
+                      className="w-full px-3 py-2 text-xs rounded-xl border border-gray-200 outline-none focus:border-d2c-royal"
+                    />
+                  </div>
+                </div>
+              </div>
+            </SectionCard>
+
+            <SectionCard
+              title="Page FAQs & Free Text"
+              icon={HelpCircle}
+              description="Extra FAQ entries (also added to the FAQ structured data) and an optional free-text body shown after the blocks"
+              collapsible
+              defaultOpen={pageData.faqs.length > 0 || !!pageData.content}
+            >
+              <div className="space-y-4">
+                <div className="space-y-3">
+                  {pageData.faqs.map((faq: any, fIdx: number) => (
+                    <div key={fIdx} className="p-3 bg-gray-50 rounded-xl border border-gray-200 space-y-2">
+                      <div className="flex items-center gap-2">
+                        <input
+                          type="text"
+                          value={faq.question || ''}
+                          onChange={(e) =>
+                            updateField('faqs', pageData.faqs.map((f: any, i: number) => (i === fIdx ? { ...f, question: e.target.value } : f)))
+                          }
+                          placeholder="Question"
+                          className="flex-1 px-3 py-2 text-xs font-semibold text-d2c-navy rounded-xl border border-gray-200 outline-none bg-white"
+                        />
+                        <button
+                          type="button"
+                          onClick={() => updateField('faqs', pageData.faqs.filter((_: any, i: number) => i !== fIdx))}
+                          className="p-1.5 text-red-400 hover:text-red-600"
+                          title="Remove FAQ"
+                        >
+                          <Trash2 className="w-3.5 h-3.5" />
+                        </button>
+                      </div>
+                      <textarea
+                        rows={2}
+                        value={faq.answer || ''}
+                        onChange={(e) =>
+                          updateField('faqs', pageData.faqs.map((f: any, i: number) => (i === fIdx ? { ...f, answer: e.target.value } : f)))
+                        }
+                        placeholder="Answer"
+                        className="w-full px-3 py-2 text-xs text-gray-700 rounded-xl border border-gray-200 outline-none bg-white"
+                      />
+                    </div>
+                  ))}
+                  <button
+                    type="button"
+                    onClick={() => updateField('faqs', [...pageData.faqs, { question: '', answer: '' }])}
+                    className="px-3 py-1.5 rounded-lg text-xs font-bold bg-white hover:bg-gray-100 text-purple-800 border border-gray-200 flex items-center gap-1"
+                  >
+                    <Plus className="w-3.5 h-3.5" /> Add FAQ
+                  </button>
+                </div>
+                <div>
+                  <label className="block text-xs font-semibold text-gray-700 mb-1">Free-text body (optional)</label>
+                  <textarea
+                    rows={6}
+                    value={pageData.content}
+                    onChange={(e) => updateField('content', e.target.value)}
+                    placeholder={'Separate paragraphs with a blank line. Start a line with "## " for a heading or "* " for a list.'}
+                    className="w-full px-3 py-2 text-xs text-gray-800 rounded-xl border border-gray-200 outline-none focus:border-d2c-royal leading-relaxed font-mono"
+                  />
                 </div>
               </div>
             </SectionCard>
@@ -794,34 +989,15 @@ export function WordPressPageEditor({ initialData = {}, isNew = false }: WordPre
                   </div>
                 </div>
 
-                <div>
-                  <div className="flex items-center justify-between mb-1">
-                    <label className="block text-xs font-semibold text-d2c-navy">Meta Title Tag</label>
-                    <span className="text-[10px] text-gray-400">{(pageData.seoTitle || pageData.title || '').length} / 60 chars</span>
-                  </div>
-                  <input
-                    type="text"
-                    value={pageData.seoTitle}
-                    onChange={(e) => updateField('seoTitle', e.target.value)}
-                    placeholder={pageData.title || 'Page title for search engines...'}
-                    className="w-full px-3.5 py-2 text-sm rounded-xl border border-gray-200 focus:border-d2c-royal outline-none"
-                  />
-                </div>
-
-                <div>
-                  <div className="flex items-center justify-between mb-1">
-                    <label className="block text-xs font-semibold text-d2c-navy">Meta Description</label>
-                    <span className="text-[10px] text-gray-400">{(pageData.metaDescription || '').length} / 160 chars</span>
-                  </div>
-                  <textarea
-                    rows={2}
-                    value={pageData.metaDescription}
-                    onChange={(e) => updateField('metaDescription', e.target.value)}
-                    placeholder="Concise overview snippet for search results (140-160 characters)..."
-                    className="w-full px-3.5 py-2 text-sm rounded-xl border border-gray-200 focus:border-d2c-royal outline-none"
-                  />
-                </div>
               </div>
+            </SectionCard>
+
+            <SectionCard
+              title="SEO, Social Cards & Structured Data"
+              icon={Globe}
+              description="Meta title and description, keywords, canonical URL, search visibility (noindex), Open Graph, Twitter card and extra JSON-LD"
+            >
+              <SeoField value={seoDraft} onChange={setSeoDraft} />
             </SectionCard>
 
           </div>
@@ -883,7 +1059,7 @@ export function WordPressPageEditor({ initialData = {}, isNew = false }: WordPre
                 {/* Hero Header matching Direct2Campus Theme */}
                 <div className="bg-d2c-navy text-white p-6 md:p-10 relative overflow-hidden">
                   <div className="inline-block px-3 py-1 bg-d2c-sky/20 border border-d2c-sky/30 rounded-md text-d2c-sky text-[11px] font-bold uppercase tracking-wider mb-3">
-                    {pageData.badge || 'Admissions 2026-27'}
+                    {pageData.badge}
                   </div>
 
                   {/* Primary Semantic H1 Tag */}
@@ -900,12 +1076,14 @@ export function WordPressPageEditor({ initialData = {}, isNew = false }: WordPre
                   <div className="flex flex-wrap items-center gap-4 text-xs text-d2c-ice/70 pt-3 mt-4 border-t border-white/10">
                     <div className="flex items-center gap-1.5">
                       <Calendar className="w-3.5 h-3.5 text-d2c-sky" />
-                      <span>Verified Session 2026-27</span>
+                      <span>{(pageData.heroChips || [])[0] || ''}</span>
                     </div>
-                    <div className="flex items-center gap-1.5">
-                      <Check className="w-3.5 h-3.5 text-emerald-400" />
-                      <span>Government Approved Quota</span>
-                    </div>
+                    {(pageData.heroChips || []).slice(1).map((chip: string, cIdx: number) => (
+                      <div key={cIdx} className="flex items-center gap-1.5">
+                        <Check className="w-3.5 h-3.5 text-emerald-400" />
+                        <span>{chip}</span>
+                      </div>
+                    ))}
                   </div>
                 </div>
 
@@ -1004,10 +1182,10 @@ export function WordPressPageEditor({ initialData = {}, isNew = false }: WordPre
                         https://direct2campus.com › <span className="text-gray-900">{pageData.slug || 'page-slug'}</span>
                       </div>
                       <div className="text-base text-[#1a0dab] font-medium hover:underline cursor-pointer truncate">
-                        {pageData.seoTitle || pageData.h1 || pageData.title || 'Page Title'}
+                        {seoDraft.title || pageData.h1 || pageData.title || 'Page Title'}
                       </div>
                       <div className="text-xs text-[#4d5156] line-clamp-2 leading-relaxed">
-                        {pageData.metaDescription || pageData.description || 'Page meta description snippet preview.'}
+                        {seoDraft.description || pageData.description || 'Page meta description snippet preview.'}
                       </div>
                     </div>
                   </div>

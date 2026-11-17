@@ -8,41 +8,44 @@ import { MidPageContact } from "@/components/home/MidPageContact"
 import { TestimonialsSection } from "@/components/home/TestimonialsSection"
 import { CTASection } from "@/components/home/CTASection"
 import { WelcomeLeadModal } from "@/components/home/WelcomeLeadModal"
-import { getPageData } from "@/lib/page-service"
+import { AnnouncementTicker } from "@/components/home/AnnouncementTicker"
+import { getContent } from "@/lib/cms/content"
+import { buildMetadata, JsonLd } from "@/lib/cms/seo"
+import type { HomeContent } from "@/content/home.defaults"
+import type { TestimonialsContent } from "@/content/testimonials.defaults"
 
 export const revalidate = 0;
 
 export async function generateMetadata(): Promise<Metadata> {
-  const homeData = await getPageData("home");
-  return {
-    title: homeData?.title || "Direct2Campus – Your Shortcut to the Right Campus",
-    description:
-      homeData?.description ||
-      "India's most trusted educational consultancy. Get direct admission guidance for B.Tech, MBBS, MBA & BDS. Compare 150+ partner colleges and secure your seat with expert counselling.",
-    alternates: { canonical: "https://direct2campus.com" },
-  };
+  const home = await getContent<HomeContent>("home");
+  return buildMetadata(home.seo, { path: "/" });
 }
 
 export default async function Home() {
-  const homeData = await getPageData("home");
+  const [home, testimonials] = await Promise.all([
+    getContent<HomeContent>("home"),
+    getContent<TestimonialsContent>("testimonials"),
+  ]);
 
   return (
     <main className="flex min-h-screen flex-col">
-      {/* Main Home Sections */}
-      <HeroSection heroData={homeData?.hero} statsData={homeData?.stats} />
-      <TrustFeatures />
-      <BannerSection
-        banners={homeData?.banners}
-        enabled={homeData?.bannerSection?.enabled ?? true}
-      />
-      <AdmissionProcedure3D />
-      <FeaturedColleges />
-      <MidPageContact />
-      <TestimonialsSection />
-      <CTASection />
+      <JsonLd seo={home.seo} />
 
-      {/* Welcome Lead Popup Modal (Configurable with toggle off by default) */}
-      <WelcomeLeadModal config={homeData?.welcomeLeadModal} />
+      {/* Optional announcement bar (hidden unless enabled in the admin) */}
+      {home.announcement?.enabled && <AnnouncementTicker announcement={home.announcement} />}
+
+      {/* Main Home Sections */}
+      <HeroSection content={home.hero} />
+      <TrustFeatures content={home.trust} />
+      <BannerSection banners={home.banners.slides} enabled={home.banners.enabled ?? true} />
+      <AdmissionProcedure3D content={home.procedure} />
+      <FeaturedColleges content={home.featuredColleges} />
+      <MidPageContact content={home.contact} />
+      <TestimonialsSection content={testimonials} />
+      <CTASection content={home.cta} />
+
+      {/* Welcome Lead Popup Modal (configurable, off by default) */}
+      <WelcomeLeadModal config={home.welcomeModal} />
     </main>
   );
 }

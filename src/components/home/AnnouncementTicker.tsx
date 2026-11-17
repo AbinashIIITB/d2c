@@ -3,18 +3,13 @@
 import { useState } from "react";
 import Link from "next/link";
 import { Sparkles, ArrowRight, X } from "lucide-react";
+import { homeDefaults, type HomeContent } from "@/content/home.defaults";
 
 interface AnnouncementProps {
-  announcement?: {
-    enabled?: boolean;
-    badge?: string;
-    message?: string;
-    link?: string;
-    linkText?: string;
-  };
+  announcement?: HomeContent["announcement"];
 }
 
-export function AnnouncementTicker({ announcement }: AnnouncementProps) {
+export function AnnouncementTicker({ announcement = homeDefaults.announcement }: AnnouncementProps) {
   const [dismissed, setDismissed] = useState(false);
 
   if (!announcement?.enabled || dismissed) {
@@ -45,7 +40,7 @@ export function AnnouncementTicker({ announcement }: AnnouncementProps) {
         <button
           onClick={() => setDismissed(true)}
           className="text-white/40 hover:text-white p-1 rounded-md transition-colors shrink-0"
-          aria-label="Dismiss banner"
+          aria-label={announcement.dismissLabel || "Dismiss banner"}
         >
           <X className="w-3.5 h-3.5" />
         </button>

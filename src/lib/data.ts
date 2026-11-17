@@ -268,7 +268,7 @@ export const colleges: College[] = [
                 answer: "Eligibility requirements depend on the engineering programme and the applicable admission route. Students should review the current academic requirements, compulsory subjects, entrance examination criteria and counselling rules before applying. Refer to the official IEM admissions website for current details."
             },
             {
-                question: "Is direct admission available at IEM Kolkata?",
+                question: "Is admission available at IEM Kolkata?",
                 answer: "Admission to IEM Kolkata is subject to the institute's applicable admission rules and eligibility requirements. Students should contact the official admission office to understand the permitted admission routes and available seats. Admission cannot be guaranteed without meeting the required criteria."
             },
             {
@@ -345,9 +345,9 @@ export const colleges: College[] = [
                     targetQuery: "IEM Kolkata eligibility criteria B.Tech"
                 },
                 {
-                    question: "Is direct admission available at IEM Kolkata?",
+                    question: "Is admission available at IEM Kolkata?",
                     answer: "Admission to IEM Kolkata is subject to the institute's applicable admission rules and eligibility requirements. Students should contact the official admission office to understand the permitted admission routes and available seats. Admission cannot be guaranteed without meeting the required criteria.",
-                    targetQuery: "direct admission IEM Kolkata management quota"
+                    targetQuery: "admission IEM Kolkata management quota"
                 },
                 {
                     question: "What is the WBJEE cutoff for CSE at IEM Kolkata?",
@@ -388,7 +388,7 @@ export const colleges: College[] = [
             { url: "https://placehold.co/800x600/1e293b/fff?text=Hostel", alt: "Student Hostel" }
         ],
         whyChooseAkashTalks: [
-            "Direct admission assistance without any hidden charges",
+            "Admission assistance without any hidden charges",
             "Expert guidance on WBJEE counseling and seat allocation",
             "Transparent fee structure information and scholarship guidance",
             "Personalized career counseling to choose the right branch",
@@ -673,7 +673,7 @@ export const colleges: College[] = [
         coursesDetails: [{ name: "Computer Science and Engineering", duration: "4 Years", type: "B.E." }, { name: "Electronics & Communication", duration: "4 Years", type: "B.E." }],
         feesDetails: [{ title: "B.E. Fee Structure (2024-25)", items: [{ label: "Total B.E. (4 Years)", value: "₹7.04 - 10.66 Lakhs" }], note: "Varies based on COMEDK vs Management Quota" }],
         placements: { stats: [{ label: "Highest Package", value: "₹20 LPA" }, { label: "Average Package", value: "₹5.5 LPA" }, { label: "Placement Rate", value: "85%+" }], topRecruiters: [{ category: "IT", companies: ["TCS", "Infosys", "Wipro", "Cognizant", "Capgemini"] }] },
-        admissions: { process: ["COMEDK/KCET", "Direct admission", "Counseling"], eligibility: ["10+2 with PCM"], documents: ["Marksheets", "Rank Card"] },
+        admissions: { process: ["COMEDK/KCET", "Admission", "Counseling"], eligibility: ["10+2 with PCM"], documents: ["Marksheets", "Rank Card"] },
         whyChoose: ["Affordable fees", "Massive green campus", "Good infrastructure", "International exposure"],
         faqs: [{ question: "Is Acharya Institute good?", answer: "Yes, AIT is a good option with affordable fees, large campus, and decent placements." }, { question: "Does the college provide internship support?", answer: "Yes, the college has a dedicated placement cell that assists students in securing summer internships and industrial training." }, { question: "Is there a dedicated placement cell?", answer: "Yes, the Training and Placement Cell works year-round to bring top companies for recruitment and trains students in soft skills." }, { question: "Are there hostel facilities available?", answer: "Yes, separate hostel facilities are available for boys and girls with all necessary amenities and security." }],
         galleryImages: [
@@ -682,7 +682,7 @@ export const colleges: College[] = [
             { url: "https://placehold.co/800x600/1e293b/fff?text=Laboratories", alt: "Laboratories" },
             { url: "https://placehold.co/800x600/1e293b/fff?text=Hostel", alt: "Student Hostel" }
         ],
-        whyChooseAkashTalks: ["Affordable college guidance", "COMEDK support", "Direct admission help", "Complete assistance", "Post-admission support for hostel and documentation", "Guidance on scholarship applications and education loans", "Zero hidden charges policy"],
+        whyChooseAkashTalks: ["Affordable college guidance", "COMEDK support", "Admission help", "Complete assistance", "Post-admission support for hostel and documentation", "Guidance on scholarship applications and education loans", "Zero hidden charges policy"],
         scholarships: [
         {
                 "title": "Merit Scholarship",
@@ -1115,7 +1115,7 @@ export const colleges: College[] = [
             { url: "https://placehold.co/800x600/1e293b/fff?text=Laboratories", alt: "Laboratories" },
             { url: "https://placehold.co/800x600/1e293b/fff?text=Hostel", alt: "Student Hostel" }
         ],
-        whyChooseAkashTalks: ["Direct admission guidance", "Campus and program insights", "Complete support", "Post-admission support for hostel and documentation", "Guidance on scholarship applications and education loans", "Zero hidden charges policy"],
+        whyChooseAkashTalks: ["Admission guidance", "Campus and program insights", "Complete support", "Post-admission support for hostel and documentation", "Guidance on scholarship applications and education loans", "Zero hidden charges policy"],
         infrastructure: [
         "Modern Labs",
         "Central Library",
@@ -1168,7 +1168,7 @@ export const colleges: College[] = [
             { url: "https://placehold.co/800x600/1e293b/fff?text=Laboratories", alt: "Laboratories" },
             { url: "https://placehold.co/800x600/1e293b/fff?text=Hostel", alt: "Student Hostel" }
         ],
-        whyChooseAkashTalks: ["Direct admission assistance", "Fee negotiation support", "Complete counseling", "Hostel guidance", "Post-admission support for hostel and documentation", "Guidance on scholarship applications and education loans", "Zero hidden charges policy"],
+        whyChooseAkashTalks: ["Admission assistance", "Fee negotiation support", "Complete counseling", "Hostel guidance", "Post-admission support for hostel and documentation", "Guidance on scholarship applications and education loans", "Zero hidden charges policy"],
         infrastructure: [
         "Modern Labs",
         "Central Library",
@@ -4214,7 +4214,7 @@ export const colleges: College[] = [
             { url: "https://placehold.co/800x600/1e293b/fff?text=Laboratories", alt: "Laboratories" },
             { url: "https://placehold.co/800x600/1e293b/fff?text=Hostel", alt: "Student Hostel" }
         ],
-        whyChooseAkashTalks: ["Direct admission support", "Program guidance", "Complete counseling", "Post-admission support for hostel and documentation", "Guidance on scholarship applications and education loans", "Zero hidden charges policy"],
+        whyChooseAkashTalks: ["Admission support", "Program guidance", "Complete counseling", "Post-admission support for hostel and documentation", "Guidance on scholarship applications and education loans", "Zero hidden charges policy"],
         infrastructure: [
         "Modern Labs",
         "Central Library",
@@ -6249,7 +6249,7 @@ export const exams: Exam[] = [
                 "Part IV: Mathematics/Biology (40 Questions)"
             ]
         },
-        counselling: "Admission is purely merit-based on the BITSAT score. After the exam, there are multiple rounds of seat allotment called 'Iterations'. Candidates must fill their preference order for Campuses (Pilani, Goa, Hyderabad) and Branches carefully. There is no reservation policy (except for BITS Dubai which has its own process). Direct admission is offered to Board Toppers.",
+        counselling: "Admission is purely merit-based on the BITSAT score. After the exam, there are multiple rounds of seat allotment called 'Iterations'. Candidates must fill their preference order for Campuses (Pilani, Goa, Hyderabad) and Branches carefully. There is no reservation policy (except for BITS Dubai which has its own process). Admission is offered to Board Toppers.",
         faqs: [
             { question: "Can I appear for both sessions?", answer: "Yes, candidates can appear for both Session 1 and Session 2. The best of the two scores will be considered for admission." },
             { question: "Is there any reservation in BITS?", answer: "No, BITS Pilani does not follow any reservation policy based on caste or category. Admissions are strictly based on merit." },
@@ -6532,7 +6532,7 @@ export const collegesByState = colleges.reduce((acc, college) => {
 // Company contact information
 export const companyInfo = {
     name: "Direct2Campus",
-    tagline: "Direct Admission in B.Tech",
+    tagline: "Admission in B.Tech",
     phones: ["+91 6200325137", "+91 8825352628"],
     email: "contact@direct2campus.com",
     youtube: "https://www.youtube.com/@direct2campus",

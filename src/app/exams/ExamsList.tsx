@@ -7,6 +7,10 @@ import { motion, AnimatePresence } from "framer-motion"
 import { AutoSuggestSearch } from "@/components/ui/AutoSuggestSearch"
 import { Exam } from "@/lib/data"
 import { filterExams } from "@/lib/search"
+import { CmsIcon } from "@/components/cms/CmsIcon"
+import { defaults as examsIndexDefaults, type ExamsIndexContent } from "@/content/exams-index"
+
+const KNOWN_ICONS = { "book-open": BookOpen }
 
 const EXAM_COLORS: Record<string, { from: string, to: string, bg: string, text: string, border: string }> = {
   "bitsat": { from: "from-blue-600", to: "to-indigo-700", bg: "bg-blue-50", text: "text-blue-700", border: "border-blue-100" },
@@ -18,7 +22,7 @@ const EXAM_COLORS: Record<string, { from: string, to: string, bg: string, text: 
 }
 const DEFAULT_COLOR = { from: "from-gray-600", to: "to-gray-700", bg: "bg-gray-50", text: "text-gray-700", border: "border-gray-100" };
 
-export function ExamsList({ initialExams }: { initialExams: Exam[] }) {
+export function ExamsList({ initialExams, content = examsIndexDefaults.list }: { initialExams: Exam[]; content?: ExamsIndexContent["list"] }) {
   const [search, setSearch] = useState("")
 
   const filteredExams = filterExams(initialExams, search)
@@ -28,7 +32,7 @@ export function ExamsList({ initialExams }: { initialExams: Exam[] }) {
       <div className="max-w-xl mx-auto mb-16 relative z-40">
         <AutoSuggestSearch 
           mode="exams"
-          placeholder="Search for an exam..."
+          placeholder={content.searchPlaceholder}
           onSearchChange={setSearch}
         />
       </div>
@@ -36,8 +40,8 @@ export function ExamsList({ initialExams }: { initialExams: Exam[] }) {
       {filteredExams.length === 0 ? (
         <div className="text-center py-16 text-d2c-muted">
           <GraduationCap className="w-16 h-16 mx-auto mb-4 opacity-20" />
-          <h3 className="text-xl font-sora font-semibold mb-2">No exams found</h3>
-          <p>We&apos;re constantly adding new guides.</p>
+          <h3 className="text-xl font-sora font-semibold mb-2">{content.emptyTitle}</h3>
+          <p>{content.emptyText}</p>
         </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
@@ -67,7 +71,7 @@ export function ExamsList({ initialExams }: { initialExams: Exam[] }) {
                         <div className={`w-16 h-16 ${accent.bg} ${accent.border} border p-2.5 flex items-center justify-center shrink-0 group-hover:shadow-md transition-shadow duration-300`}>
                           <img 
                             src={exam.logoUrl} 
-                            alt={`${exam.name} Logo`}
+                            alt={`${exam.name} ${content.logoAltSuffix}`}
                             className="max-w-full max-h-full object-contain"
                           />
                         </div>
@@ -76,8 +80,8 @@ export function ExamsList({ initialExams }: { initialExams: Exam[] }) {
                             {exam.name}
                           </h3>
                           <div className={`inline-flex items-center gap-1 text-xs font-semibold ${accent.text} ${accent.bg} px-2 py-0.5`}>
-                            <BookOpen className="w-3 h-3" />
-                            Masterguide
+                            <CmsIcon name={content.cardBadgeIcon} known={KNOWN_ICONS} fallback={BookOpen} className="w-3 h-3" />
+                            {content.cardBadge}
                           </div>
                         </div>
                       </div>
@@ -90,7 +94,7 @@ export function ExamsList({ initialExams }: { initialExams: Exam[] }) {
                       {/* CTA footer */}
                       <div className="flex items-center justify-between pt-4 border-t border-gray-100">
                         <span className="text-sm font-semibold text-d2c-royal flex items-center gap-1 group-hover:gap-2 transition-all duration-300">
-                          Read the Masterguide
+                          {content.cardCta}
                           <ChevronRight className="w-4 h-4" />
                         </span>
                         <div className="w-8 h-8 bg-d2c-ice flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 group-hover:bg-d2c-royal">

@@ -14,17 +14,20 @@ import {
   Plus,
   Trash2,
   ArrowLeft,
-  Sparkles
+  Sparkles,
+  Type
 } from 'lucide-react';
 import Link from 'next/link';
-import { ImageUploader } from './ImageUploader';
+import { ImageField } from './cms/ImageField';
+import { SeoField } from './cms/SeoField';
+import type { SeoFields } from '@/lib/cms/types';
+import { collegeSeo, collegeDerivedSeo, seoOverrides } from '@/lib/record-seo';
 import { JsonArrayEditor } from './JsonArrayEditor';
 import { KeyValueEditor } from './KeyValueEditor';
 import { RichTextArea } from './RichTextArea';
 import { SlugInput } from './SlugInput';
 import { SectionCard } from './SectionCard';
 import { AdminFormSaveBar } from './AdminFormSaveBar';
-import { SeoSuiteEditor } from './SeoSuiteEditor';
 
 interface CollegeEditFormProps {
   initialData?: any;
@@ -40,13 +43,37 @@ const TABS = [
   { id: 'admissions', label: 'Admissions & Dates', icon: ClipboardList },
   { id: 'more', label: 'Scholarships, Alumni & FAQs', icon: Award },
   { id: 'contact', label: 'Contact Details', icon: Globe },
-  { id: 'seo-suite', label: 'SEO & AEO Suite', icon: Sparkles },
+  { id: 'page-text', label: 'Headings, CTA & Links', icon: Type },
+  { id: 'seo-suite', label: 'SEO', icon: Sparkles },
 ];
+
+const SECTION_HEADING_FIELDS: { key: string; label: string; template: (name: string, course: string) => string }[] = [
+  { key: 'admissions', label: 'Admission process heading', template: (n) => `${n} Admission Process` },
+  { key: 'coursesFees', label: 'Courses and fees heading', template: (n) => `${n} Courses and Fee Structure` },
+  { key: 'coursesFeesSubtitle', label: 'Courses and fees subtitle', template: (n) => `${n} Admission Fees and Course Fee Structure` },
+  { key: 'btechFeesEligibility', label: 'Fees and eligibility heading', template: (n, c) => `${n} ${c} Fees and Eligibility` },
+  { key: 'placements', label: 'Placements heading', template: (n) => `${n} Placements and Average Package` },
+  { key: 'overview', label: 'Campus and location heading', template: (n) => `${n} Campus and Location` },
+  { key: 'infrastructure', label: 'Facilities heading', template: () => 'Facilities & Infrastructure' },
+  { key: 'scholarships', label: 'Scholarships heading', template: () => 'Scholarships & Financial Aid' },
+  { key: 'alumni', label: 'Alumni heading', template: () => 'Alumni Network' },
+  { key: 'faqs', label: 'FAQs heading', template: (n) => `Frequently Asked Questions About ${n}` },
+];
+
+const inputCls = 'w-full px-4 py-3 text-sm rounded-xl border border-gray-200 focus:border-d2c-royal outline-none';
+
+function defaultH1(college: any): string {
+  const iem = /^iem/i.test(String(college?.slug || '')) || /institute of engineering (&|and) management/i.test(String(college?.name || ''));
+  return iem ? 'IEM Kolkata Admission, Courses, Fees and Placements' : `${college?.name} Admission, Courses, Fees and Placements`;
+}
 
 export function CollegeEditForm({ initialData = {}, isNew = false }: CollegeEditFormProps) {
   const router = useRouter();
   const [activeTab, setActiveTab] = useState('basic');
   const [formData, setFormData] = useState<any>({
+    // Keep every field of the loaded record (cutoffs, hospital, mqFees...) so a save never wipes what this form does not show.
+    // (snake_case aliases are dropped: their camelCase twins are the source of truth and would otherwise win over edits)
+    ...Object.fromEntries(Object.entries(initialData).filter(([k]) => !k.includes('_'))),
     id: initialData.id || '',
     name: initialData.name || '',
     h1: initialData.h1 || initialData.seo?.h1Title || '',
@@ -73,11 +100,7 @@ export function CollegeEditForm({ initialData = {}, isNew = false }: CollegeEdit
     coursesDetails: initialData.coursesDetails || initialData.courses_details || [],
     feesDetails: initialData.feesDetails || initialData.fees_details || [],
     placements: initialData.placements || {
-      stats: [
-        { label: 'Highest Package', value: '₹44 LPA' },
-        { label: 'Average Package', value: '₹8.5 LPA' },
-        { label: 'Placement Rate', value: '92%' }
-      ],
+      stats: [],
       highlights: [],
       topRecruiters: []
     },
@@ -102,6 +125,10 @@ export function CollegeEditForm({ initialData = {}, isNew = false }: CollegeEdit
     },
     seo: initialData.seo || {}
   });
+
+  // New SEO block: shown as the page emits it today; only differences from the values derived at load are stored.
+  const [derivedAtLoad] = useState<SeoFields>(() => (isNew ? {} : collegeDerivedSeo(initialData)));
+  const [seoEdit, setSeoEdit] = useState<SeoFields>(() => (isNew ? {} : collegeSeo(initialData)));
 
   const [saving, setSaving] = useState(false);
   const [successMessage, setSuccessMessage] = useState('');
@@ -131,15 +158,49 @@ export function CollegeEditForm({ initialData = {}, isNew = false }: CollegeEdit
       const url = isNew ? '/api/admin/colleges' : `/api/admin/colleges/${formData.id}`;
       const method = isNew ? 'POST' : 'PUT';
 
+      // Build the SEO block: legacy keys stay, `meta` holds only what differs from the derived defaults.
+      const seoOut: any = { ...(formData.seo || {}) };
+      const meta = seoOverrides(seoEdit, derivedAtLoad);
+      if (Object.keys(meta).length) seoOut.meta = meta;
+      else delete seoOut.meta;
+
+      // Headings: drop blanks; an H1 equal to the default is not stored so it keeps following the name.
+      const headings: Record<string, string> = {};
+      for (const [k, v] of Object.entries(seoOut.sectionHeadings || {})) {
+        if (typeof v === 'string' && v.trim()) headings[k] = v;
+      }
+      seoOut.sectionHeadings = headings;
+      const h1 = String(formData.h1 || '').trim();
+      const h1IsDefault = !h1 || h1 === defaultH1(formData);
+      if (h1IsDefault) delete seoOut.h1Title;
+      else seoOut.h1Title = h1;
+      const cleanList = (list: any[] | undefined, keys: string[]) =>
+        (list || []).filter((item) => keys.some((k) => String(item?.[k] || '').trim()));
+      seoOut.aeoFaqs = cleanList(seoOut.aeoFaqs, ['question', 'answer']);
+      seoOut.internalLinks = cleanList(seoOut.internalLinks, ['anchorText', 'targetUrl']);
+      if (seoOut.cta && !['headline', 'subtext', 'buttonText'].some((k) => String(seoOut.cta[k] || '').trim())) delete seoOut.cta;
+
+      const body = {
+        ...formData,
+        h1: h1IsDefault ? '' : h1,
+        sectionHeadings: headings,
+        seo: seoOut,
+      };
+
       const res = await fetch(url, {
         method,
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData),
+        body: JSON.stringify(body),
       });
 
-      const data = await res.json();
+      let data: any = {};
+      try {
+        data = await res.json();
+      } catch {
+        data = {};
+      }
       if (!res.ok || !data.success) {
-        throw new Error(data.error || 'Failed to save college');
+        throw new Error(data.error || `Failed to save college (HTTP ${res.status})`);
       }
 
       setSuccessMessage(isNew ? 'College created successfully!' : 'All changes saved successfully!');
@@ -177,7 +238,7 @@ export function CollegeEditForm({ initialData = {}, isNew = false }: CollegeEdit
     const list = formData.feesDetails || [];
     updateField('feesDetails', [
       ...list, 
-      { title: 'Program Fees', items: [{ label: 'Tuition Fee (Per Year)', value: '₹1,50,000' }], note: '' }
+      { title: '', items: [{ label: '', value: '' }], note: '' }
     ]);
   };
 
@@ -329,15 +390,19 @@ export function CollegeEditForm({ initialData = {}, isNew = false }: CollegeEdit
 
               <div>
                 <label className="block text-sm font-semibold text-d2c-navy mb-1.5">Institution Type</label>
-                <select
+                <input
+                  type="text"
+                  list="college-type-options"
                   value={formData.type}
                   onChange={(e) => updateField('type', e.target.value)}
+                  placeholder="e.g. Private"
                   className="w-full px-4 py-3 text-sm rounded-xl border border-gray-200 focus:border-d2c-royal outline-none bg-white"
-                >
-                  <option value="Government">Government / Autonomous</option>
-                  <option value="Private">Private</option>
-                  <option value="Deemed">Deemed University</option>
-                </select>
+                />
+                <datalist id="college-type-options">
+                  <option value="Government" />
+                  <option value="Private" />
+                  <option value="Deemed" />
+                </datalist>
               </div>
             </div>
 
@@ -402,7 +467,7 @@ export function CollegeEditForm({ initialData = {}, isNew = false }: CollegeEdit
               value={formData.tags}
               onChange={(items) => updateField('tags', items)}
               asPills
-              placeholder="e.g. direct admission, btech fees, ranking, placement 2027"
+              placeholder="e.g. btech fees, ranking, placement 2027"
               hint="Injected into page metadata keywords and search indexing"
             />
           </SectionCard>
@@ -414,32 +479,30 @@ export function CollegeEditForm({ initialData = {}, isNew = false }: CollegeEdit
         <div className="space-y-6">
           <SectionCard title="Visual Assets & Campus Imagery" icon={ImageIcon} description="Upload or link high resolution photos for college hero, logo and galleries">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              <ImageUploader
-                label="College Logo / Crest"
-                value={formData.logoUrl}
-                aspect="square"
-                folder="colleges/logos"
-                hint="Used in headers, search cards, and comparison tools (1:1 square)"
-                onChange={(url) => updateField('logoUrl', url)}
-              />
+              <div className="space-y-2">
+                <label className="block text-sm font-semibold text-d2c-navy">College Logo / Crest</label>
+                <ImageField value={formData.logoUrl} folder="colleges/logos" onChange={(url) => updateField('logoUrl', url)} label="College logo" />
+                <p className="text-xs text-gray-400">Used in structured data and comparison tools (1:1 square)</p>
+              </div>
 
-              <ImageUploader
-                label="Main Featured Image"
-                value={formData.imageUrl}
-                aspect="video"
-                folder="colleges/featured"
-                hint="Used as card thumbnail and OpenGraph social share card (16:9)"
-                onChange={(url) => updateField('imageUrl', url)}
-              />
+              <div className="space-y-2">
+                <label className="block text-sm font-semibold text-d2c-navy">Main Featured Image</label>
+                <ImageField value={formData.imageUrl} folder="colleges/featured" onChange={(url) => updateField('imageUrl', url)} label="Featured image" />
+                <p className="text-xs text-gray-400">Hero image on the college page, card thumbnail and default social share image (16:9)</p>
+                <input
+                  type="text"
+                  value={formData.seo?.images?.heroAlt || ''}
+                  onChange={(e) => updateField('seo', { ...(formData.seo || {}), images: { ...(formData.seo?.images || {}), heroAlt: e.target.value } })}
+                  placeholder={`Alt text (default: ${formData.name || 'College'} Visual)`}
+                  className="w-full text-xs px-3 py-2 rounded-lg border border-gray-200 focus:border-d2c-royal outline-none"
+                />
+              </div>
 
-              <ImageUploader
-                label="Cover / Banner Image"
-                value={formData.coverUrl}
-                aspect="wide"
-                folder="colleges/covers"
-                hint="Hero backdrop at the top of the college page"
-                onChange={(url) => updateField('coverUrl', url)}
-              />
+              <div className="space-y-2">
+                <label className="block text-sm font-semibold text-d2c-navy">Cover / Banner Image</label>
+                <ImageField value={formData.coverUrl} folder="colleges/covers" onChange={(url) => updateField('coverUrl', url)} label="Cover image" />
+                <p className="text-xs text-gray-400">Banner backdrop (wide)</p>
+              </div>
             </div>
 
             {/* Gallery Images */}
@@ -479,10 +542,11 @@ export function CollegeEditForm({ initialData = {}, isNew = false }: CollegeEdit
                           <Trash2 className="w-3.5 h-3.5" />
                         </button>
                       </div>
-                      <ImageUploader
-                        label=""
+                      <ImageField
+                        compact
                         value={img.url}
                         folder="colleges/gallery"
+                        label={img.alt || 'Gallery photo'}
                         onChange={(url) => {
                           const list = [...formData.galleryImages];
                           list[idx] = { ...list[idx], url };
@@ -561,7 +625,7 @@ export function CollegeEditForm({ initialData = {}, isNew = false }: CollegeEdit
                 label="Why Choose Direct2Campus"
                 value={formData.whyChooseAkashTalks}
                 onChange={(items) => updateField('whyChooseAkashTalks', items)}
-                placeholder="e.g. Direct management quota seat booking support"
+                placeholder="e.g. Admission counselling and application support"
               />
             </div>
           </SectionCard>
@@ -696,6 +760,72 @@ export function CollegeEditForm({ initialData = {}, isNew = false }: CollegeEdit
               </div>
             )}
           </SectionCard>
+
+          <SectionCard title="Expected Cutoff Ranks" icon={TrendingUp} description="Cards shown under Fees and Eligibility (for example one per exam or course)">
+            <div className="flex justify-end">
+              <button
+                type="button"
+                onClick={() => updateField('cutoffs', [...(formData.cutoffs || []), { title: '', table: [], description: '' }])}
+                className="text-xs bg-d2c-royal/10 text-d2c-royal hover:bg-d2c-royal hover:text-white px-3 py-1.5 rounded-lg font-bold transition-colors flex items-center gap-1"
+              >
+                <Plus className="w-3.5 h-3.5" /> Add Cutoff Card
+              </button>
+            </div>
+            {(formData.cutoffs || []).length === 0 ? (
+              <div className="p-6 rounded-2xl border border-dashed border-gray-200 text-center text-xs text-gray-400 bg-gray-50/50">No cutoff cards added.</div>
+            ) : (
+              <div className="space-y-4">
+                {(formData.cutoffs || []).map((co: any, idx: number) => (
+                  <div key={idx} className="p-4 rounded-xl border border-gray-200 bg-gray-50/40 space-y-3">
+                    <div className="flex items-center gap-3">
+                      <input
+                        type="text"
+                        value={co.title || ''}
+                        onChange={(e) => {
+                          const list = [...formData.cutoffs];
+                          list[idx] = { ...list[idx], title: e.target.value };
+                          updateField('cutoffs', list);
+                        }}
+                        placeholder="Card title (e.g. WBJEE 2025 closing ranks)"
+                        className="flex-1 text-xs font-bold px-3 py-2 rounded-lg border border-gray-200 bg-white outline-none focus:border-d2c-royal"
+                      />
+                      <button
+                        type="button"
+                        onClick={() => updateField('cutoffs', formData.cutoffs.filter((_: any, i: number) => i !== idx))}
+                        className="text-gray-400 hover:text-red-500 p-1 transition-colors"
+                      >
+                        <Trash2 className="w-4 h-4" />
+                      </button>
+                    </div>
+                    <KeyValueEditor
+                      label="Rows"
+                      items={co.table || []}
+                      onChange={(table) => {
+                        const list = [...formData.cutoffs];
+                        list[idx] = { ...list[idx], table };
+                        updateField('cutoffs', list);
+                      }}
+                      keyHeader="Branch / Category"
+                      valueHeader="Rank"
+                      keyPlaceholder="e.g. CSE (General)"
+                      valuePlaceholder="e.g. 8,500"
+                    />
+                    <input
+                      type="text"
+                      value={co.description || ''}
+                      onChange={(e) => {
+                        const list = [...formData.cutoffs];
+                        list[idx] = { ...list[idx], description: e.target.value };
+                        updateField('cutoffs', list);
+                      }}
+                      placeholder="Note under the card (optional)"
+                      className="w-full text-xs px-3 py-2 rounded-lg border border-gray-200 bg-white outline-none focus:border-d2c-royal"
+                    />
+                  </div>
+                ))}
+              </div>
+            )}
+          </SectionCard>
         </div>
       )}
 
@@ -734,7 +864,7 @@ export function CollegeEditForm({ initialData = {}, isNew = false }: CollegeEdit
                     const list = formData.placements?.topRecruiters || [];
                     updateField('placements', {
                       ...formData.placements,
-                      topRecruiters: [...list, { category: 'Tech & IT', companies: ['Google', 'Microsoft', 'Amazon'] }]
+                      topRecruiters: [...list, { category: '', companies: [] }]
                     });
                   }}
                   className="text-xs bg-d2c-royal/10 text-d2c-royal hover:bg-d2c-royal hover:text-white px-3 py-1.5 rounded-lg font-bold transition-colors flex items-center gap-1"
@@ -811,7 +941,7 @@ export function CollegeEditForm({ initialData = {}, isNew = false }: CollegeEdit
               label="Application Steps (Timeline)"
               value={formData.admissions?.process || []}
               onChange={(process) => updateField('admissions', { ...formData.admissions, process })}
-              placeholder="e.g. Step 1: Submit entrance exam scorecard / Direct enquiry"
+              placeholder="e.g. Step 1: Submit entrance exam scorecard"
               hint="Numbered sequential steps displayed on the timeline"
             />
 
@@ -852,7 +982,7 @@ export function CollegeEditForm({ initialData = {}, isNew = false }: CollegeEdit
                   const list = formData.scholarships || [];
                   updateField('scholarships', [
                     ...list,
-                    { title: 'Merit Scholarship', items: [{ label: '>90% in 12th Boards', value: '50% Tuition Waiver' }] }
+                    { title: '', items: [{ label: '', value: '' }] }
                   ]);
                 }}
                 className="text-xs bg-d2c-royal/10 text-d2c-royal hover:bg-d2c-royal hover:text-white px-3 py-1.5 rounded-lg font-bold transition-colors flex items-center gap-1"
@@ -949,7 +1079,7 @@ export function CollegeEditForm({ initialData = {}, isNew = false }: CollegeEdit
                         type="text"
                         value={faq.question || ''}
                         onChange={(e) => updateFaq(idx, 'question', e.target.value)}
-                        placeholder="Question (e.g. Is direct admission through management quota available?)"
+                        placeholder="Question (e.g. Is management quota admission available?)"
                         className="flex-1 text-xs font-bold px-3 py-2 rounded-lg border border-gray-200 bg-white outline-none focus:border-d2c-royal"
                       />
                       <button
@@ -1039,16 +1169,141 @@ export function CollegeEditForm({ initialData = {}, isNew = false }: CollegeEdit
         </div>
       )}
 
-      {/* Tab: SEO & AEO Suite */}
+      {/* Tab: Headings, CTA & Links */}
+      {activeTab === 'page-text' && (
+        <div className="space-y-6">
+          <SectionCard title="Main Heading (H1)" icon={Type} description="Leave as the default to keep it following the college name">
+            <input
+              type="text"
+              value={formData.h1 || ''}
+              onChange={(e) => updateField('h1', e.target.value)}
+              placeholder={defaultH1(formData)}
+              className={inputCls}
+            />
+          </SectionCard>
+
+          <SectionCard title="Section Headings" icon={Type} description="Leave a field empty to use the default shown as placeholder (the shared defaults live in Content > College detail pages)">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {SECTION_HEADING_FIELDS.map((f) => (
+                <div key={f.key}>
+                  <label className="block text-xs font-semibold text-gray-600 mb-1">{f.label}</label>
+                  <input
+                    type="text"
+                    value={formData.seo?.sectionHeadings?.[f.key] || ''}
+                    onChange={(e) =>
+                      updateField('seo', {
+                        ...(formData.seo || {}),
+                        sectionHeadings: { ...(formData.seo?.sectionHeadings || {}), [f.key]: e.target.value },
+                      })
+                    }
+                    placeholder={f.template(formData.name || 'College', formData.courses?.[0] || 'B.Tech')}
+                    className="w-full text-sm px-3 py-2.5 rounded-xl border border-gray-200 focus:border-d2c-royal outline-none"
+                  />
+                </div>
+              ))}
+            </div>
+          </SectionCard>
+
+          <SectionCard title="Help Call-to-Action" icon={Sparkles} description="The dark box at the end of the page. Empty fields use the shared defaults.">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label className="block text-xs font-semibold text-gray-600 mb-1">Headline</label>
+                <input type="text" value={formData.seo?.cta?.headline || ''} onChange={(e) => updateField('seo', { ...(formData.seo || {}), cta: { ...(formData.seo?.cta || {}), headline: e.target.value } })} placeholder="Need Help with Admission?" className="w-full text-sm px-3 py-2.5 rounded-xl border border-gray-200 focus:border-d2c-royal outline-none" />
+              </div>
+              <div>
+                <label className="block text-xs font-semibold text-gray-600 mb-1">Call button text</label>
+                <input type="text" value={formData.seo?.cta?.buttonText || ''} onChange={(e) => updateField('seo', { ...(formData.seo || {}), cta: { ...(formData.seo?.cta || {}), buttonText: e.target.value } })} placeholder="Talk to Expert" className="w-full text-sm px-3 py-2.5 rounded-xl border border-gray-200 focus:border-d2c-royal outline-none" />
+              </div>
+              <div className="md:col-span-2">
+                <label className="block text-xs font-semibold text-gray-600 mb-1">Text</label>
+                <textarea rows={2} value={formData.seo?.cta?.subtext || ''} onChange={(e) => updateField('seo', { ...(formData.seo || {}), cta: { ...(formData.seo?.cta || {}), subtext: e.target.value } })} placeholder={`Our expert counselors are ready to guide you through the entire admission process for ${formData.name || 'this college'}.`} className="w-full text-sm px-3 py-2.5 rounded-xl border border-gray-200 focus:border-d2c-royal outline-none" />
+              </div>
+            </div>
+          </SectionCard>
+
+          <SectionCard title="Extra FAQs (shown before the FAQs above)" icon={Award} description="Question and answer pairs added at the top of the FAQ section and to the FAQ structured data" collapsible defaultOpen={false}>
+            <div className="flex justify-end">
+              <button
+                type="button"
+                onClick={() => updateField('seo', { ...(formData.seo || {}), aeoFaqs: [...(formData.seo?.aeoFaqs || []), { question: '', answer: '' }] })}
+                className="text-xs bg-d2c-royal/10 text-d2c-royal hover:bg-d2c-royal hover:text-white px-3 py-1.5 rounded-lg font-bold transition-colors flex items-center gap-1"
+              >
+                <Plus className="w-3.5 h-3.5" /> Add FAQ
+              </button>
+            </div>
+            {(formData.seo?.aeoFaqs || []).map((faq: any, idx: number) => (
+              <div key={idx} className="p-4 rounded-xl border border-gray-200 bg-gray-50/50 space-y-2">
+                <div className="flex items-center gap-3">
+                  <input
+                    type="text"
+                    value={faq.question || ''}
+                    onChange={(e) => {
+                      const list = [...formData.seo.aeoFaqs];
+                      list[idx] = { ...list[idx], question: e.target.value };
+                      updateField('seo', { ...formData.seo, aeoFaqs: list });
+                    }}
+                    placeholder="Question"
+                    className="flex-1 text-xs font-bold px-3 py-2 rounded-lg border border-gray-200 bg-white outline-none focus:border-d2c-royal"
+                  />
+                  <button type="button" onClick={() => updateField('seo', { ...formData.seo, aeoFaqs: formData.seo.aeoFaqs.filter((_: any, i: number) => i !== idx) })} className="text-gray-400 hover:text-red-500 p-1.5 transition-colors">
+                    <Trash2 className="w-4 h-4" />
+                  </button>
+                </div>
+                <textarea
+                  rows={2}
+                  value={faq.answer || ''}
+                  onChange={(e) => {
+                    const list = [...formData.seo.aeoFaqs];
+                    list[idx] = { ...list[idx], answer: e.target.value };
+                    updateField('seo', { ...formData.seo, aeoFaqs: list });
+                  }}
+                  placeholder="Answer"
+                  className="w-full text-xs px-3 py-2 rounded-lg border border-gray-200 bg-white outline-none focus:border-d2c-royal"
+                />
+              </div>
+            ))}
+          </SectionCard>
+
+          <SectionCard title="Recommended Links" icon={Globe} description="Link cards shown above the call-to-action box" collapsible defaultOpen={false}>
+            <div className="flex justify-end">
+              <button
+                type="button"
+                onClick={() => updateField('seo', { ...(formData.seo || {}), internalLinks: [...(formData.seo?.internalLinks || []), { anchorText: '', targetUrl: '', context: '' }] })}
+                className="text-xs bg-d2c-royal/10 text-d2c-royal hover:bg-d2c-royal hover:text-white px-3 py-1.5 rounded-lg font-bold transition-colors flex items-center gap-1"
+              >
+                <Plus className="w-3.5 h-3.5" /> Add Link
+              </button>
+            </div>
+            {(formData.seo?.internalLinks || []).map((link: any, idx: number) => (
+              <div key={idx} className="grid grid-cols-1 md:grid-cols-[1fr_1fr_1fr_auto] gap-2 items-center">
+                {(['anchorText', 'targetUrl', 'context'] as const).map((k) => (
+                  <input
+                    key={k}
+                    type="text"
+                    value={link[k] || ''}
+                    onChange={(e) => {
+                      const list = [...formData.seo.internalLinks];
+                      list[idx] = { ...list[idx], [k]: e.target.value };
+                      updateField('seo', { ...formData.seo, internalLinks: list });
+                    }}
+                    placeholder={k === 'anchorText' ? 'Link text' : k === 'targetUrl' ? '/blog/some-guide' : 'Short description (optional)'}
+                    className="text-xs px-3 py-2 rounded-lg border border-gray-200 bg-white outline-none focus:border-d2c-royal"
+                  />
+                ))}
+                <button type="button" onClick={() => updateField('seo', { ...formData.seo, internalLinks: formData.seo.internalLinks.filter((_: any, i: number) => i !== idx) })} className="text-gray-400 hover:text-red-500 p-1.5 transition-colors">
+                  <Trash2 className="w-4 h-4" />
+                </button>
+              </div>
+            ))}
+          </SectionCard>
+        </div>
+      )}
+
+      {/* Tab: SEO */}
       {activeTab === 'seo-suite' && (
-        <SeoSuiteEditor
-          value={formData.seo}
-          onChange={(newSeo) => updateField('seo', newSeo)}
-          pageName={formData.name}
-          pageSlug={formData.slug}
-          prefix="colleges"
-          defaultDescription={formData.description || formData.about}
-        />
+        <SectionCard title="Search and social tags" icon={Sparkles} description="Shown as the page emits them today. Only the fields you change are stored; the rest keep following the college details.">
+          <SeoField value={seoEdit} onChange={setSeoEdit} />
+        </SectionCard>
       )}
 
       {/* Save Bar */}

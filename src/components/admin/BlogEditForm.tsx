@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { 
   FileText, 
@@ -26,7 +26,10 @@ import {
   PhoneCall
 } from 'lucide-react';
 import Link from 'next/link';
-import { ImageUploader } from './ImageUploader';
+import { ImageField } from './cms/ImageField';
+import { SeoField } from './cms/SeoField';
+import type { SeoFields } from '@/lib/cms/types';
+import { blogDerivedSeo, blogSeo, mergeSeo, seoOverrides } from '@/lib/record-seo';
 import { SlugInput } from './SlugInput';
 import { SectionCard } from './SectionCard';
 import { AdminFormSaveBar } from './AdminFormSaveBar';
@@ -62,11 +65,28 @@ export function BlogEditForm({ initialData = {}, isNew = false }: BlogEditFormPr
     date: initialData.date || new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }),
     readTime: initialData.readTime || initialData.read_time || '5 min read',
     imageUrl: initialData.imageUrl || initialData.image_url || 'https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&q=80&w=1200',
-    tags: initialData.tags || ['Admission Guidance', 'Direct Admission', 'Direct2Campus'],
+    imageAlt: initialData.seo?.imageAlt || '',
+    tags: initialData.tags || ['Admission Guidance', 'Direct2Campus'],
     published: initialData.published ?? true,
-    seoTitle: initialData.seoTitle || initialData.seo_title || '',
-    metaDescription: initialData.metaDescription || initialData.meta_description || ''
+    // The SEO section below replaces these two legacy fields (they are sent empty on save).
+    seoTitle: '',
+    metaDescription: ''
   });
+
+  // Only the SEO values that differ from what the site derives on its own are stored, so untouched
+  // fields keep following the title, excerpt and image. The old seoTitle / metaDescription of an
+  // existing post are folded into these overrides.
+  const [seoEdits, setSeoEdits] = useState<SeoFields>(() =>
+    seoOverrides(
+      blogSeo(initialData, initialData.slug || ''),
+      blogDerivedSeo({ ...initialData, seoTitle: '', metaDescription: '' }, initialData.slug || ''),
+    ),
+  );
+  const derivedSeo = useMemo(
+    () => blogDerivedSeo({ ...formData, seoTitle: '', metaDescription: '' }, formData.slug || ''),
+    [formData],
+  );
+  const effectiveSeo = useMemo(() => mergeSeo(derivedSeo, seoEdits), [derivedSeo, seoEdits]);
 
   const [viewMode, setViewMode] = useState<'edit' | 'split' | 'preview'>('edit');
   const [devicePreview, setDevicePreview] = useState<'desktop' | 'tablet' | 'mobile'>('desktop');
@@ -96,16 +116,26 @@ export function BlogEditForm({ initialData = {}, isNew = false }: BlogEditFormPr
       const url = isNew && !formData.id ? '/api/admin/blogs' : `/api/admin/blogs/${formData.id || formData.slug}`;
       const method = isNew && !formData.id ? 'POST' : 'PUT';
 
+      const alt = String(formData.imageAlt || '').trim();
+      const seoBlock: Record<string, unknown> | undefined =
+        Object.keys(seoEdits).length || alt ? { ...seoEdits, ...(alt ? { imageAlt: alt } : {}) } : undefined;
+      const { imageAlt: _imageAlt, ...rest } = formData;
+
       const res = await fetch(url, {
         method,
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData)
+        body: JSON.stringify({ ...rest, seoTitle: '', metaDescription: '', seo: seoBlock })
       });
 
-      const json = await res.json();
+      let json: any = {};
+      try {
+        json = await res.json();
+      } catch {
+        json = {};
+      }
 
       if (!res.ok || json.error) {
-        throw new Error(json.error || 'Failed to save blog post');
+        throw new Error(json.error || `Failed to save blog post (HTTP ${res.status})`);
       }
 
       const savedBlog = json.blog || formData;
@@ -361,7 +391,7 @@ export function BlogEditForm({ initialData = {}, isNew = false }: BlogEditFormPr
                     required
                     value={formData.title}
                     onChange={(e) => updateField('title', e.target.value)}
-                    placeholder="e.g. Complete Guide to Direct Admission & Management Quota 2027"
+                    placeholder="e.g. Complete Guide to Admission & Management Quota 2027"
                     className="w-full px-4 py-3 text-base rounded-xl border border-gray-200 focus:border-d2c-royal focus:ring-1 focus:ring-d2c-royal outline-none font-medium"
                   />
                 </div>
@@ -455,12 +485,27 @@ export function BlogEditForm({ initialData = {}, isNew = false }: BlogEditFormPr
               icon={ImageIcon} 
               description="High-resolution banner displayed at the top of the article and in blog directory cards"
             >
-              <ImageUploader
-                label="Article Cover Image URL"
-                value={formData.imageUrl}
-                onChange={(url) => updateField('imageUrl', url)}
-                folder="blogs"
-              />
+              <div className="space-y-4">
+                <div>
+                  <label className="block text-sm font-semibold text-d2c-navy mb-1.5">Article cover image</label>
+                  <ImageField
+                    value={formData.imageUrl}
+                    onChange={(url) => updateField('imageUrl', url)}
+                    folder="blogs"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-semibold text-d2c-navy mb-1.5">Image alt text</label>
+                  <input
+                    type="text"
+                    value={formData.imageAlt}
+                    onChange={(e) => updateField('imageAlt', e.target.value)}
+                    placeholder={formData.title || 'Describe the image for screen readers'}
+                    className="w-full px-4 py-2.5 text-sm rounded-xl border border-gray-200 focus:border-d2c-royal outline-none"
+                  />
+                  <p className="text-[11px] text-gray-400 mt-1">Leave empty to use the article title.</p>
+                </div>
+              </div>
             </SectionCard>
 
             {/* Section 3: Excerpt & Full Content */}
@@ -533,37 +578,9 @@ export function BlogEditForm({ initialData = {}, isNew = false }: BlogEditFormPr
             <SectionCard 
               title="Search Engine Optimization (SEO)" 
               icon={Globe} 
-              description="Custom title tags and meta descriptions for Google SERP visibility"
+              description="Title, description, keywords, canonical address, search visibility, social cards and structured data"
             >
-              <div className="space-y-4">
-                <div>
-                  <div className="flex items-center justify-between mb-1">
-                    <label className="block text-sm font-semibold text-d2c-navy">SEO Title Tag</label>
-                    <span className="text-[11px] text-gray-400">{(formData.seoTitle || formData.title || '').length} / 60 chars</span>
-                  </div>
-                  <input
-                    type="text"
-                    value={formData.seoTitle}
-                    onChange={(e) => updateField('seoTitle', e.target.value)}
-                    placeholder={formData.title || 'Custom search engine title...'}
-                    className="w-full px-4 py-2.5 text-sm rounded-xl border border-gray-200 focus:border-d2c-royal outline-none"
-                  />
-                </div>
-
-                <div>
-                  <div className="flex items-center justify-between mb-1">
-                    <label className="block text-sm font-semibold text-d2c-navy">Meta Description</label>
-                    <span className="text-[11px] text-gray-400">{(formData.metaDescription || formData.excerpt || '').length} / 160 chars</span>
-                  </div>
-                  <textarea
-                    rows={2}
-                    value={formData.metaDescription}
-                    onChange={(e) => updateField('metaDescription', e.target.value)}
-                    placeholder={formData.excerpt || 'Brief description for search snippet (140-160 characters)...'}
-                    className="w-full px-4 py-2.5 text-sm rounded-xl border border-gray-200 focus:border-d2c-royal outline-none"
-                  />
-                </div>
-              </div>
+              <SeoField value={effectiveSeo} onChange={(v) => setSeoEdits(seoOverrides(v, derivedSeo))} />
             </SectionCard>
           </div>
         )}
@@ -661,7 +678,7 @@ export function BlogEditForm({ initialData = {}, isNew = false }: BlogEditFormPr
                     <div className="rounded-2xl overflow-hidden shadow-md border border-gray-150">
                       <img
                         src={formData.imageUrl}
-                        alt={formData.title || 'Blog cover'}
+                        alt={formData.imageAlt || formData.title || 'Blog cover'}
                         className="w-full max-h-[360px] object-cover"
                         onError={(e: any) => {
                           e.target.src = 'https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&q=80&w=800';
@@ -685,13 +702,13 @@ export function BlogEditForm({ initialData = {}, isNew = false }: BlogEditFormPr
                   {/* Admission Counseling Callout */}
                   <div className="p-6 bg-gradient-to-r from-d2c-navy to-d2c-royal rounded-2xl text-white space-y-3 shadow-md">
                     <div className="flex items-center gap-2 text-d2c-gold font-bold text-xs uppercase tracking-wider">
-                      <Sparkles className="w-4 h-4" /> Direct Admission Support
+                      <Sparkles className="w-4 h-4" /> Admission Support
                     </div>
                     <h4 className="text-lg font-bold font-sora">
                       Need Personalized Admission Counseling?
                     </h4>
                     <p className="text-xs text-white/80 leading-relaxed">
-                      Connect with verified academic advisors for direct admissions, cutoff analysis, and scholarship options.
+                      Connect with verified academic advisors for admission guidance, cutoff analysis, and scholarship options.
                     </p>
                     <div className="pt-1 flex items-center gap-3">
                       <button
@@ -729,10 +746,10 @@ export function BlogEditForm({ initialData = {}, isNew = false }: BlogEditFormPr
                         https://direct2campus.com › blog › <span className="text-gray-900">{formData.slug || 'article-slug'}</span>
                       </div>
                       <div className="text-base text-[#1a0dab] font-medium hover:underline cursor-pointer truncate">
-                        {formData.seoTitle || formData.title || 'Article Title'}
+                        {effectiveSeo.title || formData.title || 'Article Title'}
                       </div>
                       <div className="text-xs text-[#4d5156] line-clamp-2 leading-relaxed">
-                        {formData.metaDescription || formData.excerpt || 'Article summary description snippet appears here on search engine result pages.'}
+                        {effectiveSeo.description || formData.excerpt || 'Article summary description snippet appears here on search engine result pages.'}
                       </div>
                     </div>
                   </div>

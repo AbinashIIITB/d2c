@@ -6,29 +6,18 @@ import { usePathname, useRouter } from "next/navigation"
 import { motion, AnimatePresence } from "framer-motion"
 import { Menu, X, ChevronDown, PhoneCall, Search, ArrowLeft, Building2, BookOpen } from "lucide-react"
 
-const NAV_LINKS = [
-  { label: "Home", href: "/" },
-  {
-    label: "Colleges",
-    href: "/colleges",
-    dropdown: [
-      { label: "Engineering", href: "/colleges?type=engineering" },
-      { label: "Medical", href: "/colleges?type=medical" },
-      { label: "Management", href: "/colleges?type=management" },
-    ],
-  },
-  { label: "Exams", href: "/exams" },
-  { label: "Blogs", href: "/blog" },
-  { label: "Contact Us", href: "/contact" },
-]
-
 import { AutoSuggestSearch } from "@/components/ui/AutoSuggestSearch"
 import { trackApplyClick } from "@/lib/gtag"
 import { NavbarMobileMenu } from "@/components/layout/NavbarMobileMenu"
 import { NavbarMobileSearch } from "@/components/layout/NavbarMobileSearch"
 import { ApplyModal } from "@/components/layout/ApplyModal"
+import { useSiteContent } from "@/components/cms/SiteContentProvider"
+import { navbarDefaults, type NavbarContent } from "@/content/navbar"
 
-export function Navbar() {
+export function Navbar({ content = navbarDefaults }: { content?: NavbarContent }) {
+  const { site } = useSiteContent()
+  const NAV_LINKS = content.links
+  const brand = site.brand
   const [isScrolled, setIsScrolled] = useState(false)
   const [isVisible, setIsVisible] = useState(true)
   const [isHovered, setIsHovered] = useState(false)
@@ -163,7 +152,7 @@ export function Navbar() {
                     setMobileQuery("")
                   }}
                   className="p-1.5 rounded-lg text-d2c-navy hover:bg-gray-100 transition-colors shrink-0"
-                  aria-label="Close search"
+                  aria-label={content.closeSearchLabel}
                 >
                   <ArrowLeft className="w-5 h-5" />
                 </button>
@@ -172,7 +161,7 @@ export function Navbar() {
                   <input
                     ref={mobileSearchInputRef}
                     type="text"
-                    placeholder="Search colleges, exams..."
+                    placeholder={content.searchPlaceholder}
                     className="flex-1 bg-transparent outline-none text-sm text-d2c-navy placeholder:text-gray-400 font-medium w-full"
                     value={mobileQuery}
                     onChange={(e) => {
@@ -202,7 +191,7 @@ export function Navbar() {
                 <Link href="/" className="flex items-center gap-2 z-50 shrink-0">
                   <span className={`font-sora font-bold text-lg tracking-tight transition-colors duration-300 ${showSolidBg ? "text-d2c-navy" : "text-white"
                     }`}>
-                    Direct<span className="text-d2c-royal">2</span>Campus
+                    {brand.before}<span className="text-d2c-royal">{brand.accent}</span>{brand.after}
                   </span>
                 </Link>
 
@@ -215,14 +204,14 @@ export function Navbar() {
                       setMobileSearchOpen(true)
                       setMobileMenuOpen(false)
                     }}
-                    aria-label="Search"
+                    aria-label={content.searchLabel}
                   >
                     <Search className="w-4 h-4" />
                   </button>
                   <button
                     className="p-1.5 z-50 rounded-lg relative w-8 h-8 flex items-center justify-center overflow-hidden"
                     onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                    aria-label="Toggle menu"
+                    aria-label={content.toggleMenuLabel}
                   >
                     <AnimatePresence mode="wait">
                       {mobileMenuOpen ? (
@@ -259,7 +248,7 @@ export function Navbar() {
           <Link href="/" className="hidden min-[1025px]:flex items-center gap-2 z-50 shrink-0 pr-4">
             <span className={`font-sora font-bold text-lg min-[1025px]:text-xl tracking-tight transition-colors duration-300 ${showSolidBg ? "text-d2c-navy" : "text-white"
               }`}>
-              Direct<span className="text-d2c-royal">2</span>Campus
+              {brand.before}<span className="text-d2c-royal">{brand.accent}</span>{brand.after}
             </span>
           </Link>
 
@@ -269,7 +258,7 @@ export function Navbar() {
               <div
                 key={link.label}
                 className="relative"
-                onMouseEnter={() => link.dropdown && setActiveDropdown(link.label)}
+                onMouseEnter={() => link.dropdown && link.dropdown.length > 0 && setActiveDropdown(link.label)}
                 onMouseLeave={() => setActiveDropdown(null)}
               >
                 <Link
@@ -288,7 +277,7 @@ export function Navbar() {
                   `}
                 >
                   {link.label}
-                  {link.dropdown && (
+                  {link.dropdown && link.dropdown.length > 0 && (
                     <ChevronDown
                       className={`w-3.5 h-3.5 transition-transform duration-200 ${activeDropdown === link.label ? "rotate-180" : ""
                         }`}
@@ -297,7 +286,7 @@ export function Navbar() {
                 </Link>
 
                 {/* ── DROPDOWN ── */}
-                {link.dropdown && (
+                {link.dropdown && link.dropdown.length > 0 && (
                   <AnimatePresence>
                     {activeDropdown === link.label && (
                       <motion.div
@@ -339,7 +328,7 @@ export function Navbar() {
                 onClick={() => setSearchOpen(!searchOpen)}
                 className={`p-2 rounded-full transition-colors flex items-center justify-center ${showSolidBg ? "text-d2c-navy hover:bg-gray-100" : "text-white hover:bg-white/10"
                   }`}
-                aria-label="Search"
+                aria-label={content.searchLabel}
               >
                 <Search className="w-5 h-5" />
               </button>
@@ -353,7 +342,7 @@ export function Navbar() {
                     transition={{ duration: 0.18 }}
                     className="absolute top-full right-0 pt-3 z-[60] w-[340px]"
                   >
-                    <AutoSuggestSearch mode="all" placeholder="Search colleges, exams..." className="w-full shadow-[0_8px_30px_rgb(0,0,0,0.12)] rounded-xl" autoFocus={true} />
+                    <AutoSuggestSearch mode="all" placeholder={content.searchPlaceholder} className="w-full shadow-[0_8px_30px_rgb(0,0,0,0.12)] rounded-xl" autoFocus={true} />
                   </motion.div>
                 )}
               </AnimatePresence>
@@ -370,7 +359,7 @@ export function Navbar() {
                 }`}
             >
               <PhoneCall className="w-4 h-4" />
-              Apply Now
+              {content.applyLabel}
             </button>
           </div>
         </div>
@@ -387,7 +376,7 @@ export function Navbar() {
       />
 
       {/* ── MOBILE MENU ── */}
-      <NavbarMobileMenu isOpen={mobileMenuOpen} navLinks={NAV_LINKS} />
+      <NavbarMobileMenu isOpen={mobileMenuOpen} navLinks={NAV_LINKS} callbackLabel={content.callbackLabel} />
 
       {/* ── APPLY MODAL ── */}
       <ApplyModal 

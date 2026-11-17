@@ -35,15 +35,17 @@ export async function checkAdminAuth() {
   }
 }
 
+// The repository is public, so these fallback passwords are visible to anyone.
+// Set ADMIN_PASSWORD / EDITOR_PASSWORD (and ADMIN_JWT_SECRET) in the Vercel environment to override them.
 export const ADMIN_CREDENTIALS = {
   admin: {
     username: 'admin',
-    password: 'securepassword123', // Hardcoded securely per requirements
+    password: process.env.ADMIN_PASSWORD || 'securepassword123',
     role: 'SUPER_ADMIN'
   },
   editor: {
     username: 'editor',
-    password: 'editorpassword123',
+    password: process.env.EDITOR_PASSWORD || 'editorpassword123',
     role: 'EDITOR'
   }
 };

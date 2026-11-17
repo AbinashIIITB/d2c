@@ -30,6 +30,7 @@ export default function AdminBlogsPage() {
     try {
       const res = await fetch('/api/admin/blogs');
       const data = await res.json();
+      if (!res.ok) throw new Error(data?.error || `HTTP ${res.status}`);
       setBlogs(Array.isArray(data) ? data : []);
     } catch (err) {
       console.error('Failed to load blogs:', err);
@@ -52,10 +53,15 @@ export default function AdminBlogsPage() {
       if (res.ok) {
         setBlogs(prev => prev.filter(b => String(b.id) !== String(id)));
       } else {
-        alert('Failed to delete blog post');
+        let message = `HTTP ${res.status}`;
+        try {
+          const body = await res.json();
+          if (body?.error) message = body.error;
+        } catch {}
+        alert(`Failed to delete blog post: ${message}`);
       }
-    } catch (err) {
-      alert('Error deleting post');
+    } catch (err: any) {
+      alert(`Error deleting post: ${err?.message || 'network error'}`);
     } finally {
       setDeletingId(null);
     }

@@ -18,14 +18,15 @@ import {
   FileCheck2
 } from 'lucide-react';
 import Link from 'next/link';
+import { iemFormDefaults, type IemFormContent } from '@/content/iem-branch.schema';
 
 interface IemEnquiryFormProps {
   sectionId?: string;
   defaultBranch?: string;
   defaultCourse?: string;
   defaultCampus?: string;
-  title?: string;
-  subtitle?: string;
+  /** Editable text, labels and dropdown options (see src/content/iem-branch.schema.ts). */
+  content?: IemFormContent;
   showCourseSelector?: boolean;
 }
 
@@ -34,8 +35,7 @@ export function IemEnquiryForm({
   defaultBranch = 'Computer Science & Engineering (CSE)',
   defaultCourse = 'B.Tech',
   defaultCampus = 'Salt Lake',
-  title = 'Get B.Tech Admission Guidance for IEM Kolkata',
-  subtitle = 'Share your details and the Direct2Campus team can help you understand the B.Tech programme options and admission process.',
+  content = iemFormDefaults,
   showCourseSelector = false
 }: IemEnquiryFormProps) {
   const [formData, setFormData] = useState({
@@ -85,16 +85,16 @@ export function IemEnquiryForm({
 
     // Basic validation
     if (!formData.name.trim()) {
-      setErrorMsg('Please enter your full name');
+      setErrorMsg(content.errors.name);
       return;
     }
     const cleanPhone = formData.phone.replace(/[^0-9]/g, '');
     if (cleanPhone.length < 10) {
-      setErrorMsg('Please enter a valid 10-digit mobile number');
+      setErrorMsg(content.errors.phone);
       return;
     }
     if (!formData.consent) {
-      setErrorMsg('Please agree to the contact consent to proceed');
+      setErrorMsg(content.errors.consent);
       return;
     }
 
@@ -145,13 +145,13 @@ export function IemEnquiryForm({
           <div className="text-center space-y-3 mb-8">
             <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-d2c-royal/10 text-d2c-royal border border-d2c-royal/20">
               <Sparkles className="w-3.5 h-3.5 text-d2c-gold" />
-              2027 Admission Guidance
+              {content.badge}
             </span>
             <h2 className="text-2xl md:text-4xl font-sora font-bold text-d2c-navy">
-              {title}
+              {content.title}
             </h2>
             <p className="text-sm md:text-base text-gray-600 max-w-xl mx-auto leading-relaxed">
-              {subtitle}
+              {content.subtitle}
             </p>
           </div>
 
@@ -162,25 +162,25 @@ export function IemEnquiryForm({
                 <CheckCircle2 className="w-8 h-8" />
               </div>
               <h3 className="text-xl font-sora font-bold text-emerald-950">
-                Enquiry Submitted Successfully!
+                {content.successTitle}
               </h3>
               <p className="text-sm text-emerald-800 max-w-md mx-auto leading-relaxed">
-                Thank you for contacting Direct2Campus. Your B.Tech admission enquiry has been received. Our senior academic guidance team will contact you shortly using the details provided.
+                {content.successBody}
               </p>
               <div className="pt-3 flex flex-wrap justify-center gap-3">
                 <a
-                  href="tel:+916200325137"
+                  href={content.callHref}
                   className="px-5 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold transition-all shadow-sm flex items-center gap-2"
                 >
                   <PhoneCall className="w-3.5 h-3.5" />
-                  <span>Call Admissions Now (+91 62003 25137)</span>
+                  <span>{content.callLabel}</span>
                 </a>
                 <button
                   type="button"
                   onClick={() => setSubmitted(false)}
                   className="px-5 py-2.5 rounded-xl bg-white border border-emerald-200 hover:bg-emerald-50 text-emerald-800 text-xs font-bold transition-all"
                 >
-                  Submit Another Enquiry
+                  {content.submitAnotherLabel}
                 </button>
               </div>
             </div>
@@ -198,7 +198,7 @@ export function IemEnquiryForm({
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
                   <label className="block text-xs font-bold text-d2c-navy uppercase tracking-wider mb-1.5">
-                    Student Full Name <span className="text-rose-500">*</span>
+                    {content.labels.name} <span className="text-rose-500">*</span>
                   </label>
                   <div className="relative">
                     <User className="w-4 h-4 text-gray-400 absolute left-3.5 top-3.5" />
@@ -206,7 +206,7 @@ export function IemEnquiryForm({
                       type="text"
                       name="name"
                       required
-                      placeholder="e.g. Rahul Sharma"
+                      placeholder={content.placeholders.name}
                       value={formData.name}
                       onChange={handleChange}
                       className="w-full pl-10 pr-4 py-3 rounded-xl border border-gray-200 text-sm focus:border-d2c-royal focus:ring-2 focus:ring-d2c-royal/20 outline-none transition-all bg-white"
@@ -216,7 +216,7 @@ export function IemEnquiryForm({
 
                 <div>
                   <label className="block text-xs font-bold text-d2c-navy uppercase tracking-wider mb-1.5">
-                    Mobile Number <span className="text-rose-500">*</span>
+                    {content.labels.phone} <span className="text-rose-500">*</span>
                   </label>
                   <div className="relative">
                     <span className="absolute left-3.5 top-3.5 text-xs font-bold text-gray-500">
@@ -226,7 +226,7 @@ export function IemEnquiryForm({
                       type="tel"
                       name="phone"
                       required
-                      placeholder="10-digit mobile number"
+                      placeholder={content.placeholders.phone}
                       value={formData.phone}
                       onChange={handleChange}
                       className="w-full pl-12 pr-4 py-3 rounded-xl border border-gray-200 text-sm focus:border-d2c-royal focus:ring-2 focus:ring-d2c-royal/20 outline-none transition-all bg-white font-mono"
@@ -239,14 +239,14 @@ export function IemEnquiryForm({
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
                   <label className="block text-xs font-bold text-d2c-navy uppercase tracking-wider mb-1.5">
-                    Email Address <span className="text-gray-400 font-normal lowercase">(optional)</span>
+                    {content.labels.email} <span className="text-gray-400 font-normal lowercase">{content.labels.emailHint}</span>
                   </label>
                   <div className="relative">
                     <Mail className="w-4 h-4 text-gray-400 absolute left-3.5 top-3.5" />
                     <input
                       type="email"
                       name="email"
-                      placeholder="rahul@example.com"
+                      placeholder={content.placeholders.email}
                       value={formData.email}
                       onChange={handleChange}
                       className="w-full pl-10 pr-4 py-3 rounded-xl border border-gray-200 text-sm focus:border-d2c-royal focus:ring-2 focus:ring-d2c-royal/20 outline-none transition-all bg-white"
@@ -256,14 +256,14 @@ export function IemEnquiryForm({
 
                 <div>
                   <label className="block text-xs font-bold text-d2c-navy uppercase tracking-wider mb-1.5">
-                    Current City / Location
+                    {content.labels.city}
                   </label>
                   <div className="relative">
                     <MapPin className="w-4 h-4 text-gray-400 absolute left-3.5 top-3.5" />
                     <input
                       type="text"
                       name="city"
-                      placeholder="e.g. Kolkata, Patna, Ranchi"
+                      placeholder={content.placeholders.city}
                       value={formData.city}
                       onChange={handleChange}
                       className="w-full pl-10 pr-4 py-3 rounded-xl border border-gray-200 text-sm focus:border-d2c-royal focus:ring-2 focus:ring-d2c-royal/20 outline-none transition-all bg-white"
@@ -276,7 +276,7 @@ export function IemEnquiryForm({
               {showCourseSelector && (
                 <div>
                   <label className="block text-xs font-bold text-d2c-navy uppercase tracking-wider mb-1.5">
-                    Interested Programme <span className="text-rose-500">*</span>
+                    {content.labels.course} <span className="text-rose-500">*</span>
                   </label>
                   <select
                     name="course"
@@ -284,11 +284,9 @@ export function IemEnquiryForm({
                     onChange={handleChange}
                     className="w-full px-4 py-3 rounded-xl border border-gray-200 text-sm focus:border-d2c-royal focus:ring-2 focus:ring-d2c-royal/20 outline-none transition-all bg-white font-medium text-gray-800"
                   >
-                    <option value="B.Tech">B.Tech (Bachelor of Technology)</option>
-                    <option value="BBA">BBA (Bachelor of Business Administration)</option>
-                    <option value="BCA">BCA (Bachelor of Computer Applications)</option>
-                    <option value="MBA">MBA (Master of Business Administration)</option>
-                    <option value="Other">Other Programme</option>
+                    {content.courseOptions.map((o) => (
+                      <option key={o.value} value={o.value}>{o.label}</option>
+                    ))}
                   </select>
                 </div>
               )}
@@ -297,7 +295,7 @@ export function IemEnquiryForm({
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
                   <label className="block text-xs font-bold text-d2c-navy uppercase tracking-wider mb-1.5">
-                    Preferred Specialisation / Branch <span className="text-rose-500">*</span>
+                    {content.labels.specialisation} <span className="text-rose-500">*</span>
                   </label>
                   <select
                     name="specialisation"
@@ -305,20 +303,15 @@ export function IemEnquiryForm({
                     onChange={handleChange}
                     className="w-full px-4 py-3 rounded-xl border border-gray-200 text-sm focus:border-d2c-royal focus:ring-2 focus:ring-d2c-royal/20 outline-none transition-all bg-white font-medium text-gray-800"
                   >
-                    <option value="Computer Science & Engineering (CSE)">Computer Science & Engineering (CSE)</option>
-                    <option value="CSE – Artificial Intelligence & Machine Learning">CSE – Artificial Intelligence & Machine Learning</option>
-                    <option value="Information Technology (IT)">Information Technology (IT)</option>
-                    <option value="Electronics & Communication Engineering (ECE)">Electronics & Communication Engineering (ECE)</option>
-                    <option value="Electrical Engineering">Electrical Engineering</option>
-                    <option value="Mechanical Engineering">Mechanical Engineering</option>
-                    <option value="Not sure / Need Counseling">Not sure / Need Counseling</option>
-                    <option value="Other / Management">Other / Management</option>
+                    {content.specialisationOptions.map((o) => (
+                      <option key={o.value} value={o.value}>{o.label}</option>
+                    ))}
                   </select>
                 </div>
 
                 <div>
                   <label className="block text-xs font-bold text-d2c-navy uppercase tracking-wider mb-1.5">
-                    Preferred Campus
+                    {content.labels.campus}
                   </label>
                   <select
                     name="campus"
@@ -326,9 +319,9 @@ export function IemEnquiryForm({
                     onChange={handleChange}
                     className="w-full px-4 py-3 rounded-xl border border-gray-200 text-sm focus:border-d2c-royal focus:ring-2 focus:ring-d2c-royal/20 outline-none transition-all bg-white font-medium text-gray-800"
                   >
-                    <option value="Salt Lake">IEM Salt Lake (Sector V, Kolkata)</option>
-                    <option value="New Town">IEM New Town Campus</option>
-                    <option value="Not sure / Open to both">Not sure / Open to both</option>
+                    {content.campusOptions.map((o) => (
+                      <option key={o.value} value={o.value}>{o.label}</option>
+                    ))}
                   </select>
                 </div>
               </div>
@@ -337,7 +330,7 @@ export function IemEnquiryForm({
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div>
                   <label className="block text-xs font-bold text-d2c-navy uppercase tracking-wider mb-1.5">
-                    Academic Status
+                    {content.labels.status}
                   </label>
                   <select
                     name="status"
@@ -345,15 +338,15 @@ export function IemEnquiryForm({
                     onChange={handleChange}
                     className="w-full px-3.5 py-3 rounded-xl border border-gray-200 text-xs focus:border-d2c-royal focus:ring-2 focus:ring-d2c-royal/20 outline-none transition-all bg-white"
                   >
-                    <option value="Class 12 Appearing">Class 12 Appearing (2027)</option>
-                    <option value="Class 12 Passed">Class 12 Passed</option>
-                    <option value="Graduate / Other">Graduate / Other</option>
+                    {content.statusOptions.map((o) => (
+                      <option key={o.value} value={o.value}>{o.label}</option>
+                    ))}
                   </select>
                 </div>
 
                 <div>
                   <label className="block text-xs font-bold text-d2c-navy uppercase tracking-wider mb-1.5">
-                    Class 12 Stream
+                    {content.labels.stream}
                   </label>
                   <select
                     name="stream"
@@ -361,15 +354,15 @@ export function IemEnquiryForm({
                     onChange={handleChange}
                     className="w-full px-3.5 py-3 rounded-xl border border-gray-200 text-xs focus:border-d2c-royal focus:ring-2 focus:ring-d2c-royal/20 outline-none transition-all bg-white"
                   >
-                    <option value="PCM">Physics, Chemistry, Maths (PCM)</option>
-                    <option value="PCB">Physics, Chemistry, Biology (PCB)</option>
-                    <option value="Commerce / Arts / Other">Commerce / Arts / Other</option>
+                    {content.streamOptions.map((o) => (
+                      <option key={o.value} value={o.value}>{o.label}</option>
+                    ))}
                   </select>
                 </div>
 
                 <div>
                   <label className="block text-xs font-bold text-d2c-navy uppercase tracking-wider mb-1.5">
-                    IEMJEE Exam Status
+                    {content.labels.exam}
                   </label>
                   <select
                     name="examStatus"
@@ -377,11 +370,9 @@ export function IemEnquiryForm({
                     onChange={handleChange}
                     className="w-full px-3.5 py-3 rounded-xl border border-gray-200 text-xs focus:border-d2c-royal focus:ring-2 focus:ring-d2c-royal/20 outline-none transition-all bg-white"
                   >
-                    <option value="IEMJEE applied">IEMJEE Applied</option>
-                    <option value="Appeared">Appeared for Exam</option>
-                    <option value="Result awaited">Result Awaited</option>
-                    <option value="Not applied yet">Not Applied Yet</option>
-                    <option value="Other Exam (WBJEE/JEE Main)">Other Exam (WBJEE / JEE Main)</option>
+                    {content.examOptions.map((o) => (
+                      <option key={o.value} value={o.value}>{o.label}</option>
+                    ))}
                   </select>
                 </div>
               </div>
@@ -397,11 +388,11 @@ export function IemEnquiryForm({
                     className="w-4 h-4 mt-0.5 rounded border-gray-300 text-d2c-royal focus:ring-d2c-royal shrink-0"
                   />
                   <span className="text-xs text-gray-600 leading-relaxed">
-                    I agree to receive admission updates, counseling calls, and information from Direct2Campus regarding IEM Kolkata admissions in accordance with the{' '}
-                    <Link href="/privacy" className="text-d2c-royal underline font-medium hover:text-blue-700">
-                      Privacy Policy
+                    {content.consentBefore}{' '}
+                    <Link href={content.privacyHref} className="text-d2c-royal underline font-medium hover:text-blue-700">
+                      {content.privacyLabel}
                     </Link>
-                    . Direct2Campus does not guarantee admission or seat allotment.
+                    {content.consentAfter}
                   </span>
                 </label>
               </div>
@@ -416,11 +407,11 @@ export function IemEnquiryForm({
                   {loading ? (
                     <>
                       <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                      <span>Submitting Enquiry...</span>
+                      <span>{content.submittingLabel}</span>
                     </>
                   ) : (
                     <>
-                      <span>SUBMIT ADMISSION ENQUIRY</span>
+                      <span>{content.submitLabel}</span>
                       <Send className="w-4 h-4 text-d2c-gold group-hover:translate-x-1 transition-transform" />
                     </>
                   )}
@@ -431,12 +422,12 @@ export function IemEnquiryForm({
               <div className="flex items-center justify-center gap-4 text-[11px] text-gray-500 pt-2 border-t border-gray-100">
                 <div className="flex items-center gap-1.5">
                   <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" />
-                  <span>100% Verified Information</span>
+                  <span>{content.trustNote1}</span>
                 </div>
                 <span>•</span>
                 <div className="flex items-center gap-1.5">
                   <Clock className="w-3.5 h-3.5 text-d2c-royal" />
-                  <span>Fast Callback from Advisor</span>
+                  <span>{content.trustNote2}</span>
                 </div>
               </div>
             </form>

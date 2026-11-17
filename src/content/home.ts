@@ -1,0 +1,307 @@
+import type { ContentDefinition, Field } from '@/lib/cms/types';
+import { homeDefaults } from './home.defaults';
+
+const linkFields = (key: string, label: string): Field => ({ key, label, type: 'link' });
+
+export const definition: ContentDefinition = {
+  key: 'home',
+  title: 'Home page',
+  group: 'Pages',
+  previewPath: '/',
+  sections: [
+    {
+      id: 'seo',
+      title: 'SEO',
+      fields: [{ key: 'seo', type: 'seo', label: 'SEO' }],
+    },
+    {
+      id: 'announcement',
+      title: 'Announcement bar',
+      description: 'A thin bar above the hero. Hidden unless enabled.',
+      fields: [
+        {
+          key: 'announcement',
+          label: 'Announcement bar',
+          type: 'group',
+          fields: [
+            { key: 'enabled', label: 'Show the bar', type: 'boolean' },
+            { key: 'badge', label: 'Badge text', type: 'text' },
+            { key: 'message', label: 'Message', type: 'text' },
+            { key: 'link', label: 'Link URL', type: 'url' },
+            { key: 'linkText', label: 'Link text', type: 'text' },
+            { key: 'dismissLabel', label: 'Close button label (accessibility)', type: 'text' },
+          ],
+        },
+      ],
+    },
+    {
+      id: 'hero',
+      title: 'Hero',
+      fields: [
+        {
+          key: 'hero',
+          label: 'Hero',
+          type: 'group',
+          fields: [
+            { key: 'backgroundImage', label: 'Background image', type: 'image' },
+            { key: 'backgroundImageAlt', label: 'Background image alt text', type: 'text' },
+            { key: 'logoImage', label: 'Logo (mobile)', type: 'image' },
+            { key: 'logoImageAlt', label: 'Logo alt text', type: 'text' },
+            { key: 'titleLine1', label: 'Heading line 1 (mobile and desktop)', type: 'text' },
+            { key: 'mobileTitleLine2', label: 'Mobile heading line 2 (before the rotating word)', type: 'text' },
+            {
+              key: 'rotatingWords',
+              label: 'Rotating words (mobile heading)',
+              type: 'stringList',
+              help: 'Shown one after another after the mobile heading.',
+            },
+            { key: 'desktopTitleLine2', label: 'Desktop heading line 2', type: 'text' },
+            { key: 'desktopTitleHighlight', label: 'Desktop heading highlighted line', type: 'text' },
+            { key: 'mobileDescription', label: 'Mobile description', type: 'textarea' },
+            { key: 'desktopDescription', label: 'Desktop description', type: 'textarea' },
+            { key: 'primaryButtonLabel', label: 'Primary button label (opens callback form)', type: 'text' },
+            linkFields('secondaryButton', 'Secondary button'),
+            { key: 'maleStudentImage', label: 'Desktop student image (left)', type: 'image' },
+            { key: 'maleStudentImageAlt', label: 'Left student image alt text', type: 'text' },
+            { key: 'femaleStudentImage', label: 'Desktop student image (right)', type: 'image' },
+            { key: 'femaleStudentImageAlt', label: 'Right student image alt text', type: 'text' },
+            {
+              key: 'stats',
+              label: 'Hero stats',
+              type: 'list',
+              itemLabel: 'stat',
+              titleKey: 'label',
+              fields: [
+                { key: 'icon', label: 'Icon', type: 'icon' },
+                {
+                  key: 'tone',
+                  label: 'Colour',
+                  type: 'select',
+                  options: [
+                    { label: 'Blue', value: 'blue' },
+                    { label: 'Gold', value: 'gold' },
+                    { label: 'Green', value: 'green' },
+                  ],
+                },
+                { key: 'value', label: 'Number (counts up to)', type: 'number' },
+                { key: 'suffix', label: 'Suffix (e.g. +)', type: 'text' },
+                { key: 'duration', label: 'Count-up duration (ms)', type: 'number' },
+                { key: 'label', label: 'Label', type: 'text' },
+              ],
+            },
+          ],
+        },
+      ],
+    },
+    {
+      id: 'trust',
+      title: 'Trust cards',
+      fields: [
+        {
+          key: 'trust',
+          label: 'Trust cards',
+          type: 'group',
+          fields: [
+            {
+              key: 'items',
+              label: 'Cards',
+              type: 'list',
+              itemLabel: 'card',
+              titleKey: 'title',
+              fields: [
+                { key: 'icon', label: 'Icon', type: 'icon' },
+                {
+                  key: 'tone',
+                  label: 'Colour',
+                  type: 'select',
+                  options: [
+                    { label: 'Navy', value: 'navy' },
+                    { label: 'Royal blue', value: 'royal' },
+                    { label: 'Green', value: 'success' },
+                  ],
+                },
+                { key: 'title', label: 'Title', type: 'text' },
+                { key: 'desc', label: 'Description', type: 'textarea' },
+              ],
+            },
+          ],
+        },
+      ],
+    },
+    {
+      id: 'banners',
+      title: 'Banner carousel',
+      fields: [
+        {
+          key: 'banners',
+          label: 'Banner carousel',
+          type: 'group',
+          fields: [
+            { key: 'enabled', label: 'Show the carousel', type: 'boolean' },
+            {
+              key: 'slides',
+              label: 'Slides',
+              type: 'list',
+              itemLabel: 'slide',
+              titleKey: 'title',
+              fields: [
+                { key: 'image', label: 'Image', type: 'image' },
+                { key: 'alt', label: 'Image alt text', type: 'text' },
+                { key: 'title', label: 'Title', type: 'text' },
+                { key: 'subtitle', label: 'Subtitle', type: 'text' },
+                { key: 'badge', label: 'Badge', type: 'text' },
+                { key: 'link', label: 'Link URL', type: 'url' },
+              ],
+            },
+          ],
+        },
+      ],
+    },
+    {
+      id: 'procedure',
+      title: 'Admission steps',
+      fields: [
+        {
+          key: 'procedure',
+          label: 'Admission steps',
+          type: 'group',
+          fields: [
+            { key: 'badge', label: 'Small badge', type: 'text' },
+            { key: 'heading', label: 'Heading', type: 'text' },
+            { key: 'subheading', label: 'Sub-heading', type: 'textarea' },
+            { key: 'stepLabel', label: 'Word before the step number', type: 'text' },
+            {
+              key: 'steps',
+              label: 'Steps',
+              type: 'list',
+              itemLabel: 'step',
+              titleKey: 'title',
+              fields: [
+                { key: 'title', label: 'Title', type: 'text' },
+                { key: 'subtitle', label: 'Short tagline', type: 'text' },
+                { key: 'desc', label: 'Description', type: 'textarea' },
+                { key: 'image', label: 'Image (desktop)', type: 'image' },
+                { key: 'imageAlt', label: 'Image alt text', type: 'text' },
+                { key: 'icon', label: 'Icon', type: 'icon' },
+                { key: 'color', label: 'Accent colour', type: 'color' },
+                {
+                  key: 'tone',
+                  label: 'Card tint',
+                  type: 'select',
+                  options: [
+                    { label: 'Blue', value: 'blue' },
+                    { label: 'Sky', value: 'sky' },
+                    { label: 'Amber', value: 'amber' },
+                    { label: 'Green', value: 'green' },
+                  ],
+                },
+              ],
+            },
+          ],
+        },
+      ],
+    },
+    {
+      id: 'featuredColleges',
+      title: 'Featured colleges',
+      description: 'The colleges themselves come from the Colleges section of the admin.',
+      fields: [
+        {
+          key: 'featuredColleges',
+          label: 'Featured colleges',
+          type: 'group',
+          fields: [
+            { key: 'heading', label: 'Heading', type: 'text' },
+            { key: 'description', label: 'Description', type: 'textarea' },
+            linkFields('viewAll', '"View all" link'),
+            { key: 'count', label: 'How many colleges to show', type: 'number' },
+          ],
+        },
+      ],
+    },
+    {
+      id: 'contact',
+      title: 'Contact form section',
+      fields: [
+        {
+          key: 'contact',
+          label: 'Contact form section',
+          type: 'group',
+          fields: [
+            { key: 'eyebrow', label: 'Small heading', type: 'text' },
+            { key: 'headingPrefix', label: 'Heading (first part)', type: 'text' },
+            { key: 'headingHighlight', label: 'Heading (highlighted part)', type: 'text' },
+            { key: 'description', label: 'Description', type: 'textarea' },
+            linkFields('whatsappButton', 'WhatsApp button'),
+            linkFields('callButton', 'Call button'),
+            { key: 'formTitle', label: 'Form title', type: 'text' },
+            { key: 'nameLabel', label: 'Name field label', type: 'text' },
+            { key: 'namePlaceholder', label: 'Name field placeholder', type: 'text' },
+            { key: 'phoneLabel', label: 'Phone field label', type: 'text' },
+            { key: 'phonePlaceholder', label: 'Phone field placeholder', type: 'text' },
+            { key: 'submitLabel', label: 'Submit button label', type: 'text' },
+            { key: 'sendingLabel', label: 'Label while sending', type: 'text' },
+            { key: 'successLabel', label: 'Label after sending', type: 'text' },
+          ],
+        },
+      ],
+    },
+    {
+      id: 'cta',
+      title: 'Bottom call-to-action',
+      fields: [
+        {
+          key: 'cta',
+          label: 'Bottom call-to-action',
+          type: 'group',
+          fields: [
+            { key: 'backgroundImage', label: 'Background image', type: 'image' },
+            { key: 'backgroundImageAlt', label: 'Background image alt text', type: 'text' },
+            { key: 'badge', label: 'Badge', type: 'text' },
+            { key: 'headingPrefix', label: 'Heading (first part)', type: 'text' },
+            { key: 'headingHighlight', label: 'Heading (highlighted part)', type: 'text' },
+            { key: 'description', label: 'Description', type: 'textarea' },
+            linkFields('whatsappButton', 'WhatsApp button'),
+            { key: 'callbackLabel', label: 'Callback button label', type: 'text' },
+          ],
+        },
+      ],
+    },
+    {
+      id: 'welcomeModal',
+      title: 'Welcome popup',
+      description: 'A lead form that opens a few seconds after the home page loads. Off by default.',
+      fields: [
+        {
+          key: 'welcomeModal',
+          label: 'Welcome popup',
+          type: 'group',
+          fields: [
+            { key: 'enabled', label: 'Show the popup', type: 'boolean' },
+            { key: 'autoOpenDelaySeconds', label: 'Open after (seconds)', type: 'number' },
+            { key: 'badge', label: 'Badge', type: 'text' },
+            { key: 'title', label: 'Title', type: 'text' },
+            { key: 'subtitle', label: 'Subtitle', type: 'textarea' },
+            { key: 'offerText', label: 'Highlight strip (leave empty to hide)', type: 'text' },
+            { key: 'nameLabel', label: 'Name label', type: 'text' },
+            { key: 'namePlaceholder', label: 'Name placeholder', type: 'text' },
+            { key: 'phoneLabel', label: 'Phone label', type: 'text' },
+            { key: 'phonePlaceholder', label: 'Phone placeholder', type: 'text' },
+            { key: 'emailLabel', label: 'Email label', type: 'text' },
+            { key: 'emailPlaceholder', label: 'Email placeholder', type: 'text' },
+            { key: 'courseLabel', label: 'Course label', type: 'text' },
+            { key: 'courseOptions', label: 'Course options', type: 'stringList' },
+            { key: 'buttonText', label: 'Submit button label', type: 'text' },
+            { key: 'loadingText', label: 'Label while sending', type: 'text' },
+            { key: 'footnote', label: 'Note under the button', type: 'text' },
+            { key: 'successTitle', label: 'Thank-you title', type: 'text' },
+            { key: 'successTextBefore', label: 'Thank-you text (before the phone number)', type: 'text' },
+            { key: 'successTextAfter', label: 'Thank-you text (after the phone number)', type: 'text' },
+            { key: 'closeLabel', label: 'Close button label (accessibility)', type: 'text' },
+          ],
+        },
+      ],
+    },
+  ],
+  defaults: homeDefaults,
+};

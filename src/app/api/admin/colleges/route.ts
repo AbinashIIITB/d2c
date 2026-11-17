@@ -4,6 +4,7 @@ import { checkAdminAuth } from '@/lib/auth';
 import { mapCollegeToDb, mapDbToCollege } from '@/lib/admin-mappers';
 import { sortCollegesWithIEMFirst } from '@/lib/iem-priority';
 import { revalidatePath } from 'next/cache';
+import { clearCmsMemoryCache } from '@/lib/data-service';
 
 export async function GET() {
   try {
@@ -62,10 +63,16 @@ export async function POST(req: Request) {
 
     if (error) throw error;
 
-    // Revalidate paths
-    revalidatePath('/colleges');
-    revalidatePath(`/colleges/${dbPayload.slug}`);
-    revalidatePath('/admin/colleges');
+    clearCmsMemoryCache();
+    try {
+      revalidatePath('/colleges');
+      revalidatePath(`/colleges/${dbPayload.slug}`);
+      revalidatePath('/sitemap.xml');
+      revalidatePath('/admin/colleges');
+      revalidatePath('/admin/seo');
+    } catch (err) {
+      console.warn('revalidatePath failed', err);
+    }
 
     return NextResponse.json({
       success: true,

@@ -1,22 +1,19 @@
 import { Metadata } from "next";
-import { getPageData } from "@/lib/page-service";
+import { getContent } from "@/lib/cms/content";
+import { buildMetadata } from "@/lib/cms/seo";
 import { ContactClientView } from "@/components/contact/ContactClientView";
+import type { ContactContent } from "@/content/contact";
 
 export const revalidate = 0;
+export const dynamic = "force-dynamic";
 
 export async function generateMetadata(): Promise<Metadata> {
-  const contactData = await getPageData("contact");
-  return {
-    title: contactData?.title || "Contact Us – 24/7 Expert Admission Support",
-    description:
-      contactData?.description ||
-      "Have questions about admission cutoffs, fee structures, or campus selection? Get in touch with our team for 24/7 expert counseling.",
-    alternates: { canonical: "https://direct2campus.com/contact" },
-  };
+  const content = await getContent<ContactContent>("contact");
+  return buildMetadata(content.seo, { path: "/contact" });
 }
 
 export default async function ContactPage() {
-  const contactData = await getPageData("contact");
+  const content = await getContent<ContactContent>("contact");
 
-  return <ContactClientView contactData={contactData} />;
+  return <ContactClientView content={content} />;
 }

@@ -8,7 +8,7 @@ import { PlayCircle, Video } from "lucide-react"
 const VIDEOS = [
   {
     id: "dQw4w9WgXcQ", // Replace with real D2C video IDs
-    title: "How to get Direct Admission in Top Engineering Colleges?",
+    title: "How to get Admission in Top Engineering Colleges?",
     thumbnail: "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?q=80&w=600&auto=format&fit=crop"
   },
   {

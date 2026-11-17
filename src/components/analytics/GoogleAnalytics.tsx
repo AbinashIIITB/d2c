@@ -3,10 +3,13 @@
 import Script from "next/script";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef } from "react";
-import { GA_TRACKING_ID, pageview, trackWhatsAppClick, trackPhoneCall } from "@/lib/gtag";
+import { GA_TRACKING_IDS, setGaIds, pageview, trackWhatsAppClick, trackPhoneCall } from "@/lib/gtag";
 
-export function GoogleAnalytics() {
+export function GoogleAnalytics({ ids = GA_TRACKING_IDS, enabled = true }: { ids?: string[]; enabled?: boolean }) {
   const pathname = usePathname();
+  const gaIds = Array.from(new Set(ids.map((id) => String(id).trim()).filter(Boolean)));
+  // Keep the page-view helper in sync with the CMS-configured IDs.
+  setGaIds(gaIds);
   const initialLoadRef = useRef(true);
 
   // Track pageviews on client-side SPA route transitions (excluding /admin)
@@ -72,13 +75,13 @@ export function GoogleAnalytics() {
     };
   }, []);
 
-  if (!GA_TRACKING_ID) return null;
+  if (!enabled || gaIds.length === 0) return null;
 
   return (
     <>
       <Script
         strategy="afterInteractive"
-        src={`https://www.googletagmanager.com/gtag/js?id=${GA_TRACKING_ID}`}
+        src={`https://www.googletagmanager.com/gtag/js?id=${gaIds[0]}`}
       />
       <Script
         id="google-analytics-init"
@@ -91,9 +94,11 @@ export function GoogleAnalytics() {
 
             // Only initialize tracking if not on an admin route
             if (!window.location.pathname.startsWith('/admin')) {
-              gtag('config', '${GA_TRACKING_ID}', {
-                page_path: window.location.pathname,
-                send_page_view: true
+              ${JSON.stringify(gaIds)}.forEach(function (id) {
+                gtag('config', id, {
+                  page_path: window.location.pathname,
+                  send_page_view: true
+                });
               });
             }
           `,

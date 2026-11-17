@@ -10,6 +10,7 @@ import { AutoSuggestSearch } from "@/components/ui/AutoSuggestSearch"
 import { College } from "@/lib/data"
 import { filterColleges } from "@/lib/search"
 import { sortCollegesWithIEMFirst } from "@/lib/iem-priority"
+import { defaults as collegesIndexDefaults, type CollegesIndexContent } from "@/content/colleges-index"
 
 // Map URL param values to filter values
 const TYPE_TO_DEPT: Record<string, string> = {
@@ -18,7 +19,7 @@ const TYPE_TO_DEPT: Record<string, string> = {
   management: "Management",
 }
 
-export function CollegesGrid({ initialColleges }: { initialColleges: College[] }) {
+export function CollegesGrid({ initialColleges, content = collegesIndexDefaults.grid }: { initialColleges: College[]; content?: CollegesIndexContent["grid"] }) {
   const searchParams = useSearchParams()
 
   const [search, setSearch] = useState("")
@@ -111,7 +112,7 @@ export function CollegesGrid({ initialColleges }: { initialColleges: College[] }
         <div className="flex-1">
           <AutoSuggestSearch 
             mode="colleges" 
-            placeholder="Search by college name or city..." 
+            placeholder={content.searchPlaceholder} 
             onSearchChange={setSearch} 
           />
         </div>
@@ -123,10 +124,10 @@ export function CollegesGrid({ initialColleges }: { initialColleges: College[] }
               onChange={(e) => setSelectedDept(e.target.value)}
               className="w-full appearance-none pl-4 pr-10 py-3 rounded-lg border border-gray-200 focus:border-d2c-royal focus:ring-2 focus:ring-d2c-royal/20 outline-none bg-white shadow-sm text-gray-700 h-[50px]"
             >
-              <option value="All Colleges">All Departments</option>
-              <option value="Engineering">Engineering</option>
-              <option value="Medical">Medical</option>
-              <option value="Management">Management</option>
+              <option value="All Colleges">{content.allDepartmentsLabel}</option>
+              {content.departments?.map((dept) => (
+                <option key={dept.value} value={dept.value}>{dept.label}</option>
+              ))}
             </select>
             <Filter className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-d2c-muted pointer-events-none" />
           </div>
@@ -137,7 +138,7 @@ export function CollegesGrid({ initialColleges }: { initialColleges: College[] }
               onChange={(e) => setSelectedState(e.target.value)}
               className="w-full appearance-none pl-4 pr-10 py-3 rounded-lg border border-gray-200 focus:border-d2c-royal focus:ring-2 focus:ring-d2c-royal/20 outline-none bg-white shadow-sm text-gray-700 h-[50px]"
             >
-              <option value="All States">All States</option>
+              <option value="All States">{content.allStatesLabel}</option>
               {uniqueStates.map(state => (
                 <option key={state} value={state}>{state}</option>
               ))}
@@ -150,8 +151,8 @@ export function CollegesGrid({ initialColleges }: { initialColleges: College[] }
       {filteredColleges.length === 0 ? (
         <div className="text-center py-24 text-d2c-muted relative z-10">
           <Building2 className="w-16 h-16 mx-auto mb-4 opacity-20" />
-          <h3 className="text-xl font-sora font-semibold mb-2">No colleges found</h3>
-          <p>Try adjusting your search criteria or filters</p>
+          <h3 className="text-xl font-sora font-semibold mb-2">{content.emptyTitle}</h3>
+          <p>{content.emptyText}</p>
         </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 relative z-10">

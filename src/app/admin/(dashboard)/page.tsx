@@ -11,7 +11,8 @@ import {
   ArrowRight,
   Newspaper,
   Globe,
-  Sparkles
+  Sparkles,
+  PenSquare
 } from "lucide-react";
 import Link from "next/link";
 import { sortCollegesWithIEMFirst } from "@/lib/iem-priority";
@@ -68,6 +69,27 @@ export default async function AdminDashboard() {
         </div>
       </div>
       
+      {/* Edit website content */}
+      <Link
+        href="/admin/content"
+        className="group flex flex-col md:flex-row md:items-center justify-between gap-4 p-6 rounded-2xl bg-gradient-to-r from-d2c-navy to-d2c-royal text-white shadow-lg shadow-d2c-royal/20 hover:shadow-xl transition-shadow outline-none focus-visible:ring-2 focus-visible:ring-d2c-gold"
+      >
+        <div className="flex items-center gap-4">
+          <div className="w-12 h-12 rounded-xl bg-white/15 flex items-center justify-center shrink-0">
+            <PenSquare className="w-6 h-6" />
+          </div>
+          <div>
+            <h2 className="font-sora font-bold text-lg">Edit website content</h2>
+            <p className="text-xs text-white/75 mt-0.5 max-w-xl leading-relaxed">
+              Change any heading, text, image, icon, link or SEO tag on the public site, with a live preview. Save drafts and publish when ready.
+            </p>
+          </div>
+        </div>
+        <span className="inline-flex items-center gap-2 bg-white text-d2c-navy font-bold text-xs px-4 py-2.5 rounded-xl shrink-0 group-hover:bg-d2c-gold transition-colors">
+          Open editor <ArrowRight className="w-3.5 h-3.5" />
+        </span>
+      </Link>
+
       {/* Metric Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
         <Link href="/admin/colleges" className="bg-white p-5 rounded-2xl shadow-xs border border-gray-150 flex items-center gap-4 hover:border-d2c-royal/40 transition-colors">

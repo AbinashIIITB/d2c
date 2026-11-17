@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect, useMemo } from 'react';
+import { LeadsGate } from '@/components/admin/LeadsGate';
 import { 
   Users, 
   Phone, 
@@ -82,7 +83,7 @@ const STATUS_OPTIONS = [
   { value: 'Not Interested', label: 'Not Interested', color: 'bg-rose-50 text-rose-800 border-rose-200' },
 ];
 
-export default function LeadsPage() {
+function LeadsPageInner() {
   const [leads, setLeads] = useState<Lead[]>([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
@@ -813,5 +814,13 @@ export default function LeadsPage() {
       )}
 
     </div>
+  );
+}
+
+export default function LeadsPage() {
+  return (
+    <LeadsGate>
+      <LeadsPageInner />
+    </LeadsGate>
   );
 }

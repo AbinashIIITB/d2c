@@ -94,3 +94,4 @@ const aimlConfig: BranchPageConfig = {
 export default function IemAimlLandingPage() {
   return <IemBranchLandingTemplate config={aimlConfig} />;
 }
+

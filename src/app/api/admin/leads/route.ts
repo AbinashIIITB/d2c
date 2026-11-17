@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import fs from 'fs';
 import path from 'path';
 import { checkAdminAuth } from '@/lib/auth';
+import { checkLeadsUnlocked } from '@/lib/leads-lock';
 import { 
   fetchFromGoogleSheet, 
   fetchFromAppsScript, 
@@ -68,6 +69,9 @@ export async function GET(req: Request) {
     const session = await checkAdminAuth();
     if (!session) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+    if (!(await checkLeadsUnlocked())) {
+      return NextResponse.json({ error: 'LEADS_LOCKED' }, { status: 403 });
     }
 
     const { searchParams } = new URL(req.url);
@@ -167,6 +171,9 @@ export async function PATCH(req: Request) {
     if (!session) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
+    if (!(await checkLeadsUnlocked())) {
+      return NextResponse.json({ error: 'LEADS_LOCKED' }, { status: 403 });
+    }
 
     const body = await req.json();
     const webhookUrl = process.env.GOOGLE_SHEETS_WEBHOOK_URL;
@@ -211,6 +218,9 @@ export async function DELETE(req: Request) {
     const session = await checkAdminAuth();
     if (!session) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+    if (!(await checkLeadsUnlocked())) {
+      return NextResponse.json({ error: 'LEADS_LOCKED' }, { status: 403 });
     }
 
     const body = await req.json();

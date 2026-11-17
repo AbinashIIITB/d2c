@@ -1,5 +1,5 @@
 import { getBlogByIdOrSlug } from "@/lib/data-service";
-import { VisualBlogEditor } from "@/components/admin/visual-editor/VisualBlogEditor";
+import { BlogEditForm } from "@/components/admin/BlogEditForm";
 import { notFound } from "next/navigation";
 
 export const dynamic = 'force-dynamic';
@@ -17,6 +17,5 @@ export default async function AdminEditBlogPage({
     notFound();
   }
 
-  return <VisualBlogEditor initialData={blog} isNew={false} />;
+  return <BlogEditForm initialData={blog} isNew={false} />;
 }
-

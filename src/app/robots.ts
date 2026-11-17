@@ -1,12 +1,20 @@
 import { MetadataRoute } from "next"
+import { getContent } from "@/lib/cms/content"
+import { siteDefaults, type SiteContent } from "@/content/site"
 
-export default function robots(): MetadataRoute.Robots {
+export const dynamic = "force-dynamic"
+
+export default async function robots(): Promise<MetadataRoute.Robots> {
+  const site = await getContent<SiteContent>("site")
+  const r = site?.robots ?? siteDefaults.robots
+  const allow = (r.allow ?? []).filter(Boolean)
+  const disallow = (r.disallow ?? []).filter(Boolean)
   return {
     rules: {
-      userAgent: "*",
-      allow: "/",
-      disallow: ["/admin/", "/api/"],
+      userAgent: r.userAgent || "*",
+      ...(allow.length ? { allow: allow.length === 1 ? allow[0] : allow } : {}),
+      ...(disallow.length ? { disallow } : {}),
     },
-    sitemap: "https://direct2campus.com/sitemap.xml",
+    ...(r.sitemapUrl ? { sitemap: r.sitemapUrl } : {}),
   }
 }

@@ -6,6 +6,7 @@ import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { SearchItem, searchAndRank } from "@/lib/search"
 import { sortCollegesWithIEMFirst } from "@/lib/iem-priority"
+import { useSiteContent } from "@/components/cms/SiteContentProvider"
 
 type SearchMode = "all" | "colleges" | "exams"
 
@@ -25,13 +26,15 @@ interface AutoSuggestSearchProps {
 
 export function AutoSuggestSearch({ 
   mode = "all", 
-  placeholder = "Search...", 
+  placeholder, 
   className = "", 
   onSearchChange,
   initialValue = "",
   autoFocus = false
 }: AutoSuggestSearchProps) {
   const router = useRouter()
+  const { modals } = useSiteContent()
+  const searchText = modals.search
   const [query, setQuery] = useState(initialValue)
   const [isOpen, setIsOpen] = useState(false)
   const [activeIndex, setActiveIndex] = useState(-1)
@@ -68,7 +71,7 @@ export function AutoSuggestSearch({
     dbColleges.forEach(c => allItems.push({
       id: `c_${c.id}`,
       title: c.name,
-      subtitle: c.location || "College",
+      subtitle: c.location || searchText.collegeFallbackSubtitle,
       url: `/colleges/${c.slug}`,
       icon: "college",
       imageUrl: c.imageUrl,
@@ -84,7 +87,7 @@ export function AutoSuggestSearch({
     dbExams.forEach(e => allItems.push({
       id: `e_${e.id}`,
       title: e.name,
-      subtitle: e.fullName || "Entrance Exam",
+      subtitle: e.fullName || searchText.examFallbackSubtitle,
       url: `/exams/${e.slug}`,
       icon: "exam",
       imageUrl: e.logoUrl,
@@ -152,7 +155,7 @@ export function AutoSuggestSearch({
       >
         <input 
           type="text"
-          placeholder={placeholder}
+          placeholder={placeholder ?? searchText.defaultPlaceholder}
           autoFocus={autoFocus}
           className="w-full pl-12 pr-4 py-3 bg-transparent outline-none rounded-xl"
           value={query}
@@ -174,7 +177,7 @@ export function AutoSuggestSearch({
             {filteredColleges.length > 0 && (
               <div className="py-2">
                 <div className="px-4 py-1 text-xs font-bold text-gray-400 uppercase tracking-wider">
-                  Colleges
+                  {searchText.collegesHeading}
                 </div>
                 <ul>
                   {filteredColleges.map((item) => {
@@ -221,7 +224,7 @@ export function AutoSuggestSearch({
             {filteredExams.length > 0 && (
               <div className={`py-2 ${filteredColleges.length > 0 ? "border-t border-gray-100 bg-gray-50/50" : ""}`}>
                 <div className="px-4 py-1 text-xs font-bold text-gray-400 uppercase tracking-wider">
-                  Exams
+                  {searchText.examsHeading}
                 </div>
                 <ul>
                   {filteredExams.map((item) => {

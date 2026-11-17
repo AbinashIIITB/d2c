@@ -5,12 +5,15 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Loader2, CheckCircle } from 'lucide-react';
 import { trackLeadSubmission } from '@/lib/gtag';
+import { useSiteContent, fillTemplate } from '@/components/cms/SiteContentProvider';
 
 interface ExamEnquiryFormProps {
     examName: string;
 }
 
 export function ExamEnquiryForm({ examName }: ExamEnquiryFormProps) {
+    const { modals } = useSiteContent();
+    const m = modals.examEnquiry;
     const [formData, setFormData] = useState({
         fullName: '',
         phone: '',
@@ -56,7 +59,7 @@ export function ExamEnquiryForm({ examName }: ExamEnquiryFormProps) {
             setIsSuccess(true);
             setFormData({ fullName: '', phone: '', email: '', course: '' });
         } catch {
-            setError('Something went wrong. Please try again.');
+            setError(m.errorMessage);
         } finally {
             setIsSubmitting(false);
         }
@@ -66,14 +69,14 @@ export function ExamEnquiryForm({ examName }: ExamEnquiryFormProps) {
         return (
             <div className="text-center py-8">
                 <CheckCircle className="h-12 w-12 text-green-500 mx-auto mb-4" />
-                <h3 className="text-lg font-semibold mb-2 text-white">Thank You!</h3>
-                <p className="text-sm text-white/70">We&apos;ll contact you shortly about {examName}.</p>
+                <h3 className="text-lg font-semibold mb-2 text-white">{m.successTitle}</h3>
+                <p className="text-sm text-white/70">{fillTemplate(m.successText, examName)}</p>
                 <Button
                     variant="outline"
                     className="mt-4 border-white/20 text-white hover:bg-white/10"
                     onClick={() => setIsSuccess(false)}
                 >
-                    Submit Another Enquiry
+                    {m.anotherLabel}
                 </Button>
             </div>
         );
@@ -84,7 +87,7 @@ export function ExamEnquiryForm({ examName }: ExamEnquiryFormProps) {
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div className="space-y-2">
                     <Input
-                        placeholder="Full Name"
+                        placeholder={m.namePlaceholder}
                         className="bg-white text-gray-900 border-gray-200 placeholder:text-gray-500 focus-visible:ring-[#3B4CC0]/20 focus-visible:border-[#3B4CC0]"
                         value={formData.fullName}
                         onChange={(e) => setFormData({ ...formData, fullName: e.target.value })}
@@ -94,7 +97,7 @@ export function ExamEnquiryForm({ examName }: ExamEnquiryFormProps) {
                 <div className="space-y-2">
                     <Input
                         type="tel"
-                        placeholder="+91 Phone Number"
+                        placeholder={m.phonePlaceholder}
                         className="bg-white text-gray-900 border-gray-200 placeholder:text-gray-500 focus-visible:ring-[#3B4CC0]/20 focus-visible:border-[#3B4CC0]"
                         value={formData.phone}
                         onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
@@ -104,7 +107,7 @@ export function ExamEnquiryForm({ examName }: ExamEnquiryFormProps) {
                 <div className="space-y-2 sm:col-span-2">
                     <Input
                         type="email"
-                        placeholder="Email Address"
+                        placeholder={m.emailPlaceholder}
                         className="bg-white text-gray-900 border-gray-200 placeholder:text-gray-500 focus-visible:ring-[#3B4CC0]/20 focus-visible:border-[#3B4CC0]"
                         value={formData.email}
                         onChange={(e) => setFormData({ ...formData, email: e.target.value })}
@@ -113,7 +116,7 @@ export function ExamEnquiryForm({ examName }: ExamEnquiryFormProps) {
                 <div className="space-y-2 sm:col-span-2">
                     <Input
                         type="text"
-                        placeholder="Select Course/Branch (eg B Tech, M Tech, etc)"
+                        placeholder={m.coursePlaceholder}
                         className="bg-white text-gray-900 border-gray-200 placeholder:text-gray-500 focus-visible:ring-[#3B4CC0]/20 focus-visible:border-[#3B4CC0]"
                         value={formData.course}
                         onChange={(e) => setFormData({ ...formData, course: e.target.value })}
@@ -132,10 +135,10 @@ export function ExamEnquiryForm({ examName }: ExamEnquiryFormProps) {
                 {isSubmitting ? (
                     <>
                         <Loader2 className="h-4 w-4 mr-2 animate-spin" />
-                        Submitting...
+                        {m.submittingLabel}
                     </>
                 ) : (
-                    'Apply Now'
+                    m.submitLabel
                 )}
             </Button>
         </form>

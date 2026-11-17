@@ -37,55 +37,16 @@ import { CollegeEnquiryForm } from "@/components/ui/CollegeEnquiryForm"
 import { ApplyNowButton } from "@/components/ui/ApplyNowButton"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
+import { getContent } from "@/lib/cms/content"
+import { JsonLd } from "@/lib/cms/seo"
+import { fill } from "@/lib/record-text"
+import { collegeMetadata, collegeSeo } from "@/lib/record-seo"
+import type { CollegePageContent } from "@/content/college-page"
 
 type Params = Promise<{ slug: string }>
 
 export const revalidate = 0;
 export const dynamicParams = true;
-
-// Default IEM FAQs fallback
-const IEM_DEFAULT_FAQS = [
-  {
-    question: "What is the admission process for IEM Kolkata in 2026?",
-    answer: "The admission process for IEM Kolkata depends on the course and the applicable admission rules. Students should check the current eligibility criteria, entrance examination requirements and counselling procedure before applying. For official information about IEMJEE 2026, visit the IEM official website."
-  },
-  {
-    question: "What is the fee structure of IEM Kolkata for B.Tech?",
-    answer: "The total B.Tech fees at IEM Kolkata depend on the course, admission route and applicable fee schedule. Students should confirm the latest tuition fees, admission charges and other applicable expenses with the institute before taking admission. Hostel fees, where applicable, should be checked separately."
-  },
-  {
-    question: "What are the eligibility criteria for B.Tech admission at IEM Kolkata?",
-    answer: "Eligibility requirements depend on the engineering programme and the applicable admission route. Students should review the current academic requirements, compulsory subjects, entrance examination criteria and counselling rules before applying. Refer to the official IEM admissions website for current details."
-  },
-  {
-    question: "Is direct admission available at IEM Kolkata?",
-    answer: "Admission to IEM Kolkata is subject to the institute's applicable admission rules and eligibility requirements. Students should contact the official admission office to understand the permitted admission routes and available seats. Admission cannot be guaranteed without meeting the required criteria."
-  },
-  {
-    question: "What is the WBJEE cutoff for CSE at IEM Kolkata?",
-    answer: "The WBJEE cutoff for Computer Science and Engineering (CSE) at IEM Kolkata can vary each year depending on the candidate's category, counselling round, seat availability and applicable admission route. Students should check the official counselling results and previous-year opening and closing ranks for a realistic estimate."
-  },
-  {
-    question: "What is the average placement package for CSE at IEM Kolkata?",
-    answer: "Placement packages vary by academic year, course, employer and individual performance. Students researching IEM Kolkata placements should review the latest official placement report and distinguish CSE-specific figures from institute-wide statistics. Contact the institute for the latest verified average package and placement data."
-  },
-  {
-    question: "Which university is IEM Kolkata affiliated with?",
-    answer: "The Institute of Engineering & Management (IEM), Kolkata, is associated with the University of Engineering & Management (UEM), Kolkata, according to the institute's official information. Students should check the current programme-specific affiliation and degree-awarding details before admission."
-  },
-  {
-    question: "Does IEM Kolkata provide hostel facilities?",
-    answer: "Yes, IEM lists separate hostel facilities for male and female students. Availability, accommodation arrangements, facilities and fees should be confirmed directly with the institute, as these details may vary."
-  },
-  {
-    question: "Which companies recruit students from IEM Kolkata?",
-    answer: "Recruitment opportunities vary by year, programme and employer requirements. IEM has reported recruiters from different sectors, including IT, consulting, finance and other industries. Students should review the latest placement report for the companies that participated in the relevant academic year's recruitment process."
-  },
-  {
-    question: "Where is the IEM Salt Lake campus located?",
-    answer: "The IEM Salt Lake admission office is located at Ashram Building, GN-34/2, Sector V, Salt Lake Electronics Complex, Kolkata – 700091, West Bengal. Students should confirm the exact campus or department location before visiting."
-  }
-];
 
 export async function generateStaticParams() {
   const colleges = await getAllColleges();
@@ -104,87 +65,15 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
     return { title: "College Not Found" }
   }
 
-  const isIem = isIEMCollege(college);
-  const seo = college.seo || college.contact?.seo || {};
-
-  const primaryDegree = college.courses?.[0] || 'Degree';
-  const defaultTitle = isIem 
-    ? "IEM Kolkata: Admission, Fees & Placements | Direct2Campus"
-    : `${college.name}: Admission, Fees & Placements | Direct2Campus`;
-    
-  const defaultDesc = isIem
-    ? "Explore IEM Kolkata admission, B.Tech courses, fees, eligibility, placements and the application process. Get expert admission guidance from Direct2Campus."
-    : `Explore ${college.name} admission, ${primaryDegree} courses, fees, eligibility, placements and the application process. Get expert admission guidance from Direct2Campus.`;
-    
-  const defaultCanonical = `https://direct2campus.com/colleges/${college.slug || slug}`;
-
-  const pageTitle = seo.seoTitle?.trim() || defaultTitle;
-  const metaDesc = seo.metaDescription?.trim() || defaultDesc;
-  const canonical = seo.canonicalUrl?.trim() || defaultCanonical;
-  
-  const keywords = [
-    ...(seo.primaryKeyword ? [seo.primaryKeyword] : []),
-    ...(Array.isArray(seo.secondaryKeywords) ? seo.secondaryKeywords : [
-      `${college.name} admission`, 
-      `${college.name} fees`, 
-      `${college.name} placement`, 
-      `${college.name} admission process`,
-      `${college.name} courses fee structure`,
-      `${college.name} ${primaryDegree} fees`,
-      `${college.name} campus`
-    ]),
-    college.name, 
-    college.type, 
-    college.location,
-    ...(college.tags || [])
-  ];
-  const imageUrl = college.imageUrl || college.image_url || "/images/colleges/default-college.jpg";
-  const heroAlt = seo.images?.heroAlt || seo.heroAlt || `${college.name} Campus Direct Admission`;
-
-  return {
-    title: pageTitle,
-    description: metaDesc,
-    keywords,
-    alternates: { canonical },
-    robots: {
-      index: true,
-      follow: true,
-      googleBot: {
-        index: true,
-        follow: true,
-        "max-video-preview": -1,
-        "max-image-preview": "large",
-        "max-snippet": -1,
-      },
-    },
-    openGraph: {
-      title: pageTitle,
-      description: metaDesc,
-      url: canonical,
-      siteName: "Direct2Campus",
-      locale: "en_IN",
-      type: "website",
-      images: [
-        {
-          url: imageUrl,
-          width: 1200,
-          height: 630,
-          alt: heroAlt,
-        },
-      ],
-    },
-    twitter: {
-      card: "summary_large_image",
-      title: pageTitle,
-      description: metaDesc,
-      images: [imageUrl],
-    },
-  }
+  return collegeMetadata(college);
 }
 
 export default async function CollegeDetailPage({ params }: { params: Params }) {
   const { slug } = await params
-  const college = await getCollegeByIdOrSlug(slug);
+  const [college, content] = await Promise.all([
+    getCollegeByIdOrSlug(slug),
+    getContent<CollegePageContent>("college-page"),
+  ]);
 
   if (!college) {
     notFound()
@@ -195,27 +84,25 @@ export default async function CollegeDetailPage({ params }: { params: Params }) 
   const sectionHeadings = college.sectionHeadings || seo.sectionHeadings || {};
   const primaryCourse = college.courses?.[0] || 'B.Tech';
 
-  // Universal SEO-Optimized Template Headings for ALL colleges
-  const hAdmissions = sectionHeadings.admissions || `${college.name} Admission Process`;
-  const hCoursesFees = sectionHeadings.coursesFees || `${college.name} Courses and Fee Structure`;
-  const hCoursesFeesSubtitle = sectionHeadings.coursesFeesSubtitle || `${college.name} Admission Fees and Course Fee Structure`;
-  const hCourseFeesEligibility = sectionHeadings.btechFeesEligibility || `${college.name} ${primaryCourse} Fees and Eligibility`;
-  const hPlacements = sectionHeadings.placements || `${college.name} Placements and Average Package`;
-  const hOverview = sectionHeadings.overview || `${college.name} Campus and Location`;
-  const hFaqs = sectionHeadings.faqs || `Frequently Asked Questions About ${college.name}`;
+  // Universal SEO-Optimized Template Headings for ALL colleges (per-college overrides win)
+  const hv = { name: college.name, course: primaryCourse };
+  const hAdmissions = sectionHeadings.admissions || fill(content.headings.admissions, hv);
+  const hCoursesFees = sectionHeadings.coursesFees || fill(content.headings.coursesFees, hv);
+  const hCoursesFeesSubtitle = sectionHeadings.coursesFeesSubtitle || fill(content.headings.coursesFeesSubtitle, hv);
+  const hCourseFeesEligibility = sectionHeadings.btechFeesEligibility || fill(content.headings.degreeFeesEligibility, hv);
+  const hPlacements = sectionHeadings.placements || fill(content.headings.placements, hv);
+  const hOverview = sectionHeadings.overview || fill(content.headings.overview, hv);
+  const hFaqs = sectionHeadings.faqs || fill(content.headings.faqs, hv);
+  const hInfrastructure = sectionHeadings.infrastructure || fill(content.headings.infrastructure, hv);
+  const hScholarships = sectionHeadings.scholarships || fill(content.headings.scholarships, hv);
+  const hAlumni = sectionHeadings.alumni || fill(content.headings.alumni, hv);
 
   // Uniform Table of Contents structure for ALL colleges
-  const sections = [
-    { id: "admissions", label: "Admission Process", iconName: "ClipboardList" },
-    { id: "courses-fees", label: "Courses & Fees", iconName: "DollarSign" },
-    { id: "btech-fees", label: `${primaryCourse} Fees & Eligibility`, iconName: "Shield" },
-    { id: "placements", label: "Placements & Packages", iconName: "TrendingUp" },
-    { id: "overview", label: "Campus & Location", iconName: "Building2" },
-    { id: "infrastructure", label: "Infrastructure", iconName: "Globe" },
-    { id: "scholarships", label: "Scholarships", iconName: "Award" },
-    { id: "alumni", label: "Alumni", iconName: "Users" },
-    { id: "faqs", label: "FAQs", iconName: "HelpCircle" },
-  ];
+  const sections = content.toc.map((t) => ({
+    id: t.id,
+    label: fill(t.label, hv),
+    iconName: t.icon,
+  }));
 
   /* ─────────────────────────────────────────────────────────────
      RENDER SECTION HELPERS
@@ -229,7 +116,7 @@ export default async function CollegeDetailPage({ params }: { params: Params }) 
           <h2 className="text-2xl font-sora font-bold text-[#131b2e] tracking-[-0.01em]">
             {hAdmissions}
           </h2>
-          <p className="text-sm text-[#76777d] mt-0.5">Step-by-step guidance for 2026-27 admission session</p>
+          <p className="text-sm text-[#76777d] mt-0.5">{content.admissions.subtitle}</p>
         </div>
 
         {college.admissions ? (
@@ -238,7 +125,7 @@ export default async function CollegeDetailPage({ params }: { params: Params }) 
             {college.admissions.eligibility && (
               <div>
                 <h3 className="text-sm font-bold text-[#45464d] uppercase tracking-[0.08em] mb-5">
-                  Eligibility Criteria
+                  {content.admissions.eligibilityTitle}
                 </h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                   {college.admissions.eligibility.map((item: string, idx: number) => (
@@ -254,7 +141,7 @@ export default async function CollegeDetailPage({ params }: { params: Params }) 
             {/* Step-by-Step — Vertical Timeline */}
             {college.admissions.process && (
               <div className="bg-[#faf8ff] rounded-2xl p-8">
-                <h3 className="text-sm font-bold text-[#45464d] uppercase tracking-[0.08em] mb-6">How to Apply</h3>
+                <h3 className="text-sm font-bold text-[#45464d] uppercase tracking-[0.08em] mb-6">{content.admissions.howToApplyTitle}</h3>
                 <div className="space-y-0">
                   {college.admissions.process.map((step: string, idx: number) => (
                     <div key={idx} className="flex gap-5 relative">
@@ -277,7 +164,7 @@ export default async function CollegeDetailPage({ params }: { params: Params }) 
             {college.admissions.documents && (
               <div>
                 <h3 className="text-sm font-bold text-[#45464d] uppercase tracking-[0.08em] mb-5">
-                  Required Documents
+                  {content.admissions.documentsTitle}
                 </h3>
                 <div className="flex flex-wrap gap-2.5">
                   {college.admissions.documents.map((doc: string, idx: number) => (
@@ -291,7 +178,7 @@ export default async function CollegeDetailPage({ params }: { params: Params }) 
           </div>
         ) : (
           <div className="p-6 rounded-xl bg-[#faf8ff] text-sm text-[#45464d] leading-relaxed">
-            Admissions for {college.name} are conducted through verified counseling quotas and entrance exams. Contact Direct2Campus advisors for direct seat allotment and cutoff guidance.
+            {fill(content.admissions.fallbackText, hv)}
           </div>
         )}
       </div>
@@ -321,8 +208,8 @@ export default async function CollegeDetailPage({ params }: { params: Params }) 
               <table className="w-full text-left">
                 <thead>
                   <tr className="bg-[#f2f3ff]">
-                    <th className="px-6 py-4 text-[11px] font-bold text-[#45464d] uppercase tracking-[0.08em]">Fee Component</th>
-                    <th className="px-6 py-4 text-[11px] font-bold text-[#45464d] uppercase tracking-[0.08em] text-right">Amount</th>
+                    <th className="px-6 py-4 text-[11px] font-bold text-[#45464d] uppercase tracking-[0.08em]">{content.coursesFees.feeComponentHeader}</th>
+                    <th className="px-6 py-4 text-[11px] font-bold text-[#45464d] uppercase tracking-[0.08em] text-right">{content.coursesFees.amountHeader}</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -347,7 +234,7 @@ export default async function CollegeDetailPage({ params }: { params: Params }) 
           <div className="mt-10">
             <h3 className="text-lg font-bold text-[#131b2e] mb-5 flex items-center gap-3">
               <span className="w-1 h-6 rounded-full bg-[#3B4CC0]" />
-              Available Specializations
+              {content.coursesFees.specializationsTitle}
             </h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
               {college.coursesDetails.map((course: any, idx: number) => (
@@ -376,67 +263,48 @@ export default async function CollegeDetailPage({ params }: { params: Params }) 
           <h2 className="text-2xl font-sora font-bold text-[#131b2e] tracking-[-0.01em]">
             {hCourseFeesEligibility}
           </h2>
-          <p className="text-sm text-[#76777d] mt-0.5">Comprehensive fee schedule, branch cutoffs, and eligibility guidelines</p>
+          <p className="text-sm text-[#76777d] mt-0.5">{content.degreeFees.subtitle}</p>
         </div>
 
         {/* Quick Highlights Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 mb-8">
           <div className="p-5 rounded-xl bg-[#f2f3ff] border border-[#3B4CC0]/10">
-            <span className="text-[11px] font-bold uppercase tracking-wider text-[#76777d]">Total Course Fees</span>
-            <p className="text-xl font-bold font-sora text-[#3B4CC0] mt-1">{college.fees || "Contact for fees"}</p>
-            <span className="text-xs text-[#76777d] mt-1 block">Tuition fee package</span>
+            <span className="text-[11px] font-bold uppercase tracking-wider text-[#76777d]">{content.degreeFees.totalFees.label}</span>
+            <p className="text-xl font-bold font-sora text-[#3B4CC0] mt-1">{college.fees || content.degreeFees.totalFees.fallbackValue}</p>
+            <span className="text-xs text-[#76777d] mt-1 block">{content.degreeFees.totalFees.note}</span>
           </div>
           <div className="p-5 rounded-xl bg-[#f2f3ff] border border-[#3B4CC0]/10">
-            <span className="text-[11px] font-bold uppercase tracking-wider text-[#76777d]">Course Duration</span>
-            <p className="text-xl font-bold font-sora text-[#131b2e] mt-1">3 - 4 Years</p>
-            <span className="text-xs text-[#76777d] mt-1 block">Full-time programs</span>
+            <span className="text-[11px] font-bold uppercase tracking-wider text-[#76777d]">{content.degreeFees.duration.label}</span>
+            <p className="text-xl font-bold font-sora text-[#131b2e] mt-1">{content.degreeFees.duration.value}</p>
+            <span className="text-xs text-[#76777d] mt-1 block">{content.degreeFees.duration.note}</span>
           </div>
           <div className="p-5 rounded-xl bg-[#f2f3ff] border border-[#3B4CC0]/10">
-            <span className="text-[11px] font-bold uppercase tracking-wider text-[#76777d]">Hostel Facility</span>
-            <p className="text-xl font-bold font-sora text-[#131b2e] mt-1">Available</p>
-            <span className="text-xs text-[#76777d] mt-1 block">Separate Boys & Girls</span>
+            <span className="text-[11px] font-bold uppercase tracking-wider text-[#76777d]">{content.degreeFees.hostel.label}</span>
+            <p className="text-xl font-bold font-sora text-[#131b2e] mt-1">{content.degreeFees.hostel.value}</p>
+            <span className="text-xs text-[#76777d] mt-1 block">{content.degreeFees.hostel.note}</span>
           </div>
           <div className="p-5 rounded-xl bg-[#f2f3ff] border border-[#3B4CC0]/10">
-            <span className="text-[11px] font-bold uppercase tracking-wider text-[#76777d]">Institute Rating</span>
-            <p className="text-xl font-bold font-sora text-[#131b2e] mt-1">{college.rating || 4.5} ★</p>
-            <span className="text-xs text-[#76777d] mt-1 block">{college.reviews || 200}+ verified reviews</span>
+            <span className="text-[11px] font-bold uppercase tracking-wider text-[#76777d]">{content.degreeFees.rating.label}</span>
+            <p className="text-xl font-bold font-sora text-[#131b2e] mt-1">{fill(content.degreeFees.rating.valueTemplate, { rating: college.rating || content.degreeFees.rating.defaultRating })}</p>
+            <span className="text-xs text-[#76777d] mt-1 block">{fill(content.degreeFees.rating.noteTemplate, { reviews: college.reviews || content.degreeFees.rating.defaultReviews })}</span>
           </div>
         </div>
 
         {/* Eligibility Breakdown */}
         <div className="mb-8">
           <h3 className="text-base font-bold text-[#131b2e] mb-4">
-            Mandatory Eligibility Criteria
+            {content.degreeFees.eligibilityTitle}
           </h3>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-3.5">
-            <div className="p-4 rounded-xl bg-[#faf8ff] border border-gray-100 flex items-start gap-3">
-              <span className="w-2 h-2 rounded-full bg-[#3B4CC0] mt-2 shrink-0" />
-              <div>
-                <p className="text-sm font-bold text-[#131b2e]">Academic Qualification</p>
-                <p className="text-xs text-[#45464d] mt-0.5">Passed 10+2 Higher Secondary examination or equivalent from a recognized board or council with relevant stream subjects.</p>
+            {content.degreeFees.eligibility.map((card, idx) => (
+              <div key={idx} className="p-4 rounded-xl bg-[#faf8ff] border border-gray-100 flex items-start gap-3">
+                <span className="w-2 h-2 rounded-full bg-[#3B4CC0] mt-2 shrink-0" />
+                <div>
+                  <p className="text-sm font-bold text-[#131b2e]">{card.title}</p>
+                  <p className="text-xs text-[#45464d] mt-0.5">{card.text}</p>
+                </div>
               </div>
-            </div>
-            <div className="p-4 rounded-xl bg-[#faf8ff] border border-gray-100 flex items-start gap-3">
-              <span className="w-2 h-2 rounded-full bg-[#3B4CC0] mt-2 shrink-0" />
-              <div>
-                <p className="text-sm font-bold text-[#131b2e]">Minimum Marks Requirement</p>
-                <p className="text-xs text-[#45464d] mt-0.5">Minimum 50% - 60% aggregate marks in core subjects (5% relaxation typically applicable for reserved categories).</p>
-              </div>
-            </div>
-            <div className="p-4 rounded-xl bg-[#faf8ff] border border-gray-100 flex items-start gap-3">
-              <span className="w-2 h-2 rounded-full bg-[#3B4CC0] mt-2 shrink-0" />
-              <div>
-                <p className="text-sm font-bold text-[#131b2e]">Entrance Exams Accepted</p>
-                <p className="text-xs text-[#45464d] mt-0.5">State entrance examination ranks, national tests (JEE / NEET / CAT / MAT), or institute-level entrance tests.</p>
-              </div>
-            </div>
-            <div className="p-4 rounded-xl bg-[#faf8ff] border border-gray-100 flex items-start gap-3">
-              <span className="w-2 h-2 rounded-full bg-[#3B4CC0] mt-2 shrink-0" />
-              <div>
-                <p className="text-sm font-bold text-[#131b2e]">Age & Domicile</p>
-                <p className="text-xs text-[#45464d] mt-0.5">Completed 17 years of age as of admission year. State quota benefits subject to domicile criteria.</p>
-              </div>
-            </div>
+            ))}
           </div>
         </div>
 
@@ -444,7 +312,7 @@ export default async function CollegeDetailPage({ params }: { params: Params }) 
         {college.cutoffs && college.cutoffs.length > 0 && (
           <div>
             <h3 className="text-base font-bold text-[#131b2e] mb-4">
-              Expected Cutoff Ranks
+              {content.degreeFees.cutoffsTitle}
             </h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {college.cutoffs.map((co: any, i: number) => (
@@ -484,7 +352,7 @@ export default async function CollegeDetailPage({ params }: { params: Params }) 
                 <h2 className="text-2xl font-sora font-bold text-white tracking-[-0.01em]">
                   {hPlacements}
                 </h2>
-                <p className="text-sm text-white/50 mt-0.5">Top recruiters, salary packages, and career statistics</p>
+                <p className="text-sm text-white/50 mt-0.5">{content.placements.subtitle}</p>
               </div>
 
               {college.placements.stats && (
@@ -507,7 +375,7 @@ export default async function CollegeDetailPage({ params }: { params: Params }) 
 
               {college.placements.highlights && (
                 <div className="mb-10">
-                  <h3 className="text-sm font-bold text-white/60 uppercase tracking-[0.1em] mb-5">Key Highlights</h3>
+                  <h3 className="text-sm font-bold text-white/60 uppercase tracking-[0.1em] mb-5">{content.placements.highlightsTitle}</h3>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                     {college.placements.highlights.map((item: string, idx: number) => (
                       <div key={idx} className="flex items-start gap-3 text-white/70 text-sm">
@@ -521,7 +389,7 @@ export default async function CollegeDetailPage({ params }: { params: Params }) 
 
               {college.placements.topRecruiters && (
                 <div>
-                  <h3 className="text-sm font-bold text-white/60 uppercase tracking-[0.1em] mb-5">Top Corporate Partners</h3>
+                  <h3 className="text-sm font-bold text-white/60 uppercase tracking-[0.1em] mb-5">{content.placements.recruitersTitle}</h3>
                   <div className="space-y-6">
                     {college.placements.topRecruiters.map((group: any, idx: number) => (
                       <div key={idx}>
@@ -564,15 +432,15 @@ export default async function CollegeDetailPage({ params }: { params: Params }) 
         <div className="mt-8 p-6 rounded-2xl bg-gradient-to-br from-[#f2f3ff] to-[#faf8ff] border border-[#3B4CC0]/15 flex flex-col md:flex-row items-start md:items-center justify-between gap-5">
           <div>
             <span className="text-[10px] font-bold text-[#3B4CC0] uppercase tracking-wider bg-[#3B4CC0]/10 px-2.5 py-0.5 rounded-md inline-block mb-1.5">
-              Official Campus & Admission Location
+              {content.overview.locationBadge}
             </span>
             <p className="font-bold text-[#131b2e] text-base leading-snug">
               {isIem 
-                ? "Ashram Building, GN-34/2, Sector V, Salt Lake Electronics Complex"
-                : `${college.name} Main Campus, ${college.location}`}
+                ? content.overview.iemAddress
+                : fill(content.overview.campusTemplate, { name: college.name, location: college.location })}
             </p>
             <p className="text-xs text-[#76777d] mt-1">
-              {college.location}, {college.state}, India
+              {fill(content.overview.addressLine, { location: college.location, state: college.state })}
             </p>
           </div>
           <Button asChild variant="outline" className="shrink-0 bg-white border-[#3B4CC0]/20 text-[#3B4CC0] hover:bg-[#3B4CC0] hover:text-white transition-all">
@@ -581,7 +449,7 @@ export default async function CollegeDetailPage({ params }: { params: Params }) 
               target="_blank" 
               rel="noopener noreferrer"
             >
-              <MapPin className="w-4 h-4 mr-2" /> View on Map
+              <MapPin className="w-4 h-4 mr-2" /> {content.overview.mapButton}
             </Link>
           </Button>
         </div>
@@ -607,7 +475,7 @@ export default async function CollegeDetailPage({ params }: { params: Params }) 
     <section id="infrastructure" className="scroll-mt-28">
       <div className="bg-white rounded-[1.25rem] p-8 md:p-10 shadow-[0_1px_3px_rgba(0,0,0,0.04)]">
         <div className="mb-8">
-          <h2 className="text-2xl font-sora font-bold text-[#131b2e] tracking-[-0.01em]">Facilities & Infrastructure</h2>
+          <h2 className="text-2xl font-sora font-bold text-[#131b2e] tracking-[-0.01em]">{hInfrastructure}</h2>
         </div>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           {college.infrastructure?.map((item: string, idx: number) => (
@@ -628,7 +496,7 @@ export default async function CollegeDetailPage({ params }: { params: Params }) 
     <section id="scholarships" className="scroll-mt-28">
       <div className="bg-white rounded-[1.25rem] p-8 md:p-10 shadow-[0_1px_3px_rgba(0,0,0,0.04)]">
         <div className="mb-8">
-          <h2 className="text-2xl font-sora font-bold text-[#131b2e] tracking-[-0.01em]">Scholarships & Financial Aid</h2>
+          <h2 className="text-2xl font-sora font-bold text-[#131b2e] tracking-[-0.01em]">{hScholarships}</h2>
         </div>
         {college.scholarships?.map((cat: any, idx: number) => (
           <div key={idx} className="mb-8 last:mb-0">
@@ -655,7 +523,7 @@ export default async function CollegeDetailPage({ params }: { params: Params }) 
       <div className="bg-white rounded-[1.25rem] p-8 md:p-10 shadow-[0_1px_3px_rgba(0,0,0,0.04)] relative overflow-hidden">
         <div className="absolute top-0 right-0 -mr-20 -mt-20 w-60 h-60 bg-[#3B4CC0]/[0.03] rounded-full blur-3xl pointer-events-none" />
         <div className="mb-8 relative z-10">
-          <h2 className="text-2xl font-sora font-bold text-[#131b2e] tracking-[-0.01em]">Alumni Network</h2>
+          <h2 className="text-2xl font-sora font-bold text-[#131b2e] tracking-[-0.01em]">{hAlumni}</h2>
         </div>
         {college.alumni && (
           <div className="space-y-8 relative z-10">
@@ -666,7 +534,7 @@ export default async function CollegeDetailPage({ params }: { params: Params }) 
             )}
             {college.alumni.companies && (
               <div>
-                <p className="text-[11px] font-bold text-[#76777d] uppercase tracking-[0.1em] mb-5">Alumni Work At</p>
+                <p className="text-[11px] font-bold text-[#76777d] uppercase tracking-[0.1em] mb-5">{content.alumni.worksAtLabel}</p>
                 <div className="flex flex-wrap gap-3">
                   {college.alumni.companies.map((company: string, idx: number) => (
                     <span key={idx} className="px-5 py-2.5 rounded-lg bg-[#faf8ff] font-bold text-sm text-[#131b2e] hover:bg-[#e2e7ff] transition-all duration-300 cursor-default">
@@ -684,26 +552,18 @@ export default async function CollegeDetailPage({ params }: { params: Params }) 
 
   // 9. FAQs + Schema + CTA
   const renderFaqs = () => {
-    const rawFaqs = (college.faqs && college.faqs.length > 0) 
-      ? college.faqs 
-      : (isIem ? IEM_DEFAULT_FAQS : [
-          {
-            question: `What is the admission procedure for ${college.name}?`,
-            answer: `Admission to ${college.name} is conducted through entrance examination scores, centralized counseling, and permitted quota rules. Contact Direct2Campus for step-by-step guidance and document verification.`
-          },
-          {
-            question: `What is the fee structure at ${college.name}?`,
-            answer: `The tuition fee structure at ${college.name} is approximately ${college.fees || 'competitive based on specialization'}. Hostel and mess charges are separate where applicable.`
-          },
-          {
-            question: `Does ${college.name} provide campus placement support?`,
-            answer: `Yes, ${college.name} has a proactive training and placement cell that connects graduating students with top corporate recruiters and industry partners.`
-          },
-          {
-            question: `Where is ${college.name} located?`,
-            answer: `${college.name} is situated in ${college.location}, ${college.state}. Students should verify the exact campus location and department before visiting.`
-          }
-        ]);
+    const fv = {
+      name: college.name,
+      location: college.location,
+      state: college.state,
+      fees: college.fees || content.faqs.feesFallback,
+    };
+    const rawFaqs = (college.faqs && college.faqs.length > 0)
+      ? college.faqs
+      : (isIem ? content.faqs.iemFaqs : content.faqs.defaultFaqs.map((f) => ({
+          question: fill(f.question, fv),
+          answer: fill(f.answer, fv),
+        })));
 
     const seenQuestions = new Set<string>();
     const combinedFaqs = [...(seo.aeoFaqs || []), ...rawFaqs];
@@ -769,26 +629,15 @@ export default async function CollegeDetailPage({ params }: { params: Params }) 
       }
     };
 
-    const ctaHeadline = seo.cta?.headline || "Need Help with Admission?";
-    const ctaSubtext = seo.cta?.subtext || `Our expert counselors are ready to guide you through the entire admission process for ${college.name}.`;
-    const ctaButtonText = seo.cta?.buttonText || "Talk to Expert";
+    const ctaHeadline = seo.cta?.headline || content.cta.headline;
+    const ctaSubtext = seo.cta?.subtext || fill(content.cta.subtext, { name: college.name });
+    const ctaButtonText = seo.cta?.buttonText || content.cta.button;
 
     return (
       <>
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
-        />
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(orgSchema) }}
-        />
-        {faqSchema && (
-          <script
-            type="application/ld+json"
-            dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
-          />
-        )}
+        <JsonLd data={breadcrumbSchema} />
+        <JsonLd data={orgSchema} />
+        <JsonLd data={faqSchema ?? undefined} seo={collegeSeo(college)} />
 
         <section id="faqs" className="scroll-mt-28">
           <div className="bg-white rounded-[1.25rem] p-8 md:p-10 shadow-[0_1px_3px_rgba(0,0,0,0.04)] relative overflow-hidden">
@@ -802,7 +651,7 @@ export default async function CollegeDetailPage({ params }: { params: Params }) 
               {faqsList.map((faq, idx) => (
                 <div key={idx} className="p-6 rounded-xl bg-[#faf8ff] hover:bg-[#f2f3ff] transition-colors duration-300">
                   <h3 className="font-bold text-[#131b2e] mb-3 flex items-start gap-3">
-                    <span className="text-[#f6c804] text-2xl leading-none font-sora">Q</span>
+                    <span className="text-[#f6c804] text-2xl leading-none font-sora">{content.faqs.questionMark}</span>
                     <span className="pt-1">{faq.question}</span>
                   </h3>
                   <p className="text-[#45464d] text-sm leading-relaxed pl-9">
@@ -819,7 +668,7 @@ export default async function CollegeDetailPage({ params }: { params: Params }) 
           <div className="bg-white rounded-[1.25rem] p-6 md:p-8 shadow-[0_1px_3px_rgba(0,0,0,0.04)] border border-gray-100">
             <div className="flex items-center gap-2 mb-4">
               <Link2 className="w-5 h-5 text-d2c-royal" />
-              <h3 className="text-lg font-sora font-bold text-d2c-navy">Recommended Direct2Campus Guides</h3>
+              <h3 className="text-lg font-sora font-bold text-d2c-navy">{content.internalLinks.title}</h3>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
               {seo.internalLinks.map((link: any, idx: number) => (
@@ -853,13 +702,13 @@ export default async function CollegeDetailPage({ params }: { params: Params }) 
             </div>
             <div className="flex gap-3 shrink-0">
               <Button asChild className="bg-[#f6c804] hover:bg-[#e5b703] text-[#0B1120] font-bold h-12 px-6 rounded-xl shadow-[0_8px_24px_-4px_rgba(246,200,4,0.3)]">
-                <Link href="tel:+916200325137">
+                <Link href={content.contact.phoneHref}>
                   <PhoneCall className="w-5 h-5 mr-2" /> {ctaButtonText}
                 </Link>
               </Button>
               <Button variant="outline" asChild className="bg-white/[0.04] border-white/[0.08] text-white hover:bg-white/[0.08] h-12 px-6 rounded-xl">
-                <Link href="https://wa.me/916200325137" target="_blank">
-                  <MessageSquare className="w-5 h-5 mr-2" /> WhatsApp
+                <Link href={content.contact.whatsappHref} target="_blank">
+                  <MessageSquare className="w-5 h-5 mr-2" /> {content.cta.whatsappButton}
                 </Link>
               </Button>
             </div>
@@ -875,7 +724,7 @@ export default async function CollegeDetailPage({ params }: { params: Params }) 
       {/* ═══════════════════════════════════════════
           HERO SECTION (Renders H1)
       ═══════════════════════════════════════════ */}
-      <CollegeHero college={college} />
+      <CollegeHero college={college} content={content.hero} contact={content.contact} />
 
       {/* ═══════════════════════════════════════════
           MAIN CONTENT — High-Converting Unified Flow
@@ -897,12 +746,12 @@ export default async function CollegeDetailPage({ params }: { params: Params }) 
           </div>
 
           {/* ── Sidebar ── */}
-          <CollegeSidebar collegeName={college.name} sections={sections} />
+          <CollegeSidebar collegeName={college.name} sections={sections} content={content.sidebar} contact={content.contact} tocUi={content.tocUi} />
         </div>
       </div>
 
       {/* Floating Mobile TOC */}
-      <FloatingMobileTOC sections={sections} className="lg:hidden" />
+      <FloatingMobileTOC sections={sections} className="lg:hidden" labels={content.tocUi} />
     </div>
   )
 }
