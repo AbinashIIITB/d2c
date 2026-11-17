@@ -25,6 +25,8 @@ interface IemEnquiryFormProps {
   defaultBranch?: string;
   defaultCourse?: string;
   defaultCampus?: string;
+  title?: string;
+  subtitle?: string;
   /** Editable text, labels and dropdown options (see src/content/iem-branch.schema.ts). */
   content?: IemFormContent;
   showCourseSelector?: boolean;
@@ -35,6 +37,8 @@ export function IemEnquiryForm({
   defaultBranch = 'Computer Science & Engineering (CSE)',
   defaultCourse = 'B.Tech',
   defaultCampus = 'Salt Lake',
+  title,
+  subtitle,
   content = iemFormDefaults,
   showCourseSelector = false
 }: IemEnquiryFormProps) {
@@ -148,10 +152,10 @@ export function IemEnquiryForm({
               {content.badge}
             </span>
             <h2 className="text-2xl md:text-4xl font-sora font-bold text-d2c-navy">
-              {content.title}
+              {title || content.title}
             </h2>
             <p className="text-sm md:text-base text-gray-600 max-w-xl mx-auto leading-relaxed">
-              {content.subtitle}
+              {subtitle || content.subtitle}
             </p>
           </div>
 

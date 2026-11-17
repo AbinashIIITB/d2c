@@ -15,13 +15,74 @@ import {
 import { IemEnquiryForm } from './IemEnquiryForm';
 import { I, IemFaqs, IemJsonLd } from './iemShared';
 import { AnimatedPatternBg } from '@/components/ui/AnimatedPatternBg';
-import type { IemBranchContent } from '@/content/iem-branch.schema';
+import type { IemBranchContent, IemFaqContent } from '@/content/iem-branch.schema';
 import { iemCseDefaults } from '@/content/iem-cse.defaults';
+import { makeBranchDefaults } from '@/content/iem-branch.defaults';
 
-/** Back-compat alias: the template is now driven entirely by the CMS document. */
-export type BranchPageConfig = IemBranchContent;
+export interface LegacyBranchPageConfig {
+  branchName: string;
+  shortBranch: string;
+  slug?: string;
+  path?: string;
+  seoTitle: string;
+  metaDescription: string;
+  primaryKeyword?: string;
+  keywords?: string[];
+  ogDescription?: string;
+  ogImageAlt?: string;
+  h1: string;
+  heroCopy: string;
+  aboutProgramme: string;
+  whyExplore: string;
+  eligibilityCopy: string;
+  admissionProcessCopy: string;
+  feesCopy: string;
+  careerOpportunities: string[];
+  faqs: { q: string; a: string }[] | IemFaqContent;
+  relatedBranches?: { name: string; url: string }[];
+  altCampus?: string;
+  altLab?: string;
+}
 
-export function IemBranchLandingTemplate({ content = iemCseDefaults }: { content?: IemBranchContent }) {
+/** Back-compat alias: accepts both the modern CMS IemBranchContent and legacy BranchPageConfig */
+export type BranchPageConfig = LegacyBranchPageConfig | IemBranchContent;
+
+export function IemBranchLandingTemplate(props: { content?: IemBranchContent; config?: BranchPageConfig }) {
+  let content: IemBranchContent;
+  if (props.content) {
+    content = props.content;
+  } else if (props.config) {
+    if ('hero' in props.config && 'seo' in props.config && 'form' in props.config) {
+      content = props.config as IemBranchContent;
+    } else {
+      const cfg = props.config as LegacyBranchPageConfig;
+      const faqItems = Array.isArray(cfg.faqs) ? cfg.faqs : cfg.faqs?.items || [];
+      content = makeBranchDefaults({
+        branchName: cfg.branchName,
+        shortBranch: cfg.shortBranch,
+        path: cfg.slug || cfg.path || 'iem-kolkata-cse-admission',
+        seoTitle: cfg.seoTitle,
+        metaDescription: cfg.metaDescription,
+        ogDescription: cfg.ogDescription || cfg.metaDescription,
+        keywords: cfg.keywords || (cfg.primaryKeyword ? [cfg.primaryKeyword] : []),
+        ogImageAlt: cfg.ogImageAlt || cfg.altCampus || `${cfg.branchName} Admission`,
+        h1: cfg.h1,
+        heroCopy: cfg.heroCopy,
+        aboutProgramme: cfg.aboutProgramme,
+        whyExplore: cfg.whyExplore,
+        eligibilityCopy: cfg.eligibilityCopy,
+        admissionProcessCopy: cfg.admissionProcessCopy,
+        feesCopy: cfg.feesCopy,
+        careerOpportunities: cfg.careerOpportunities || [],
+        faqs: faqItems,
+        relatedBranches: cfg.relatedBranches || [],
+        altCampus: cfg.altCampus || '/images/colleges/iem-saltlake.jpg',
+      });
+    }
+  } else {
+    content = iemCseDefaults;
+  }
+
   const { hero, about, eligibility, process, fees, careers, related, finalCta } = content;
 
   return (

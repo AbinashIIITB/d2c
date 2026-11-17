@@ -13,7 +13,7 @@ import { supabaseAdmin, isSupabaseConfigured } from './supabase';
 // Deleting a page that also exists in the bundled defaults stores a tombstone ({ deleted: true })
 // in the Supabase copy so the bundled page does not come back.
 
-const PAGES_FILE = path.join(process.cwd(), 'src', 'data', 'pages-cms-data.json');
+const PAGES_FILE = path.join(/*turbopackIgnore: true*/ process.cwd(), 'src', 'data', 'pages-cms-data.json');
 const TMP_PAGES_FILE = path.join('/tmp', 'd2c-pages-cms-data.json');
 const CLOUD_ROW_ID = '__d2c_cms_pages_store__';
 const CLOUD_TTL_MS = 10_000;
